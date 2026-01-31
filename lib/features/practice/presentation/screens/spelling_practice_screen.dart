@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import 'dart:ui';
@@ -70,7 +71,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                     child: Column(
                       children: [
                         const SizedBox(height: 16),
-                        const Text('热情的', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+                        Text('热情的', style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
                         const SizedBox(height: 16),
                         const Text('/ɪnˌθuːziˈæstɪk/', style: TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
                       ],
@@ -94,11 +95,11 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('EXAMPLE SENTENCE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
+                        Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
                          const SizedBox(height: 8),
                          RichText(
                            text: TextSpan(
-                             style: const TextStyle(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                             style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
                              children: [
                                const TextSpan(text: '"The crowd gave an '),
                                // TextSpan(text: 'enthusiastic', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
@@ -120,7 +121,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                                          ),
                                          child: Text(
                                            'enthusiastic',
-                                           style: TextStyle(
+                                           style: GoogleFonts.plusJakartaSans(
                                              fontSize: 18,
                                              // 模糊时颜色稍微深一点，效果更好
                                              color: _isHintVisible ? AppColors.primary : AppColors.primary,
@@ -137,12 +138,12 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                            ),
                          ),
                         RichText(
-                          text: const TextSpan(
-                              style: TextStyle(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                          text: TextSpan(
+                              style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5, fontWeight: FontWeight.w500),
                               children: [
-                                TextSpan(text: '"人群为球队发出了 '),
-                                TextSpan(text: '热烈的', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                                TextSpan(text: '欢呼声！"'),
+                                const TextSpan(text: '"人群为球队发出了 '),
+                                TextSpan(text: '热烈的', style: GoogleFonts.plusJakartaSans(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                                const TextSpan(text: '欢呼声！"'),
                               ]
                           ),
                         )
@@ -211,7 +212,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                   
                   const SizedBox(height: 24),
                   
-                  Text('TAP LETTERS TO FILL', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: Colors.grey.shade400, letterSpacing: 1.0)),
+                  Text('TAP LETTERS TO FILL', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: Colors.grey.shade400, letterSpacing: 1.0)),
                   const SizedBox(height: 16),
                   
                   // Letter Buttons
@@ -253,11 +254,11 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('TOTAL PROGRESS', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
-                    Text('8 / 12 WORDS', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
+                    Text('TOTAL PROGRESS', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
+                    Text('8 / 12 WORDS', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
                   ],
                 )
               ],

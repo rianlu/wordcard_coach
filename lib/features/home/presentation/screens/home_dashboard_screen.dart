@@ -169,7 +169,7 @@ class HomeDashboardScreen extends StatelessWidget {
         BubblyButton(
           onPressed: () {
             // Navigate to Practice Selection
-            Navigator.pushNamed(context, '/practice/spelling');
+            Navigator.pushNamed(context, '/practice/speaking');
           },
           color: AppColors.primary,
           shadowColor: AppColors.shadowBlue,
