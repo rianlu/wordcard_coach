@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Boss Battle: Quiz Mode</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#257bf4",
+                        "secondary": "#facc15",
+                        "hero-green": "#22c55e",
+                        "boss-red": "#ef4444",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            min-height: max(884px, 100dvh);
+        }
+        .cartoon-shadow {
+            box-shadow: 0 6px 0 0 rgba(0, 0, 0, 0.1);
+        }
+        .btn-shadow {
+            box-shadow: 0 6px 0 0 #1e63c7;
+        }
+        .btn-shadow:active {
+            box-shadow: 0 0px 0 0 #1e63c7;
+            transform: translateY(4px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col overflow-x-hidden">
+<header class="flex items-center bg-white dark:bg-background-dark p-4 justify-between border-b border-gray-100 dark:border-gray-800">
+<div class="text-[#111418] dark:text-white flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined">close</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-extrabold leading-tight tracking-[-0.015em] flex-1 text-center uppercase italic">
+            Boss Battle
+        </h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-xl h-12 bg-transparent text-[#111418] dark:text-white p-0">
+<span class="material-symbols-outlined text-fill-0">help</span>
+</button>
+</div>
+</header>
+<div class="px-4 py-4 space-y-2">
+<div class="flex justify-between items-center gap-2">
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex justify-between items-end px-1">
+<p class="text-[#111418] dark:text-white text-[10px] font-extrabold uppercase tracking-wider">Hero</p>
+<p class="text-hero-green text-[10px] font-black">80%</p>
+</div>
+<div class="rounded-full bg-gray-200 dark:bg-gray-700 h-4 p-1 flex items-center shadow-inner">
+<div class="h-2 rounded-full bg-hero-green" style="width: 80%;"></div>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center px-2">
+<div class="flex h-10 w-16 items-center justify-center rounded-xl bg-secondary border-b-4 border-yellow-600 shadow-md">
+<p class="text-[#111418] text-lg font-black tracking-tighter">00:15</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 flex-1 text-right">
+<div class="flex justify-between items-end px-1">
+<p class="text-boss-red text-[10px] font-black">45%</p>
+<p class="text-[#111418] dark:text-white text-[10px] font-extrabold uppercase tracking-wider">Boss</p>
+</div>
+<div class="rounded-full bg-gray-200 dark:bg-gray-700 h-4 p-1 flex items-center shadow-inner justify-end">
+<div class="h-2 rounded-full bg-boss-red" style="width: 45%;"></div>
+</div>
+</div>
+</div>
+</div>
+<main class="flex-1 flex flex-col items-center justify-center p-4 relative">
+<div class="absolute top-4 w-48 h-48 opacity-10 bg-cover bg-center rounded-full mix-blend-multiply dark:mix-blend-overlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDsf_QV2J-yoIVrpmPmh3f8HSloJMasRSaDMeVkCFd9V7I4Tqq32qT2uomHssujbdJKpJX298__yb1oDodz4rvyfTn7DedO21KCDtgpIIG_AMyBIj8dTr7hSFfosW7JPIyblxurFGaE6fU5hAyq5GGepwBz-Yo904YJ7cDpqOGL1fDsfNYnf5kUIg2VZjkl66h54yM471cQujiHT2yfT3CUDVfvX19AYJ2ExidumzbYzizYTDezefhkHidhslFac9L5cwv2uzKdQFw');">
+</div>
+<div class="w-full max-w-sm z-10">
+<div class="flex flex-col items-center justify-center rounded-3xl cartoon-shadow bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 p-10 transform -rotate-1 relative">
+<div class="absolute top-4 right-4 text-primary cursor-pointer hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-2xl">volume_up</span>
+</div>
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Find the meaning</span>
+<h1 class="text-[#111418] dark:text-white text-4xl font-black leading-tight tracking-tight mb-2 text-center uppercase">
+                    CHALLENGE
+                </h1>
+<div class="px-4 py-1 bg-background-light dark:bg-gray-900 rounded-full border border-gray-200 dark:border-gray-700">
+<p class="text-[#60728a] dark:text-gray-400 text-base font-medium">/ˈtʃæl.ɪndʒ/</p>
+</div>
+</div>
+</div>
+</main>
+<div class="bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-800 rounded-t-[2.5rem] shadow-[0_-8px_30px_rgba(0,0,0,0.05)] p-6 pb-10">
+<p class="text-center text-[#60728a] dark:text-gray-400 text-xs font-extrabold uppercase tracking-[0.2em] mb-6">
+            Choose the correct answer
+        </p>
+<div class="grid grid-cols-1 gap-4 max-w-md mx-auto">
+<button class="w-full py-4 px-6 bg-primary rounded-2xl text-white font-bold text-lg btn-shadow transition-all flex items-center justify-center text-center">
+                挑战 / 难题
+            </button>
+<button class="w-full py-4 px-6 bg-primary rounded-2xl text-white font-bold text-lg btn-shadow transition-all flex items-center justify-center text-center">
+                机会 / 巧合
+            </button>
+<button class="w-full py-4 px-6 bg-primary rounded-2xl text-white font-bold text-lg btn-shadow transition-all flex items-center justify-center text-center">
+                变化 / 调整
+            </button>
+<button class="w-full py-4 px-6 bg-primary rounded-2xl text-white font-bold text-lg btn-shadow transition-all flex items-center justify-center text-center">
+                成功 / 结果
+            </button>
+</div>
+</div>
+<div class="h-4 bg-white dark:bg-background-dark"></div>
+
+</body></html>

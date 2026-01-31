@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Boss Battle: Speaking Mode</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400,700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#257bf4",
+                        "secondary": "#facc15",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+        }
+        .ripple-effect {
+            box-shadow: 0 0 0 0 rgba(37, 123, 244, 0.4);
+        }
+        .cartoon-stroke {
+            -webkit-text-stroke: 1px #111418;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center bg-white dark:bg-background-dark p-4 justify-between border-b border-gray-100 dark:border-gray-800">
+<div class="text-[#111418] dark:text-white flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined">close</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-extrabold leading-tight tracking-[-0.015em] flex-1 text-center uppercase italic">
+            Boss Battle
+        </h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-xl h-12 bg-transparent text-[#111418] dark:text-white p-0">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Battle Status Header -->
+<div class="px-4 py-2 space-y-2">
+<div class="flex justify-between items-center gap-2">
+<!-- Player HP -->
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex justify-between items-end px-1">
+<p class="text-[#111418] dark:text-white text-xs font-extrabold uppercase">Hero</p>
+<p class="text-primary text-xs font-bold italic">80/100 HP</p>
+</div>
+<div class="rounded-full bg-[#dbdfe6] dark:bg-gray-700 h-4 p-1 flex items-center shadow-inner">
+<div class="h-2 rounded-full bg-primary" style="width: 80%;"></div>
+</div>
+</div>
+<!-- Timer Section -->
+<div class="flex flex-col items-center justify-center px-4">
+<div class="flex h-10 w-16 items-center justify-center rounded-xl bg-secondary border-b-4 border-yellow-600 shadow-md">
+<p class="text-[#111418] text-lg font-black tracking-tighter">00:15</p>
+</div>
+<p class="text-[#111418] dark:text-gray-400 text-[10px] font-bold uppercase mt-1">Ready!</p>
+</div>
+<!-- Boss HP -->
+<div class="flex flex-col gap-1 flex-1 text-right">
+<div class="flex justify-between items-end px-1">
+<p class="text-secondary text-xs font-bold italic">450/1000 HP</p>
+<p class="text-[#111418] dark:text-white text-xs font-extrabold uppercase">Grumble</p>
+</div>
+<div class="rounded-full bg-[#dbdfe6] dark:bg-gray-700 h-4 p-1 flex items-center shadow-inner justify-end">
+<div class="h-2 rounded-full bg-secondary" style="width: 45%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Battle Content -->
+<main class="flex-1 flex flex-col items-center justify-center p-4 relative">
+<!-- Monster Sprite Placeholder -->
+<div class="absolute top-4 w-48 h-48 opacity-20 bg-cover bg-center rounded-full mix-blend-multiply dark:mix-blend-overlay" data-alt="A friendly blue and yellow cartoon monster character" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDsf_QV2J-yoIVrpmPmh3f8HSloJMasRSaDMeVkCFd9V7I4Tqq32qT2uomHssujbdJKpJX298__yb1oDodz4rvyfTn7DedO21KCDtgpIIG_AMyBIj8dTr7hSFfosW7JPIyblxurFGaE6fU5hAyq5GGepwBz-Yo904YJ7cDpqOGL1fDsfNYnf5kUIg2VZjkl66h54yM471cQujiHT2yfT3CUDVfvX19AYJ2ExidumzbYzizYTDezefhkHidhslFac9L5cwv2uzKdQFw');">
+</div>
+<!-- Target Word Card -->
+<div class="w-full max-w-sm z-10">
+<div class="flex flex-col items-center justify-center rounded-3xl shadow-[0_12px_0_0_rgba(0,0,0,0.05)] bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 p-10 transform -rotate-1">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Speak Clearly</span>
+<h1 class="text-[#111418] dark:text-white text-5xl font-black leading-tight tracking-tight mb-2 text-center">
+                    CHALLENGE
+                </h1>
+<div class="px-4 py-1 bg-background-light dark:bg-gray-900 rounded-full border border-gray-200 dark:border-gray-700">
+<p class="text-[#60728a] dark:text-gray-400 text-lg font-medium">/ˈtʃæl.ɪndʒ/</p>
+</div>
+<!-- Feedback Pop-up Simulation -->
+<div class="absolute -top-6 -right-4 bg-secondary border-2 border-[#111418] rounded-lg px-3 py-1 rotate-12 shadow-lg">
+<p class="text-[#111418] font-black text-sm uppercase italic">-50 HP!</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Zone -->
+<div class="flex flex-col items-center justify-center p-8 gap-6 bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-800 rounded-t-[3rem] shadow-[0_-8px_30px_rgba(0,0,0,0.05)]">
+<p class="text-[#111418] dark:text-white text-sm font-extrabold uppercase tracking-wider animate-pulse">
+            Hold to Attack
+        </p>
+<!-- Big Microphone Button with Ripple -->
+<div class="relative flex items-center justify-center">
+<!-- Ripple Layers (CSS Simulation) -->
+<div class="absolute w-32 h-32 bg-primary/20 rounded-full scale-110"></div>
+<div class="absolute w-28 h-28 bg-primary/30 rounded-full scale-125"></div>
+<!-- Main Button -->
+<button class="relative z-10 w-24 h-24 bg-primary rounded-full flex items-center justify-center shadow-[0_8px_0_0_#1e63c7] active:shadow-none active:translate-y-2 transition-all">
+<span class="material-symbols-outlined text-white text-5xl font-bold">mic</span>
+</button>
+</div>
+<!-- Instructional Subtext -->
+<div class="flex items-center gap-2 text-[#60728a] dark:text-gray-400">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+<p class="text-xs font-bold uppercase tracking-tight">Pronunciation accuracy: 92%</p>
+</div>
+</div>
+<!-- Bottom Spacer for iOS Home Indicator -->
+<div class="h-6 bg-white dark:bg-background-dark"></div>
+</body></html>
