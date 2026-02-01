@@ -2,32 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
+import '../../../../core/database/daos/user_stats_dao.dart';
+import '../../../../core/database/models/user_stats.dart';
 
-class HomeDashboardScreen extends StatelessWidget {
+class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({super.key});
+
+  @override
+  State<HomeDashboardScreen> createState() => _HomeDashboardScreenState();
+}
+
+class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
+  final UserStatsDao _userStatsDao = UserStatsDao();
+  UserStats? _stats;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    final stats = await _userStatsDao.getUserStats();
+    if (mounted) {
+      setState(() {
+        _stats = stats;
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 16), // Status bar padding/safe area
-            _buildHeader(),
-            const SizedBox(height: 16),
-            _buildDateBadge(),
-            const SizedBox(height: 16),
-            _buildStatsRow(),
-            const SizedBox(height: 24),
-            _buildDailyQuestSection(context),
-            const SizedBox(height: 24),
-            _buildAdventureLevel(),
-          ],
-        ),
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 16), // Status bar padding/safe area
+                  _buildHeader(),
+                  const SizedBox(height: 16),
+                  _buildDateBadge(),
+                  const SizedBox(height: 16),
+                  _buildStatsRow(),
+                  const SizedBox(height: 24),
+                  _buildDailyQuestSection(context),
+                  const SizedBox(height: 24),
+                  _buildAdventureLevel(),
+                ],
+              ),
+            ),
     );
   }
 
@@ -52,7 +81,7 @@ class HomeDashboardScreen extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              'Hi, Alex! 👋',
+              '你好, ${_stats?.nickname ?? "Friend"}! 👋',
               style: GoogleFonts.plusJakartaSans(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -75,6 +104,11 @@ class HomeDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildDateBadge() {
+    // Ideally use real date formating
+    final now = DateTime.now();
+    // Simplified date string
+    final dateStr = "${now.year}年${now.month}月${now.day}日"; 
+    
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -97,7 +131,7 @@ class HomeDashboardScreen extends StatelessWidget {
             const Icon(Icons.today, color: AppColors.primary, size: 18),
             const SizedBox(width: 8),
             Text(
-              'MONDAY, OCT 21',
+              dateStr,
               style: GoogleFonts.plusJakartaSans(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -114,9 +148,9 @@ class HomeDashboardScreen extends StatelessWidget {
   Widget _buildStatsRow() {
     return Row(
       children: [
-        Expanded(child: _buildStatCard('🔥', 'Streak', '5 Days')),
+        Expanded(child: _buildStatCard('🔥', '连续打卡', '${_stats?.continuousDays ?? 0} 天')),
         const SizedBox(width: 16),
-        Expanded(child: _buildStatCard('⭐', 'Stars', '1,240')),
+        Expanded(child: _buildStatCard('📚', '已学单词', '${_stats?.totalWordsLearned ?? 0}')),
       ],
     );
   }
@@ -143,7 +177,7 @@ class HomeDashboardScreen extends StatelessWidget {
             children: [
               Text(emoji, style: const TextStyle(fontSize: 20)),
               const SizedBox(width: 8),
-              Text(label.toUpperCase(), style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)),
+              Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)),
             ],
           ),
           const SizedBox(height: 4),
@@ -158,7 +192,7 @@ class HomeDashboardScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
          Text(
-          '每日任务🚀',
+          '每日任务 🚀',
            style: GoogleFonts.plusJakartaSans(
              fontSize:20,
              fontWeight: FontWeight.w800,
@@ -169,7 +203,8 @@ class HomeDashboardScreen extends StatelessWidget {
         BubblyButton(
           onPressed: () {
             // Navigate to Practice Selection
-            Navigator.pushNamed(context, '/practice/speaking');
+            // Ideally pick a mode, but for now map to word selection for learning new words
+             Navigator.pushNamed(context, '/practice/selection');
           },
           color: AppColors.primary,
           shadowColor: AppColors.shadowBlue,
@@ -186,8 +221,8 @@ class HomeDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Learn New Words',
-                style: GoogleFonts.plusJakartaSans( // 💡 使用 GoogleFonts 解决“字体细”
+                '学习新单词',
+                style: GoogleFonts.plusJakartaSans( 
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
                   fontSize: 18,
@@ -195,7 +230,7 @@ class HomeDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Discover 10 new words today!',
+                '今天探索 10 个新单词！',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.plusJakartaSans(
                   color: Colors.white70,
@@ -209,8 +244,8 @@ class HomeDashboardScreen extends StatelessWidget {
         const SizedBox(height: 16),
         BubblyButton(
           onPressed: () {
-            // Review logic or Battle
-             Navigator.pushNamed(context, '/battle/matching');
+             // Let's send review to spelling for variety
+             Navigator.pushNamed(context, '/practice/spelling');
           },
           color: AppColors.secondary,
           shadowColor: AppColors.shadowYellow,
@@ -227,7 +262,7 @@ class HomeDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Review',
+                '复习',
                 style: GoogleFonts.plusJakartaSans(
                   color: const Color(0xFF664400),
                   fontWeight: FontWeight.w900,
@@ -236,7 +271,7 @@ class HomeDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Keep your memory sharp!',
+                '保持记忆清晰！',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.plusJakartaSans(
                   color: const Color(0xAA664400),
@@ -252,49 +287,67 @@ class HomeDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildAdventureLevel() {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade100),
-          boxShadow: const [
-            BoxShadow(
-              color: AppColors.shadowWhite,
-              offset: Offset(0, 4),
-              blurRadius: 0,
-            )
-          ],
-        ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Adventure Level', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-                 Container(
-                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                   decoration: BoxDecoration(
-                     color: AppColors.primary.withOpacity(0.1),
-                     borderRadius: BorderRadius.circular(12),
+      // Mock progress
+      return GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, '/statistics');
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade100),
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.shadowWhite,
+                offset: Offset(0, 4),
+                blurRadius: 0,
+              )
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                   Row(
+                     children: [
+                       const Text('冒险等级', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+                       const SizedBox(width: 8),
+                       Icon(Icons.bar_chart, size: 18, color: AppColors.primary.withOpacity(0.5)),
+                     ],
                    ),
-                   child: const Text('LVL 12', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold, fontSize: 12)),
-                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: const LinearProgressIndicator(
-                value: 0.65,
-                minHeight: 16,
-                backgroundColor: Color(0xFFe5e7eb),
-                valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                   Container(
+                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                     decoration: BoxDecoration(
+                       color: AppColors.primary.withOpacity(0.1),
+                       borderRadius: BorderRadius.circular(12),
+                     ),
+                     child: Text('Lv. ${_stats?.currentGrade ?? 3}', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+                   ),
+                ],
               ),
-            ),
-             const SizedBox(height: 8),
-             const Text('350 XP more to reach Level 13!', style: TextStyle(color: AppColors.textMediumEmphasis, fontSize: 12, fontWeight: FontWeight.bold)),
-          ],
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: const LinearProgressIndicator(
+                  value: 0.1, // Mock
+                  minHeight: 16,
+                  backgroundColor: Color(0xFFe5e7eb),
+                  valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                ),
+              ),
+               const SizedBox(height: 8),
+               const Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Text('距离下一级还需要 350 XP！', style: TextStyle(color: AppColors.textMediumEmphasis, fontSize: 12, fontWeight: FontWeight.bold)),
+                   Text('查看统计 >', style: TextStyle(color: AppColors.primary, fontSize: 10, fontWeight: FontWeight.bold)),
+                 ],
+               ),
+            ],
+          ),
         ),
       );
   }

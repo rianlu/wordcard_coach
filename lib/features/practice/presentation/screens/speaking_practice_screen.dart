@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/database/daos/word_dao.dart';
+import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'dart:ui';
 
@@ -13,6 +15,11 @@ class SpeakingPracticeScreen extends StatefulWidget {
 class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isListening = false;
+  
+  // Data
+  final WordDao _wordDao = WordDao();
+  Word? _currentWord;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -21,6 +28,29 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       vsync: this,
       duration: const Duration(seconds: 2),
     );
+    _loadNewWord();
+  }
+
+  Future<void> _loadNewWord() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final words = await _wordDao.getNewWords(1);
+      if (words.isNotEmpty) {
+        setState(() {
+          _currentWord = words.first;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading word: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -34,6 +64,17 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       _isListening = !_isListening;
       if (_isListening) {
         _controller.repeat();
+        // Simulate successful speaking after 2 seconds
+        Future.delayed(const Duration(seconds: 2), () {
+           if (mounted && _isListening) {
+             _toggleListening();
+             // Load next word
+             _loadNewWord();
+             ScaffoldMessenger.of(context).showSnackBar(
+               const SnackBar(content: Text('Great job! Correct pronunciation.'), backgroundColor: Colors.green)
+             );
+           }
+        });
       } else {
         _controller.stop();
         _controller.reset();
@@ -43,6 +84,26 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+       return const Scaffold(
+         backgroundColor: AppColors.background,
+         body: Center(child: CircularProgressIndicator()),
+       );
+    }
+
+    if (_currentWord == null) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+           leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: const Center(child: Text('No words available')),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -50,7 +111,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Lesson 12', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(_currentWord!.unit, style: const TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           Container(
@@ -93,11 +154,11 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                     child: Column(
                       children: [
                         const SizedBox(height: 16),
-                        Text('Enthusiastic', style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+                        Text(_currentWord!.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
                         const SizedBox(height: 8),
-                        Text('热情的', style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
+                        Text(_currentWord!.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
                         const SizedBox(height: 8),
-                        const Text('/ɪnˌθuːziˈæstɪk/', style: TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+                        Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
                         const SizedBox(height: 24),
                         
                         // TTS Button
@@ -143,12 +204,12 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                         Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
                          const SizedBox(height: 8),
                          Text(
-                           '"The crowd gave an enthusiastic cheer for the team!"',
+                           'No example sentence available for "${_currentWord!.text}".',
                            style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
                          ),
                          const SizedBox(height: 8),
                          Text(
-                           '"人群为这支队伍发出了热情的欢呼！"',
+                           '暂无例句',
                            style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textMediumEmphasis, height: 1.5),
                          ),
                       ],
@@ -222,7 +283,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                             ),
                             child: Icon(
                                 _isListening ? Icons.graphic_eq_rounded : Icons.mic_rounded,
-                                color: Color(0xFF101418),
+                                color: const Color(0xFF101418),
                                 size: 42
                             ),
                           ),

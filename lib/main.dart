@@ -9,8 +9,13 @@ import 'features/battle/presentation/screens/boss_battle_matching_screen.dart';
 import 'features/battle/presentation/screens/boss_battle_speaking_screen.dart';
 import 'features/battle/presentation/screens/boss_battle_spelling_screen.dart';
 import 'features/collection/presentation/screens/collection_gallery_screen.dart';
+import 'features/statistics/presentation/screens/statistics_screen.dart';
 
-void main() {
+import 'core/database/database_helper.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper().database;
   runApp(const MyApp());
 }
 
@@ -31,7 +36,9 @@ class MyApp extends StatelessWidget {
         '/battle/matching': (context) => const BossBattleMatchingScreen(),
         '/battle/speaking': (context) => const BossBattleSpeakingScreen(),
         '/battle/spelling': (context) => const BossBattleSpellingScreen(),
+        '/battle/spelling': (context) => const BossBattleSpellingScreen(),
         '/collection': (context) => const CollectionGalleryScreen(),
+        '/statistics': (context) => const StatisticsScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
+import 'dart:math';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
-import 'dart:ui';
+import '../../../../core/database/daos/word_dao.dart';
+import '../../../../core/database/models/word.dart';
 
 class SpellingPracticeScreen extends StatefulWidget {
   const SpellingPracticeScreen({super.key});
@@ -12,15 +15,161 @@ class SpellingPracticeScreen extends StatefulWidget {
 }
 
 class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
-  // Mock State
-  final String _targetWord = "Enthusiastic";
-  final List<int> _missingIndices = [1, 4, 8]; // E_T_US_ASTIC
-  final List<String> _userInputs = ["", "", ""]; // Correspond to missing slots
-  int _currentSlotIndex = 0; // Which slot we are filling next
+  final WordDao _wordDao = WordDao();
+  Word? _currentWord;
+  bool _isLoading = true;
   bool _isHintVisible = false;
+
+  // Game State
+  String _targetWord = "";
+  List<int> _missingIndices = [];
+  List<String> _userInputs = [];
+  List<String> _keyboardLetters = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNewWord();
+  }
+
+  Future<void> _loadNewWord() async {
+    setState(() {
+      _isLoading = true;
+      _isHintVisible = false;
+      _userInputs = [];
+      _missingIndices = [];
+      _keyboardLetters = [];
+    });
+
+    try {
+      final words = await _wordDao.getNewWords(1);
+      if (words.isNotEmpty) {
+        _currentWord = words.first;
+        _targetWord = _currentWord!.text;
+        _initializeGame();
+      }
+    } catch (e) {
+      debugPrint('Error loading word: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _initializeGame() {
+    if (_targetWord.isEmpty) return;
+
+    final random = Random();
+    int len = _targetWord.length;
+    // Determine how many letters to hide (e.g., 30-50%)
+    int missingCount = (len * 0.4).ceil().clamp(1, len - 1);
+    
+    // Select random unique indices
+    Set<int> indices = {};
+    while (indices.length < missingCount) {
+      indices.add(random.nextInt(len));
+    }
+    _missingIndices = indices.toList()..sort();
+    _userInputs = List.filled(missingCount, "");
+
+    // Prepare keyboard
+    // Include all missing chars
+    Set<String> letters = {};
+    for (int idx in _missingIndices) {
+      letters.add(_targetWord[idx].toUpperCase());
+    }
+    // Add some random distractors
+    const allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    while (letters.length < 8) { // Target 8 keys + backspace
+       letters.add(allChars[random.nextInt(allChars.length)]);
+    }
+    _keyboardLetters = letters.toList()..shuffle();
+  }
+
+  void _handleLetterInput(String char) {
+    // Find first empty slot
+    int emptyIndex = _userInputs.indexOf("");
+    if (emptyIndex != -1) {
+      setState(() {
+        _userInputs[emptyIndex] = char;
+      });
+      _checkCompletion();
+    }
+  }
+
+  void _handleBackspace() {
+    // Find last filled slot
+    int lastFilledIndex = _userInputs.lastIndexWhere((element) => element.isNotEmpty);
+    if (lastFilledIndex != -1) {
+      setState(() {
+        _userInputs[lastFilledIndex] = "";
+      });
+    }
+  }
+
+  void _checkCompletion() {
+    if (!_userInputs.contains("")) {
+      // Reconstruct word
+      String constructed = "";
+      int inputIndex = 0;
+      for (int i = 0; i < _targetWord.length; i++) {
+        if (_missingIndices.contains(i)) {
+          constructed += _userInputs[inputIndex];
+          inputIndex++;
+        } else {
+          constructed += _targetWord[i].toUpperCase();
+        }
+      }
+
+      if (constructed.toUpperCase() == _targetWord.toUpperCase()) {
+         // Correct!
+         Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) {
+               ScaffoldMessenger.of(context).showSnackBar(
+                 const SnackBar(content: Text('Correct!'), backgroundColor: Colors.green)
+               );
+               _loadNewWord();
+            }
+         });
+      } else {
+        // Wrong
+         Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) {
+               ScaffoldMessenger.of(context).showSnackBar(
+                 const SnackBar(content: Text('Try again!'), backgroundColor: Colors.red)
+               );
+               // Clear inputs? Or let user backspace
+               setState(() {
+                 _userInputs = List.filled(_userInputs.length, "");
+               });
+            }
+         });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (_currentWord == null) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          leading: IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+        ),
+        body: const Center(child: Text('No words available')),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -28,7 +177,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
           icon: const Icon(Icons.close),
            onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Lesson 12', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(_currentWord!.unit, style: const TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           Container(
@@ -71,9 +220,9 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                     child: Column(
                       children: [
                         const SizedBox(height: 16),
-                        Text('热情的', style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+                        Text(_currentWord!.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
                         const SizedBox(height: 16),
-                        const Text('/ɪnˌθuːziˈæstɪk/', style: TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+                        Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
                       ],
                     ),
                   ),
@@ -97,56 +246,27 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                       children: [
                         Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
                          const SizedBox(height: 8),
-                         RichText(
-                           text: TextSpan(
+                         // Use placeholder for now as per plan
+                         Text(
+                             'No example sentence available.',
                              style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
-                             children: [
-                               const TextSpan(text: '"The crowd gave an '),
-                               // TextSpan(text: 'enthusiastic', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                               WidgetSpan(alignment: PlaceholderAlignment.middle,
-                                 child: GestureDetector(
-                                   onTap: () => setState(() => _isHintVisible = !_isHintVisible),
-                                   child: ClipRRect( // 裁剪模糊边缘，防止溢出
-                                     borderRadius: BorderRadius.circular(4),
-                                     child: ImageFiltered(
-                                       imageFilter: _isHintVisible
-                                           ? ColorFilter.mode(Colors.transparent, BlendMode.multiply) // 不显示时无滤镜
-                                           : ImageFilter.blur(sigmaX: 3, sigmaY: 3), // 高斯模糊强度
-                                       child: Container(
-                                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                         decoration: BoxDecoration(
-                                           // 模糊时给一个淡淡的底色，增加“磨砂”感
-                                           color: _isHintVisible ? Colors.transparent : Colors.grey.shade200.withOpacity(0.5),
-                                           borderRadius: BorderRadius.circular(4),
-                                         ),
-                                         child: Text(
-                                           'enthusiastic',
-                                           style: GoogleFonts.plusJakartaSans(
-                                             fontSize: 18,
-                                             // 模糊时颜色稍微深一点，效果更好
-                                             color: _isHintVisible ? AppColors.primary : AppColors.primary,
-                                             fontWeight: FontWeight.bold,
-                                           ),
-                                         ),
-                                       ),
-                                     ),
-                                   ),
-                                 ),
-                               ),
-                               const TextSpan(text: ' cheer for the team!"'),
-                             ]
-                           ),
                          ),
-                        RichText(
-                          text: TextSpan(
-                              style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5, fontWeight: FontWeight.w500),
-                              children: [
-                                const TextSpan(text: '"人群为球队发出了 '),
-                                TextSpan(text: '热烈的', style: GoogleFonts.plusJakartaSans(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                                const TextSpan(text: '欢呼声！"'),
-                              ]
-                          ),
-                        )
+                        
+                         // Hint functionality disabled or simplified for now
+                         if (_isHintVisible)
+                           Padding(
+                             padding: const EdgeInsets.only(top: 8.0),
+                             child: Text("Word: $_targetWord", style: TextStyle(color: Colors.grey.shade400)),
+                           ),
+                         
+                         const SizedBox(height: 8),
+                         GestureDetector(
+                           onTap: () => setState(() => _isHintVisible = !_isHintVisible),
+                           child: Text(
+                             _isHintVisible ? "Hide Hint" : "Show Hint",
+                             style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+                           ),
+                         )
                       ],
                     ),
                   ),
@@ -161,8 +281,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                        color: Colors.white,
                        borderRadius: BorderRadius.circular(20),
                        border: Border.all(color: Colors.grey.shade200),
-                    ), // Using existing container style, maybe could match HTML border-dashed style?
-                    // HTML uses: border border-dashed border-slate-300
+                    ),
                     child: Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 8,
@@ -190,14 +309,14 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                          return Column(
                            children: [
                              Text(
-                               displayChar, 
+                               displayChar.toUpperCase(), 
                                style: TextStyle(
                                  fontSize: 28, 
                                  fontWeight: FontWeight.w900, 
                                  color: textColor
                                )
                              ),
-                             if (showUnderscore || isMissing) // Always show line for missing slots even if filled? No, logic above.
+                             if (showUnderscore || isMissing)
                                Container(
                                  width: 24, 
                                  height: 4, 
@@ -219,14 +338,9 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                   Wrap(
                     spacing: 16,
                     runSpacing: 16,
+                    alignment: WrapAlignment.center,
                     children: [
-                      _buildLetterButton('N'),
-                      _buildLetterButton('U'),
-                      _buildLetterButton('I'),
-                      _buildLetterButton('R'),
-                      _buildLetterButton('E'),
-                      _buildLetterButton('F'),
-                      _buildLetterButton('S'),
+                      ..._keyboardLetters.map((char) => _buildLetterButton(char)),
                       _buildBackspaceButton(),
                     ],
                   ),
@@ -247,7 +361,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: const LinearProgressIndicator(
-                    value: 0.66, // 8/12
+                    value: 0.66, 
                     color: AppColors.primary,
                     backgroundColor: Color(0xFFe2e8f0),
                     minHeight: 12,
@@ -273,11 +387,9 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
     return SizedBox(
       width: 64, height: 64,
       child: BubblyButton(
-        onPressed: () {
-          // Logic to fill
-        },
+        onPressed: () => _handleLetterInput(char),
         color: AppColors.secondary,
-        shadowColor: const Color(0xFFd4aa00), // Darker yellow
+        shadowColor: const Color(0xFFd4aa00), 
         padding: EdgeInsets.zero,
         borderRadius: 32,
         child: Center(
@@ -291,7 +403,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
      return SizedBox(
       width: 64, height: 64,
       child: BubblyButton(
-        onPressed: () {},
+        onPressed: _handleBackspace,
         color: const Color(0xFFe2e8f0),
         shadowColor: const Color(0xFFcbd5e1),
         padding: EdgeInsets.zero,
