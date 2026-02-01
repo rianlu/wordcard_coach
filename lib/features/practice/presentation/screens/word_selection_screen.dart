@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
+import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
@@ -11,8 +13,11 @@ class WordSelectionScreen extends StatefulWidget {
   State<WordSelectionScreen> createState() => _WordSelectionScreenState();
 }
 
+
+
 class _WordSelectionScreenState extends State<WordSelectionScreen> {
   final WordDao _wordDao = WordDao();
+  final UserStatsDao _userStatsDao = UserStatsDao();
   Word? _currentWord;
   List<Word> _options = [];
   bool _isLoading = true;
@@ -31,8 +36,13 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
     });
 
     try {
+      final stats = await _userStatsDao.getUserStats();
       // Get 4 words: 1 correct + 3 distractors
-      final words = await _wordDao.getNewWords(4);
+      final words = await _wordDao.getNewWords(
+        4, 
+        grade: stats.currentGrade, 
+        semester: stats.currentSemester
+      );
       if (words.isNotEmpty) {
         _currentWord = words[0];
         _options = List.from(words)..shuffle();
@@ -116,45 +126,42 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.grey.shade100),
-                boxShadow: const [
-                  BoxShadow(color: AppColors.shadowWhite, offset: Offset(0,4), blurRadius: 0),
-                  BoxShadow(color: Colors.black12, offset: Offset(0, 4), blurRadius: 20, spreadRadius: -2)
-                ]
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.grey.shade100),
+                  boxShadow: const [
+                    BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
+                  ]
               ),
               child: Column(
                 children: [
-                   // Image Placeholder
-                   Container(
-                     height: 180,
-                     decoration: BoxDecoration(
-                       color: Colors.grey.shade100,
-                       borderRadius: BorderRadius.circular(16),
-                       // Placeholder image, or could try to fetch one based on word text if API available
-                       image: const DecorationImage(
-                          image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuCDBymxy7qPY9zCgzSGficR5l_06WvrlthK4z9Laa1YC04TT1UIUlEPmXeaLCdfI4VreuS4qruobJQ9lFDxeBd4oL_cPyfbtZ26e8hfsWFijDqNxfyCBFGd6UPvDmUfnlYPKc6tlmKYghR1O7KUD1QybdNYKxjz_GGJf_WuVPYvN9zALLTAoMZ-1XOdle_NruLKUZNme-WtQNdFbhFS92VwpaeGDkJZJZcpQR0uQdU3RyN4KVznFgRQmR8PUpHlpIXcuLi6zEVzzfM'), // Keep existing placeholder for now
-                          fit: BoxFit.cover,
-                       ),
-                     ),
-                     alignment: Alignment.bottomRight,
-                     child: Padding(
-                       padding: const EdgeInsets.all(12),
-                       child: CircleAvatar(
-                         backgroundColor: Colors.white,
-                         child: IconButton(
-                           icon: const Icon(Icons.volume_up, color: AppColors.primary),
-                           onPressed: () {
-                             // TTS placeholder
-                           },
-                         ),
-                       ),
-                     ),
-                   ),
-                   const SizedBox(height: 24),
-                   Text(_currentWord!.text, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.primary)),
-                   Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 16),
+                  Text(_currentWord!.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+                  const SizedBox(height: 8),
+                  Text(_currentWord!.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
+                  const SizedBox(height: 8),
+                  Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 24),
+
+                  // TTS Button
+                  Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primary,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.4),
+                            blurRadius: 24,
+                            offset: const Offset(0, 8),
+                          ),
+                        ]
+                    ),
+                    child: IconButton(
+                      padding: const EdgeInsets.all(14),
+                      onPressed: () {},
+                      icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
+                    ),
+                  ),
                 ],
               ),
             ),

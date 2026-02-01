@@ -4,6 +4,7 @@ class AppColors {
   // Primary & Secondary
   static const Color primary = Color(0xFF257bf4); // Blue
   static const Color secondary = Color(0xFFffcc00); // Yellow (Stitch: ffc00 or facc15)
+  static const Color tertiary = Color(0xFFe91e63); // Pink
   
   // Backgrounds
   static const Color background = Color(0xFFf5f7f8); // Light Background

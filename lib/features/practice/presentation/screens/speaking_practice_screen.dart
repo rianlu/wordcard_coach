@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
+import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'dart:ui';
@@ -12,12 +13,15 @@ class SpeakingPracticeScreen extends StatefulWidget {
   State<SpeakingPracticeScreen> createState() => _SpeakingPracticeScreenState();
 }
 
+
+
 class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isListening = false;
   
   // Data
   final WordDao _wordDao = WordDao();
+  final UserStatsDao _userStatsDao = UserStatsDao();
   Word? _currentWord;
   bool _isLoading = true;
 
@@ -36,7 +40,12 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       _isLoading = true;
     });
     try {
-      final words = await _wordDao.getNewWords(1);
+      final stats = await _userStatsDao.getUserStats();
+      final words = await _wordDao.getNewWords(
+        1,
+        grade: stats.currentGrade,
+        semester: stats.currentSemester
+      );
       if (words.isNotEmpty) {
         setState(() {
           _currentWord = words.first;

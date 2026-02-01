@@ -4,6 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/models/user_stats.dart';
+import '../../../learning/presentation/screens/daily_learning_session_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({super.key});
@@ -72,12 +73,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.primary, width: 2),
-                image: const DecorationImage(
-                  // Placeholder for avatar
-                  image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuD7azJzy4j5G02Qdmmzts3b6tTgdR9N9vqiFURk4fJCvGlLExMtgXmr13Dac81TtwTINUN6wMYfAw-pVAHJCxxFK3RZ0KP7IHuLyAMPiqzycWspwdzFj1LqqCoOIaX-Q_e1ayfmO5UbshiVsLraB27loKkkCqmD80QFOda58kyCPZg_kknmRaYPd120Jjtyez9bmQJxyUXLIUZxbVYtKCsq_WLy7oI0861WrodDPobyFvv_ZHNW2v3PIZFS85Y-aGH1zo0DF4QyMpM'),
-                  fit: BoxFit.cover,
-                ),
+                color: AppColors.primary.withOpacity(0.1),
               ),
+              child: const Icon(Icons.person, color: AppColors.primary),
             ),
             const SizedBox(width: 12),
             Text(
@@ -202,9 +200,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         const SizedBox(height: 16),
         BubblyButton(
           onPressed: () {
-            // Navigate to Practice Selection
-            // Ideally pick a mode, but for now map to word selection for learning new words
-             Navigator.pushNamed(context, '/practice/selection');
+             // Navigate to Daily Learning Session
+             Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const DailyLearningSessionScreen()),
+             );
           },
           color: AppColors.primary,
           shadowColor: AppColors.shadowBlue,

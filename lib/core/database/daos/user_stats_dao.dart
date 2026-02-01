@@ -29,6 +29,15 @@ class UserStatsDao {
       'user_stats',
       stats.toJson(),
       where: 'id = ?',
+    );
+  }
+
+  Future<void> updateGrade(int grade, int semester) async {
+    final db = await _dbHelper.database;
+    await db.update(
+      'user_stats',
+      {'current_grade': grade, 'current_semester': semester},
+      where: 'id = ?',
       whereArgs: [1],
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:wordcard_coach/core/database/models/word.dart';
@@ -24,10 +25,22 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _createDB,
+      onUpgrade: _onUpgrade,
       onOpen: _onOpen,
     );
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+      // For development simplicity, just drop all and recreate
+      await db.execute('DROP TABLE IF EXISTS words');
+      await db.execute('DROP TABLE IF EXISTS sentences');
+      await db.execute('DROP TABLE IF EXISTS word_sentence_map');
+      await db.execute('DROP TABLE IF EXISTS word_progress');
+      await db.execute('DROP TABLE IF EXISTS user_stats');
+      await db.execute('DROP TABLE IF EXISTS daily_records');
+      await _createDB(db, newVersion);
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -42,7 +55,8 @@ class DatabaseHelper {
         semester INTEGER NOT NULL,
         unit TEXT NOT NULL,
         difficulty INTEGER NOT NULL,
-        category TEXT NOT NULL
+        category TEXT NOT NULL,
+        syllables TEXT
       )
     ''');
     await db.execute('CREATE INDEX idx_words_grade_semester ON words(grade, semester)');
@@ -157,29 +171,209 @@ class DatabaseHelper {
 
   Future<void> _seedData(Database db) async {
     print('Starting data seeding...');
-    final files = [
-      '外研版初中英语七年级上册.txt',
-      '外研版初中英语七年级下册.txt',
-      '外研版初中英语八年级上册.txt',
-      '外研版初中英语八年级下册.txt',
-      '外研版初中英语九年级上册.txt',
-      '外研版初中英语九年级下册.txt',
+    
+    // Support both TXT (legacy) and JSON (new rich data)
+    // We will prioritize JSON files if they exist.
+    
+    // Example: user generates "grade7_vol1_module1.json"
+    // For now, let's look for a specific manifest or just scan known filenames.
+    // To keep it simple for the user, let's assume they might drop "grade7_vol1.json" which contains multiple modules,
+    // OR "grade7_vol1_module1.json". 
+    // Let's iterate through the standard list and check for .json extension first.
+    
+    final books = [
+      {'name': '外研版初中英语七年级上册', 'grade': 7, 'semester': 1},
+      {'name': '外研版初中英语七年级下册', 'grade': 7, 'semester': 2},
+      {'name': '外研版初中英语八年级上册', 'grade': 8, 'semester': 1},
+      {'name': '外研版初中英语八年级下册', 'grade': 8, 'semester': 2},
+      {'name': '外研版初中英语九年级上册', 'grade': 9, 'semester': 1},
+      {'name': '外研版初中英语九年级下册', 'grade': 9, 'semester': 2},
     ];
 
     try {
       final batch = db.batch();
 
-      for (final fileName in files) {
-        final content = await rootBundle.loadString('assets/data/$fileName');
+      for (final book in books) {
+        final baseName = book['name'] as String;
+        final grade = book['grade'] as int;
+        final semester = book['semester'] as int;
+
+        // Try JSON first
+        try {
+          // We assume the user might name it "外研版初中英语七年级上册.json"
+          final jsonContent = await rootBundle.loadString('assets/data/$baseName.json');
+          print("Found JSON for $baseName, importing rich data...");
+          await _seedFromJson(batch, jsonContent, grade, semester);
+          continue; // Successfully imported JSON, skip TXT
+        } catch (e) {
+          // JSON not found, fall back to TXT
+          // print("JSON not found for $baseName, trying TXT...");
+        }
+
+        // Fallback to TXT
+        try {
+          final txtContent = await rootBundle.loadString('assets/data/$baseName.txt');
+          print("Found TXT for $baseName, importing basic data...");
+          await _seedFromTxt(batch, txtContent, grade, semester);
+        } catch (e) {
+          // print("TXT not found for $baseName: $e");
+        }
+      }
+
+      await batch.commit(noResult: true);
+      print('Data seeding completed.');
+    } catch (e) {
+      print('Error seeding data: $e');
+    }
+  }
+
+  Future<void> _seedFromJson(Batch batch, String jsonString, int grade, int semester) async {
+    // Expected JSON structure:
+    // {
+    //   "grade": 7,     <-- Optional coverage override
+    //   "semester": 1,  <-- Optional coverage override
+    //   "unit": "Module 1", <-- If file is per-module (or handled inside array)
+    //   "data": [ ... ]
+    // }
+    // OR if it's a list of modules/words directly.
+    // Based on user agreement:
+    // {
+    //   "grade": 7,
+    //   "semester": 1,
+    //   "unit": "Module 1",
+    //   "data": [
+    //     { "text": "hello", "phonetic": "...", "meaning": "...", "app_sentences": [...] }
+    //   ]
+    // }
+    
+    // We should be robust. Let's decode dynamically.
+    final dynamic decoded = jsonDecode(jsonString);
+    
+    List<dynamic> items = [];
+    String defaultUnit = "Module 1";
+    
+    if (decoded is List) {
+      // List of modules or words? 
+      // If user merges multiple module JSONs into one array:
+      // [ { "unit": "M1", "data": [...] }, { "unit": "M2", "data": [...] } ]
+      // We will handle that.
+      items = decoded;
+    } else if (decoded is Map<String, dynamic>) {
+       // Single object
+       if (decoded.containsKey('data')) {
+          // It's the structure we agreed on
+          if (decoded.containsKey('unit')) defaultUnit = decoded['unit'];
+          items = decoded['data'];
+       } else if (decoded.containsKey('words')) {
+           // Maybe user uses 'words' key
+           items = decoded['words'];
+       }
+    }
+
+    // Checking if items are Words or Modules
+    // If the agreed structure is { unit:..., data: [words] }, then items is [words].
+    // But if input is [ {unit:..., data:[words]}, ... ], then items is [modules].
+    
+    // Let's handle the simple case agreed: Single Module File or Single List of Word Objects
+    // Code below handles "List of Words" where context is passed in arguments or root object.
+    
+    int wordIndex = 0;
+    
+    for (var item in items) {
+      if (item is Map<String, dynamic>) {
+         // Determine if this is a WORD or a MODULE wrapper
+         if (item.containsKey('data') || item.containsKey('words')) {
+           // It's a module wrapper (recursive)
+           // e.g. { "unit": "Module 2", "data": [words...] }
+           final moduleUnit = item['unit'] ?? defaultUnit;
+           final moduleData = item['data'] ?? item['words'] ?? [];
+           await _seedWordList(batch, moduleData, grade, semester, moduleUnit);
+         } else {
+           // It's a word object directly
+           // We use the defaultUnit logic (which might need to be passed down if it changes)
+           // If we are processing a flat list of words, they all belong to 'defaultUnit' which might be wrong if the file covers whole book.
+           // However, for the agreed "Per Module" JSON, this is correct.
+           // We will delegate to a helper to write the single word.
+           wordIndex++;
+           _insertWord(batch, item, grade, semester, defaultUnit, wordIndex);
+         }
+      }
+    }
+  }
+  
+  // Helper for recursive module list processing
+  Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit) async {
+    int wordIndex = 0;
+    for (var w in words) {
+      if (w is Map<String, dynamic>) {
+        wordIndex++;
+        _insertWord(batch, w, grade, semester, unit, wordIndex);
+      }
+    }
+  }
+
+  void _insertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index) {
+     final text = data['text'] as String? ?? '';
+     if (text.isEmpty) return;
+     
+     final id = 'word_${grade}_${semester}_${unit.hashCode}_$index';
+     
+     List<String> syllables = [];
+     if (data['syllables'] != null && data['syllables'] is List) {
+       syllables = List<String>.from(data['syllables']);
+     }
+
+     final word = Word(
+       id: id,
+       text: text,
+       meaning: data['meaning'] ?? '[释义]',
+       phonetic: data['phonetic'] ?? '',
+       grade: grade,
+       semester: semester,
+       unit: unit,
+       difficulty: 1,
+       category: 'general',
+       syllables: syllables,
+     );
+     
+     batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+     
+     // Handle Sentences
+     if (data.containsKey('app_sentences')) {
+       final sentences = data['app_sentences'] as List;
+       int sIndex = 0;
+       for (var s in sentences) {
+         if (s is Map<String, dynamic>) {
+           sIndex++;
+           final en = s['en'] as String? ?? '';
+           final cn = s['cn'] as String? ?? '';
+           if (en.isNotEmpty) {
+             final sId = 'sentence_${id}_$sIndex';
+             
+             // Insert Sentence
+             batch.insert('sentences', {
+               'id': sId,
+               'text': en,
+               'translation': cn,
+               'category': 'example',
+               'difficulty': 1
+             }, conflictAlgorithm: ConflictAlgorithm.replace);
+             
+             // Insert Map
+             batch.insert('word_sentence_map', {
+               'word_id': id,
+               'sentence_id': sId,
+               'is_primary': sIndex == 1 ? 1 : 0, // First one is primary
+               'word_position': -1 // Not calculating position for now
+             }, conflictAlgorithm: ConflictAlgorithm.replace);
+           }
+         }
+       }
+     }
+  }
+
+  Future<void> _seedFromTxt(Batch batch, String content, int grade, int semester) async {
         final lines = content.split('\n');
-
-        int grade = 7;
-        if (fileName.contains('八年级')) grade = 8;
-        if (fileName.contains('九年级')) grade = 9;
-
-        int semester = 1;
-        if (fileName.contains('下册')) semester = 2;
-
         String currentUnit = 'Module 1';
         int unitIndex = 1;
         int wordIndex = 0;
@@ -189,25 +383,21 @@ class DatabaseHelper {
           if (line.isEmpty) continue;
 
           if (line.startsWith('#')) {
-            // New Module
-            currentUnit = line.substring(1).trim(); // Remove #
+            currentUnit = line.substring(1).trim(); 
             if (currentUnit.isEmpty) currentUnit = 'Module 1';
-            
-            // Extract unit number if possible for sorting, or just increment
             unitIndex++; 
-            wordIndex = 0; // Reset word index for new unit
+            wordIndex = 0; 
             continue;
           }
 
-          // It's a word
           wordIndex++;
           final wordId = 'word_${grade}_${semester}_${unitIndex}_$wordIndex';
           
           final word = Word(
             id: wordId,
             text: line,
-            meaning: '[释义]', // Placeholder
-            phonetic: '/phonetic/', // Placeholder
+            meaning: '[释义]', 
+            phonetic: '/phonetic/', 
             grade: grade,
             semester: semester,
             unit: currentUnit,
@@ -217,13 +407,6 @@ class DatabaseHelper {
 
           batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
         }
-      }
-
-      await batch.commit(noResult: true);
-      print('Data seeding completed.');
-    } catch (e) {
-      print('Error seeding data: $e');
-    }
   }
 
   // Helper method to reset DB (for debugging)

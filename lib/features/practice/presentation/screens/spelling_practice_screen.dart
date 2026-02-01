@@ -5,6 +5,7 @@ import 'dart:math';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/daos/word_dao.dart';
+import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 
 class SpellingPracticeScreen extends StatefulWidget {
@@ -14,8 +15,11 @@ class SpellingPracticeScreen extends StatefulWidget {
   State<SpellingPracticeScreen> createState() => _SpellingPracticeScreenState();
 }
 
+
+
 class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
   final WordDao _wordDao = WordDao();
+  final UserStatsDao _userStatsDao = UserStatsDao();
   Word? _currentWord;
   bool _isLoading = true;
   bool _isHintVisible = false;
@@ -42,7 +46,12 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
     });
 
     try {
-      final words = await _wordDao.getNewWords(1);
+      final stats = await _userStatsDao.getUserStats();
+      final words = await _wordDao.getNewWords(
+        1,
+        grade: stats.currentGrade,
+        semester: stats.currentSemester
+      );
       if (words.isNotEmpty) {
         _currentWord = words.first;
         _targetWord = _currentWord!.text;

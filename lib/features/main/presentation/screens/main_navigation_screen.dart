@@ -3,6 +3,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../features/home/presentation/screens/home_dashboard_screen.dart';
 import '../../../../features/collection/presentation/screens/collection_gallery_screen.dart';
 import 'package:wordcard_coach/features/statistics/presentation/screens/statistics_screen.dart';
+import '../../../../features/mine/presentation/screens/mine_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -18,7 +19,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     const HomeDashboardScreen(),
     const CollectionGalleryScreen(),
     const StatisticsScreen(),
-    const Center(child: Text("Mine Screen")), // Placeholder
+    const MineScreen(),
   ];
 
   @override
