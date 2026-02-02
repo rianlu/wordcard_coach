@@ -8,7 +8,7 @@ import '../../../../core/services/audio_service.dart';
 class WordSelectionView extends StatefulWidget {
   final Word word;
   final List<Word> options;
-  final VoidCallback onCompleted;
+  final Function(bool isCorrect) onCompleted;
 
   const WordSelectionView({
     super.key, 

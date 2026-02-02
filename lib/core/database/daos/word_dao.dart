@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import '../database_helper.dart';
 import '../models/word.dart';
+import '../models/word_progress.dart';
 
 class WordDao {
   final DatabaseHelper _dbHelper = DatabaseHelper();

@@ -86,14 +86,23 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     }
   }
 
-  void _handleSuccess() {
-    // Mark progress (simple count increment) can be done here or relied on view internal consistency.
-    // Since we don't have "wrong" callback, we assume success eventually.
+  Future<void> _handleSuccess(bool isCorrect) async {
+    final word = _reviewWords[_currentIndex];
     
-    // We update the word's review stats in DB
-    // _wordDao.updateReviewStats(_reviewWords[_currentIndex].id, isCorrect: true); 
-    // TODO: implement specific review stat update if needed, referencing `word_progress`.
-    // For now, simple transition.
+    // SM-2 Scoring:
+    // Correct = 5 (Perfect)
+    // Wrong/Skip = 0 (Fail)
+    // Passable = 3 (Hint used - if we had it)
+    
+    // Currently our views call this on "Completion", which implies success for Spelling/Speaking unless skipped.
+    // But Speaking/Spelling views only call onCompleted() when correct (or skipped).
+    // Let's refine:
+    // If isCorrect is true => 5
+    // If isCorrect is false (means skipped/wrong) => 0
+    
+    int quality = isCorrect ? 5 : 0;
+    
+    await _wordDao.updateReviewStats(word.id, quality);
     
     _next();
   }

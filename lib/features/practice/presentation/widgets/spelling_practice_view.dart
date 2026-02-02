@@ -8,7 +8,7 @@ import '../../../../core/database/models/word.dart';
 
 class SpellingPracticeView extends StatefulWidget {
   final Word word;
-  final VoidCallback onCompleted;
+  final Function(bool isCorrect) onCompleted;
 
   const SpellingPracticeView({
     super.key, 
@@ -129,7 +129,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(content: Text('Correct!'), backgroundColor: Colors.green, duration: Duration(milliseconds: 500))
                );
-               widget.onCompleted();
+               widget.onCompleted(true);
             }
          });
       } else {

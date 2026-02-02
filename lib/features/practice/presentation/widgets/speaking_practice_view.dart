@@ -13,7 +13,7 @@ import '../../../../core/widgets/bubbly_button.dart';
 
 class SpeakingPracticeView extends StatefulWidget {
   final Word word;
-  final VoidCallback onCompleted;
+  final Function(bool isCorrect) onCompleted;
 
   const SpeakingPracticeView({
     super.key, 
@@ -197,9 +197,8 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
              
              // Delay to show success message then advance
              Future.delayed(const Duration(milliseconds: 1500), () {
-               if (mounted) widget.onCompleted();
+               if (mounted) widget.onCompleted(true);
                // We don't verify mounted after onCompleted because this widget might be disposed.
-               // But if we stayed, we'd reset _showSuccess = false;
              });
           }
   }
@@ -215,7 +214,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   Future<void> _skip() async {
     await _stopListeningSession();
-    widget.onCompleted();
+    widget.onCompleted(false);
   }
 
 
