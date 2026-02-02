@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/models/word.dart';
-import '../../../../core/services/tts_service.dart';
+import '../../../../core/services/audio_service.dart';
 
 class WordSelectionView extends StatefulWidget {
   final Word word;
@@ -107,7 +107,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                   ),
                   child: IconButton(
                     padding: const EdgeInsets.all(14),
-                    onPressed: () => TtsService().speak(widget.word.text),
+                    onPressed: () => AudioService().playWord(widget.word),
                     icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
                   ),
                 ),

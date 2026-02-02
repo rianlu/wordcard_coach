@@ -1,606 +1,6726 @@
 [
-    {
-        "grade": 7,
-        "semester": 2,
-        "unit": "Module 1",
-        "data": [
-            {
-                "text": "crayon",
-                "phonetic": "/ˈkreɪən/",
-                "syllables": [
-                    "cray",
-                    "on"
-                ],
-                "meaning": "n. 彩色蜡笔（或粉笔、铅笔）",
-                "app_sentences": [
-                    {
-                        "en": "I like to draw with a red crayon.",
-                        "cn": "我喜欢用红色蜡笔画画。"
-                    }
-                ]
-            },
-            {
-                "text": "eraser",
-                "phonetic": "/ɪˈreɪzə(r)/",
-                "syllables": [
-                    "e",
-                    "ra",
-                    "ser"
-                ],
-                "meaning": "n. 橡皮",
-                "app_sentences": [
-                    {
-                        "en": "Can I borrow your eraser?",
-                        "cn": "我能借一下你的橡皮吗？"
-                    }
-                ]
-            },
-            {
-                "text": "glove",
-                "phonetic": "/ɡlʌv/",
-                "syllables": [
-                    "glove"
-                ],
-                "meaning": "n. 手套",
-                "app_sentences": [
-                    {
-                        "en": "It's cold outside, so wear your gloves.",
-                        "cn": "外面很冷，戴上你的手套吧。"
-                    }
-                ]
-            },
-            {
-                "text": "wallet",
-                "phonetic": "/ˈwɒlɪt/",
-                "syllables": [
-                    "wal",
-                    "let"
-                ],
-                "meaning": "n. 钱包",
-                "app_sentences": [
-                    {
-                        "en": "My father gave me a new wallet.",
-                        "cn": "我爸爸给了我一个新钱包。"
-                    }
-                ]
-            },
-            {
-                "text": "watch",
-                "phonetic": "/wɒtʃ/",
-                "syllables": [
-                    "watch"
-                ],
-                "meaning": "n. 手表 v. 观看",
-                "app_sentences": [
-                    {
-                        "en": "Look at the time on your watch.",
-                        "cn": "看看你手表上的时间。"
-                    }
-                ]
-            },
-            {
-                "text": "whose",
-                "phonetic": "/huːz/",
-                "syllables": [
-                    "whose"
-                ],
-                "meaning": "pron. 谁的",
-                "app_sentences": [
-                    {
-                        "en": "Whose bag is this?",
-                        "cn": "这是谁的包？"
-                    }
-                ]
-            },
-            {
-                "text": "first of all",
-                "phonetic": "/ˌfɜːst əv ˈɔːl/",
-                "syllables": [
-                    "first",
-                    "of",
-                    "all"
-                ],
-                "meaning": "首先",
-                "app_sentences": [
-                    {
-                        "en": "First of all, let me introduce myself.",
-                        "cn": "首先，让我自我介绍一下。"
-                    }
-                ]
-            },
-            {
-                "text": "lose",
-                "phonetic": "/luːz/",
-                "syllables": [
-                    "lose"
-                ],
-                "meaning": "v. 失去；丢失",
-                "app_sentences": [
-                    {
-                        "en": "Don't lose your keys.",
-                        "cn": "别把你的钥匙弄丢了。"
-                    }
-                ]
-            },
-            {
-                "text": "find",
-                "phonetic": "/faɪnd/",
-                "syllables": [
-                    "find"
-                ],
-                "meaning": "v. 找到；发现",
-                "app_sentences": [
-                    {
-                        "en": "I can't find my English book.",
-                        "cn": "我找不到我的英语书了。"
-                    }
-                ]
-            },
-            {
-                "text": "lost and found box",
-                "phonetic": "/ˌlɒst ən ˈfaʊnd bɒks/",
-                "syllables": [
-                    "lost",
-                    "and",
-                    "found",
-                    "box"
-                ],
-                "meaning": "失物招领箱",
-                "app_sentences": [
-                    {
-                        "en": "Look for your gloves in the lost and found box.",
-                        "cn": "去失物招领箱找找你的手套。"
-                    }
-                ]
-            },
-            {
-                "text": "mine",
-                "phonetic": "/maɪn/",
-                "syllables": [
-                    "mine"
-                ],
-                "meaning": "pron. 我的（名词性物主代词）",
-                "app_sentences": [
-                    {
-                        "en": "This book is mine.",
-                        "cn": "这本书是我的。"
-                    }
-                ]
-            },
-            {
-                "text": "yours",
-                "phonetic": "/jɔːz/",
-                "syllables": [
-                    "yours"
-                ],
-                "meaning": "pron. 你的；你们的（名词性物主代词）",
-                "app_sentences": [
-                    {
-                        "en": "Is this pencil yours?",
-                        "cn": "这支铅笔是你的吗？"
-                    }
-                ]
-            },
-            {
-                "text": "tape",
-                "phonetic": "/teɪp/",
-                "syllables": [
-                    "tape"
-                ],
-                "meaning": "n. 磁带；胶带",
-                "app_sentences": [
-                    {
-                        "en": "We can listen to the English tape.",
-                        "cn": "我们可以听英语磁带。"
-                    }
-                ]
-            },
-            {
-                "text": "purple",
-                "phonetic": "/ˈpɜːpl/",
-                "syllables": [
-                    "pur",
-                    "ple"
-                ],
-                "meaning": "adj. 紫色的 n. 紫色",
-                "app_sentences": [
-                    {
-                        "en": "She has a purple schoolbag.",
-                        "cn": "她有一个紫色的书包。"
-                    }
-                ]
-            },
-            {
-                "text": "hers",
-                "phonetic": "/hɜːz/",
-                "syllables": [
-                    "hers"
-                ],
-                "meaning": "pron. 她的（名词性物主代词）",
-                "app_sentences": [
-                    {
-                        "en": "The red wallet is hers.",
-                        "cn": "那个红色的钱包是她的。"
-                    }
-                ]
-            },
-            {
-                "text": "careful",
-                "phonetic": "/ˈkeəfl/",
-                "syllables": [
-                    "care",
-                    "ful"
-                ],
-                "meaning": "adj. 小心的；仔细的",
-                "app_sentences": [
-                    {
-                        "en": "Be careful when you cross the road.",
-                        "cn": "过马路时要小心。"
-                    }
-                ]
-            },
-            {
-                "text": "be careful with",
-                "phonetic": "/bi ˈkeəfl wɪð/",
-                "syllables": [
-                    "be",
-                    "care",
-                    "ful",
-                    "with"
-                ],
-                "meaning": "对……小心",
-                "app_sentences": [
-                    {
-                        "en": "Be careful with your new camera.",
-                        "cn": "小心保管你的新相机。"
-                    }
-                ]
-            },
-            {
-                "text": "on",
-                "phonetic": "/ɒn/",
-                "syllables": [
-                    "on"
-                ],
-                "meaning": "prep. 在……上；关于",
-                "app_sentences": [
-                    {
-                        "en": "Your book is on the desk.",
-                        "cn": "你的书在桌子上。"
-                    }
-                ]
-            },
-            {
-                "text": "from now on",
-                "phonetic": "/frəm ˈnaʊ ɒn/",
-                "syllables": [
-                    "from",
-                    "now",
-                    "on"
-                ],
-                "meaning": "从现在开始",
-                "app_sentences": [
-                    {
-                        "en": "From now on, I will study harder.",
-                        "cn": "从现在开始，我要更加努力学习。"
-                    }
-                ]
-            },
-            {
-                "text": "here is ...",
-                "phonetic": "/ˌhɪər ˈɪz/",
-                "syllables": [
-                    "here",
-                    "is"
-                ],
-                "meaning": "这是……（用于单数）",
-                "app_sentences": [
-                    {
-                        "en": "Here is a letter for you.",
-                        "cn": "这儿有你的一封信。"
-                    }
-                ]
-            },
-            {
-                "text": "here are ...",
-                "phonetic": "/ˌhɪər ˈɑː/",
-                "syllables": [
-                    "here",
-                    "are"
-                ],
-                "meaning": "这些是……（用于复数）",
-                "app_sentences": [
-                    {
-                        "en": "Here are your gloves.",
-                        "cn": "这些是你的手套。"
-                    }
-                ]
-            },
-            {
-                "text": "camera",
-                "phonetic": "/ˈkæmrə/",
-                "syllables": [
-                    "cam",
-                    "er",
-                    "a"
-                ],
-                "meaning": "n. 照相机",
-                "app_sentences": [
-                    {
-                        "en": "I take many photos with my camera.",
-                        "cn": "我用我的相机拍了很多照片。"
-                    }
-                ]
-            },
-            {
-                "text": "phone",
-                "phonetic": "/fəʊn/",
-                "syllables": [
-                    "phone"
-                ],
-                "meaning": "n. 电话",
-                "app_sentences": [
-                    {
-                        "en": "You can call me on the phone.",
-                        "cn": "你可以打电话给我。"
-                    }
-                ]
-            },
-            {
-                "text": "mobile phone",
-                "phonetic": "/ˌməʊbaɪl ˈfəʊn/",
-                "syllables": [
-                    "mo",
-                    "bile",
-                    "phone"
-                ],
-                "meaning": "移动电话，手机",
-                "app_sentences": [
-                    {
-                        "en": "Mobile phones are very useful.",
-                        "cn": "手机非常有用。"
-                    }
-                ]
-            },
-            {
-                "text": "lost and found office",
-                "phonetic": "/ˌlɒst ən ˈfaʊnd ˈɒfɪs/",
-                "syllables": [
-                    "lost",
-                    "and",
-                    "found",
-                    "of",
-                    "fice"
-                ],
-                "meaning": "失物招领处",
-                "app_sentences": [
-                    {
-                        "en": "If you lose something, go to the lost and found office.",
-                        "cn": "如果你丢了东西，去失物招领处。"
-                    }
-                ]
-            },
-            {
-                "text": "in a hurry",
-                "phonetic": "/ɪn ə ˈhʌri/",
-                "syllables": [
-                    "in",
-                    "a",
-                    "hur",
-                    "ry"
-                ],
-                "meaning": "匆忙地",
-                "app_sentences": [
-                    {
-                        "en": "He left in a hurry this morning.",
-                        "cn": "他今天早上匆匆离开了。"
-                    }
-                ]
-            },
-            {
-                "text": "leave",
-                "phonetic": "/liːv/",
-                "syllables": [
-                    "leave"
-                ],
-                "meaning": "v. 离开；留下",
-                "app_sentences": [
-                    {
-                        "en": "Don't leave your things here.",
-                        "cn": "别把你的东西留在这里。"
-                    }
-                ]
-            },
-            {
-                "text": "plane",
-                "phonetic": "/pleɪn/",
-                "syllables": [
-                    "plane"
-                ],
-                "meaning": "n. 飞机",
-                "app_sentences": [
-                    {
-                        "en": "We will go to Shanghai by plane.",
-                        "cn": "我们将乘飞机去上海。"
-                    }
-                ]
-            },
-            {
-                "text": "taxi",
-                "phonetic": "/ˈtæksi/",
-                "syllables": [
-                    "tax",
-                    "i"
-                ],
-                "meaning": "n. 出租车",
-                "app_sentences": [
-                    {
-                        "en": "Let's take a taxi to the airport.",
-                        "cn": "我们打车去机场吧。"
-                    }
-                ]
-            },
-            {
-                "text": "why",
-                "phonetic": "/waɪ/",
-                "syllables": [
-                    "why"
-                ],
-                "meaning": "adv. 为什么",
-                "app_sentences": [
-                    {
-                        "en": "Why are you late?",
-                        "cn": "你为什么迟到？"
-                    }
-                ]
-            },
-            {
-                "text": "airport",
-                "phonetic": "/ˈeəpɔːt/",
-                "syllables": [
-                    "air",
-                    "port"
-                ],
-                "meaning": "n. 机场",
-                "app_sentences": [
-                    {
-                        "en": "We will meet at the airport.",
-                        "cn": "我们将在机场见面。"
-                    }
-                ]
-            },
-            {
-                "text": "hundred",
-                "phonetic": "/ˈhʌndrəd/",
-                "syllables": [
-                    "hun",
-                    "dred"
-                ],
-                "meaning": "num. 一百",
-                "app_sentences": [
-                    {
-                        "en": "There are over a hundred students in our grade.",
-                        "cn": "我们年级有一百多名学生。"
-                    }
-                ]
-            },
-            {
-                "text": "hundreds of",
-                "phonetic": "/ˈhʌndrədz əv/",
-                "syllables": [
-                    "hun",
-                    "dreds",
-                    "of"
-                ],
-                "meaning": "成百上千的",
-                "app_sentences": [
-                    {
-                        "en": "Hundreds of people come to the park every day.",
-                        "cn": "每天有数百人来这个公园。"
-                    }
-                ]
-            },
-            {
-                "text": "look for",
-                "phonetic": "/ˈlʊk fɔː(r)/",
-                "syllables": [
-                    "look",
-                    "for"
-                ],
-                "meaning": "寻找",
-                "app_sentences": [
-                    {
-                        "en": "I am looking for my keys.",
-                        "cn": "我正在找我的钥匙。"
-                    }
-                ]
-            },
-            {
-                "text": "thousand",
-                "phonetic": "/ˈθaʊznd/",
-                "syllables": [
-                    "thou",
-                    "sand"
-                ],
-                "meaning": "num. 一千",
-                "app_sentences": [
-                    {
-                        "en": "This book costs twenty yuan.",
-                        "cn": "这本书售价二十元。"
-                    }
-                ]
-            },
-            {
-                "text": "strange",
-                "phonetic": "/streɪndʒ/",
-                "syllables": [
-                    "strange"
-                ],
-                "meaning": "adj. 奇怪的",
-                "app_sentences": [
-                    {
-                        "en": "I heard a strange noise.",
-                        "cn": "我听到了一个奇怪的声音。"
-                    }
-                ]
-            },
-            {
-                "text": "boat",
-                "phonetic": "/bəʊt/",
-                "syllables": [
-                    "boat"
-                ],
-                "meaning": "n. 小船",
-                "app_sentences": [
-                    {
-                        "en": "We can go boating on the lake.",
-                        "cn": "我们可以在湖上划船。"
-                    }
-                ]
-            },
-            {
-                "text": "duck",
-                "phonetic": "/dʌk/",
-                "syllables": [
-                    "duck"
-                ],
-                "meaning": "n. 鸭子",
-                "app_sentences": [
-                    {
-                        "en": "There are some ducks on the river.",
-                        "cn": "河上有几只鸭子。"
-                    }
-                ]
-            },
-            {
-                "text": "pig",
-                "phonetic": "/pɪɡ/",
-                "syllables": [
-                    "pig"
-                ],
-                "meaning": "n. 猪",
-                "app_sentences": [
-                    {
-                        "en": "The farm has many pigs.",
-                        "cn": "这个农场有很多猪。"
-                    }
-                ]
-            },
-            {
-                "text": "sausage",
-                "phonetic": "/ˈsɒsɪdʒ/",
-                "syllables": [
-                    "sau",
-                    "sage"
-                ],
-                "meaning": "n. 香肠",
-                "app_sentences": [
-                    {
-                        "en": "I like to eat sausages for breakfast.",
-                        "cn": "我早餐喜欢吃香肠。"
-                    }
-                ]
-            }
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 1",
+    "data": [
+      {
+        "text": "crayon",
+        "phonetic": "/ˈkreɪən/",
+        "syllables": [
+          "cray",
+          "on"
+        ],
+        "meaning": "n. 彩色蜡笔",
+        "app_sentences": [
+          {
+            "en": "I like to draw with a red crayon.",
+            "cn": "我喜欢用红色蜡笔画画。"
+          }
         ]
-    }
+      },
+      {
+        "text": "eraser",
+        "phonetic": "/ɪˈreɪzər/",
+        "syllables": [
+          "e",
+          "ras",
+          "er"
+        ],
+        "meaning": "n. 橡皮",
+        "app_sentences": [
+          {
+            "en": "Can I borrow your eraser?",
+            "cn": "我能借一下你的橡皮吗？"
+          }
+        ]
+      },
+      {
+        "text": "glove",
+        "phonetic": "/ɡlʌv/",
+        "syllables": [
+          "glove"
+        ],
+        "meaning": "n. 手套",
+        "app_sentences": [
+          {
+            "en": "He wears gloves in winter.",
+            "cn": "他在冬天戴手套。"
+          }
+        ]
+      },
+      {
+        "text": "wallet",
+        "phonetic": "/ˈwɒlɪt/",
+        "syllables": [
+          "wal",
+          "let"
+        ],
+        "meaning": "n. 钱包",
+        "app_sentences": [
+          {
+            "en": "Be careful not to lose your wallet.",
+            "cn": "小心别丢了钱包。"
+          }
+        ]
+      },
+      {
+        "text": "watch",
+        "phonetic": "/wɒtʃ/",
+        "syllables": [
+          "watch"
+        ],
+        "meaning": "n. 手表",
+        "app_sentences": [
+          {
+            "en": "v. 观看",
+            "cn": "My watch is new."
+          }
+        ]
+      },
+      {
+        "text": "whose",
+        "phonetic": "/huːz/",
+        "syllables": [
+          "whose"
+        ],
+        "meaning": "pron. 谁的",
+        "app_sentences": [
+          {
+            "en": "Whose book is this?",
+            "cn": "这是谁的书？"
+          }
+        ]
+      },
+      {
+        "text": "first of all",
+        "phonetic": "/fɜːst əv ɔːl/",
+        "syllables": [
+          "first",
+          "of",
+          "all"
+        ],
+        "meaning": "phr. 首先",
+        "app_sentences": [
+          {
+            "en": "First of all",
+            "cn": "let me introduce myself."
+          }
+        ]
+      },
+      {
+        "text": "lose",
+        "phonetic": "/luːz/",
+        "syllables": [
+          "lose"
+        ],
+        "meaning": "v. 丢失",
+        "app_sentences": [
+          {
+            "en": "Don't lose your keys.",
+            "cn": "别丢了你的钥匙。"
+          }
+        ]
+      },
+      {
+        "text": "find",
+        "phonetic": "/faɪnd/",
+        "syllables": [
+          "find"
+        ],
+        "meaning": "v. 找到",
+        "app_sentences": [
+          {
+            "en": "I can't find my pen.",
+            "cn": "我找不到我的钢笔了。"
+          }
+        ]
+      },
+      {
+        "text": "lost and found box",
+        "phonetic": "/lɒst ənd faʊnd bɒks/",
+        "syllables": [
+          "lost",
+          "and",
+          "found",
+          "box"
+        ],
+        "meaning": "phr. 失物招领箱",
+        "app_sentences": [
+          {
+            "en": "Put the lost item in the lost and found box.",
+            "cn": "把丢失的物品放进失物招领箱。"
+          }
+        ]
+      },
+      {
+        "text": "mine",
+        "phonetic": "/maɪn/",
+        "syllables": [
+          "mine"
+        ],
+        "meaning": "pron. 我的",
+        "app_sentences": [
+          {
+            "en": "This book is mine.",
+            "cn": "这本书是我的。"
+          }
+        ]
+      },
+      {
+        "text": "yours",
+        "phonetic": "/jɔːz/",
+        "syllables": [
+          "yours"
+        ],
+        "meaning": "pron. 你的",
+        "app_sentences": [
+          {
+            "en": "Is this pen yours?",
+            "cn": "这支钢笔是你的吗？"
+          }
+        ]
+      },
+      {
+        "text": "tape",
+        "phonetic": "/teɪp/",
+        "syllables": [
+          "tape"
+        ],
+        "meaning": "n. 胶带",
+        "app_sentences": [
+          {
+            "en": "Use tape to stick the paper.",
+            "cn": "用胶带粘纸。"
+          }
+        ]
+      },
+      {
+        "text": "purple",
+        "phonetic": "/ˈpɜːpl/",
+        "syllables": [
+          "pur",
+          "ple"
+        ],
+        "meaning": "adj. 紫色的",
+        "app_sentences": [
+          {
+            "en": "She has a purple dress.",
+            "cn": "她有一条紫色的裙子。"
+          }
+        ]
+      },
+      {
+        "text": "hers",
+        "phonetic": "/hɜːz/",
+        "syllables": [
+          "hers"
+        ],
+        "meaning": "pron. 她的",
+        "app_sentences": [
+          {
+            "en": "The bag is hers.",
+            "cn": "这个包是她的。"
+          }
+        ]
+      },
+      {
+        "text": "careful",
+        "phonetic": "/ˈkeəfl/",
+        "syllables": [
+          "care",
+          "ful"
+        ],
+        "meaning": "adj. 小心的",
+        "app_sentences": [
+          {
+            "en": "Be careful when crossing the road.",
+            "cn": "过马路时要小心。"
+          }
+        ]
+      },
+      {
+        "text": "be careful with",
+        "phonetic": "/bi ˈkeəfl wɪð/",
+        "syllables": [
+          "be",
+          "care",
+          "ful",
+          "with"
+        ],
+        "meaning": "phr. 小心对待",
+        "app_sentences": [
+          {
+            "en": "Be careful with the glass.",
+            "cn": "小心对待玻璃杯。"
+          }
+        ]
+      },
+      {
+        "text": "on",
+        "phonetic": "/ɒn/",
+        "syllables": [
+          "on"
+        ],
+        "meaning": "prep. 在...上",
+        "app_sentences": [
+          {
+            "en": "The book is on the table.",
+            "cn": "书在桌子上。"
+          }
+        ]
+      },
+      {
+        "text": "from now on",
+        "phonetic": "/frɒm naʊ ɒn/",
+        "syllables": [
+          "from",
+          "now",
+          "on"
+        ],
+        "meaning": "phr. 从现在开始",
+        "app_sentences": [
+          {
+            "en": "From now on",
+            "cn": "I will study harder."
+          }
+        ]
+      },
+      {
+        "text": "here is ...",
+        "phonetic": "/hɪər ɪz ...",
+        "syllables": [
+          "here",
+          "is",
+          "..."
+        ],
+        "meaning": "phr. 这是...",
+        "app_sentences": [
+          {
+            "en": "Here is your book.",
+            "cn": "这是你的书。"
+          }
+        ]
+      },
+      {
+        "text": "here are ...",
+        "phonetic": "/hɪər ɑː ...",
+        "syllables": [
+          "here",
+          "are",
+          "..."
+        ],
+        "meaning": "phr. 这些是...",
+        "app_sentences": [
+          {
+            "en": "Here are your keys.",
+            "cn": "这些是你的钥匙。"
+          }
+        ]
+      },
+      {
+        "text": "camera",
+        "phonetic": "/ˈkæmərə/",
+        "syllables": [
+          "cam",
+          "er",
+          "a"
+        ],
+        "meaning": "n. 照相机",
+        "app_sentences": [
+          {
+            "en": "She took a photo with her camera.",
+            "cn": "她用相机拍了张照片。"
+          }
+        ]
+      },
+      {
+        "text": "phone",
+        "phonetic": "/fəʊn/",
+        "syllables": [
+          "phone"
+        ],
+        "meaning": "n. 电话",
+        "app_sentences": [
+          {
+            "en": "He answered the phone quickly.",
+            "cn": "他迅速接了电话。"
+          }
+        ]
+      },
+      {
+        "text": "mobile phone",
+        "phonetic": "/ˈməʊbaɪl fəʊn/",
+        "syllables": [
+          "mo",
+          "bile",
+          "phone"
+        ],
+        "meaning": "phr. 手机",
+        "app_sentences": [
+          {
+            "en": "My mobile phone is new.",
+            "cn": "我的手机是新的。"
+          }
+        ]
+      },
+      {
+        "text": "lost and found office",
+        "phonetic": "/lɒst ənd faʊnd ˈɒfɪs/",
+        "syllables": [
+          "lost",
+          "and",
+          "found",
+          "of",
+          "fice"
+        ],
+        "meaning": "phr. 失物招领处",
+        "app_sentences": [
+          {
+            "en": "Go to the lost and found office to claim your item.",
+            "cn": "去失物招领处认领你的物品。"
+          }
+        ]
+      },
+      {
+        "text": "in a hurry",
+        "phonetic": "/ɪn ə ˈhʌri/",
+        "syllables": [
+          "in",
+          "a",
+          "hur",
+          "ry"
+        ],
+        "meaning": "phr. 匆忙地",
+        "app_sentences": [
+          {
+            "en": "He left in a hurry.",
+            "cn": "他匆忙地离开了。"
+          }
+        ]
+      },
+      {
+        "text": "leave",
+        "phonetic": "/liːv/",
+        "syllables": [
+          "leave"
+        ],
+        "meaning": "v. 离开",
+        "app_sentences": [
+          {
+            "en": "We leave school at 4 pm.",
+            "cn": "我们下午4点离开学校。"
+          }
+        ]
+      },
+      {
+        "text": "plane",
+        "phonetic": "/pleɪn/",
+        "syllables": [
+          "plane"
+        ],
+        "meaning": "n. 飞机",
+        "app_sentences": [
+          {
+            "en": "The plane will take off soon.",
+            "cn": "飞机很快就要起飞了。"
+          }
+        ]
+      },
+      {
+        "text": "taxi",
+        "phonetic": "/ˈtæksi/",
+        "syllables": [
+          "tax",
+          "i"
+        ],
+        "meaning": "n. 出租车",
+        "app_sentences": [
+          {
+            "en": "We took a taxi to the airport.",
+            "cn": "我们乘出租车去机场。"
+          }
+        ]
+      },
+      {
+        "text": "why",
+        "phonetic": "/waɪ/",
+        "syllables": [
+          "why"
+        ],
+        "meaning": "adv. 为什么",
+        "app_sentences": [
+          {
+            "en": "Why are you late?",
+            "cn": "你为什么迟到？"
+          }
+        ]
+      },
+      {
+        "text": "airport",
+        "phonetic": "/ˈeəpɔːt/",
+        "syllables": [
+          "air",
+          "port"
+        ],
+        "meaning": "n. 机场",
+        "app_sentences": [
+          {
+            "en": "We met at the airport.",
+            "cn": "我们在机场见面。"
+          }
+        ]
+      },
+      {
+        "text": "hundred",
+        "phonetic": "/ˈhʌndrəd/",
+        "syllables": [
+          "hun",
+          "dred"
+        ],
+        "meaning": "num. 百",
+        "app_sentences": [
+          {
+            "en": "There are one hundred students in the hall.",
+            "cn": "大厅里有一百名学生。"
+          }
+        ]
+      },
+      {
+        "text": "hundreds of",
+        "phonetic": "/ˈhʌndrədz əv/",
+        "syllables": [
+          "hun",
+          "dreds",
+          "of"
+        ],
+        "meaning": "phr. 数百的",
+        "app_sentences": [
+          {
+            "en": "Hundreds of people attended the concert.",
+            "cn": "数百人参加了音乐会。"
+          }
+        ]
+      },
+      {
+        "text": "look for",
+        "phonetic": "/lʊk fɔː/",
+        "syllables": [
+          "look",
+          "for"
+        ],
+        "meaning": "phr. 寻找",
+        "app_sentences": [
+          {
+            "en": "I am looking for my keys.",
+            "cn": "我在找我的钥匙。"
+          }
+        ]
+      },
+      {
+        "text": "thousand",
+        "phonetic": "/ˈθaʊznd/",
+        "syllables": [
+          "thou",
+          "sand"
+        ],
+        "meaning": "num. 千",
+        "app_sentences": [
+          {
+            "en": "The book costs ten thousand yuan.",
+            "cn": "这本书价值一万元。"
+          }
+        ]
+      },
+      {
+        "text": "strange",
+        "phonetic": "/streɪndʒ/",
+        "syllables": [
+          "strange"
+        ],
+        "meaning": "adj. 奇怪的",
+        "app_sentences": [
+          {
+            "en": "He told a strange story.",
+            "cn": "他讲了一个奇怪的故事。"
+          }
+        ]
+      },
+      {
+        "text": "boat",
+        "phonetic": "/bəʊt/",
+        "syllables": [
+          "boat"
+        ],
+        "meaning": "n. 船",
+        "app_sentences": [
+          {
+            "en": "We rowed a boat on the lake.",
+            "cn": "我们在湖上划船。"
+          }
+        ]
+      },
+      {
+        "text": "duck",
+        "phonetic": "/dʌk/",
+        "syllables": [
+          "duck"
+        ],
+        "meaning": "n. 鸭子",
+        "app_sentences": [
+          {
+            "en": "The duck is swimming in the pond.",
+            "cn": "鸭子在池塘里游泳。"
+          }
+        ]
+      },
+      {
+        "text": "pig",
+        "phonetic": "/pɪɡ/",
+        "syllables": [
+          "pig"
+        ],
+        "meaning": "n. 猪",
+        "app_sentences": [
+          {
+            "en": "The pig is eating.",
+            "cn": "猪在吃东西。"
+          }
+        ]
+      },
+      {
+        "text": "sausage",
+        "phonetic": "/ˈsɒsɪdʒ/",
+        "syllables": [
+          "sau",
+          "sage"
+        ],
+        "meaning": "n. 香肠",
+        "app_sentences": [
+          {
+            "en": "I ate a sausage for breakfast.",
+            "cn": "我早餐吃了一根香肠。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 2",
+    "data": [
+      {
+        "text": "play",
+        "phonetic": "/pleɪ/",
+        "syllables": [
+          "play"
+        ],
+        "meaning": "v. 玩；演奏",
+        "app_sentences": [
+          {
+            "en": "n. 戏剧",
+            "cn": "Children play in the park."
+          }
+        ]
+      },
+      {
+        "text": "tennis",
+        "phonetic": "/ˈtenɪs/",
+        "syllables": [
+          "ten",
+          "nis"
+        ],
+        "meaning": "n. 网球",
+        "app_sentences": [
+          {
+            "en": "We play tennis every weekend.",
+            "cn": "我们每周末打网球。"
+          }
+        ]
+      },
+      {
+        "text": "piano",
+        "phonetic": "/piˈænəʊ/",
+        "syllables": [
+          "pi",
+          "an",
+          "o"
+        ],
+        "meaning": "n. 钢琴",
+        "app_sentences": [
+          {
+            "en": "She plays the piano well.",
+            "cn": "她钢琴弹得很好。"
+          }
+        ]
+      },
+      {
+        "text": "ride",
+        "phonetic": "/raɪd/",
+        "syllables": [
+          "ride"
+        ],
+        "meaning": "v. 骑",
+        "app_sentences": [
+          {
+            "en": "n. 乘坐",
+            "cn": "Can you ride a bike?"
+          }
+        ]
+      },
+      {
+        "text": "club",
+        "phonetic": "/klʌb/",
+        "syllables": [
+          "club"
+        ],
+        "meaning": "n. 俱乐部",
+        "app_sentences": [
+          {
+            "en": "He joined the football club.",
+            "cn": "他加入了足球俱乐部。"
+          }
+        ]
+      },
+      {
+        "text": "term",
+        "phonetic": "/tɜːm/",
+        "syllables": [
+          "term"
+        ],
+        "meaning": "n. 学期",
+        "app_sentences": [
+          {
+            "en": "This term",
+            "cn": "we have new subjects."
+          }
+        ]
+      },
+      {
+        "text": "board",
+        "phonetic": "/bɔːd/",
+        "syllables": [
+          "board"
+        ],
+        "meaning": "n. 板；董事会",
+        "app_sentences": [
+          {
+            "en": "v. 上船",
+            "cn": "Write your answer on the board."
+          }
+        ]
+      },
+      {
+        "text": "would like",
+        "phonetic": "/wʊd laɪk/",
+        "syllables": [
+          "would",
+          "like"
+        ],
+        "meaning": "phr. 想要",
+        "app_sentences": [
+          {
+            "en": "I would like a cup of tea.",
+            "cn": "我想要一杯茶。"
+          }
+        ]
+      },
+      {
+        "text": "well",
+        "phonetic": "/wel/",
+        "syllables": [
+          "well"
+        ],
+        "meaning": "adv. 好",
+        "app_sentences": [
+          {
+            "en": "adj. 健康的",
+            "cn": "She speaks English well."
+          }
+        ]
+      },
+      {
+        "text": "all",
+        "phonetic": "/ɔːl/",
+        "syllables": [
+          "all"
+        ],
+        "meaning": "adj. 所有的",
+        "app_sentences": [
+          {
+            "en": "pron. 全部",
+            "cn": "All students are here."
+          }
+        ]
+      },
+      {
+        "text": "that's all",
+        "phonetic": "/ðæts ɔːl/",
+        "syllables": [
+          "that's",
+          "all"
+        ],
+        "meaning": "phr. 就这些",
+        "app_sentences": [
+          {
+            "en": "That's all for today.",
+            "cn": "今天就这些。"
+          }
+        ]
+      },
+      {
+        "text": "worry",
+        "phonetic": "/ˈwʌri/",
+        "syllables": [
+          "wor",
+          "ry"
+        ],
+        "meaning": "v. 担心",
+        "app_sentences": [
+          {
+            "en": "Don't worry about the exam.",
+            "cn": "别担心考试。"
+          }
+        ]
+      },
+      {
+        "text": "worry about",
+        "phonetic": "/ˈwʌri əˈbaʊt/",
+        "syllables": [
+          "wor",
+          "ry",
+          "a",
+          "bout"
+        ],
+        "meaning": "phr. 担心",
+        "app_sentences": [
+          {
+            "en": "She worries about her health.",
+            "cn": "她担心她的健康。"
+          }
+        ]
+      },
+      {
+        "text": "teach",
+        "phonetic": "/tiːtʃ/",
+        "syllables": [
+          "teach"
+        ],
+        "meaning": "v. 教",
+        "app_sentences": [
+          {
+            "en": "My mother teaches English.",
+            "cn": "我妈妈教英语。"
+          }
+        ]
+      },
+      {
+        "text": "then",
+        "phonetic": "/ðen/",
+        "syllables": [
+          "then"
+        ],
+        "meaning": "adv. 然后",
+        "app_sentences": [
+          {
+            "en": "First",
+            "cn": "read the book; then"
+          }
+        ]
+      },
+      {
+        "text": "monitor",
+        "phonetic": "/ˈmɒnɪtə/",
+        "syllables": [
+          "mon",
+          "i",
+          "tor"
+        ],
+        "meaning": "n. 班长",
+        "app_sentences": [
+          {
+            "en": "The monitor helps the teacher.",
+            "cn": "班长帮助老师。"
+          }
+        ]
+      },
+      {
+        "text": "start",
+        "phonetic": "/stɑːt/",
+        "syllables": [
+          "start"
+        ],
+        "meaning": "v. 开始",
+        "app_sentences": [
+          {
+            "en": "We start class at 8 am.",
+            "cn": "我们上午8点开始上课。"
+          }
+        ]
+      },
+      {
+        "text": "get on well with sb.",
+        "phonetic": "/ɡet ɒn wel wɪð ˈsʌmbədi/",
+        "syllables": [
+          "get",
+          "on",
+          "well",
+          "with",
+          "some",
+          "bod",
+          "y"
+        ],
+        "meaning": "phr. 与某人相处融洽",
+        "app_sentences": [
+          {
+            "en": "He gets on well with his classmates.",
+            "cn": "他与同学相处融洽。"
+          }
+        ]
+      },
+      {
+        "text": "ready",
+        "phonetic": "/ˈredi/",
+        "syllables": [
+          "read",
+          "y"
+        ],
+        "meaning": "adj. 准备好的",
+        "app_sentences": [
+          {
+            "en": "Are you ready to go?",
+            "cn": "你准备好走了吗？"
+          }
+        ]
+      },
+      {
+        "text": "ready to do sth.",
+        "phonetic": "/ˈredi tuː duː ˈsʌmθɪŋ/",
+        "syllables": [
+          "read",
+          "y",
+          "to",
+          "do",
+          "some",
+          "thing"
+        ],
+        "meaning": "phr. 准备好做某事",
+        "app_sentences": [
+          {
+            "en": "She is ready to leave.",
+            "cn": "她准备好离开了。"
+          }
+        ]
+      },
+      {
+        "text": "promise",
+        "phonetic": "/ˈprɒmɪs/",
+        "syllables": [
+          "prom",
+          "ise"
+        ],
+        "meaning": "v. 承诺",
+        "app_sentences": [
+          {
+            "en": "n. 诺言",
+            "cn": "He promised to help me."
+          }
+        ]
+      },
+      {
+        "text": "fast",
+        "phonetic": "/fɑːst/",
+        "syllables": [
+          "fast"
+        ],
+        "meaning": "adj. 快的",
+        "app_sentences": [
+          {
+            "en": "adv. 快",
+            "cn": "The car is very fast."
+          }
+        ]
+      },
+      {
+        "text": "fit",
+        "phonetic": "/fɪt/",
+        "syllables": [
+          "fit"
+        ],
+        "meaning": "v. 适合",
+        "app_sentences": [
+          {
+            "en": "adj. 健康的",
+            "cn": "These shoes fit me well."
+          }
+        ]
+      },
+      {
+        "text": "just",
+        "phonetic": "/dʒʌst/",
+        "syllables": [
+          "just"
+        ],
+        "meaning": "adv. 刚刚；仅仅",
+        "app_sentences": [
+          {
+            "en": "He has just arrived.",
+            "cn": "他刚刚到达。"
+          }
+        ]
+      },
+      {
+        "text": "ball",
+        "phonetic": "/bɔːl/",
+        "syllables": [
+          "ball"
+        ],
+        "meaning": "n. 球",
+        "app_sentences": [
+          {
+            "en": "We play with a ball in the park.",
+            "cn": "我们在公园里玩球。"
+          }
+        ]
+      },
+      {
+        "text": "game",
+        "phonetic": "/ɡeɪm/",
+        "syllables": [
+          "game"
+        ],
+        "meaning": "n. 游戏；比赛",
+        "app_sentences": [
+          {
+            "en": "Let's play a game.",
+            "cn": "我们玩个游戏吧。"
+          }
+        ]
+      },
+      {
+        "text": "team",
+        "phonetic": "/tiːm/",
+        "syllables": [
+          "team"
+        ],
+        "meaning": "n. 队",
+        "app_sentences": [
+          {
+            "en": "Our team won the match.",
+            "cn": "我们队赢了比赛。"
+          }
+        ]
+      },
+      {
+        "text": "best",
+        "phonetic": "/best/",
+        "syllables": [
+          "best"
+        ],
+        "meaning": "adj. 最好的",
+        "app_sentences": [
+          {
+            "en": "adv. 最好地",
+            "cn": "She is my best friend."
+          }
+        ]
+      },
+      {
+        "text": "score",
+        "phonetic": "/skɔː/",
+        "syllables": [
+          "score"
+        ],
+        "meaning": "n. 分数",
+        "app_sentences": [
+          {
+            "en": "v. 得分",
+            "cn": "What is the score of the game?"
+          }
+        ]
+      },
+      {
+        "text": "tidy",
+        "phonetic": "/ˈtaɪdi/",
+        "syllables": [
+          "ti",
+          "dy"
+        ],
+        "meaning": "adj. 整洁的",
+        "app_sentences": [
+          {
+            "en": "v. 整理",
+            "cn": "Keep your room tidy."
+          }
+        ]
+      },
+      {
+        "text": "sure",
+        "phonetic": "/ʃʊər/",
+        "syllables": [
+          "sure"
+        ],
+        "meaning": "adj. 肯定的",
+        "app_sentences": [
+          {
+            "en": "Are you sure?",
+            "cn": "你确定吗？"
+          }
+        ]
+      },
+      {
+        "text": "everybody",
+        "phonetic": "/ˈevribɒdi/",
+        "syllables": [
+          "ev",
+          "ery",
+          "bod",
+          "y"
+        ],
+        "meaning": "pron. 每个人",
+        "app_sentences": [
+          {
+            "en": "Everybody likes the movie.",
+            "cn": "每个人都喜欢这部电影。"
+          }
+        ]
+      },
+      {
+        "text": "just like",
+        "phonetic": "/dʒʌst laɪk/",
+        "syllables": [
+          "just",
+          "like"
+        ],
+        "meaning": "phr. 就像",
+        "app_sentences": [
+          {
+            "en": "He looks just like his father.",
+            "cn": "他看起来就像他父亲。"
+          }
+        ]
+      },
+      {
+        "text": "beautiful",
+        "phonetic": "/ˈbjuːtɪfl/",
+        "syllables": [
+          "beau",
+          "ti",
+          "ful"
+        ],
+        "meaning": "adj. 美丽的",
+        "app_sentences": [
+          {
+            "en": "The flowers are beautiful.",
+            "cn": "这些花很美丽。"
+          }
+        ]
+      },
+      {
+        "text": "fly",
+        "phonetic": "/flaɪ/",
+        "syllables": [
+          "fly"
+        ],
+        "meaning": "v. 飞",
+        "app_sentences": [
+          {
+            "en": "n. 苍蝇",
+            "cn": "Birds can fly."
+          }
+        ]
+      },
+      {
+        "text": "kite",
+        "phonetic": "/kaɪt/",
+        "syllables": [
+          "kite"
+        ],
+        "meaning": "n. 风筝",
+        "app_sentences": [
+          {
+            "en": "We fly kites in spring.",
+            "cn": "我们在春天放风筝。"
+          }
+        ]
+      },
+      {
+        "text": "swim",
+        "phonetic": "/swɪm/",
+        "syllables": [
+          "swim"
+        ],
+        "meaning": "v. 游泳",
+        "app_sentences": [
+          {
+            "en": "We swim in the pool.",
+            "cn": "我们在游泳池里游泳。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 3",
+    "data": [
+      {
+        "text": "go over",
+        "phonetic": "/ɡəʊ ˈəʊvər/",
+        "syllables": [
+          "go",
+          "o",
+          "ver"
+        ],
+        "meaning": "phr. 复习",
+        "app_sentences": [
+          {
+            "en": "Let's go over the lesson before the test.",
+            "cn": "考试前我们来复习一下这一课。"
+          }
+        ]
+      },
+      {
+        "text": "picnic",
+        "phonetic": "/ˈpɪknɪk/",
+        "syllables": [
+          "pic",
+          "nic"
+        ],
+        "meaning": "n. 野餐",
+        "app_sentences": [
+          {
+            "en": "We had a picnic in the park.",
+            "cn": "我们在公园里野餐。"
+          }
+        ]
+      },
+      {
+        "text": "housework",
+        "phonetic": "/ˈhaʊswɜːk/",
+        "syllables": [
+          "house",
+          "work"
+        ],
+        "meaning": "n. 家务",
+        "app_sentences": [
+          {
+            "en": "She does housework every day.",
+            "cn": "她每天做家务。"
+          }
+        ]
+      },
+      {
+        "text": "on",
+        "phonetic": "/ɒn/",
+        "syllables": [
+          "on"
+        ],
+        "meaning": "prep. 在...上",
+        "app_sentences": [
+          {
+            "en": "The book is on the desk.",
+            "cn": "书在书桌上。"
+          }
+        ]
+      },
+      {
+        "text": "else",
+        "phonetic": "/els/",
+        "syllables": [
+          "else"
+        ],
+        "meaning": "adv. 其他",
+        "app_sentences": [
+          {
+            "en": "What else do you need?",
+            "cn": "你还需要什么？"
+          }
+        ]
+      },
+      {
+        "text": "nobody",
+        "phonetic": "/ˈnəʊbədi/",
+        "syllables": [
+          "no",
+          "bod",
+          "y"
+        ],
+        "meaning": "pron. 没有人",
+        "app_sentences": [
+          {
+            "en": "Nobody is in the room.",
+            "cn": "房间里没有人。"
+          }
+        ]
+      },
+      {
+        "text": "at",
+        "phonetic": "/æt/",
+        "syllables": [
+          "at"
+        ],
+        "meaning": "prep. 在",
+        "app_sentences": [
+          {
+            "en": "We meet at the school.",
+            "cn": "我们在学校见面。"
+          }
+        ]
+      },
+      {
+        "text": "nothing",
+        "phonetic": "/ˈnʌθɪŋ/",
+        "syllables": [
+          "noth",
+          "ing"
+        ],
+        "meaning": "pron. 没有东西",
+        "app_sentences": [
+          {
+            "en": "There is nothing in the box.",
+            "cn": "盒子里什么都没有。"
+          }
+        ]
+      },
+      {
+        "text": "silly",
+        "phonetic": "/ˈsɪli/",
+        "syllables": [
+          "sil",
+          "ly"
+        ],
+        "meaning": "adj. 愚蠢的",
+        "app_sentences": [
+          {
+            "en": "Don't be silly!",
+            "cn": "别傻了！"
+          }
+        ]
+      },
+      {
+        "text": "fantastic",
+        "phonetic": "/fænˈtæstɪk/",
+        "syllables": [
+          "fan",
+          "tas",
+          "tic"
+        ],
+        "meaning": "adj. 极好的",
+        "app_sentences": [
+          {
+            "en": "We had a fantastic time at the party.",
+            "cn": "我们在聚会上玩得很开心。"
+          }
+        ]
+      },
+      {
+        "text": "forward",
+        "phonetic": "/ˈfɔːwəd/",
+        "syllables": [
+          "for",
+          "ward"
+        ],
+        "meaning": "adv. 向前",
+        "app_sentences": [
+          {
+            "en": "Move forward slowly.",
+            "cn": "慢慢向前移动。"
+          }
+        ]
+      },
+      {
+        "text": "look forward to",
+        "phonetic": "/lʊk ˈfɔːwəd tuː/",
+        "syllables": [
+          "look",
+          "for",
+          "ward",
+          "to"
+        ],
+        "meaning": "phr. 盼望",
+        "app_sentences": [
+          {
+            "en": "I look forward to seeing you.",
+            "cn": "我盼望见到你。"
+          }
+        ]
+      },
+      {
+        "text": "fan",
+        "phonetic": "/fæn/",
+        "syllables": [
+          "fan"
+        ],
+        "meaning": "n. 风扇；粉丝",
+        "app_sentences": [
+          {
+            "en": "She is a fan of pop music.",
+            "cn": "她是流行音乐的粉丝。"
+          }
+        ]
+      },
+      {
+        "text": "make friends",
+        "phonetic": "/meɪk frendz/",
+        "syllables": [
+          "make",
+          "friends"
+        ],
+        "meaning": "phr. 交朋友",
+        "app_sentences": [
+          {
+            "en": "It's easy to make friends here.",
+            "cn": "在这里交朋友很容易。"
+          }
+        ]
+      },
+      {
+        "text": "shirt",
+        "phonetic": "/ʃɜːt/",
+        "syllables": [
+          "shirt"
+        ],
+        "meaning": "n. 衬衫",
+        "app_sentences": [
+          {
+            "en": "He wears a white shirt.",
+            "cn": "他穿一件白衬衫。"
+          }
+        ]
+      },
+      {
+        "text": "cheer",
+        "phonetic": "/tʃɪər/",
+        "syllables": [
+          "cheer"
+        ],
+        "meaning": "v. 欢呼",
+        "app_sentences": [
+          {
+            "en": "n. 欢呼声",
+            "cn": "We cheer for our team."
+          }
+        ]
+      },
+      {
+        "text": "player",
+        "phonetic": "/ˈpleɪər/",
+        "syllables": [
+          "play",
+          "er"
+        ],
+        "meaning": "n. 玩家；运动员",
+        "app_sentences": [
+          {
+            "en": "He is a good football player.",
+            "cn": "他是一名优秀的足球运动员。"
+          }
+        ]
+      },
+      {
+        "text": "hope",
+        "phonetic": "/həʊp/",
+        "syllables": [
+          "hope"
+        ],
+        "meaning": "v. 希望",
+        "app_sentences": [
+          {
+            "en": "n. 希望",
+            "cn": "I hope to visit Beijing one day."
+          }
+        ]
+      },
+      {
+        "text": "win",
+        "phonetic": "/wɪn/",
+        "syllables": [
+          "win"
+        ],
+        "meaning": "v. 赢",
+        "app_sentences": [
+          {
+            "en": "Our team will win the game.",
+            "cn": "我们队将赢得比赛。"
+          }
+        ]
+      },
+      {
+        "text": "enjoy oneself",
+        "phonetic": "/ɪnˈdʒɔɪ wʌnˈself/",
+        "syllables": [
+          "en",
+          "joy",
+          "one",
+          "self"
+        ],
+        "meaning": "phr. 玩得开心",
+        "app_sentences": [
+          {
+            "en": "We enjoyed ourselves at the beach.",
+            "cn": "我们在海滩玩得很开心。"
+          }
+        ]
+      },
+      {
+        "text": "myself",
+        "phonetic": "/maɪˈself/",
+        "syllables": [
+          "my",
+          "self"
+        ],
+        "meaning": "pron. 我自己",
+        "app_sentences": [
+          {
+            "en": "I can do it myself.",
+            "cn": "我可以自己做。"
+          }
+        ]
+      },
+      {
+        "text": "during",
+        "phonetic": "/ˈdjʊərɪŋ/",
+        "syllables": [
+          "dur",
+          "ing"
+        ],
+        "meaning": "prep. 在...期间",
+        "app_sentences": [
+          {
+            "en": "We study during the day.",
+            "cn": "我们在白天学习。"
+          }
+        ]
+      },
+      {
+        "text": "May",
+        "phonetic": "/meɪ/",
+        "syllables": [
+          "May"
+        ],
+        "meaning": "n. 五月",
+        "app_sentences": [
+          {
+            "en": "May is a warm month.",
+            "cn": "五月是一个温暖的月份。"
+          }
+        ]
+      },
+      {
+        "text": "May Day",
+        "phonetic": "/meɪ deɪ/",
+        "syllables": [
+          "May",
+          "Day"
+        ],
+        "meaning": "phr. 劳动节",
+        "app_sentences": [
+          {
+            "en": "We have a holiday on May Day.",
+            "cn": "劳动节我们放假。"
+          }
+        ]
+      },
+      {
+        "text": "late",
+        "phonetic": "/leɪt/",
+        "syllables": [
+          "late"
+        ],
+        "meaning": "adj. 迟的",
+        "app_sentences": [
+          {
+            "en": "adv. 晚",
+            "cn": "He is late for school."
+          }
+        ]
+      },
+      {
+        "text": "walk",
+        "phonetic": "/wɔːk/",
+        "syllables": [
+          "walk"
+        ],
+        "meaning": "v. 步行",
+        "app_sentences": [
+          {
+            "en": "n. 散步",
+            "cn": "We walk to school every day."
+          }
+        ]
+      },
+      {
+        "text": "take a walk",
+        "phonetic": "/teɪk ə wɔːk/",
+        "syllables": [
+          "take",
+          "a",
+          "walk"
+        ],
+        "meaning": "phr. 散步",
+        "app_sentences": [
+          {
+            "en": "Let's take a walk after dinner.",
+            "cn": "晚饭后我们去散步吧。"
+          }
+        ]
+      },
+      {
+        "text": "country",
+        "phonetic": "/ˈkʌntri/",
+        "syllables": [
+          "coun",
+          "try"
+        ],
+        "meaning": "n. 国家；乡村",
+        "app_sentences": [
+          {
+            "en": "China is a large country.",
+            "cn": "中国是一个大国。"
+          }
+        ]
+      },
+      {
+        "text": "second",
+        "phonetic": "/ˈsekənd/",
+        "syllables": [
+          "sec",
+          "ond"
+        ],
+        "meaning": "num. 第二",
+        "app_sentences": [
+          {
+            "en": "This is my second visit to Beijing.",
+            "cn": "这是我第二次访问北京。"
+          }
+        ]
+      },
+      {
+        "text": "collect",
+        "phonetic": "/kəˈlekt/",
+        "syllables": [
+          "col",
+          "lect"
+        ],
+        "meaning": "v. 收集",
+        "app_sentences": [
+          {
+            "en": "He collects stamps.",
+            "cn": "他收集邮票。"
+          }
+        ]
+      },
+      {
+        "text": "litter",
+        "phonetic": "/ˈlɪtər/",
+        "syllables": [
+          "lit",
+          "ter"
+        ],
+        "meaning": "n. 垃圾",
+        "app_sentences": [
+          {
+            "en": "v. 乱扔",
+            "cn": "Don't litter in the park."
+          }
+        ]
+      },
+      {
+        "text": "fun",
+        "phonetic": "/fʌn/",
+        "syllables": [
+          "fun"
+        ],
+        "meaning": "n. 乐趣",
+        "app_sentences": [
+          {
+            "en": "adj. 有趣的",
+            "cn": "We have fun at the party."
+          }
+        ]
+      },
+      {
+        "text": "summer holiday",
+        "phonetic": "/ˈsʌmər ˈhɒlədeɪ/",
+        "syllables": [
+          "sum",
+          "mer",
+          "hol",
+          "i",
+          "day"
+        ],
+        "meaning": "phr. 暑假",
+        "app_sentences": [
+          {
+            "en": "We travel during summer holiday.",
+            "cn": "我们在暑假旅行。"
+          }
+        ]
+      },
+      {
+        "text": "camp",
+        "phonetic": "/kæmp/",
+        "syllables": [
+          "camp"
+        ],
+        "meaning": "n. 营地",
+        "app_sentences": [
+          {
+            "en": "v. 露营",
+            "cn": "We go camping in summer."
+          }
+        ]
+      },
+      {
+        "text": "Australian",
+        "phonetic": "/ɒˈstreɪliən/",
+        "syllables": [
+          "Aus",
+          "tra",
+          "li",
+          "an"
+        ],
+        "meaning": "adj. 澳大利亚的",
+        "app_sentences": [
+          {
+            "en": "n. 澳大利亚人",
+            "cn": "Australian animals are unique."
+          }
+        ]
+      },
+      {
+        "text": "sightseeing",
+        "phonetic": "/ˈsaɪtsiːɪŋ/",
+        "syllables": [
+          "sight",
+          "see",
+          "ing"
+        ],
+        "meaning": "n. 观光",
+        "app_sentences": [
+          {
+            "en": "We go sightseeing in Beijing.",
+            "cn": "我们在北京观光。"
+          }
+        ]
+      },
+      {
+        "text": "go sightseeing",
+        "phonetic": "/ɡəʊ ˈsaɪtsiːɪŋ/",
+        "syllables": [
+          "go",
+          "sight",
+          "see",
+          "ing"
+        ],
+        "meaning": "phr. 去观光",
+        "app_sentences": [
+          {
+            "en": "They go sightseeing every day.",
+            "cn": "他们每天都去观光。"
+          }
+        ]
+      },
+      {
+        "text": "beach",
+        "phonetic": "/biːtʃ/",
+        "syllables": [
+          "beach"
+        ],
+        "meaning": "n. 海滩",
+        "app_sentences": [
+          {
+            "en": "We play on the beach.",
+            "cn": "我们在海滩上玩。"
+          }
+        ]
+      },
+      {
+        "text": "early",
+        "phonetic": "/ˈɜːli/",
+        "syllables": [
+          "ear",
+          "ly"
+        ],
+        "meaning": "adj. 早的",
+        "app_sentences": [
+          {
+            "en": "adv. 早",
+            "cn": "She gets up early."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 4",
+    "data": [
+      {
+        "text": "chalk",
+        "phonetic": "/tʃɔːk/",
+        "syllables": [
+          "chalk"
+        ],
+        "meaning": "n. 粉笔",
+        "app_sentences": [
+          {
+            "en": "The teacher writes with chalk.",
+            "cn": "老师用粉笔写字。"
+          }
+        ]
+      },
+      {
+        "text": "ruler",
+        "phonetic": "/ˈruːlər/",
+        "syllables": [
+          "rul",
+          "er"
+        ],
+        "meaning": "n. 尺子",
+        "app_sentences": [
+          {
+            "en": "Use a ruler to draw a line.",
+            "cn": "用尺子画一条线。"
+          }
+        ]
+      },
+      {
+        "text": "carry",
+        "phonetic": "/ˈkæri/",
+        "syllables": [
+          "car",
+          "ry"
+        ],
+        "meaning": "v. 携带",
+        "app_sentences": [
+          {
+            "en": "Can you carry this box?",
+            "cn": "你能搬这个箱子吗？"
+          }
+        ]
+      },
+      {
+        "text": "change",
+        "phonetic": "/tʃeɪndʒ/",
+        "syllables": [
+          "change"
+        ],
+        "meaning": "v. 改变",
+        "app_sentences": [
+          {
+            "en": "n. 变化",
+            "cn": "The weather changes quickly."
+          }
+        ]
+      },
+      {
+        "text": "everything",
+        "phonetic": "/ˈevriθɪŋ/",
+        "syllables": [
+          "ev",
+          "ery",
+          "thing"
+        ],
+        "meaning": "pron. 每件事物",
+        "app_sentences": [
+          {
+            "en": "Everything is ready.",
+            "cn": "一切都准备好了。"
+          }
+        ]
+      },
+      {
+        "text": "future",
+        "phonetic": "/ˈfjuːtʃər/",
+        "syllables": [
+          "fu",
+          "ture"
+        ],
+        "meaning": "n. 未来",
+        "app_sentences": [
+          {
+            "en": "In the future",
+            "cn": "robots will help us."
+          }
+        ]
+      },
+      {
+        "text": "in the future",
+        "phonetic": "/ɪn ðə ˈfjuːtʃər/",
+        "syllables": [
+          "in",
+          "the",
+          "fu",
+          "ture"
+        ],
+        "meaning": "phr. 在未来",
+        "app_sentences": [
+          {
+            "en": "In the future",
+            "cn": "we will have flying cars."
+          }
+        ]
+      },
+      {
+        "text": "life",
+        "phonetic": "/laɪf/",
+        "syllables": [
+          "life"
+        ],
+        "meaning": "n. 生活；生命",
+        "app_sentences": [
+          {
+            "en": "Life is beautiful.",
+            "cn": "生活是美好的。"
+          }
+        ]
+      },
+      {
+        "text": "need",
+        "phonetic": "/niːd/",
+        "syllables": [
+          "need"
+        ],
+        "meaning": "v. 需要",
+        "app_sentences": [
+          {
+            "en": "n. 需要",
+            "cn": "We need water to live."
+          }
+        ]
+      },
+      {
+        "text": "will",
+        "phonetic": "/wɪl/",
+        "syllables": [
+          "will"
+        ],
+        "meaning": "aux. 将",
+        "app_sentences": [
+          {
+            "en": "n. 意志",
+            "cn": "I will study hard."
+          }
+        ]
+      },
+      {
+        "text": "maybe",
+        "phonetic": "/ˈmeɪbi/",
+        "syllables": [
+          "may",
+          "be"
+        ],
+        "meaning": "adv. 也许",
+        "app_sentences": [
+          {
+            "en": "Maybe it will rain tomorrow.",
+            "cn": "也许明天会下雨。"
+          }
+        ]
+      },
+      {
+        "text": "ask",
+        "phonetic": "/ɑːsk/",
+        "syllables": [
+          "ask"
+        ],
+        "meaning": "v. 问",
+        "app_sentences": [
+          {
+            "en": "Ask the teacher for help.",
+            "cn": "向老师求助。"
+          }
+        ]
+      },
+      {
+        "text": "question",
+        "phonetic": "/ˈkwestʃən/",
+        "syllables": [
+          "ques",
+          "tion"
+        ],
+        "meaning": "n. 问题",
+        "app_sentences": [
+          {
+            "en": "Answer the question",
+            "cn": "please."
+          }
+        ]
+      },
+      {
+        "text": "by",
+        "phonetic": "/baɪ/",
+        "syllables": [
+          "by"
+        ],
+        "meaning": "prep. 通过；被",
+        "app_sentences": [
+          {
+            "en": "I go to school by bus.",
+            "cn": "我乘公交车去上学。"
+          }
+        ]
+      },
+      {
+        "text": "level",
+        "phonetic": "/ˈlevl/",
+        "syllables": [
+          "lev",
+          "el"
+        ],
+        "meaning": "n. 水平",
+        "app_sentences": [
+          {
+            "en": "Her English level is high.",
+            "cn": "她的英语水平很高。"
+          }
+        ]
+      },
+      {
+        "text": "able",
+        "phonetic": "/ˈeɪbl/",
+        "syllables": [
+          "a",
+          "ble"
+        ],
+        "meaning": "adj. 能够的",
+        "app_sentences": [
+          {
+            "en": "She is able to speak English.",
+            "cn": "她能够说英语。"
+          }
+        ]
+      },
+      {
+        "text": "be able to",
+        "phonetic": "/bi ˈeɪbl tuː/",
+        "syllables": [
+          "be",
+          "a",
+          "ble",
+          "to"
+        ],
+        "meaning": "phr. 能够",
+        "app_sentences": [
+          {
+            "en": "He is able to finish the work.",
+            "cn": "他能够完成工作。"
+          }
+        ]
+      },
+      {
+        "text": "more",
+        "phonetic": "/mɔːr/",
+        "syllables": [
+          "more"
+        ],
+        "meaning": "adj. 更多的",
+        "app_sentences": [
+          {
+            "en": "adv. 更",
+            "cn": "I want more water."
+          }
+        ]
+      },
+      {
+        "text": "not ... any more",
+        "phonetic": "/nɒt ... ˈeni mɔːr/",
+        "syllables": [
+          "not",
+          "...",
+          "an",
+          "y",
+          "more"
+        ],
+        "meaning": "phr. 不再",
+        "app_sentences": [
+          {
+            "en": "He does not live here any more.",
+            "cn": "他不再住在这里了。"
+          }
+        ]
+      },
+      {
+        "text": "free",
+        "phonetic": "/friː/",
+        "syllables": [
+          "free"
+        ],
+        "meaning": "adj. 免费的；自由的",
+        "app_sentences": [
+          {
+            "en": "The drink is free.",
+            "cn": "这饮料是免费的。"
+          }
+        ]
+      },
+      {
+        "text": "air",
+        "phonetic": "/eər/",
+        "syllables": [
+          "air"
+        ],
+        "meaning": "n. 空气",
+        "app_sentences": [
+          {
+            "en": "We need fresh air.",
+            "cn": "我们需要新鲜空气。"
+          }
+        ]
+      },
+      {
+        "text": "land",
+        "phonetic": "/lænd/",
+        "syllables": [
+          "land"
+        ],
+        "meaning": "n. 土地",
+        "app_sentences": [
+          {
+            "en": "v. 着陆",
+            "cn": "The plane will land soon."
+          }
+        ]
+      },
+      {
+        "text": "machine",
+        "phonetic": "/məˈʃiːn/",
+        "syllables": [
+          "ma",
+          "chine"
+        ],
+        "meaning": "n. 机器",
+        "app_sentences": [
+          {
+            "en": "This machine is very useful.",
+            "cn": "这台机器很有用。"
+          }
+        ]
+      },
+      {
+        "text": "rain",
+        "phonetic": "/reɪn/",
+        "syllables": [
+          "rain"
+        ],
+        "meaning": "n. 雨",
+        "app_sentences": [
+          {
+            "en": "v. 下雨",
+            "cn": "It rains a lot in summer."
+          }
+        ]
+      },
+      {
+        "text": "robot",
+        "phonetic": "/ˈrəʊbɒt/",
+        "syllables": [
+          "ro",
+          "bot"
+        ],
+        "meaning": "n. 机器人",
+        "app_sentences": [
+          {
+            "en": "Robots can do many things.",
+            "cn": "机器人能做很多事情。"
+          }
+        ]
+      },
+      {
+        "text": "sea",
+        "phonetic": "/siː/",
+        "syllables": [
+          "sea"
+        ],
+        "meaning": "n. 海",
+        "app_sentences": [
+          {
+            "en": "We swim in the sea.",
+            "cn": "我们在海里游泳。"
+          }
+        ]
+      },
+      {
+        "text": "space",
+        "phonetic": "/speɪs/",
+        "syllables": [
+          "space"
+        ],
+        "meaning": "n. 空间；太空",
+        "app_sentences": [
+          {
+            "en": "There is no space in the room.",
+            "cn": "房间里没有空间了。"
+          }
+        ]
+      },
+      {
+        "text": "traffic",
+        "phonetic": "/ˈtræfɪk/",
+        "syllables": [
+          "traf",
+          "fic"
+        ],
+        "meaning": "n. 交通",
+        "app_sentences": [
+          {
+            "en": "The traffic is heavy in the city.",
+            "cn": "城市交通拥堵。"
+          }
+        ]
+      },
+      {
+        "text": "jam",
+        "phonetic": "/dʒæm/",
+        "syllables": [
+          "jam"
+        ],
+        "meaning": "n. 果酱；堵塞",
+        "app_sentences": [
+          {
+            "en": "There is a traffic jam on the road.",
+            "cn": "路上有交通堵塞。"
+          }
+        ]
+      },
+      {
+        "text": "traffic jam",
+        "phonetic": "/ˈtræfɪk dʒæm/",
+        "syllables": [
+          "traf",
+          "fic",
+          "jam"
+        ],
+        "meaning": "phr. 交通堵塞",
+        "app_sentences": [
+          {
+            "en": "We were late because of a traffic jam.",
+            "cn": "我们因为交通堵塞迟到了。"
+          }
+        ]
+      },
+      {
+        "text": "wind",
+        "phonetic": "/wɪnd/",
+        "syllables": [
+          "wind"
+        ],
+        "meaning": "n. 风",
+        "app_sentences": [
+          {
+            "en": "The wind is strong today.",
+            "cn": "今天风很大。"
+          }
+        ]
+      },
+      {
+        "text": "true",
+        "phonetic": "/truː/",
+        "syllables": [
+          "true"
+        ],
+        "meaning": "adj. 真实的",
+        "app_sentences": [
+          {
+            "en": "Is the story true?",
+            "cn": "这个故事是真的吗？"
+          }
+        ]
+      },
+      {
+        "text": "come true",
+        "phonetic": "/kʌm truː/",
+        "syllables": [
+          "come",
+          "true"
+        ],
+        "meaning": "phr. 实现",
+        "app_sentences": [
+          {
+            "en": "My dream came true.",
+            "cn": "我的梦想实现了。"
+          }
+        ]
+      },
+      {
+        "text": "here is ...",
+        "phonetic": "/hɪər ɪz ...",
+        "syllables": [
+          "here",
+          "is",
+          "..."
+        ],
+        "meaning": "phr. 这是...",
+        "app_sentences": [
+          {
+            "en": "Here is your ticket.",
+            "cn": "这是你的票。"
+          }
+        ]
+      },
+      {
+        "text": "here are ...",
+        "phonetic": "/hɪər ɑː ...",
+        "syllables": [
+          "here",
+          "are",
+          "..."
+        ],
+        "meaning": "phr. 这些是...",
+        "app_sentences": [
+          {
+            "en": "Here are your books.",
+            "cn": "这些是你的书。"
+          }
+        ]
+      },
+      {
+        "text": "bike",
+        "phonetic": "/baɪk/",
+        "syllables": [
+          "bike"
+        ],
+        "meaning": "n. 自行车",
+        "app_sentences": [
+          {
+            "en": "I ride my bike to school.",
+            "cn": "我骑自行车去学校。"
+          }
+        ]
+      },
+      {
+        "text": "bicycle",
+        "phonetic": "/ˈbaɪsɪkl/",
+        "syllables": [
+          "bi",
+          "cy",
+          "cle"
+        ],
+        "meaning": "n. 自行车（正式）",
+        "app_sentences": [
+          {
+            "en": "He bought a new bicycle.",
+            "cn": "他买了一辆新自行车。"
+          }
+        ]
+      },
+      {
+        "text": "car",
+        "phonetic": "/kɑːr/",
+        "syllables": [
+          "car"
+        ],
+        "meaning": "n. 汽车",
+        "app_sentences": [
+          {
+            "en": "We go by car.",
+            "cn": "我们乘汽车去。"
+          }
+        ]
+      },
+      {
+        "text": "cheap",
+        "phonetic": "/tʃiːp/",
+        "syllables": [
+          "cheap"
+        ],
+        "meaning": "adj. 便宜的",
+        "app_sentences": [
+          {
+            "en": "This shirt is cheap.",
+            "cn": "这件衬衫便宜。"
+          }
+        ]
+      },
+      {
+        "text": "everywhere",
+        "phonetic": "/ˈevriweər/",
+        "syllables": [
+          "ev",
+          "ery",
+          "where"
+        ],
+        "meaning": "adv. 到处",
+        "app_sentences": [
+          {
+            "en": "There are flowers everywhere.",
+            "cn": "到处都有花。"
+          }
+        ]
+      },
+      {
+        "text": "not only ... but also ...",
+        "phonetic": "/nɒt ˈəʊnli ... bʌt ˈɔːlsəʊ ...",
+        "syllables": [
+          "not",
+          "on",
+          "ly",
+          "...",
+          "but",
+          "al",
+          "so",
+          "..."
+        ],
+        "meaning": "phr. 不仅...而且...",
+        "app_sentences": [
+          {
+            "en": "She is not only smart but also kind.",
+            "cn": "她不仅聪明而且善良。"
+          }
+        ]
+      },
+      {
+        "text": "into",
+        "phonetic": "/ˈɪntuː/",
+        "syllables": [
+          "in",
+          "to"
+        ],
+        "meaning": "prep. 到...里面",
+        "app_sentences": [
+          {
+            "en": "He walked into the room.",
+            "cn": "他走进房间。"
+          }
+        ]
+      },
+      {
+        "text": "long",
+        "phonetic": "/lɒŋ/",
+        "syllables": [
+          "long"
+        ],
+        "meaning": "adj. 长的",
+        "app_sentences": [
+          {
+            "en": "The river is long.",
+            "cn": "这条河很长。"
+          }
+        ]
+      },
+      {
+        "text": "heavy",
+        "phonetic": "/ˈhevi/",
+        "syllables": [
+          "heav",
+          "y"
+        ],
+        "meaning": "adj. 重的",
+        "app_sentences": [
+          {
+            "en": "The box is heavy.",
+            "cn": "这个箱子很重。"
+          }
+        ]
+      },
+      {
+        "text": "light",
+        "phonetic": "/laɪt/",
+        "syllables": [
+          "light"
+        ],
+        "meaning": "adj. 轻的；明亮的",
+        "app_sentences": [
+          {
+            "en": "n. 光",
+            "cn": "The bag is light."
+          }
+        ]
+      },
+      {
+        "text": "easy",
+        "phonetic": "/ˈiːzi/",
+        "syllables": [
+          "eas",
+          "y"
+        ],
+        "meaning": "adj. 容易的",
+        "app_sentences": [
+          {
+            "en": "This question is easy.",
+            "cn": "这个问题很容易。"
+          }
+        ]
+      },
+      {
+        "text": "working",
+        "phonetic": "/ˈwɜːkɪŋ/",
+        "syllables": [
+          "work",
+          "ing"
+        ],
+        "meaning": "adj. 工作的",
+        "app_sentences": [
+          {
+            "en": "He has a working computer.",
+            "cn": "他有一台能工作的电脑。"
+          }
+        ]
+      },
+      {
+        "text": "hour",
+        "phonetic": "/aʊər/",
+        "syllables": [
+          "hour"
+        ],
+        "meaning": "n. 小时",
+        "app_sentences": [
+          {
+            "en": "There are 24 hours in a day.",
+            "cn": "一天有24小时。"
+          }
+        ]
+      },
+      {
+        "text": "short",
+        "phonetic": "/ʃɔːt/",
+        "syllables": [
+          "short"
+        ],
+        "meaning": "adj. 短的",
+        "app_sentences": [
+          {
+            "en": "The film is short.",
+            "cn": "这部电影很短。"
+          }
+        ]
+      },
+      {
+        "text": "rise",
+        "phonetic": "/raɪz/",
+        "syllables": [
+          "rise"
+        ],
+        "meaning": "v. 上升",
+        "app_sentences": [
+          {
+            "en": "n. 上升",
+            "cn": "The sun rises in the east."
+          }
+        ]
+      },
+      {
+        "text": "as well",
+        "phonetic": "/æz wel/",
+        "syllables": [
+          "as",
+          "well"
+        ],
+        "meaning": "phr. 也",
+        "app_sentences": [
+          {
+            "en": "She speaks French as well.",
+            "cn": "她也会说法语。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 5",
+    "data": [
+      {
+        "text": "market",
+        "phonetic": "/ˈmɑːkɪt/",
+        "syllables": [
+          "mar",
+          "ket"
+        ],
+        "meaning": "n. 市场",
+        "app_sentences": [
+          {
+            "en": "We buy food at the market.",
+            "cn": "我们在市场买食物。"
+          }
+        ]
+      },
+      {
+        "text": "supermarket",
+        "phonetic": "/ˈsuːpəmɑːkɪt/",
+        "syllables": [
+          "su",
+          "per",
+          "mar",
+          "ket"
+        ],
+        "meaning": "n. 超市",
+        "app_sentences": [
+          {
+            "en": "The supermarket is big.",
+            "cn": "这家超市很大。"
+          }
+        ]
+      },
+      {
+        "text": "biscuit",
+        "phonetic": "/ˈbɪskɪt/",
+        "syllables": [
+          "bis",
+          "cuit"
+        ],
+        "meaning": "n. 饼干",
+        "app_sentences": [
+          {
+            "en": "I like eating biscuits.",
+            "cn": "我喜欢吃饼干。"
+          }
+        ]
+      },
+      {
+        "text": "lemon",
+        "phonetic": "/ˈlemən/",
+        "syllables": [
+          "lem",
+          "on"
+        ],
+        "meaning": "n. 柠檬",
+        "app_sentences": [
+          {
+            "en": "She added lemon to the tea.",
+            "cn": "她往茶里加了柠檬。"
+          }
+        ]
+      },
+      {
+        "text": "strawberry",
+        "phonetic": "/ˈstrɔːbəri/",
+        "syllables": [
+          "straw",
+          "ber",
+          "ry"
+        ],
+        "meaning": "n. 草莓",
+        "app_sentences": [
+          {
+            "en": "Strawberries are red and sweet.",
+            "cn": "草莓又红又甜。"
+          }
+        ]
+      },
+      {
+        "text": "Mother's Day",
+        "phonetic": "/ˈmʌðəz deɪ/",
+        "syllables": [
+          "Mo",
+          "ther's",
+          "Day"
+        ],
+        "meaning": "phr. 母亲节",
+        "app_sentences": [
+          {
+            "en": "We give gifts on Mother's Day.",
+            "cn": "我们在母亲节送礼物。"
+          }
+        ]
+      },
+      {
+        "text": "size",
+        "phonetic": "/saɪz/",
+        "syllables": [
+          "size"
+        ],
+        "meaning": "n. 尺寸",
+        "app_sentences": [
+          {
+            "en": "What size do you wear?",
+            "cn": "你穿什么尺寸？"
+          }
+        ]
+      },
+      {
+        "text": "take",
+        "phonetic": "/teɪk/",
+        "syllables": [
+          "take"
+        ],
+        "meaning": "v. 拿；取",
+        "app_sentences": [
+          {
+            "en": "Take your umbrella.",
+            "cn": "带上你的伞。"
+          }
+        ]
+      },
+      {
+        "text": "may",
+        "phonetic": "/meɪ/",
+        "syllables": [
+          "may"
+        ],
+        "meaning": "aux. 可以",
+        "app_sentences": [
+          {
+            "en": "May I come in?",
+            "cn": "我可以进来吗？"
+          }
+        ]
+      },
+      {
+        "text": "try",
+        "phonetic": "/traɪ/",
+        "syllables": [
+          "try"
+        ],
+        "meaning": "v. 尝试",
+        "app_sentences": [
+          {
+            "en": "n. 尝试",
+            "cn": "Try your best."
+          }
+        ]
+      },
+      {
+        "text": "try on",
+        "phonetic": "/traɪ ɒn/",
+        "syllables": [
+          "try",
+          "on"
+        ],
+        "meaning": "phr. 试穿",
+        "app_sentences": [
+          {
+            "en": "You can try on the dress.",
+            "cn": "你可以试穿这条裙子。"
+          }
+        ]
+      },
+      {
+        "text": "certainly",
+        "phonetic": "/ˈsɜːtnli/",
+        "syllables": [
+          "cer",
+          "tain",
+          "ly"
+        ],
+        "meaning": "adv. 当然",
+        "app_sentences": [
+          {
+            "en": "Certainly",
+            "cn": "I will help you."
+          }
+        ]
+      },
+      {
+        "text": "wait a minute",
+        "phonetic": "/weɪt ə ˈmɪnɪt/",
+        "syllables": [
+          "wait",
+          "a",
+          "min",
+          "ute"
+        ],
+        "meaning": "phr. 等一会儿",
+        "app_sentences": [
+          {
+            "en": "Wait a minute",
+            "cn": "please."
+          }
+        ]
+      },
+      {
+        "text": "sale",
+        "phonetic": "/seɪl/",
+        "syllables": [
+          "sale"
+        ],
+        "meaning": "n. 销售",
+        "app_sentences": [
+          {
+            "en": "There is a sale in the shop.",
+            "cn": "商店有促销。"
+          }
+        ]
+      },
+      {
+        "text": "price",
+        "phonetic": "/praɪs/",
+        "syllables": [
+          "price"
+        ],
+        "meaning": "n. 价格",
+        "app_sentences": [
+          {
+            "en": "What is the price of this book?",
+            "cn": "这本书的价格是多少？"
+          }
+        ]
+      },
+      {
+        "text": "look",
+        "phonetic": "/lʊk/",
+        "syllables": [
+          "look"
+        ],
+        "meaning": "v. 看",
+        "app_sentences": [
+          {
+            "en": "n. 样子",
+            "cn": "Look at the picture."
+          }
+        ]
+      },
+      {
+        "text": "fresh",
+        "phonetic": "/freʃ/",
+        "syllables": [
+          "fresh"
+        ],
+        "meaning": "adj. 新鲜的",
+        "app_sentences": [
+          {
+            "en": "The fruit is fresh.",
+            "cn": "这水果很新鲜。"
+          }
+        ]
+      },
+      {
+        "text": "advantage",
+        "phonetic": "/ədˈvɑːntɪdʒ/",
+        "syllables": [
+          "ad",
+          "van",
+          "tage"
+        ],
+        "meaning": "n. 优点",
+        "app_sentences": [
+          {
+            "en": "The advantage of this method is speed.",
+            "cn": "这种方法的优点是速度快。"
+          }
+        ]
+      },
+      {
+        "text": "anyone",
+        "phonetic": "/ˈeniwʌn/",
+        "syllables": [
+          "an",
+          "y",
+          "one"
+        ],
+        "meaning": "pron. 任何人",
+        "app_sentences": [
+          {
+            "en": "Is anyone there?",
+            "cn": "有谁在那里吗？"
+          }
+        ]
+      },
+      {
+        "text": "anything",
+        "phonetic": "/ˈeniθɪŋ/",
+        "syllables": [
+          "an",
+          "y",
+          "thing"
+        ],
+        "meaning": "pron. 任何事物",
+        "app_sentences": [
+          {
+            "en": "You can ask me anything.",
+            "cn": "你可以问我任何事。"
+          }
+        ]
+      },
+      {
+        "text": "anywhere",
+        "phonetic": "/ˈeniweər/",
+        "syllables": [
+          "an",
+          "y",
+          "where"
+        ],
+        "meaning": "adv. 任何地方",
+        "app_sentences": [
+          {
+            "en": "You can sit anywhere.",
+            "cn": "你可以坐 anywhere。"
+          }
+        ]
+      },
+      {
+        "text": "compare",
+        "phonetic": "/kəmˈpeər/",
+        "syllables": [
+          "com",
+          "pare"
+        ],
+        "meaning": "v. 比较",
+        "app_sentences": [
+          {
+            "en": "Compare the two books.",
+            "cn": "比较这两本书。"
+          }
+        ]
+      },
+      {
+        "text": "pay",
+        "phonetic": "/peɪ/",
+        "syllables": [
+          "pay"
+        ],
+        "meaning": "v. 支付",
+        "app_sentences": [
+          {
+            "en": "n. 工资",
+            "cn": "Please pay the bill."
+          }
+        ]
+      },
+      {
+        "text": "post",
+        "phonetic": "/pəʊst/",
+        "syllables": [
+          "post"
+        ],
+        "meaning": "n. 邮件；职位",
+        "app_sentences": [
+          {
+            "en": "v. 邮寄",
+            "cn": "I will post the letter tomorrow."
+          }
+        ]
+      },
+      {
+        "text": "product",
+        "phonetic": "/ˈprɒdʌkt/",
+        "syllables": [
+          "prod",
+          "uct"
+        ],
+        "meaning": "n. 产品",
+        "app_sentences": [
+          {
+            "en": "This is a new product.",
+            "cn": "这是一个新产品。"
+          }
+        ]
+      },
+      {
+        "text": "receive",
+        "phonetic": "/rɪˈsiːv/",
+        "syllables": [
+          "re",
+          "ceive"
+        ],
+        "meaning": "v. 收到",
+        "app_sentences": [
+          {
+            "en": "I received a gift from my friend.",
+            "cn": "我收到了朋友的礼物。"
+          }
+        ]
+      },
+      {
+        "text": "safe",
+        "phonetic": "/seɪf/",
+        "syllables": [
+          "safe"
+        ],
+        "meaning": "adj. 安全的",
+        "app_sentences": [
+          {
+            "en": "It is safe to cross the road here.",
+            "cn": "在这里过马路是安全的。"
+          }
+        ]
+      },
+      {
+        "text": "several",
+        "phonetic": "/ˈsevrəl/",
+        "syllables": [
+          "sev",
+          "er",
+          "al"
+        ],
+        "meaning": "adj. 几个",
+        "app_sentences": [
+          {
+            "en": "Several students are absent.",
+            "cn": "几名学生缺席。"
+          }
+        ]
+      },
+      {
+        "text": "online",
+        "phonetic": "/ˌɒnˈlaɪn/",
+        "syllables": [
+          "on",
+          "line"
+        ],
+        "meaning": "adj. 在线的",
+        "app_sentences": [
+          {
+            "en": "We shop online.",
+            "cn": "我们在网上购物。"
+          }
+        ]
+      },
+      {
+        "text": "shopping",
+        "phonetic": "/ˈʃɒpɪŋ/",
+        "syllables": [
+          "shop",
+          "ping"
+        ],
+        "meaning": "n. 购物",
+        "app_sentences": [
+          {
+            "en": "We go shopping on weekends.",
+            "cn": "我们周末去购物。"
+          }
+        ]
+      },
+      {
+        "text": "way",
+        "phonetic": "/weɪ/",
+        "syllables": [
+          "way"
+        ],
+        "meaning": "n. 方式；道路",
+        "app_sentences": [
+          {
+            "en": "This is the best way to learn English.",
+            "cn": "这是学习英语的最佳方式。"
+          }
+        ]
+      },
+      {
+        "text": "one of",
+        "phonetic": "/wʌn əv/",
+        "syllables": [
+          "one",
+          "of"
+        ],
+        "meaning": "phr. ...之一",
+        "app_sentences": [
+          {
+            "en": "She is one of my best friends.",
+            "cn": "她是我最好的朋友之一。"
+          }
+        ]
+      },
+      {
+        "text": "almost",
+        "phonetic": "/ˈɔːlməʊst/",
+        "syllables": [
+          "al",
+          "most"
+        ],
+        "meaning": "adv. 几乎",
+        "app_sentences": [
+          {
+            "en": "Almost everyone is here.",
+            "cn": "几乎每个人都到了。"
+          }
+        ]
+      },
+      {
+        "text": "something",
+        "phonetic": "/ˈsʌmθɪŋ/",
+        "syllables": [
+          "some",
+          "thing"
+        ],
+        "meaning": "pron. 某事",
+        "app_sentences": [
+          {
+            "en": "There is something wrong with the computer.",
+            "cn": "电脑出了点问题。"
+          }
+        ]
+      },
+      {
+        "text": "later",
+        "phonetic": "/ˈleɪtər/",
+        "syllables": [
+          "la",
+          "ter"
+        ],
+        "meaning": "adv. 后来",
+        "app_sentences": [
+          {
+            "en": "See you later!",
+            "cn": "回头见！"
+          }
+        ]
+      },
+      {
+        "text": "open",
+        "phonetic": "/ˈəʊpən/",
+        "syllables": [
+          "o",
+          "pen"
+        ],
+        "meaning": "v. 打开",
+        "app_sentences": [
+          {
+            "en": "adj. 开着的",
+            "cn": "Open the window"
+          }
+        ]
+      },
+      {
+        "text": "out",
+        "phonetic": "/aʊt/",
+        "syllables": [
+          "out"
+        ],
+        "meaning": "adv. 在外面",
+        "app_sentences": [
+          {
+            "en": "He is out now.",
+            "cn": "他现在出去了。"
+          }
+        ]
+      },
+      {
+        "text": "go out",
+        "phonetic": "/ɡəʊ aʊt/",
+        "syllables": [
+          "go",
+          "out"
+        ],
+        "meaning": "phr. 出去",
+        "app_sentences": [
+          {
+            "en": "We go out for dinner.",
+            "cn": "我们出去吃晚餐。"
+          }
+        ]
+      },
+      {
+        "text": "over",
+        "phonetic": "/ˈəʊvər/",
+        "syllables": [
+          "o",
+          "ver"
+        ],
+        "meaning": "prep. 在...上方",
+        "app_sentences": [
+          {
+            "en": "The plane flies over the city.",
+            "cn": "飞机飞过城市上空。"
+          }
+        ]
+      },
+      {
+        "text": "one day",
+        "phonetic": "/wʌn deɪ/",
+        "syllables": [
+          "one",
+          "day"
+        ],
+        "meaning": "phr. 有一天",
+        "app_sentences": [
+          {
+            "en": "One day",
+            "cn": "I will travel the world."
+          }
+        ]
+      },
+      {
+        "text": "one",
+        "phonetic": "/wʌn/",
+        "syllables": [
+          "one"
+        ],
+        "meaning": "num. 一",
+        "app_sentences": [
+          {
+            "en": "pron. 一个",
+            "cn": "I have one brother."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 6",
+    "data": [
+      {
+        "text": "bank",
+        "phonetic": "/bæŋk/",
+        "syllables": [
+          "bank"
+        ],
+        "meaning": "n. 银行",
+        "app_sentences": [
+          {
+            "en": "There is a bank near here.",
+            "cn": "附近有一家银行。"
+          }
+        ]
+      },
+      {
+        "text": "museum",
+        "phonetic": "/mjuˈziːəm/",
+        "syllables": [
+          "mu",
+          "se",
+          "um"
+        ],
+        "meaning": "n. 博物馆",
+        "app_sentences": [
+          {
+            "en": "We visited the museum yesterday.",
+            "cn": "我们昨天参观了博物馆。"
+          }
+        ]
+      },
+      {
+        "text": "along",
+        "phonetic": "/əˈlɒŋ/",
+        "syllables": [
+          "a",
+          "long"
+        ],
+        "meaning": "prep. 沿着",
+        "app_sentences": [
+          {
+            "en": "We walk along the river.",
+            "cn": "我们沿着河走。"
+          }
+        ]
+      },
+      {
+        "text": "across",
+        "phonetic": "/əˈkrɒs/",
+        "syllables": [
+          "a",
+          "cross"
+        ],
+        "meaning": "prep. 穿过",
+        "app_sentences": [
+          {
+            "en": "The bank is across the street.",
+            "cn": "银行在街对面。"
+          }
+        ]
+      },
+      {
+        "text": "cross",
+        "phonetic": "/krɒs/",
+        "syllables": [
+          "cross"
+        ],
+        "meaning": "v. 穿过",
+        "app_sentences": [
+          {
+            "en": "n. 十字架",
+            "cn": "Be careful when you cross the road."
+          }
+        ]
+      },
+      {
+        "text": "opposite",
+        "phonetic": "/ˈɒpəzɪt/",
+        "syllables": [
+          "op",
+          "po",
+          "site"
+        ],
+        "meaning": "prep. 在对面",
+        "app_sentences": [
+          {
+            "en": "The shop is opposite the park.",
+            "cn": "商店在公园对面。"
+          }
+        ]
+      },
+      {
+        "text": "tourist",
+        "phonetic": "/ˈtʊərɪst/",
+        "syllables": [
+          "tour",
+          "ist"
+        ],
+        "meaning": "n. 游客",
+        "app_sentences": [
+          {
+            "en": "Many tourists visit Beijing.",
+            "cn": "许多游客参观北京。"
+          }
+        ]
+      },
+      {
+        "text": "excuse",
+        "phonetic": "/ɪkˈskjuːs/",
+        "syllables": [
+          "ex",
+          "cuse"
+        ],
+        "meaning": "n. 借口",
+        "app_sentences": [
+          {
+            "en": "v. 原谅",
+            "cn": "That's no excuse for being late."
+          }
+        ]
+      },
+      {
+        "text": "excuse me",
+        "phonetic": "/ɪkˈskjuːz miː/",
+        "syllables": [
+          "ex",
+          "cuse",
+          "me"
+        ],
+        "meaning": "phr. 打扰一下",
+        "app_sentences": [
+          {
+            "en": "Excuse me",
+            "cn": "where is the station?"
+          }
+        ]
+      },
+      {
+        "text": "street",
+        "phonetic": "/striːt/",
+        "syllables": [
+          "street"
+        ],
+        "meaning": "n. 街道",
+        "app_sentences": [
+          {
+            "en": "The street is busy.",
+            "cn": "街道很繁忙。"
+          }
+        ]
+      },
+      {
+        "text": "turn",
+        "phonetic": "/tɜːn/",
+        "syllables": [
+          "turn"
+        ],
+        "meaning": "v. 转弯",
+        "app_sentences": [
+          {
+            "en": "n. 轮流",
+            "cn": "Turn left at the corner."
+          }
+        ]
+      },
+      {
+        "text": "third",
+        "phonetic": "/θɜːd/",
+        "syllables": [
+          "third"
+        ],
+        "meaning": "num. 第三",
+        "app_sentences": [
+          {
+            "en": "This is the third time I have been here.",
+            "cn": "这是我第三次来这里。"
+          }
+        ]
+      },
+      {
+        "text": "guidebook",
+        "phonetic": "/ˈɡaɪdbʊk/",
+        "syllables": [
+          "guide",
+          "book"
+        ],
+        "meaning": "n. 指南",
+        "app_sentences": [
+          {
+            "en": "We use a guidebook for travel.",
+            "cn": "我们旅行时使用指南。"
+          }
+        ]
+      },
+      {
+        "text": "bookshop",
+        "phonetic": "/ˈbʊkʃɒp/",
+        "syllables": [
+          "book",
+          "shop"
+        ],
+        "meaning": "n. 书店",
+        "app_sentences": [
+          {
+            "en": "He bought a book at the bookshop.",
+            "cn": "他在书店买了一本书。"
+          }
+        ]
+      },
+      {
+        "text": "right",
+        "phonetic": "/raɪt/",
+        "syllables": [
+          "right"
+        ],
+        "meaning": "adj. 正确的；右边的",
+        "app_sentences": [
+          {
+            "en": "Your answer is right.",
+            "cn": "你的答案是正确的。"
+          }
+        ]
+      },
+      {
+        "text": "Why not ... ?",
+        "phonetic": "/waɪ nɒt ...",
+        "syllables": [
+          "Why",
+          "not",
+          "..."
+        ],
+        "meaning": "phr. 为什么不...？",
+        "app_sentences": [
+          {
+            "en": "Why not go to the park?",
+            "cn": "为什么不去公园呢？"
+          }
+        ]
+      },
+      {
+        "text": "could",
+        "phonetic": "/kʊd/",
+        "syllables": [
+          "could"
+        ],
+        "meaning": "aux. 可以（can的过去式）",
+        "app_sentences": [
+          {
+            "en": "Could you help me?",
+            "cn": "你能帮我吗？"
+          }
+        ]
+      },
+      {
+        "text": "underground",
+        "phonetic": "/ˈʌndəɡraʊnd/",
+        "syllables": [
+          "un",
+          "der",
+          "ground"
+        ],
+        "meaning": "adj. 地下的",
+        "app_sentences": [
+          {
+            "en": "n. 地铁",
+            "cn": "We take the underground to work."
+          }
+        ]
+      },
+      {
+        "text": "take",
+        "phonetic": "/teɪk/",
+        "syllables": [
+          "take"
+        ],
+        "meaning": "v. 拿；乘坐",
+        "app_sentences": [
+          {
+            "en": "Take the bus to the station.",
+            "cn": "乘公交车去车站。"
+          }
+        ]
+      },
+      {
+        "text": "tour",
+        "phonetic": "/tʊər/",
+        "syllables": [
+          "tour"
+        ],
+        "meaning": "n. 旅行",
+        "app_sentences": [
+          {
+            "en": "v. 旅游",
+            "cn": "We went on a tour of the city."
+          }
+        ]
+      },
+      {
+        "text": "square",
+        "phonetic": "/skweər/",
+        "syllables": [
+          "square"
+        ],
+        "meaning": "n. 广场",
+        "app_sentences": [
+          {
+            "en": "There is a big square in the city.",
+            "cn": "城市里有一个大广场。"
+          }
+        ]
+      },
+      {
+        "text": "middle",
+        "phonetic": "/ˈmɪdl/",
+        "syllables": [
+          "mid",
+          "dle"
+        ],
+        "meaning": "n. 中间",
+        "app_sentences": [
+          {
+            "en": "adj. 中间的",
+            "cn": "We meet in the middle of the park."
+          }
+        ]
+      },
+      {
+        "text": "famous",
+        "phonetic": "/ˈfeɪməs/",
+        "syllables": [
+          "fa",
+          "mous"
+        ],
+        "meaning": "adj. 著名的",
+        "app_sentences": [
+          {
+            "en": "Beijing is a famous city.",
+            "cn": "北京是一座著名的城市。"
+          }
+        ]
+      },
+      {
+        "text": "painting",
+        "phonetic": "/ˈpeɪntɪŋ/",
+        "syllables": [
+          "paint",
+          "ing"
+        ],
+        "meaning": "n. 绘画",
+        "app_sentences": [
+          {
+            "en": "She likes the painting.",
+            "cn": "她喜欢这幅画。"
+          }
+        ]
+      },
+      {
+        "text": "from",
+        "phonetic": "/frɒm/",
+        "syllables": [
+          "from"
+        ],
+        "meaning": "prep. 来自",
+        "app_sentences": [
+          {
+            "en": "He is from China.",
+            "cn": "他来自中国。"
+          }
+        ]
+      },
+      {
+        "text": "metre",
+        "phonetic": "/ˈmiːtər/",
+        "syllables": [
+          "me",
+          "tre"
+        ],
+        "meaning": "n. 米",
+        "app_sentences": [
+          {
+            "en": "The room is five metres long.",
+            "cn": "房间长五米。"
+          }
+        ]
+      },
+      {
+        "text": "above",
+        "phonetic": "/əˈbʌv/",
+        "syllables": [
+          "a",
+          "bove"
+        ],
+        "meaning": "prep. 在...上面",
+        "app_sentences": [
+          {
+            "en": "The picture is above the desk.",
+            "cn": "画在书桌上面。"
+          }
+        ]
+      },
+      {
+        "text": "river",
+        "phonetic": "/ˈrɪvər/",
+        "syllables": [
+          "riv",
+          "er"
+        ],
+        "meaning": "n. 河",
+        "app_sentences": [
+          {
+            "en": "We swim in the river.",
+            "cn": "我们在河里游泳。"
+          }
+        ]
+      },
+      {
+        "text": "clear",
+        "phonetic": "/klɪər/",
+        "syllables": [
+          "clear"
+        ],
+        "meaning": "adj. 清晰的",
+        "app_sentences": [
+          {
+            "en": "v. 清除",
+            "cn": "The water is clear."
+          }
+        ]
+      },
+      {
+        "text": "bridge",
+        "phonetic": "/brɪdʒ/",
+        "syllables": [
+          "bridge"
+        ],
+        "meaning": "n. 桥",
+        "app_sentences": [
+          {
+            "en": "There is a bridge over the river.",
+            "cn": "河上有一座桥。"
+          }
+        ]
+      },
+      {
+        "text": "railway",
+        "phonetic": "/ˈreɪlweɪ/",
+        "syllables": [
+          "rail",
+          "way"
+        ],
+        "meaning": "n. 铁路",
+        "app_sentences": [
+          {
+            "en": "The railway is long.",
+            "cn": "铁路很长。"
+          }
+        ]
+      },
+      {
+        "text": "past",
+        "phonetic": "/pɑːst/",
+        "syllables": [
+          "past"
+        ],
+        "meaning": "prep. 过",
+        "app_sentences": [
+          {
+            "en": "adj. 过去的",
+            "cn": "It is half past ten."
+          }
+        ]
+      },
+      {
+        "text": "church",
+        "phonetic": "/tʃɜːtʃ/",
+        "syllables": [
+          "church"
+        ],
+        "meaning": "n. 教堂",
+        "app_sentences": [
+          {
+            "en": "We go to church on Sunday.",
+            "cn": "我们周日去教堂。"
+          }
+        ]
+      },
+      {
+        "text": "finish",
+        "phonetic": "/ˈfɪnɪʃ/",
+        "syllables": [
+          "fin",
+          "ish"
+        ],
+        "meaning": "v. 完成",
+        "app_sentences": [
+          {
+            "en": "Finish your homework first.",
+            "cn": "先完成你的作业。"
+          }
+        ]
+      },
+      {
+        "text": "high",
+        "phonetic": "/haɪ/",
+        "syllables": [
+          "high"
+        ],
+        "meaning": "adj. 高的",
+        "app_sentences": [
+          {
+            "en": "The mountain is high.",
+            "cn": "山很高。"
+          }
+        ]
+      },
+      {
+        "text": "post office",
+        "phonetic": "/pəʊst ˈɒfɪs/",
+        "syllables": [
+          "post",
+          "of",
+          "fice"
+        ],
+        "meaning": "phr. 邮局",
+        "app_sentences": [
+          {
+            "en": "The post office is open.",
+            "cn": "邮局开着。"
+          }
+        ]
+      },
+      {
+        "text": "up",
+        "phonetic": "/ʌp/",
+        "syllables": [
+          "up"
+        ],
+        "meaning": "adv. 向上",
+        "app_sentences": [
+          {
+            "en": "Stand up.",
+            "cn": "起立。"
+          }
+        ]
+      },
+      {
+        "text": "down",
+        "phonetic": "/daʊn/",
+        "syllables": [
+          "down"
+        ],
+        "meaning": "adv. 向下",
+        "app_sentences": [
+          {
+            "en": "Sit down.",
+            "cn": "坐下。"
+          }
+        ]
+      },
+      {
+        "text": "stop",
+        "phonetic": "/stɒp/",
+        "syllables": [
+          "stop"
+        ],
+        "meaning": "v. 停止",
+        "app_sentences": [
+          {
+            "en": "n. 车站",
+            "cn": "The bus stops here."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Revision module A",
+    "data": [
+      {
+        "text": "horse",
+        "phonetic": "/hɔːs/",
+        "syllables": [
+          "horse"
+        ],
+        "meaning": "n. 马",
+        "app_sentences": [
+          {
+            "en": "The horse runs fast.",
+            "cn": "马跑得很快。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 7",
+    "data": [
+      {
+        "text": "born",
+        "phonetic": "/bɔːn/",
+        "syllables": [
+          "born"
+        ],
+        "meaning": "adj. 出生的",
+        "app_sentences": [
+          {
+            "en": "She was born in Beijing.",
+            "cn": "她出生在北京。"
+          }
+        ]
+      },
+      {
+        "text": "strict",
+        "phonetic": "/strɪkt/",
+        "syllables": [
+          "strict"
+        ],
+        "meaning": "adj. 严格的",
+        "app_sentences": [
+          {
+            "en": "My teacher is strict.",
+            "cn": "我的老师很严格。"
+          }
+        ]
+      },
+      {
+        "text": "friendly",
+        "phonetic": "/ˈfrendli/",
+        "syllables": [
+          "friend",
+          "ly"
+        ],
+        "meaning": "adj. 友好的",
+        "app_sentences": [
+          {
+            "en": "She is friendly to everyone.",
+            "cn": "她对每个人都很友好。"
+          }
+        ]
+      },
+      {
+        "text": "primary",
+        "phonetic": "/ˈpraɪməri/",
+        "syllables": [
+          "pri",
+          "ma",
+          "ry"
+        ],
+        "meaning": "adj. 初级的",
+        "app_sentences": [
+          {
+            "en": "He goes to primary school.",
+            "cn": "他上小学。"
+          }
+        ]
+      },
+      {
+        "text": "primary school",
+        "phonetic": "/ˈpraɪməri skuːl/",
+        "syllables": [
+          "pri",
+          "ma",
+          "ry",
+          "school"
+        ],
+        "meaning": "phr. 小学",
+        "app_sentences": [
+          {
+            "en": "I studied at that primary school.",
+            "cn": "我在那所小学学习过。"
+          }
+        ]
+      },
+      {
+        "text": "town",
+        "phonetic": "/taʊn/",
+        "syllables": [
+          "town"
+        ],
+        "meaning": "n. 城镇",
+        "app_sentences": [
+          {
+            "en": "He lives in a small town.",
+            "cn": "他住在一个小镇上。"
+          }
+        ]
+      },
+      {
+        "text": "US",
+        "phonetic": "/ˌjuː ˈes/",
+        "syllables": [
+          "U",
+          "S"
+        ],
+        "meaning": "n. 美国",
+        "app_sentences": [
+          {
+            "en": "The US is a large country.",
+            "cn": "美国是一个大国。"
+          }
+        ]
+      },
+      {
+        "text": "hey",
+        "phonetic": "/heɪ/",
+        "syllables": [
+          "hey"
+        ],
+        "meaning": "interj. 嘿",
+        "app_sentences": [
+          {
+            "en": "Hey",
+            "cn": "how are you?"
+          }
+        ]
+      },
+      {
+        "text": "village",
+        "phonetic": "/ˈvɪlɪdʒ/",
+        "syllables": [
+          "vil",
+          "lage"
+        ],
+        "meaning": "n. 村庄",
+        "app_sentences": [
+          {
+            "en": "My grandparents live in a village.",
+            "cn": "我的祖父母住在一个村庄里。"
+          }
+        ]
+      },
+      {
+        "text": "nice",
+        "phonetic": "/naɪs/",
+        "syllables": [
+          "nice"
+        ],
+        "meaning": "adj. 好的；令人愉快的",
+        "app_sentences": [
+          {
+            "en": "It's a nice day today.",
+            "cn": "今天天气很好。"
+          }
+        ]
+      },
+      {
+        "text": "good",
+        "phonetic": "/ɡʊd/",
+        "syllables": [
+          "good"
+        ],
+        "meaning": "adj. 好的",
+        "app_sentences": [
+          {
+            "en": "She is a good student.",
+            "cn": "她是一名好学生。"
+          }
+        ]
+      },
+      {
+        "text": "difficult",
+        "phonetic": "/ˈdɪfɪkəlt/",
+        "syllables": [
+          "dif",
+          "fi",
+          "cult"
+        ],
+        "meaning": "adj. 困难的",
+        "app_sentences": [
+          {
+            "en": "This question is difficult.",
+            "cn": "这个问题很难。"
+          }
+        ]
+      },
+      {
+        "text": "bathroom",
+        "phonetic": "/ˈbɑːθruːm/",
+        "syllables": [
+          "bath",
+          "room"
+        ],
+        "meaning": "n. 浴室",
+        "app_sentences": [
+          {
+            "en": "I brush my teeth in the bathroom.",
+            "cn": "我在浴室刷牙。"
+          }
+        ]
+      },
+      {
+        "text": "bedroom",
+        "phonetic": "/ˈbedruːm/",
+        "syllables": [
+          "bed",
+          "room"
+        ],
+        "meaning": "n. 卧室",
+        "app_sentences": [
+          {
+            "en": "My bedroom is small.",
+            "cn": "我的卧室很小。"
+          }
+        ]
+      },
+      {
+        "text": "garden",
+        "phonetic": "/ˈɡɑːdn/",
+        "syllables": [
+          "gar",
+          "den"
+        ],
+        "meaning": "n. 花园",
+        "app_sentences": [
+          {
+            "en": "We have a garden behind the house.",
+            "cn": "我们房子后面有一个花园。"
+          }
+        ]
+      },
+      {
+        "text": "living room",
+        "phonetic": "/ˈlɪvɪŋ ruːm/",
+        "syllables": [
+          "liv",
+          "ing",
+          "room"
+        ],
+        "meaning": "phr. 客厅",
+        "app_sentences": [
+          {
+            "en": "We watch TV in the living room.",
+            "cn": "我们在客厅看电视。"
+          }
+        ]
+      },
+      {
+        "text": "east",
+        "phonetic": "/iːst/",
+        "syllables": [
+          "east"
+        ],
+        "meaning": "n. 东方",
+        "app_sentences": [
+          {
+            "en": "adj. 东方的",
+            "cn": "The sun rises in the east."
+          }
+        ]
+      },
+      {
+        "text": "coast",
+        "phonetic": "/kəʊst/",
+        "syllables": [
+          "coast"
+        ],
+        "meaning": "n. 海岸",
+        "app_sentences": [
+          {
+            "en": "We live near the coast.",
+            "cn": "我们住在海岸附近。"
+          }
+        ]
+      },
+      {
+        "text": "ago",
+        "phonetic": "/əˈɡəʊ/",
+        "syllables": [
+          "a",
+          "go"
+        ],
+        "meaning": "adv. 以前",
+        "app_sentences": [
+          {
+            "en": "He left ten minutes ago.",
+            "cn": "他十分钟前离开了。"
+          }
+        ]
+      },
+      {
+        "text": "store",
+        "phonetic": "/stɔːr/",
+        "syllables": [
+          "store"
+        ],
+        "meaning": "n. 商店",
+        "app_sentences": [
+          {
+            "en": "v. 储存",
+            "cn": "We buy food at the store."
+          }
+        ]
+      },
+      {
+        "text": "movie theater",
+        "phonetic": "/ˈmuːvi ˈθɪətər/",
+        "syllables": [
+          "mov",
+          "ie",
+          "the",
+          "a",
+          "ter"
+        ],
+        "meaning": "phr. 电影院",
+        "app_sentences": [
+          {
+            "en": "We watch films at the movie theater.",
+            "cn": "我们在电影院看电影。"
+          }
+        ]
+      },
+      {
+        "text": "bored",
+        "phonetic": "/bɔːd/",
+        "syllables": [
+          "bored"
+        ],
+        "meaning": "adj. 无聊的",
+        "app_sentences": [
+          {
+            "en": "He is bored with the game.",
+            "cn": "他对这个游戏感到无聊。"
+          }
+        ]
+      },
+      {
+        "text": "president",
+        "phonetic": "/ˈprezɪdənt/",
+        "syllables": [
+          "pres",
+          "i",
+          "dent"
+        ],
+        "meaning": "n. 总统",
+        "app_sentences": [
+          {
+            "en": "The president gave a speech.",
+            "cn": "总统发表了演讲。"
+          }
+        ]
+      },
+      {
+        "text": "comfortable",
+        "phonetic": "/ˈkʌmftəbl/",
+        "syllables": [
+          "com",
+          "fort",
+          "a",
+          "ble"
+        ],
+        "meaning": "adj. 舒适的",
+        "app_sentences": [
+          {
+            "en": "The chair is comfortable.",
+            "cn": "这把椅子很舒适。"
+          }
+        ]
+      },
+      {
+        "text": "lake",
+        "phonetic": "/leɪk/",
+        "syllables": [
+          "lake"
+        ],
+        "meaning": "n. 湖",
+        "app_sentences": [
+          {
+            "en": "We swim in the lake.",
+            "cn": "我们在湖里游泳。"
+          }
+        ]
+      },
+      {
+        "text": "last",
+        "phonetic": "/lɑːst/",
+        "syllables": [
+          "last"
+        ],
+        "meaning": "adj. 最后的",
+        "app_sentences": [
+          {
+            "en": "adv. 最后",
+            "cn": "This is the last question."
+          }
+        ]
+      },
+      {
+        "text": "yesterday",
+        "phonetic": "/ˈjestədeɪ/",
+        "syllables": [
+          "yes",
+          "ter",
+          "day"
+        ],
+        "meaning": "n. 昨天",
+        "app_sentences": [
+          {
+            "en": "Yesterday was Monday.",
+            "cn": "昨天是星期一。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 8",
+    "data": [
+      {
+        "text": "hair",
+        "phonetic": "/heər/",
+        "syllables": [
+          "hair"
+        ],
+        "meaning": "n. 头发",
+        "app_sentences": [
+          {
+            "en": "She has long hair.",
+            "cn": "她有长头发。"
+          }
+        ]
+      },
+      {
+        "text": "gold",
+        "phonetic": "/ɡəʊld/",
+        "syllables": [
+          "gold"
+        ],
+        "meaning": "n. 黄金",
+        "app_sentences": [
+          {
+            "en": "adj. 金色的",
+            "cn": "The ring is made of gold."
+          }
+        ]
+      },
+      {
+        "text": "forest",
+        "phonetic": "/ˈfɒrɪst/",
+        "syllables": [
+          "for",
+          "est"
+        ],
+        "meaning": "n. 森林",
+        "app_sentences": [
+          {
+            "en": "We walked through the forest.",
+            "cn": "我们穿过了森林。"
+          }
+        ]
+      },
+      {
+        "text": "once",
+        "phonetic": "/wʌns/",
+        "syllables": [
+          "once"
+        ],
+        "meaning": "adv. 一次",
+        "app_sentences": [
+          {
+            "en": "conj. 一旦",
+            "cn": "I have been there once."
+          }
+        ]
+      },
+      {
+        "text": "upon",
+        "phonetic": "/əˈpɒn/",
+        "syllables": [
+          "up",
+          "on"
+        ],
+        "meaning": "prep. 在...上",
+        "app_sentences": [
+          {
+            "en": "Once upon a time",
+            "cn": "there was a king."
+          }
+        ]
+      },
+      {
+        "text": "once upon a time",
+        "phonetic": "/wʌns əˈpɒn ə taɪm/",
+        "syllables": [
+          "once",
+          "up",
+          "on",
+          "a",
+          "time"
+        ],
+        "meaning": "phr. 从前",
+        "app_sentences": [
+          {
+            "en": "Once upon a time",
+            "cn": "there was a beautiful princess."
+          }
+        ]
+      },
+      {
+        "text": "decide",
+        "phonetic": "/dɪˈsaɪd/",
+        "syllables": [
+          "de",
+          "cide"
+        ],
+        "meaning": "v. 决定",
+        "app_sentences": [
+          {
+            "en": "We decide to go home.",
+            "cn": "我们决定回家。"
+          }
+        ]
+      },
+      {
+        "text": "go for a walk",
+        "phonetic": "/ɡəʊ fɔːr ə wɔːk/",
+        "syllables": [
+          "go",
+          "for",
+          "a",
+          "walk"
+        ],
+        "meaning": "phr. 去散步",
+        "app_sentences": [
+          {
+            "en": "Let's go for a walk after dinner.",
+            "cn": "晚饭后我们去散步吧。"
+          }
+        ]
+      },
+      {
+        "text": "basket",
+        "phonetic": "/ˈbɑːskɪt/",
+        "syllables": [
+          "bas",
+          "ket"
+        ],
+        "meaning": "n. 篮子",
+        "app_sentences": [
+          {
+            "en": "She carries a basket of fruit.",
+            "cn": "她提着一篮子水果。"
+          }
+        ]
+      },
+      {
+        "text": "notice",
+        "phonetic": "/ˈnəʊtɪs/",
+        "syllables": [
+          "no",
+          "tice"
+        ],
+        "meaning": "v. 注意到",
+        "app_sentences": [
+          {
+            "en": "n. 通知",
+            "cn": "Did you notice the change?"
+          }
+        ]
+      },
+      {
+        "text": "all alone",
+        "phonetic": "/ɔːl əˈləʊn/",
+        "syllables": [
+          "all",
+          "a",
+          "lone"
+        ],
+        "meaning": "phr. 独自一人",
+        "app_sentences": [
+          {
+            "en": "She sat all alone in the room.",
+            "cn": "她独自一人坐在房间里。"
+          }
+        ]
+      },
+      {
+        "text": "dark",
+        "phonetic": "/dɑːk/",
+        "syllables": [
+          "dark"
+        ],
+        "meaning": "adj. 黑暗的",
+        "app_sentences": [
+          {
+            "en": "It is dark outside.",
+            "cn": "外面很黑。"
+          }
+        ]
+      },
+      {
+        "text": "pick",
+        "phonetic": "/pɪk/",
+        "syllables": [
+          "pick"
+        ],
+        "meaning": "v. 采摘；挑选",
+        "app_sentences": [
+          {
+            "en": "We pick apples in autumn.",
+            "cn": "我们在秋天摘苹果。"
+          }
+        ]
+      },
+      {
+        "text": "pick up",
+        "phonetic": "/pɪk ʌp/",
+        "syllables": [
+          "pick",
+          "up"
+        ],
+        "meaning": "phr. 捡起",
+        "app_sentences": [
+          {
+            "en": "Please pick up the paper.",
+            "cn": "请捡起纸。"
+          }
+        ]
+      },
+      {
+        "text": "soon",
+        "phonetic": "/suːn/",
+        "syllables": [
+          "soon"
+        ],
+        "meaning": "adv. 很快",
+        "app_sentences": [
+          {
+            "en": "He will arrive soon.",
+            "cn": "他很快会到达。"
+          }
+        ]
+      },
+      {
+        "text": "lost",
+        "phonetic": "/lɒst/",
+        "syllables": [
+          "lost"
+        ],
+        "meaning": "adj. 迷失的",
+        "app_sentences": [
+          {
+            "en": "The child is lost.",
+            "cn": "孩子迷路了。"
+          }
+        ]
+      },
+      {
+        "text": "around",
+        "phonetic": "/əˈraʊnd/",
+        "syllables": [
+          "a",
+          "round"
+        ],
+        "meaning": "prep. 围绕",
+        "app_sentences": [
+          {
+            "en": "We walk around the lake.",
+            "cn": "我们绕着湖走。"
+          }
+        ]
+      },
+      {
+        "text": "little",
+        "phonetic": "/ˈlɪtl/",
+        "syllables": [
+          "lit",
+          "tle"
+        ],
+        "meaning": "adj. 小的",
+        "app_sentences": [
+          {
+            "en": "The little girl is cute.",
+            "cn": "这个小女孩很可爱。"
+          }
+        ]
+      },
+      {
+        "text": "towards",
+        "phonetic": "/təˈwɔːdz/",
+        "syllables": [
+          "to",
+          "wards"
+        ],
+        "meaning": "prep. 向",
+        "app_sentences": [
+          {
+            "en": "He walked towards the door.",
+            "cn": "他向门走去。"
+          }
+        ]
+      },
+      {
+        "text": "knock",
+        "phonetic": "/nɒk/",
+        "syllables": [
+          "knock"
+        ],
+        "meaning": "v. 敲",
+        "app_sentences": [
+          {
+            "en": "n. 敲门声",
+            "cn": "Knock on the door before entering."
+          }
+        ]
+      },
+      {
+        "text": "door",
+        "phonetic": "/dɔːr/",
+        "syllables": [
+          "door"
+        ],
+        "meaning": "n. 门",
+        "app_sentences": [
+          {
+            "en": "Close the door",
+            "cn": "please."
+          }
+        ]
+      },
+      {
+        "text": "answer",
+        "phonetic": "/ˈɑːnsər/",
+        "syllables": [
+          "an",
+          "swer"
+        ],
+        "meaning": "v. 回答",
+        "app_sentences": [
+          {
+            "en": "n. 答案",
+            "cn": "Answer the question"
+          }
+        ]
+      },
+      {
+        "text": "push",
+        "phonetic": "/pʊʃ/",
+        "syllables": [
+          "push"
+        ],
+        "meaning": "v. 推",
+        "app_sentences": [
+          {
+            "en": "Don't push others.",
+            "cn": "不要推别人。"
+          }
+        ]
+      },
+      {
+        "text": "enter",
+        "phonetic": "/ˈentər/",
+        "syllables": [
+          "en",
+          "ter"
+        ],
+        "meaning": "v. 进入",
+        "app_sentences": [
+          {
+            "en": "Enter the room quietly.",
+            "cn": "安静地进入房间。"
+          }
+        ]
+      },
+      {
+        "text": "bowl",
+        "phonetic": "/bəʊl/",
+        "syllables": [
+          "bowl"
+        ],
+        "meaning": "n. 碗",
+        "app_sentences": [
+          {
+            "en": "She eats rice from a bowl.",
+            "cn": "她用碗吃米饭。"
+          }
+        ]
+      },
+      {
+        "text": "hungry",
+        "phonetic": "/ˈhʌŋɡri/",
+        "syllables": [
+          "hun",
+          "gry"
+        ],
+        "meaning": "adj. 饥饿的",
+        "app_sentences": [
+          {
+            "en": "I am hungry.",
+            "cn": "我饿了。"
+          }
+        ]
+      },
+      {
+        "text": "right",
+        "phonetic": "/raɪt/",
+        "syllables": [
+          "right"
+        ],
+        "meaning": "adj. 正确的",
+        "app_sentences": [
+          {
+            "en": "Your answer is right.",
+            "cn": "你的答案是正确的。"
+          }
+        ]
+      },
+      {
+        "text": "finish",
+        "phonetic": "/ˈfɪnɪʃ/",
+        "syllables": [
+          "fin",
+          "ish"
+        ],
+        "meaning": "v. 完成",
+        "app_sentences": [
+          {
+            "en": "Finish your work first.",
+            "cn": "先完成你的工作。"
+          }
+        ]
+      },
+      {
+        "text": "either",
+        "phonetic": "/ˈaɪðər/",
+        "syllables": [
+          "ei",
+          "ther"
+        ],
+        "meaning": "adv. 也（用于否定句）",
+        "app_sentences": [
+          {
+            "en": "I don't like it either.",
+            "cn": "我也不喜欢它。"
+          }
+        ]
+      },
+      {
+        "text": "piece",
+        "phonetic": "/piːs/",
+        "syllables": [
+          "piece"
+        ],
+        "meaning": "n. 块；片",
+        "app_sentences": [
+          {
+            "en": "She ate a piece of cake.",
+            "cn": "她吃了一块蛋糕。"
+          }
+        ]
+      },
+      {
+        "text": "in pieces",
+        "phonetic": "/ɪn ˈpiːsɪz/",
+        "syllables": [
+          "in",
+          "piec",
+          "es"
+        ],
+        "meaning": "phr. 破碎",
+        "app_sentences": [
+          {
+            "en": "The glass fell and broke in pieces.",
+            "cn": "玻璃杯掉下来摔碎了。"
+          }
+        ]
+      },
+      {
+        "text": "asleep",
+        "phonetic": "/əˈsliːp/",
+        "syllables": [
+          "a",
+          "sleep"
+        ],
+        "meaning": "adj. 睡着的",
+        "app_sentences": [
+          {
+            "en": "The baby is asleep.",
+            "cn": "婴儿睡着了。"
+          }
+        ]
+      },
+      {
+        "text": "return",
+        "phonetic": "/rɪˈtɜːn/",
+        "syllables": [
+          "re",
+          "turn"
+        ],
+        "meaning": "v. 返回",
+        "app_sentences": [
+          {
+            "en": "He will return tomorrow.",
+            "cn": "他明天会返回。"
+          }
+        ]
+      },
+      {
+        "text": "cry",
+        "phonetic": "/kraɪ/",
+        "syllables": [
+          "cry"
+        ],
+        "meaning": "v. 哭",
+        "app_sentences": [
+          {
+            "en": "n. 哭声",
+            "cn": "The child cries loudly."
+          }
+        ]
+      },
+      {
+        "text": "at first",
+        "phonetic": "/æt fɜːst/",
+        "syllables": [
+          "at",
+          "first"
+        ],
+        "meaning": "phr. 起初",
+        "app_sentences": [
+          {
+            "en": "At first",
+            "cn": "I didn't understand."
+          }
+        ]
+      },
+      {
+        "text": "point",
+        "phonetic": "/pɔɪnt/",
+        "syllables": [
+          "point"
+        ],
+        "meaning": "v. 指向",
+        "app_sentences": [
+          {
+            "en": "n. 点",
+            "cn": "Point to the correct answer."
+          }
+        ]
+      },
+      {
+        "text": "point at",
+        "phonetic": "/pɔɪnt æt/",
+        "syllables": [
+          "point",
+          "at"
+        ],
+        "meaning": "phr. 指向",
+        "app_sentences": [
+          {
+            "en": "He pointed at the map.",
+            "cn": "他指向地图。"
+          }
+        ]
+      },
+      {
+        "text": "shout",
+        "phonetic": "/ʃaʊt/",
+        "syllables": [
+          "shout"
+        ],
+        "meaning": "v. 喊叫",
+        "app_sentences": [
+          {
+            "en": "Don't shout in the library.",
+            "cn": "不要在图书馆喊叫。"
+          }
+        ]
+      },
+      {
+        "text": "jump",
+        "phonetic": "/dʒʌmp/",
+        "syllables": [
+          "jump"
+        ],
+        "meaning": "v. 跳",
+        "app_sentences": [
+          {
+            "en": "The rabbit jumps high.",
+            "cn": "兔子跳得很高。"
+          }
+        ]
+      },
+      {
+        "text": "without",
+        "phonetic": "/wɪˈðaʊt/",
+        "syllables": [
+          "with",
+          "out"
+        ],
+        "meaning": "prep. 没有",
+        "app_sentences": [
+          {
+            "en": "He left without saying goodbye.",
+            "cn": "他没有说再见就离开了。"
+          }
+        ]
+      },
+      {
+        "text": "part",
+        "phonetic": "/pɑːt/",
+        "syllables": [
+          "part"
+        ],
+        "meaning": "n. 部分",
+        "app_sentences": [
+          {
+            "en": "This is the first part of the story.",
+            "cn": "这是故事的第一部分。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 9",
+    "data": [
+      {
+        "text": "March",
+        "phonetic": "/mɑːtʃ/",
+        "syllables": [
+          "March"
+        ],
+        "meaning": "n. 三月",
+        "app_sentences": [
+          {
+            "en": "March is the third month.",
+            "cn": "三月是第三个月。"
+          }
+        ]
+      },
+      {
+        "text": "April",
+        "phonetic": "/ˈeɪprəl/",
+        "syllables": [
+          "A",
+          "pril"
+        ],
+        "meaning": "n. 四月",
+        "app_sentences": [
+          {
+            "en": "April is a spring month.",
+            "cn": "四月是春天的一个月。"
+          }
+        ]
+      },
+      {
+        "text": "June",
+        "phonetic": "/dʒuːn/",
+        "syllables": [
+          "June"
+        ],
+        "meaning": "n. 六月",
+        "app_sentences": [
+          {
+            "en": "June is a summer month.",
+            "cn": "六月是夏天的一个月。"
+          }
+        ]
+      },
+      {
+        "text": "Women's Day",
+        "phonetic": "/ˈwɪmɪnz deɪ/",
+        "syllables": [
+          "Wo",
+          "men's",
+          "Day"
+        ],
+        "meaning": "phr. 妇女节",
+        "app_sentences": [
+          {
+            "en": "We celebrate Women's Day on March 8th.",
+            "cn": "我们在3月8日庆祝妇女节。"
+          }
+        ]
+      },
+      {
+        "text": "National Day",
+        "phonetic": "/ˈnæʃnəl deɪ/",
+        "syllables": [
+          "Na",
+          "tion",
+          "al",
+          "Day"
+        ],
+        "meaning": "phr. 国庆节",
+        "app_sentences": [
+          {
+            "en": "National Day is on October 1st.",
+            "cn": "国庆节在10月1日。"
+          }
+        ]
+      },
+      {
+        "text": "Children's Day",
+        "phonetic": "/ˈtʃɪldrənz deɪ/",
+        "syllables": [
+          "Chil",
+          "dren's",
+          "Day"
+        ],
+        "meaning": "phr. 儿童节",
+        "app_sentences": [
+          {
+            "en": "Children's Day is on June 1st.",
+            "cn": "儿童节在6月1日。"
+          }
+        ]
+      },
+      {
+        "text": "July",
+        "phonetic": "/dʒʊˈlaɪ/",
+        "syllables": [
+          "Ju",
+          "ly"
+        ],
+        "meaning": "n. 七月",
+        "app_sentences": [
+          {
+            "en": "July is hot.",
+            "cn": "七月很热。"
+          }
+        ]
+      },
+      {
+        "text": "August",
+        "phonetic": "/ˈɔːɡəst/",
+        "syllables": [
+          "Au",
+          "gust"
+        ],
+        "meaning": "n. 八月",
+        "app_sentences": [
+          {
+            "en": "We have a holiday in August.",
+            "cn": "我们在八月有假期。"
+          }
+        ]
+      },
+      {
+        "text": "September",
+        "phonetic": "/sepˈtembər/",
+        "syllables": [
+          "Sep",
+          "tem",
+          "ber"
+        ],
+        "meaning": "n. 九月",
+        "app_sentences": [
+          {
+            "en": "School starts in September.",
+            "cn": "学校在九月开学。"
+          }
+        ]
+      },
+      {
+        "text": "October",
+        "phonetic": "/ɒkˈtəʊbər/",
+        "syllables": [
+          "Oc",
+          "to",
+          "ber"
+        ],
+        "meaning": "n. 十月",
+        "app_sentences": [
+          {
+            "en": "October is a cool month.",
+            "cn": "十月是一个凉爽的月份。"
+          }
+        ]
+      },
+      {
+        "text": "November",
+        "phonetic": "/nəʊˈvembər/",
+        "syllables": [
+          "No",
+          "vem",
+          "ber"
+        ],
+        "meaning": "n. 十一月",
+        "app_sentences": [
+          {
+            "en": "November is in autumn.",
+            "cn": "十一月在秋天。"
+          }
+        ]
+      },
+      {
+        "text": "December",
+        "phonetic": "/dɪˈsembər/",
+        "syllables": [
+          "De",
+          "cem",
+          "ber"
+        ],
+        "meaning": "n. 十二月",
+        "app_sentences": [
+          {
+            "en": "December is the last month.",
+            "cn": "十二月是最后一个月。"
+          }
+        ]
+      },
+      {
+        "text": "writer",
+        "phonetic": "/ˈraɪtər/",
+        "syllables": [
+          "writ",
+          "er"
+        ],
+        "meaning": "n. 作家",
+        "app_sentences": [
+          {
+            "en": "He is a famous writer.",
+            "cn": "他是一位著名作家。"
+          }
+        ]
+      },
+      {
+        "text": "find out",
+        "phonetic": "/faɪnd aʊt/",
+        "syllables": [
+          "find",
+          "out"
+        ],
+        "meaning": "phr. 找出",
+        "app_sentences": [
+          {
+            "en": "We need to find out the truth.",
+            "cn": "我们需要找出真相。"
+          }
+        ]
+      },
+      {
+        "text": "real",
+        "phonetic": "/rɪəl/",
+        "syllables": [
+          "real"
+        ],
+        "meaning": "adj. 真实的",
+        "app_sentences": [
+          {
+            "en": "Is this real gold?",
+            "cn": "这是真金吗？"
+          }
+        ]
+      },
+      {
+        "text": "at the age of",
+        "phonetic": "/æt ði eɪdʒ əv/",
+        "syllables": [
+          "at",
+          "the",
+          "age",
+          "of"
+        ],
+        "meaning": "phr. 在...岁时",
+        "app_sentences": [
+          {
+            "en": "He started school at the age of six.",
+            "cn": "他在六岁时开始上学。"
+          }
+        ]
+      },
+      {
+        "text": "newspaper",
+        "phonetic": "/ˈnjuːzpeɪpər/",
+        "syllables": [
+          "news",
+          "pa",
+          "per"
+        ],
+        "meaning": "n. 报纸",
+        "app_sentences": [
+          {
+            "en": "We read the newspaper every day.",
+            "cn": "我们每天读报纸。"
+          }
+        ]
+      },
+      {
+        "text": "exact",
+        "phonetic": "/ɪɡˈzækt/",
+        "syllables": [
+          "ex",
+          "act"
+        ],
+        "meaning": "adj. 精确的",
+        "app_sentences": [
+          {
+            "en": "What is the exact time?",
+            "cn": "确切时间是几点？"
+          }
+        ]
+      },
+      {
+        "text": "date",
+        "phonetic": "/deɪt/",
+        "syllables": [
+          "date"
+        ],
+        "meaning": "n. 日期",
+        "app_sentences": [
+          {
+            "en": "What is the date today?",
+            "cn": "今天几号？"
+          }
+        ]
+      },
+      {
+        "text": "become",
+        "phonetic": "/bɪˈkʌm/",
+        "syllables": [
+          "be",
+          "come"
+        ],
+        "meaning": "v. 成为",
+        "app_sentences": [
+          {
+            "en": "She wants to become a teacher.",
+            "cn": "她想成为一名老师。"
+          }
+        ]
+      },
+      {
+        "text": "in the 1860s",
+        "phonetic": "/ɪn ðə ˌnaɪnˈtiːn ˈsɪkstiz/",
+        "syllables": [
+          "in",
+          "the",
+          "nine",
+          "teen",
+          "six",
+          "ties"
+        ],
+        "meaning": "phr. 在19世纪60年代",
+        "app_sentences": [
+          {
+            "en": "The story is set in the 1860s.",
+            "cn": "这个故事设定在19世纪60年代。"
+          }
+        ]
+      },
+      {
+        "text": "play",
+        "phonetic": "/pleɪ/",
+        "syllables": [
+          "play"
+        ],
+        "meaning": "n. 戏剧",
+        "app_sentences": [
+          {
+            "en": "We watched a play at the theatre.",
+            "cn": "我们在剧院看了一出戏剧。"
+          }
+        ]
+      },
+      {
+        "text": "poem",
+        "phonetic": "/ˈpəʊɪm/",
+        "syllables": [
+          "po",
+          "em"
+        ],
+        "meaning": "n. 诗",
+        "app_sentences": [
+          {
+            "en": "She wrote a beautiful poem.",
+            "cn": "她写了一首美丽的诗。"
+          }
+        ]
+      },
+      {
+        "text": "marry",
+        "phonetic": "/ˈmæri/",
+        "syllables": [
+          "mar",
+          "ry"
+        ],
+        "meaning": "v. 结婚",
+        "app_sentences": [
+          {
+            "en": "They will marry next year.",
+            "cn": "他们明年结婚。"
+          }
+        ]
+      },
+      {
+        "text": "successful",
+        "phonetic": "/səkˈsesfl/",
+        "syllables": [
+          "suc",
+          "cess",
+          "ful"
+        ],
+        "meaning": "adj. 成功的",
+        "app_sentences": [
+          {
+            "en": "He is a successful businessman.",
+            "cn": "他是一位成功的商人。"
+          }
+        ]
+      },
+      {
+        "text": "work",
+        "phonetic": "/wɜːk/",
+        "syllables": [
+          "work"
+        ],
+        "meaning": "n. 作品",
+        "app_sentences": [
+          {
+            "en": "v. 工作",
+            "cn": "This is his best work."
+          }
+        ]
+      },
+      {
+        "text": "build",
+        "phonetic": "/bɪld/",
+        "syllables": [
+          "build"
+        ],
+        "meaning": "v. 建造",
+        "app_sentences": [
+          {
+            "en": "They build a new house.",
+            "cn": "他们建了一座新房子。"
+          }
+        ]
+      },
+      {
+        "text": "on",
+        "phonetic": "/ɒn/",
+        "syllables": [
+          "on"
+        ],
+        "meaning": "prep. 在...上",
+        "app_sentences": [
+          {
+            "en": "The book is on the table.",
+            "cn": "书在桌子上。"
+          }
+        ]
+      },
+      {
+        "text": "fire",
+        "phonetic": "/faɪər/",
+        "syllables": [
+          "fire"
+        ],
+        "meaning": "n. 火",
+        "app_sentences": [
+          {
+            "en": "v. 解雇",
+            "cn": "Don't play with fire."
+          }
+        ]
+      },
+      {
+        "text": "die",
+        "phonetic": "/daɪ/",
+        "syllables": [
+          "die"
+        ],
+        "meaning": "v. 死",
+        "app_sentences": [
+          {
+            "en": "The plant died because of no water.",
+            "cn": "植物因缺水而死。"
+          }
+        ]
+      },
+      {
+        "text": "rich",
+        "phonetic": "/rɪtʃ/",
+        "syllables": [
+          "rich"
+        ],
+        "meaning": "adj. 富有的",
+        "app_sentences": [
+          {
+            "en": "He is very rich.",
+            "cn": "他非常富有。"
+          }
+        ]
+      },
+      {
+        "text": "language",
+        "phonetic": "/ˈlæŋɡwɪdʒ/",
+        "syllables": [
+          "lan",
+          "guage"
+        ],
+        "meaning": "n. 语言",
+        "app_sentences": [
+          {
+            "en": "English is a useful language.",
+            "cn": "英语是一门有用的语言。"
+          }
+        ]
+      },
+      {
+        "text": "around the world",
+        "phonetic": "/əˈraʊnd ðə wɜːld/",
+        "syllables": [
+          "a",
+          "round",
+          "the",
+          "world"
+        ],
+        "meaning": "phr. 全世界",
+        "app_sentences": [
+          {
+            "en": "People around the world celebrate Christmas.",
+            "cn": "全世界的人们都庆祝圣诞节。"
+          }
+        ]
+      },
+      {
+        "text": "young",
+        "phonetic": "/jʌŋ/",
+        "syllables": [
+          "young"
+        ],
+        "meaning": "adj. 年轻的",
+        "app_sentences": [
+          {
+            "en": "She is young and energetic.",
+            "cn": "她年轻有活力。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 10",
+    "data": [
+      {
+        "text": "Pacific",
+        "phonetic": "/pəˈsɪfɪk/",
+        "syllables": [
+          "Pa",
+          "cif",
+          "ic"
+        ],
+        "meaning": "n. 太平洋",
+        "app_sentences": [
+          {
+            "en": "adj. 太平洋的",
+            "cn": "The Pacific Ocean is large."
+          }
+        ]
+      },
+      {
+        "text": "so",
+        "phonetic": "/səʊ/",
+        "syllables": [
+          "so"
+        ],
+        "meaning": "adv. 如此",
+        "app_sentences": [
+          {
+            "en": "conj. 所以",
+            "cn": "The story is so interesting."
+          }
+        ]
+      },
+      {
+        "text": "guess",
+        "phonetic": "/ɡes/",
+        "syllables": [
+          "guess"
+        ],
+        "meaning": "v. 猜",
+        "app_sentences": [
+          {
+            "en": "n. 猜测",
+            "cn": "Can you guess the answer?"
+          }
+        ]
+      },
+      {
+        "text": "excited",
+        "phonetic": "/ɪkˈsaɪtɪd/",
+        "syllables": [
+          "ex",
+          "cit",
+          "ed"
+        ],
+        "meaning": "adj. 兴奋的",
+        "app_sentences": [
+          {
+            "en": "We are excited about the trip.",
+            "cn": "我们对旅行感到兴奋。"
+          }
+        ]
+      },
+      {
+        "text": "wow",
+        "phonetic": "/waʊ/",
+        "syllables": [
+          "wow"
+        ],
+        "meaning": "interj. 哇",
+        "app_sentences": [
+          {
+            "en": "Wow",
+            "cn": "what a beautiful view!"
+          }
+        ]
+      },
+      {
+        "text": "arrive",
+        "phonetic": "/əˈraɪv/",
+        "syllables": [
+          "ar",
+          "rive"
+        ],
+        "meaning": "v. 到达",
+        "app_sentences": [
+          {
+            "en": "We arrive at the station at 10 am.",
+            "cn": "我们上午10点到达车站。"
+          }
+        ]
+      },
+      {
+        "text": "relax",
+        "phonetic": "/rɪˈlæks/",
+        "syllables": [
+          "re",
+          "lax"
+        ],
+        "meaning": "v. 放松",
+        "app_sentences": [
+          {
+            "en": "Relax and take a deep breath.",
+            "cn": "放松并深呼吸。"
+          }
+        ]
+      },
+      {
+        "text": "world-famous",
+        "phonetic": "/wɜːld ˈfeɪməs/",
+        "syllables": [
+          "world",
+          "fa",
+          "mous"
+        ],
+        "meaning": "adj. 世界闻名的",
+        "app_sentences": [
+          {
+            "en": "The Great Wall is world-famous.",
+            "cn": "长城是世界闻名的。"
+          }
+        ]
+      },
+      {
+        "text": "French",
+        "phonetic": "/frentʃ/",
+        "syllables": [
+          "French"
+        ],
+        "meaning": "adj. 法国的",
+        "app_sentences": [
+          {
+            "en": "n. 法语",
+            "cn": "She speaks French."
+          }
+        ]
+      },
+      {
+        "text": "sell",
+        "phonetic": "/sel/",
+        "syllables": [
+          "sell"
+        ],
+        "meaning": "v. 卖",
+        "app_sentences": [
+          {
+            "en": "They sell fruits at the market.",
+            "cn": "他们在市场卖水果。"
+          }
+        ]
+      },
+      {
+        "text": "top",
+        "phonetic": "/tɒp/",
+        "syllables": [
+          "top"
+        ],
+        "meaning": "n. 顶部",
+        "app_sentences": [
+          {
+            "en": "adj. 顶部的",
+            "cn": "The book is on the top shelf."
+          }
+        ]
+      },
+      {
+        "text": "till",
+        "phonetic": "/tɪl/",
+        "syllables": [
+          "till"
+        ],
+        "meaning": "prep. 直到",
+        "app_sentences": [
+          {
+            "en": "We work from morning till night.",
+            "cn": "我们从早工作到晚。"
+          }
+        ]
+      },
+      {
+        "text": "light",
+        "phonetic": "/laɪt/",
+        "syllables": [
+          "light"
+        ],
+        "meaning": "n. 光",
+        "app_sentences": [
+          {
+            "en": "adj. 轻的",
+            "cn": "The room has good light."
+          }
+        ]
+      },
+      {
+        "text": "on",
+        "phonetic": "/ɒn/",
+        "syllables": [
+          "on"
+        ],
+        "meaning": "prep. 在...上",
+        "app_sentences": [
+          {
+            "en": "The light is on.",
+            "cn": "灯亮着。"
+          }
+        ]
+      },
+      {
+        "text": "wonderful",
+        "phonetic": "/ˈwʌndəfl/",
+        "syllables": [
+          "won",
+          "der",
+          "ful"
+        ],
+        "meaning": "adj. 极好的",
+        "app_sentences": [
+          {
+            "en": "We had a wonderful time.",
+            "cn": "我们玩得很开心。"
+          }
+        ]
+      },
+      {
+        "text": "palace",
+        "phonetic": "/ˈpæləs/",
+        "syllables": [
+          "pal",
+          "ace"
+        ],
+        "meaning": "n. 宫殿",
+        "app_sentences": [
+          {
+            "en": "The palace is beautiful.",
+            "cn": "宫殿很美丽。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 11",
+    "data": [
+      {
+        "text": "bow",
+        "phonetic": "/baʊ/",
+        "syllables": [
+          "bow"
+        ],
+        "meaning": "n. 鞠躬",
+        "app_sentences": [
+          {
+            "en": "v. 鞠躬",
+            "cn": "He gave a bow to the audience."
+          }
+        ]
+      },
+      {
+        "text": "kiss",
+        "phonetic": "/kɪs/",
+        "syllables": [
+          "kiss"
+        ],
+        "meaning": "n. 吻",
+        "app_sentences": [
+          {
+            "en": "v. 亲吻",
+            "cn": "She gave her mother a kiss."
+          }
+        ]
+      },
+      {
+        "text": "shake",
+        "phonetic": "/ʃeɪk/",
+        "syllables": [
+          "shake"
+        ],
+        "meaning": "v. 摇动；握手",
+        "app_sentences": [
+          {
+            "en": "Shake the bottle before drinking.",
+            "cn": "喝前摇匀瓶子。"
+          }
+        ]
+      },
+      {
+        "text": "shake hands",
+        "phonetic": "/ʃeɪk hændz/",
+        "syllables": [
+          "shake",
+          "hands"
+        ],
+        "meaning": "phr. 握手",
+        "app_sentences": [
+          {
+            "en": "They shake hands when they meet.",
+            "cn": "他们见面时握手。"
+          }
+        ]
+      },
+      {
+        "text": "smile",
+        "phonetic": "/smaɪl/",
+        "syllables": [
+          "smile"
+        ],
+        "meaning": "n. 微笑",
+        "app_sentences": [
+          {
+            "en": "v. 微笑",
+            "cn": "She always has a sweet smile."
+          }
+        ]
+      },
+      {
+        "text": "British",
+        "phonetic": "/ˈbrɪtɪʃ/",
+        "syllables": [
+          "Brit",
+          "ish"
+        ],
+        "meaning": "adj. 英国的",
+        "app_sentences": [
+          {
+            "en": "He is British.",
+            "cn": "他是英国人。"
+          }
+        ]
+      },
+      {
+        "text": "German",
+        "phonetic": "/ˈdʒɜːmən/",
+        "syllables": [
+          "Ger",
+          "man"
+        ],
+        "meaning": "adj. 德国的",
+        "app_sentences": [
+          {
+            "en": "n. 德语",
+            "cn": "She speaks German."
+          }
+        ]
+      },
+      {
+        "text": "Japanese",
+        "phonetic": "/ˌdʒæpəˈniːz/",
+        "syllables": [
+          "Jap",
+          "a",
+          "nese"
+        ],
+        "meaning": "adj. 日本的",
+        "app_sentences": [
+          {
+            "en": "n. 日语",
+            "cn": "Japanese food is delicious."
+          }
+        ]
+      },
+      {
+        "text": "Russian",
+        "phonetic": "/ˈrʌʃən/",
+        "syllables": [
+          "Rus",
+          "sian"
+        ],
+        "meaning": "adj. 俄罗斯的",
+        "app_sentences": [
+          {
+            "en": "n. 俄语",
+            "cn": "He is learning Russian."
+          }
+        ]
+      },
+      {
+        "text": "visitor",
+        "phonetic": "/ˈvɪzɪtər/",
+        "syllables": [
+          "vis",
+          "i",
+          "tor"
+        ],
+        "meaning": "n. 参观者",
+        "app_sentences": [
+          {
+            "en": "There are many visitors in the museum.",
+            "cn": "博物馆里有许多参观者。"
+          }
+        ]
+      },
+      {
+        "text": "Russia",
+        "phonetic": "/ˈrʌʃə/",
+        "syllables": [
+          "Rus",
+          "sia"
+        ],
+        "meaning": "n. 俄罗斯",
+        "app_sentences": [
+          {
+            "en": "Russia is a large country.",
+            "cn": "俄罗斯是一个大国。"
+          }
+        ]
+      },
+      {
+        "text": "what",
+        "phonetic": "/wɒt/",
+        "syllables": [
+          "what"
+        ],
+        "meaning": "pron. 什么",
+        "app_sentences": [
+          {
+            "en": "What is your name?",
+            "cn": "你叫什么名字？"
+          }
+        ]
+      },
+      {
+        "text": "nod",
+        "phonetic": "/nɒd/",
+        "syllables": [
+          "nod"
+        ],
+        "meaning": "v. 点头",
+        "app_sentences": [
+          {
+            "en": "She nodded in agreement.",
+            "cn": "她点头同意。"
+          }
+        ]
+      },
+      {
+        "text": "head",
+        "phonetic": "/hed/",
+        "syllables": [
+          "head"
+        ],
+        "meaning": "n. 头",
+        "app_sentences": [
+          {
+            "en": "He has a headache.",
+            "cn": "他头痛。"
+          }
+        ]
+      },
+      {
+        "text": "hug",
+        "phonetic": "/hʌɡ/",
+        "syllables": [
+          "hug"
+        ],
+        "meaning": "n. 拥抱",
+        "app_sentences": [
+          {
+            "en": "v. 拥抱",
+            "cn": "They hugged each other goodbye."
+          }
+        ]
+      },
+      {
+        "text": "each",
+        "phonetic": "/iːtʃ/",
+        "syllables": [
+          "each"
+        ],
+        "meaning": "adj. 每个",
+        "app_sentences": [
+          {
+            "en": "pron. 每个",
+            "cn": "Each student has a book."
+          }
+        ]
+      },
+      {
+        "text": "each other",
+        "phonetic": "/iːtʃ ˈʌðər/",
+        "syllables": [
+          "each",
+          "oth",
+          "er"
+        ],
+        "meaning": "phr. 互相",
+        "app_sentences": [
+          {
+            "en": "They help each other.",
+            "cn": "他们互相帮助。"
+          }
+        ]
+      },
+      {
+        "text": "India",
+        "phonetic": "/ˈɪndiə/",
+        "syllables": [
+          "In",
+          "di",
+          "a"
+        ],
+        "meaning": "n. 印度",
+        "app_sentences": [
+          {
+            "en": "India is famous for its culture.",
+            "cn": "印度以其文化闻名。"
+          }
+        ]
+      },
+      {
+        "text": "together",
+        "phonetic": "/təˈɡeðər/",
+        "syllables": [
+          "to",
+          "geth",
+          "er"
+        ],
+        "meaning": "adv. 一起",
+        "app_sentences": [
+          {
+            "en": "We work together.",
+            "cn": "我们一起工作。"
+          }
+        ]
+      },
+      {
+        "text": "Maori",
+        "phonetic": "/ˈmaʊri/",
+        "syllables": [
+          "Ma",
+          "o",
+          "ri"
+        ],
+        "meaning": "n. 毛利人",
+        "app_sentences": [
+          {
+            "en": "adj. 毛利人的",
+            "cn": "The Maori culture is rich."
+          }
+        ]
+      },
+      {
+        "text": "touch",
+        "phonetic": "/tʌtʃ/",
+        "syllables": [
+          "touch"
+        ],
+        "meaning": "v. 触摸",
+        "app_sentences": [
+          {
+            "en": "n. 接触",
+            "cn": "Don't touch the hot stove."
+          }
+        ]
+      },
+      {
+        "text": "nose",
+        "phonetic": "/nəʊz/",
+        "syllables": [
+          "nose"
+        ],
+        "meaning": "n. 鼻子",
+        "app_sentences": [
+          {
+            "en": "She has a small nose.",
+            "cn": "她有一个小鼻子。"
+          }
+        ]
+      },
+      {
+        "text": "finger",
+        "phonetic": "/ˈfɪŋɡər/",
+        "syllables": [
+          "fin",
+          "ger"
+        ],
+        "meaning": "n. 手指",
+        "app_sentences": [
+          {
+            "en": "He cut his finger.",
+            "cn": "他割伤了手指。"
+          }
+        ]
+      },
+      {
+        "text": "foot",
+        "phonetic": "/fʊt/",
+        "syllables": [
+          "foot"
+        ],
+        "meaning": "n. 脚",
+        "app_sentences": [
+          {
+            "en": "My foot hurts.",
+            "cn": "我的脚疼。"
+          }
+        ]
+      },
+      {
+        "text": "knee",
+        "phonetic": "/niː/",
+        "syllables": [
+          "knee"
+        ],
+        "meaning": "n. 膝盖",
+        "app_sentences": [
+          {
+            "en": "He fell and hurt his knee.",
+            "cn": "他摔倒伤了膝盖。"
+          }
+        ]
+      },
+      {
+        "text": "leg",
+        "phonetic": "/leɡ/",
+        "syllables": [
+          "leg"
+        ],
+        "meaning": "n. 腿",
+        "app_sentences": [
+          {
+            "en": "She broke her leg.",
+            "cn": "她腿骨折了。"
+          }
+        ]
+      },
+      {
+        "text": "mouth",
+        "phonetic": "/maʊθ/",
+        "syllables": [
+          "mouth"
+        ],
+        "meaning": "n. 嘴",
+        "app_sentences": [
+          {
+            "en": "Open your mouth.",
+            "cn": "张开嘴。"
+          }
+        ]
+      },
+      {
+        "text": "body",
+        "phonetic": "/ˈbɒdi/",
+        "syllables": [
+          "bod",
+          "y"
+        ],
+        "meaning": "n. 身体",
+        "app_sentences": [
+          {
+            "en": "We need to exercise to keep our body healthy.",
+            "cn": "我们需要锻炼以保持身体健康。"
+          }
+        ]
+      },
+      {
+        "text": "foreign",
+        "phonetic": "/ˈfɒrən/",
+        "syllables": [
+          "for",
+          "eign"
+        ],
+        "meaning": "adj. 外国的",
+        "app_sentences": [
+          {
+            "en": "He studies foreign languages.",
+            "cn": "他学习外语。"
+          }
+        ]
+      },
+      {
+        "text": "North American",
+        "phonetic": "/nɔːθ əˈmerɪkən/",
+        "syllables": [
+          "North",
+          "A",
+          "mer",
+          "i",
+          "can"
+        ],
+        "meaning": "phr. 北美的",
+        "app_sentences": [
+          {
+            "en": "North American countries include the US and Canada.",
+            "cn": "北美国家包括美国和加拿大。"
+          }
+        ]
+      },
+      {
+        "text": "personal",
+        "phonetic": "/ˈpɜːsənl/",
+        "syllables": [
+          "per",
+          "son",
+          "al"
+        ],
+        "meaning": "adj. 个人的",
+        "app_sentences": [
+          {
+            "en": "This is my personal opinion.",
+            "cn": "这是我个人的意见。"
+          }
+        ]
+      },
+      {
+        "text": "arm",
+        "phonetic": "/ɑːm/",
+        "syllables": [
+          "arm"
+        ],
+        "meaning": "n. 手臂",
+        "app_sentences": [
+          {
+            "en": "She has a strong arm.",
+            "cn": "她手臂有力。"
+          }
+        ]
+      },
+      {
+        "text": "arm in arm",
+        "phonetic": "/ɑːm ɪn ɑːm/",
+        "syllables": [
+          "arm",
+          "in",
+          "arm"
+        ],
+        "meaning": "phr. 臂挽臂",
+        "app_sentences": [
+          {
+            "en": "They walked arm in arm.",
+            "cn": "他们臂挽臂走着。"
+          }
+        ]
+      },
+      {
+        "text": "South American",
+        "phonetic": "/saʊθ əˈmerɪkən/",
+        "syllables": [
+          "South",
+          "A",
+          "mer",
+          "i",
+          "can"
+        ],
+        "meaning": "phr. 南美的",
+        "app_sentences": [
+          {
+            "en": "South American culture is diverse.",
+            "cn": "南美文化多样。"
+          }
+        ]
+      },
+      {
+        "text": "hold",
+        "phonetic": "/həʊld/",
+        "syllables": [
+          "hold"
+        ],
+        "meaning": "v. 持有；举行",
+        "app_sentences": [
+          {
+            "en": "Please hold this bag for me.",
+            "cn": "请帮我拿一下这个包。"
+          }
+        ]
+      },
+      {
+        "text": "move",
+        "phonetic": "/muːv/",
+        "syllables": [
+          "move"
+        ],
+        "meaning": "v. 移动",
+        "app_sentences": [
+          {
+            "en": "We will move to a new house.",
+            "cn": "我们将搬到新房子。"
+          }
+        ]
+      },
+      {
+        "text": "Britain",
+        "phonetic": "/ˈbrɪtən/",
+        "syllables": [
+          "Brit",
+          "ain"
+        ],
+        "meaning": "n. 英国",
+        "app_sentences": [
+          {
+            "en": "Britain is an island country.",
+            "cn": "英国是一个岛国。"
+          }
+        ]
+      },
+      {
+        "text": "not at all",
+        "phonetic": "/nɒt æt ɔːl/",
+        "syllables": [
+          "not",
+          "at",
+          "all"
+        ],
+        "meaning": "phr. 根本不；别客气",
+        "app_sentences": [
+          {
+            "en": "Are you tired? Not at all.",
+            "cn": "你累吗？一点也不。"
+          }
+        ]
+      },
+      {
+        "text": "polite",
+        "phonetic": "/pəˈlaɪt/",
+        "syllables": [
+          "po",
+          "lite"
+        ],
+        "meaning": "adj. 有礼貌的",
+        "app_sentences": [
+          {
+            "en": "It is polite to say thank you.",
+            "cn": "说“谢谢”是有礼貌的。"
+          }
+        ]
+      },
+      {
+        "text": "somewhere",
+        "phonetic": "/ˈsʌmweər/",
+        "syllables": [
+          "some",
+          "where"
+        ],
+        "meaning": "adv. 某处",
+        "app_sentences": [
+          {
+            "en": "I left my keys somewhere.",
+            "cn": "我把钥匙忘在某处了。"
+          }
+        ]
+      },
+      {
+        "text": "wave",
+        "phonetic": "/weɪv/",
+        "syllables": [
+          "wave"
+        ],
+        "meaning": "n. 波浪",
+        "app_sentences": [
+          {
+            "en": "v. 挥手",
+            "cn": "She waved goodbye."
+          }
+        ]
+      },
+      {
+        "text": "fact",
+        "phonetic": "/fækt/",
+        "syllables": [
+          "fact"
+        ],
+        "meaning": "n. 事实",
+        "app_sentences": [
+          {
+            "en": "It is a fact that the earth is round.",
+            "cn": "地球是圆的，这是一个事实。"
+          }
+        ]
+      },
+      {
+        "text": "in fact",
+        "phonetic": "/ɪn fækt/",
+        "syllables": [
+          "in",
+          "fact"
+        ],
+        "meaning": "phr. 事实上",
+        "app_sentences": [
+          {
+            "en": "In fact",
+            "cn": "I already knew the answer."
+          }
+        ]
+      },
+      {
+        "text": "rude",
+        "phonetic": "/ruːd/",
+        "syllables": [
+          "rude"
+        ],
+        "meaning": "adj. 粗鲁的",
+        "app_sentences": [
+          {
+            "en": "It is rude to interrupt others.",
+            "cn": "打断别人是粗鲁的。"
+          }
+        ]
+      },
+      {
+        "text": "bring",
+        "phonetic": "/brɪŋ/",
+        "syllables": [
+          "bring"
+        ],
+        "meaning": "v. 带来",
+        "app_sentences": [
+          {
+            "en": "Please bring your book tomorrow.",
+            "cn": "请明天带你的书来。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Module 12",
+    "data": [
+      {
+        "text": "lively",
+        "phonetic": "/ˈlaɪvli/",
+        "syllables": [
+          "live",
+          "ly"
+        ],
+        "meaning": "adj. 活泼的",
+        "app_sentences": [
+          {
+            "en": "The party was lively and fun.",
+            "cn": "派对活泼有趣。"
+          }
+        ]
+      },
+      {
+        "text": "modern",
+        "phonetic": "/ˈmɒdən/",
+        "syllables": [
+          "mod",
+          "ern"
+        ],
+        "meaning": "adj. 现代的",
+        "app_sentences": [
+          {
+            "en": "We live in a modern society.",
+            "cn": "我们生活在现代社会中。"
+          }
+        ]
+      },
+      {
+        "text": "noisy",
+        "phonetic": "/ˈnɔɪzi/",
+        "syllables": [
+          "nois",
+          "y"
+        ],
+        "meaning": "adj. 吵闹的",
+        "app_sentences": [
+          {
+            "en": "The classroom is too noisy.",
+            "cn": "教室太吵闹了。"
+          }
+        ]
+      },
+      {
+        "text": "pop",
+        "phonetic": "/pɒp/",
+        "syllables": [
+          "pop"
+        ],
+        "meaning": "n. 流行音乐",
+        "app_sentences": [
+          {
+            "en": "adj. 流行的",
+            "cn": "Pop music is popular among teenagers."
+          }
+        ]
+      },
+      {
+        "text": "popular",
+        "phonetic": "/ˈpɒpjələr/",
+        "syllables": [
+          "pop",
+          "u",
+          "lar"
+        ],
+        "meaning": "adj. 受欢迎的",
+        "app_sentences": [
+          {
+            "en": "This game is very popular.",
+            "cn": "这个游戏很受欢迎。"
+          }
+        ]
+      },
+      {
+        "text": "rock",
+        "phonetic": "/rɒk/",
+        "syllables": [
+          "rock"
+        ],
+        "meaning": "n. 岩石；摇滚乐",
+        "app_sentences": [
+          {
+            "en": "He likes rock music.",
+            "cn": "他喜欢摇滚乐。"
+          }
+        ]
+      },
+      {
+        "text": "sound",
+        "phonetic": "/saʊnd/",
+        "syllables": [
+          "sound"
+        ],
+        "meaning": "n. 声音",
+        "app_sentences": [
+          {
+            "en": "v. 听起来",
+            "cn": "The sound of music is beautiful."
+          }
+        ]
+      },
+      {
+        "text": "violin",
+        "phonetic": "/ˌvaɪəˈlɪn/",
+        "syllables": [
+          "vi",
+          "o",
+          "lin"
+        ],
+        "meaning": "n. 小提琴",
+        "app_sentences": [
+          {
+            "en": "She plays the violin well.",
+            "cn": "她小提琴拉得很好。"
+          }
+        ]
+      },
+      {
+        "text": "Western",
+        "phonetic": "/ˈwestən/",
+        "syllables": [
+          "West",
+          "ern"
+        ],
+        "meaning": "adj. 西方的",
+        "app_sentences": [
+          {
+            "en": "Western countries have different customs.",
+            "cn": "西方国家有不同的习俗。"
+          }
+        ]
+      },
+      {
+        "text": "hmm",
+        "phonetic": "/hm/",
+        "syllables": [
+          "hmm"
+        ],
+        "meaning": "interj. 嗯（表示思考）",
+        "app_sentences": [
+          {
+            "en": "Hmm",
+            "cn": "I need to think about it."
+          }
+        ]
+      },
+      {
+        "text": "by",
+        "phonetic": "/baɪ/",
+        "syllables": [
+          "by"
+        ],
+        "meaning": "prep. 通过；被",
+        "app_sentences": [
+          {
+            "en": "The book was written by him.",
+            "cn": "这本书是他写的。"
+          }
+        ]
+      },
+      {
+        "text": "through",
+        "phonetic": "/θruː/",
+        "syllables": [
+          "through"
+        ],
+        "meaning": "prep. 通过；穿过",
+        "app_sentences": [
+          {
+            "en": "We walked through the forest.",
+            "cn": "我们穿过了森林。"
+          }
+        ]
+      },
+      {
+        "text": "both",
+        "phonetic": "/bəʊθ/",
+        "syllables": [
+          "both"
+        ],
+        "meaning": "pron. 两者都",
+        "app_sentences": [
+          {
+            "en": "Both of us like English.",
+            "cn": "我们两个都喜欢英语。"
+          }
+        ]
+      },
+      {
+        "text": "opera",
+        "phonetic": "/ˈɒpərə/",
+        "syllables": [
+          "op",
+          "er",
+          "a"
+        ],
+        "meaning": "n. 歌剧",
+        "app_sentences": [
+          {
+            "en": "We went to see an opera.",
+            "cn": "我们去看了歌剧。"
+          }
+        ]
+      },
+      {
+        "text": "voice",
+        "phonetic": "/vɔɪs/",
+        "syllables": [
+          "voice"
+        ],
+        "meaning": "n. 嗓音",
+        "app_sentences": [
+          {
+            "en": "She has a beautiful voice.",
+            "cn": "她嗓音优美。"
+          }
+        ]
+      },
+      {
+        "text": "drum",
+        "phonetic": "/drʌm/",
+        "syllables": [
+          "drum"
+        ],
+        "meaning": "n. 鼓",
+        "app_sentences": [
+          {
+            "en": "He plays the drum in the band.",
+            "cn": "他在乐队中打鼓。"
+          }
+        ]
+      },
+      {
+        "text": "believe",
+        "phonetic": "/bɪˈliːv/",
+        "syllables": [
+          "be",
+          "lieve"
+        ],
+        "meaning": "v. 相信",
+        "app_sentences": [
+          {
+            "en": "I believe you are right.",
+            "cn": "我相信你是对的。"
+          }
+        ]
+      },
+      {
+        "text": "musician",
+        "phonetic": "/mjuˈzɪʃən/",
+        "syllables": [
+          "mu",
+          "si",
+          "cian"
+        ],
+        "meaning": "n. 音乐家",
+        "app_sentences": [
+          {
+            "en": "He is a famous musician.",
+            "cn": "他是一位著名的音乐家。"
+          }
+        ]
+      },
+      {
+        "text": "centre",
+        "phonetic": "/ˈsentər/",
+        "syllables": [
+          "cen",
+          "tre"
+        ],
+        "meaning": "n. 中心",
+        "app_sentences": [
+          {
+            "en": "The library is in the centre of the city.",
+            "cn": "图书馆在市中心。"
+          }
+        ]
+      },
+      {
+        "text": "European",
+        "phonetic": "/ˌjʊərəˈpiːən/",
+        "syllables": [
+          "Eu",
+          "ro",
+          "pe",
+          "an"
+        ],
+        "meaning": "adj. 欧洲的",
+        "app_sentences": [
+          {
+            "en": "European countries are beautiful.",
+            "cn": "欧洲国家很美丽。"
+          }
+        ]
+      },
+      {
+        "text": "classical",
+        "phonetic": "/ˈklæsɪkl/",
+        "syllables": [
+          "clas",
+          "si",
+          "cal"
+        ],
+        "meaning": "adj. 古典的",
+        "app_sentences": [
+          {
+            "en": "She likes classical music.",
+            "cn": "她喜欢古典音乐。"
+          }
+        ]
+      },
+      {
+        "text": "century",
+        "phonetic": "/ˈsentʃəri/",
+        "syllables": [
+          "cen",
+          "tu",
+          "ry"
+        ],
+        "meaning": "n. 世纪",
+        "app_sentences": [
+          {
+            "en": "We live in the 21st century.",
+            "cn": "我们生活在21世纪。"
+          }
+        ]
+      },
+      {
+        "text": "composer",
+        "phonetic": "/kəmˈpəʊzər/",
+        "syllables": [
+          "com",
+          "pos",
+          "er"
+        ],
+        "meaning": "n. 作曲家",
+        "app_sentences": [
+          {
+            "en": "Beethoven was a great composer.",
+            "cn": "贝多芬是一位伟大的作曲家。"
+          }
+        ]
+      },
+      {
+        "text": "elder",
+        "phonetic": "/ˈeldər/",
+        "syllables": [
+          "el",
+          "der"
+        ],
+        "meaning": "adj. 年长的",
+        "app_sentences": [
+          {
+            "en": "n. 长者",
+            "cn": "We should respect our elders."
+          }
+        ]
+      },
+      {
+        "text": "waltz",
+        "phonetic": "/wɔːls/",
+        "syllables": [
+          "waltz"
+        ],
+        "meaning": "n. 华尔兹舞",
+        "app_sentences": [
+          {
+            "en": "They danced a waltz.",
+            "cn": "他们跳了一支华尔兹。"
+          }
+        ]
+      },
+      {
+        "text": "dance music",
+        "phonetic": "/dɑːns ˈmjuːzɪk/",
+        "syllables": [
+          "dance",
+          "mu",
+          "sic"
+        ],
+        "meaning": "phr. 舞曲",
+        "app_sentences": [
+          {
+            "en": "We played dance music at the party.",
+            "cn": "我们在派对上播放舞曲。"
+          }
+        ]
+      },
+      {
+        "text": "another",
+        "phonetic": "/əˈnʌðər/",
+        "syllables": [
+          "an",
+          "oth",
+          "er"
+        ],
+        "meaning": "adj. 另一个",
+        "app_sentences": [
+          {
+            "en": "pron. 另一个",
+            "cn": "Would you like another apple?"
+          }
+        ]
+      },
+      {
+        "text": "piece",
+        "phonetic": "/piːs/",
+        "syllables": [
+          "piece"
+        ],
+        "meaning": "n. 块；片",
+        "app_sentences": [
+          {
+            "en": "She ate a piece of cake.",
+            "cn": "她吃了一块蛋糕。"
+          }
+        ]
+      },
+      {
+        "text": "poor",
+        "phonetic": "/pʊər/",
+        "syllables": [
+          "poor"
+        ],
+        "meaning": "adj. 贫穷的；可怜的",
+        "app_sentences": [
+          {
+            "en": "The poor man has no money.",
+            "cn": "那个穷人没有钱。"
+          }
+        ]
+      },
+      {
+        "text": "perfect",
+        "phonetic": "/ˈpɜːfɪkt/",
+        "syllables": [
+          "per",
+          "fect"
+        ],
+        "meaning": "adj. 完美的",
+        "app_sentences": [
+          {
+            "en": "Her English is perfect.",
+            "cn": "她的英语很完美。"
+          }
+        ]
+      },
+      {
+        "text": "sad",
+        "phonetic": "/sæd/",
+        "syllables": [
+          "sad"
+        ],
+        "meaning": "adj. 悲伤的",
+        "app_sentences": [
+          {
+            "en": "He felt sad when his friend left.",
+            "cn": "当朋友离开时，他感到悲伤。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Revision module B",
+    "data": [
+      {
+        "text": "slow",
+        "phonetic": "/sləʊ/",
+        "syllables": [
+          "slow"
+        ],
+        "meaning": "adj. 慢的",
+        "app_sentences": [
+          {
+            "en": "The bus is slow.",
+            "cn": "公交车很慢。"
+          }
+        ]
+      },
+      {
+        "text": "feel",
+        "phonetic": "/fiːl/",
+        "syllables": [
+          "feel"
+        ],
+        "meaning": "v. 感觉",
+        "app_sentences": [
+          {
+            "en": "I feel happy today.",
+            "cn": "今天我感到快乐。"
+          }
+        ]
+      },
+      {
+        "text": "ship",
+        "phonetic": "/ʃɪp/",
+        "syllables": [
+          "ship"
+        ],
+        "meaning": "n. 船",
+        "app_sentences": [
+          {
+            "en": "The ship sails across the ocean.",
+            "cn": "船航行过海洋。"
+          }
+        ]
+      }
+    ]
+  }
 ]

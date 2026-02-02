@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/services/tts_service.dart';
+import '../../../../core/services/audio_service.dart';
+import '../../../../core/services/speech_service.dart';
+import '../../../../core/utils/phonetic_utils.dart';
 import 'dart:ui';
+
+
 
 class SpeakingPracticeView extends StatefulWidget {
   final Word word;
@@ -22,6 +26,30 @@ class SpeakingPracticeView extends StatefulWidget {
 class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isListening = false;
+  String _lastHeard = '';
+  
+  // Simple Levenshtein distance for fuzzy matching
+  int _levenshtein(String s, String t) {
+    if (s == t) return 0;
+    if (s.isEmpty) return t.length;
+    if (t.isEmpty) return s.length;
+
+    List<int> v0 = List<int>.filled(t.length + 1, 0);
+    List<int> v1 = List<int>.filled(t.length + 1, 0);
+
+    for (int i = 0; i < t.length + 1; i++) v0[i] = i;
+
+    for (int i = 0; i < s.length; i++) {
+      v1[0] = i + 1;
+      for (int j = 0; j < t.length; j++) {
+        int cost = (s[i] == t[j]) ? 0 : 1;
+        v1[j + 1] = [v1[j] + 1, v0[j + 1] + 1, v0[j] + cost].reduce((min, e) => e < min ? e : min);
+      }
+      for (int j = 0; j < t.length + 1; j++) v0[j] = v1[j];
+    }
+    return v1[t.length];
+  }
+
 
   @override
   void initState() {
@@ -38,28 +66,90 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     super.dispose();
   }
 
-  void _toggleListening() {
-    setState(() {
-      _isListening = !_isListening;
-      if (_isListening) {
-        _controller.repeat();
-        // Simulate successful speaking after 2 seconds
-        Future.delayed(const Duration(seconds: 2), () {
-           if (mounted && _isListening) {
-             _toggleListening(); // Stop listening UI
-             ScaffoldMessenger.of(context).showSnackBar(
-               const SnackBar(content: Text('Great job! Correct pronunciation.'), backgroundColor: Colors.green, duration: Duration(milliseconds: 1000),)
-             );
-             // Trigger completion
-             widget.onCompleted();
-           }
-        });
-      } else {
-        _controller.stop();
-        _controller.reset();
+  void _toggleListening() async {
+    if (_isListening) {
+      await SpeechService().stopListening();
+      setState(() => _isListening = false);
+      _controller.stop();
+      _controller.reset();
+    } else {
+      bool available = await SpeechService().init();
+      if (!available) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Speech recognition not available or permission denied.'), backgroundColor: Colors.red)
+          );
+        }
+        return;
       }
-    });
+
+      setState(() {
+        _isListening = true;
+        _lastHeard = ''; // Reset on new attempt
+        _controller.repeat();
+      });
+
+      await SpeechService().startListening(
+        onResult: (text) {
+          if (!mounted) return;
+          // Clean strings
+          final recognized = text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
+          final target = widget.word.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
+          
+          setState(() {
+            _lastHeard = recognized;
+          });
+          
+          print("STT Heard: $recognized vs Target: $target");
+
+          // 1. Exact/Contains Match
+          bool exactMatch = recognized.contains(target);
+          
+          // 2. Levenshtein Distance (Typos)
+          int dist = _levenshtein(recognized, target);
+          bool fuzzyMatch = dist <= 2;
+
+          // 3. Phonetic Match (Soundex)
+          // Compare Soundex of the target word with Soundex of the *last word* heard (since user might say a sentence)
+          // Or compare with the whole recognized string if it's short.
+          // Let's try splitting recognized text into words and checking if any word matches phonetically.
+          bool phoneticMatch = false;
+          String targetSoundex = PhoneticUtils.soundex(target);
+          List<String> heardWords = recognized.split(' ');
+          
+          for (String hw in heardWords) {
+             if (PhoneticUtils.soundex(hw) == targetSoundex) {
+               phoneticMatch = true;
+               print("Phonetic Match! $hw (${PhoneticUtils.soundex(hw)}) == $target ($targetSoundex)");
+               break;
+             }
+          }
+           // Fallback: entire phrase soundex
+           if (!phoneticMatch && PhoneticUtils.soundex(recognized) == targetSoundex) {
+              phoneticMatch = true; 
+           }
+
+
+          if (exactMatch || fuzzyMatch || phoneticMatch) {
+             // Success
+             _toggleListening(); // Stop
+             ScaffoldMessenger.of(context).showSnackBar(
+               SnackBar(content: Text('Perfect! Heard: "$recognized"'), backgroundColor: Colors.green)
+             );
+             
+             // Play success sound logic here if needed (omitted for now)
+             
+             // Delay to show success message then advance
+             Future.delayed(const Duration(milliseconds: 1000), () {
+               if (mounted) widget.onCompleted();
+             });
+          }
+        },
+      );
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +197,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                         ),
                         child: IconButton(
                           padding: const EdgeInsets.all(14),
-                          onPressed: () => TtsService().speak(widget.word.text),
+                          onPressed: () => AudioService().playWord(widget.word),
                           icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
                         ),
                       ),
@@ -161,14 +251,16 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
                 const SizedBox(height: 48),
                 Text(
-                    _isListening ? 'Listening...' : 'TAP TO SPEAK',
+                    _isListening ? 'Listening...' : (_lastHeard.isNotEmpty ? 'Heard: $_lastHeard' : 'TAP TO SPEAK'),
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12,
+                        fontSize: 14, // Slightly larger
                         fontWeight: FontWeight.w900,
-                        color: _isListening ? AppColors.secondary : AppColors.textMediumEmphasis,
+                        color: _isListening ? AppColors.secondary : (_lastHeard.isNotEmpty ? AppColors.primary : AppColors.textMediumEmphasis),
                         letterSpacing: 1.0
                     )
                 ),
+
                 const SizedBox(height: 24),
                 // Mic Interaction
                 GestureDetector(
