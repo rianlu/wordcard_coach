@@ -62,6 +62,9 @@ class AudioService {
            if (cachedFile != null && await cachedFile.file.exists()) {
              print("Audio Cache Hit (Google): $cleanWord");
              await _audioPlayer.play(DeviceFileSource(cachedFile.file.path));
+             try {
+                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
+             } catch (_) {}
              return;
            }
 
@@ -71,6 +74,9 @@ class AudioService {
            if (await file.exists()) {
              print("Played Downloaded (Google): $cleanWord");
              await _audioPlayer.play(DeviceFileSource(file.path));
+             try {
+                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
+             } catch (_) {}
              return;
            }
 
@@ -92,6 +98,9 @@ class AudioService {
           if (cachedFile != null && await cachedFile.file.exists()) {
              print("Audio Cache Hit (Youdao): ${word.text}");
              await _audioPlayer.play(DeviceFileSource(cachedFile.file.path));
+             try {
+                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
+             } catch (_) {}
              return;
           }
 
@@ -101,6 +110,9 @@ class AudioService {
           if (await file.exists()) {
              print("Played Downloaded (Youdao): ${word.text}");
              await _audioPlayer.play(DeviceFileSource(file.path));
+             try {
+                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
+             } catch (_) {}
              return;
           }
 
@@ -115,6 +127,7 @@ class AudioService {
        // Temporarily adjust speed for Chinese if needed, but for now keep default
       if (!_isTtsInit) await init(); // Init TTS only when needed
       await _flutterTts.speak(word.text);
+      await _flutterTts.awaitSpeakCompletion(true);
       
     } catch (e) {
       print("Audio playback init failed: $e");

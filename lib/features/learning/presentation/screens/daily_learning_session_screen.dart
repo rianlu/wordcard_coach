@@ -33,6 +33,11 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
   
   SessionPhase _currentPhase = SessionPhase.learning;
   int _currentIndex = 0;
+  
+  // Transition State
+  bool _isTransitioning = false;
+  int _transitionCountdown = 3;
+  SessionPhase? _pendingNextPhase;
 
   @override
   void initState() {
@@ -70,29 +75,58 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
       });
     } else {
       // Phase completed, move to next phase
-      _advancePhase();
+      // Phase completed, move to next phase
+      _triggerPhaseTransition();
     }
   }
 
-  void _advancePhase() {
+  void _triggerPhaseTransition() {
+    // Determine next phase first
+    SessionPhase next;
+    switch (_currentPhase) {
+        case SessionPhase.learning: next = SessionPhase.speaking; break;
+        case SessionPhase.speaking: next = SessionPhase.selection; break;
+        case SessionPhase.selection: next = SessionPhase.spelling; break;
+        case SessionPhase.spelling: next = SessionPhase.completed; break;
+        case SessionPhase.completed: next = SessionPhase.completed; break;
+    }
+    
+    if (next == SessionPhase.completed) {
+       _advancePhase(next);
+       return;
+    }
+
+    // Start Transition Sequence
+    setState(() {
+      _isTransitioning = true;
+      _transitionCountdown = 3;
+      _pendingNextPhase = next;
+    });
+
+    _runTransitionCountdown(next);
+  }
+
+  void _runTransitionCountdown(SessionPhase nextPhase) async {
+     for (int i = 3; i > 0; i--) {
+       if (!mounted) return;
+       setState(() => _transitionCountdown = i);
+       // Optional: Play a "tick" sound here if desired, but user said no header TTS.
+       await Future.delayed(const Duration(seconds: 1));
+     }
+
+     if (mounted) {
+       setState(() {
+         _isTransitioning = false;
+         _pendingNextPhase = null;
+       });
+       _advancePhase(nextPhase);
+     }
+  }
+
+  void _advancePhase(SessionPhase nextPhase) {
     setState(() {
       _currentIndex = 0;
-      switch (_currentPhase) {
-        case SessionPhase.learning:
-          _currentPhase = SessionPhase.speaking;
-          break;
-        case SessionPhase.speaking:
-          _currentPhase = SessionPhase.selection;
-          break;
-        case SessionPhase.selection:
-          _currentPhase = SessionPhase.spelling;
-          break;
-        case SessionPhase.spelling:
-          _currentPhase = SessionPhase.completed;
-          break;
-        case SessionPhase.completed:
-          break;
-      }
+      _currentPhase = nextPhase;
     });
 
     if (_currentPhase == SessionPhase.completed) {
@@ -198,7 +232,46 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
           ),
         )
       ),
-      body: _buildCurrentView(),
+      body: Stack(
+        children: [
+          _buildCurrentView(),
+          
+          if (_isTransitioning)
+            Positioned.fill(
+              child: Container(
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        // Show "Next: Speaking" etc
+                        "Next: ${_getPhaseTitle(_pendingNextPhase!)}",
+                        style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)
+                      ),
+                      const SizedBox(height: 32),
+                      Container(
+                        width: 120, height: 120,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primary,
+                          boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.4), blurRadius: 40, offset: Offset(0, 10))]
+                        ),
+                        child: Text(
+                          "$_transitionCountdown",
+                          style: GoogleFonts.plusJakartaSans(fontSize: 64, fontWeight: FontWeight.w900, color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Text("Get Ready!", style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textMediumEmphasis)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 

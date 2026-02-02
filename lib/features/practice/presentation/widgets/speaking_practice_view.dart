@@ -16,7 +16,7 @@ class SpeakingPracticeView extends StatefulWidget {
   const SpeakingPracticeView({
     super.key, 
     required this.word, 
-    required this.onCompleted
+    required this.onCompleted,
   });
 
   @override
@@ -27,6 +27,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   late AnimationController _controller;
   bool _isListening = false;
   String _lastHeard = '';
+  bool _showSuccess = false; 
   
   // Simple Levenshtein distance for fuzzy matching
   int _levenshtein(String s, String t) {
@@ -58,6 +59,26 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       vsync: this,
       duration: const Duration(seconds: 2),
     );
+    // Start Practice
+    _startPracticeSequence();
+  }
+
+
+  @override
+  void didUpdateWidget(SpeakingPracticeView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.word != oldWidget.word) {
+      _resetState();
+      _startPracticeSequence();
+    }
+  }
+
+  void _resetState() {
+     _isListening = false;
+     _lastHeard = '';
+     _showSuccess = false;
+     _controller.reset();
+     SpeechService().stopListening();
   }
 
   @override
@@ -66,86 +87,112 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     super.dispose();
   }
 
-  void _toggleListening() async {
-    if (_isListening) {
-      await SpeechService().stopListening();
-      setState(() => _isListening = false);
-      _controller.stop();
-      _controller.reset();
-    } else {
-      bool available = await SpeechService().init();
-      if (!available) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Speech recognition not available or permission denied.'), backgroundColor: Colors.red)
-          );
-        }
-        return;
-      }
+  void _startPracticeSequence() async {
+     // Ensure we start clean
+     SpeechService().stopListening();
+     
+     if (mounted) {
+       // Play Audio and Wait
+       await AudioService().playWord(widget.word);
+       
+       // Start listening after audio
+       if (mounted) _startListeningSession();
+     }
+  }
 
-      setState(() {
-        _isListening = true;
-        _lastHeard = ''; // Reset on new attempt
-        _controller.repeat();
-      });
-
-      await SpeechService().startListening(
-        onResult: (text) {
-          if (!mounted) return;
-          // Clean strings
-          final recognized = text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
-          final target = widget.word.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
-          
-          setState(() {
-            _lastHeard = recognized;
-          });
-          
-          print("STT Heard: $recognized vs Target: $target");
-
-          // 1. Exact/Contains Match
-          bool exactMatch = recognized.contains(target);
-          
-          // 2. Levenshtein Distance (Typos)
-          int dist = _levenshtein(recognized, target);
-          bool fuzzyMatch = dist <= 2;
-
-          // 3. Phonetic Match (Soundex)
-          // Compare Soundex of the target word with Soundex of the *last word* heard (since user might say a sentence)
-          // Or compare with the whole recognized string if it's short.
-          // Let's try splitting recognized text into words and checking if any word matches phonetically.
-          bool phoneticMatch = false;
-          String targetSoundex = PhoneticUtils.soundex(target);
-          List<String> heardWords = recognized.split(' ');
-          
-          for (String hw in heardWords) {
-             if (PhoneticUtils.soundex(hw) == targetSoundex) {
-               phoneticMatch = true;
-               print("Phonetic Match! $hw (${PhoneticUtils.soundex(hw)}) == $target ($targetSoundex)");
-               break;
-             }
-          }
-           // Fallback: entire phrase soundex
-           if (!phoneticMatch && PhoneticUtils.soundex(recognized) == targetSoundex) {
-              phoneticMatch = true; 
-           }
-
-
-          if (exactMatch || fuzzyMatch || phoneticMatch) {
-             // Success
-             _toggleListening(); // Stop
-             ScaffoldMessenger.of(context).showSnackBar(
-               SnackBar(content: Text('Perfect! Heard: "$recognized"'), backgroundColor: Colors.green)
+  void _startListeningSession() {
+     // If success is showing, don't start
+     if (_showSuccess) return;
+     
+     setState(() {
+       _isListening = true; // Set session flag
+       _controller.repeat();
+     });
+     
+     // Start Monitor Loop
+     _monitorListening();
+  }
+  
+  void _monitorListening() async {
+     // Watchdog Loop: Keeps checking if we should be listening but aren't
+     while (mounted && _isListening && !_showSuccess) {
+         if (!SpeechService().isListening) {
+             debugPrint("Watchdog: Restarting Listening...");
+             await SpeechService().startListening(
+               onResult: (text) {
+                 if (!mounted) return;
+                 _handleSpeechResult(text);
+               },
              );
+         }
+         // Check frequency
+         await Future.delayed(const Duration(milliseconds: 1000));
+     }
+  }
+
+  void _stopListeningSession() async {
+    _isListening = false; // Kill watchdog loop
+    await SpeechService().stopListening();
+    if (mounted) {
+      setState(() {
+         _controller.stop();
+         _controller.reset();
+      });
+    }
+  }
+
+  void _handleSpeechResult(String text) {
+      final recognized = text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
+      final target = widget.word.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
+      
+      setState(() => _lastHeard = recognized);
+      
+      // 1. Exact/Contains Match
+      bool exactMatch = recognized.contains(target);
+      // 2. Levenshtein Distance (Typos)
+      int dist = _levenshtein(recognized, target);
+      bool fuzzyMatch = dist <= 2;
+      // 3. Phonetic Match (Soundex)
+      bool phoneticMatch = false;
+      String targetSoundex = PhoneticUtils.soundex(target);
+      List<String> heardWords = recognized.split(' ');
+      for (String hw in heardWords) {
+         if (PhoneticUtils.soundex(hw) == targetSoundex) {
+           phoneticMatch = true;
+           break;
+         }
+      }
+      if (!phoneticMatch && PhoneticUtils.soundex(recognized) == targetSoundex) {
+          phoneticMatch = true; 
+      }
+      if (exactMatch || fuzzyMatch || phoneticMatch) {
+             // Success logic upgrade
+             _isListening = false; // Stop loop
+             SpeechService().stopListening(); 
+                          // Show nice success badge
+              if (mounted) {
+                setState(() {
+                  _showSuccess = true;
+                });
+              }
              
-             // Play success sound logic here if needed (omitted for now)
+             // Play success sound logic here (optional)
              
              // Delay to show success message then advance
-             Future.delayed(const Duration(milliseconds: 1000), () {
+             Future.delayed(const Duration(milliseconds: 1500), () {
                if (mounted) widget.onCompleted();
+               // We don't verify mounted after onCompleted because this widget might be disposed.
+               // But if we stayed, we'd reset _showSuccess = false;
              });
           }
-        },
-      );
+  }
+  
+  // Re-map toggle to new functions
+  void _toggleListening() {
+    if (_isListening) {
+      _stopListeningSession();
+    } else {
+      _startListeningSession();
     }
   }
 
@@ -153,8 +200,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
+        Column(
+         children: [
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -197,7 +246,27 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                         ),
                         child: IconButton(
                           padding: const EdgeInsets.all(14),
-                          onPressed: () => AudioService().playWord(widget.word),
+                          onPressed: () async {
+                              // Smart Pause: Stop listening loop temporarily
+                              bool wasListening = _isListening;
+                              if (wasListening) {
+                                await SpeechService().stopListening(); // Actually stop engine to prevent echo
+                                // Don't set _isListening = false, just stop the engine.
+                                // Actually better to flag it.
+                                setState(() {
+                                   _isListening = false;
+                                   _controller.stop();
+                                   _controller.reset();
+                                });
+                              }
+                              
+                              await AudioService().playWord(widget.word);
+                              
+                              // Resume Auto-Listening
+                              if (wasListening) {
+                                 _startListeningSession();
+                              }
+                          },
                           icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
                         ),
                       ),
@@ -264,19 +333,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                 const SizedBox(height: 24),
                 // Mic Interaction
                 GestureDetector(
-                  // 长按开始
-                  onTapDown: (_) => _toggleListening(),
-                  // 松开结束
-                  onTapUp: (_) => _toggleListening(),
-                  onTapCancel: () => _isListening ? _toggleListening() : null,
+                  // 长按开始 (Now acts as toggle/restart)
+                  onTap: () => _toggleListening(),
                   child: SizedBox(
                     width: 100,
                     height: 100,
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // Ripple Effect
-                        if (_isListening)
+                        // Ripple Effect (Multi-Ring)
+                        if (_isListening) ...[
+                          // Ring 1
                           AnimatedBuilder(
                             animation: _controller,
                             builder: (context, child) {
@@ -285,15 +352,31 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                                 height: 90 + (_controller.value * 70),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: AppColors.secondary.withOpacity(0.6 * (1 - _controller.value)),
+                                  color: AppColors.secondary.withOpacity(0.4 * (1 - _controller.value)),
                                   border: Border.all(
-                                    color: AppColors.secondary.withOpacity(0.3 * (1 - _controller.value)),
-                                    width: 2,
+                                    color: AppColors.secondary.withOpacity(0.2 * (1 - _controller.value)),
+                                    width: 1,
                                   ),
                                 ),
                               );
                             },
                           ),
+                          // Ring 2 (Staggered or Scaled)
+                          AnimatedBuilder(
+                            animation: _controller,
+                            builder: (context, child) {
+                              final double staggeredValue = (_controller.value + 0.5) % 1.0;
+                              return Container(
+                                width: 90 + (staggeredValue * 70),
+                                height: 90 + (staggeredValue * 70),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.secondary.withOpacity(0.2 * (1 - staggeredValue)),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                         // Main Button
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 150),
@@ -327,6 +410,43 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
             ),
           ),
         ),
+      ],
+    ),
+        
+        // Success Overlay (Lightweight)
+        if (_showSuccess)
+          Positioned(
+            top: 100, left: 0, right: 0,
+            child: Center(
+              child: TweenAnimationBuilder<double>(
+                 tween: Tween(begin: 0.0, end: 1.0),
+                 duration: const Duration(milliseconds: 300),
+                 curve: Curves.elasticOut,
+                 builder: (context, value, child) {
+                    return Transform.scale(
+                      scale: value,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [BoxShadow(color: Colors.green.withOpacity(0.4), blurRadius: 10, offset: Offset(0, 4))]
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.check_circle, color: Colors.white, size: 28),
+                            const SizedBox(width: 8),
+                            Text("Perfect!", style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                    );
+                 },
+              ),
+            ),
+          ),
+          
       ],
     );
   }

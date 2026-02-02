@@ -16,8 +16,19 @@ class SpeechService {
     if (!_isAvailable) {
       try {
         _isAvailable = await _speech.initialize(
-          onStatus: (status) => debugPrint('STT Status: $status'),
-          onError: (errorNotification) => debugPrint('STT Error: $errorNotification'),
+          onStatus: (status) {
+            debugPrint('STT Status: $status');
+            // Sync internal state with engine status
+            if (status == 'listening') {
+              _isListening = true;
+            } else if (status == 'notListening' || status == 'done') {
+              _isListening = false;
+            }
+          },
+          onError: (errorNotification) {
+            debugPrint('STT Error: $errorNotification');
+             _isListening = false;
+          },
         );
       } catch (e) {
         debugPrint("STT Initialization failed: $e");
@@ -44,8 +55,8 @@ class SpeechService {
       await _speech.listen(
         onResult: (val) => onResult(val.recognizedWords),
         localeId: localeId,
-        listenFor: const Duration(seconds: 5), // Auto-stop after 5s of silence
-        pauseFor: const Duration(seconds: 2), // Auto-stop pause
+        listenFor: const Duration(seconds: 30), // Increased for better UX
+        pauseFor: const Duration(seconds: 5), // Increased pause tolerance
         cancelOnError: true,
         listenMode: stt.ListenMode.confirmation
       );
