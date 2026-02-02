@@ -1,17 +1,88 @@
-# wordcard_coach
+# WordCard Coach 单词教练
 
-A new Flutter project.
+一个专为初中生设计的智能单词学习助手，基于 Flutter 开发。
 
-## Getting Started
+## 🌟 核心功能
 
-This project is a starting point for a Flutter application.
+- **每日学习**: 结构化的学习计划（默认每日 10 个新词）。
+- **Boss 对战 (复习)**: 游戏化的复习模式，挑战您的记忆极限。
+- **智能分析**: 可视化您的词汇量增长曲线和单词掌握分布。
+- **智能记忆算法**: 内置经典的 **SuperMemo-2 (SM-2)** 记忆算法，让复习更高效。
 
-A few resources to get you started if this is your first Flutter project:
+## 🧠 智能复习算法 (SM-2) 详解
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+本项目实现了 **SuperMemo-2 (SM-2)** 间隔重复算法，系统会根据您每次复习的表现，动态计算该单词下一次的最佳复习时间。
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# wordcard_coach
+### 1. 核心概念
+每个单词都有两个关键属性用于计算：
+- **难度系数 (Easiness Factor, EF)**: 衡量单词对您来说有多简单。默认值为 **2.5**。数值越高，表示越简单，复习间隔拉得越长。
+- **复习间隔 (Interval, I)**: 距离下一次复习的天数。
+
+### 2. 计算公式
+每次复习后，系统会根据您的 **评分 (Quality, q)** (0-5分) 更新通过以下逻辑更新数据：
+
+1.  **更新难度系数 (EF')**:
+    $$EF' = EF + (0.1 - (5-q) \times (0.08 + (5-q) \times 0.02))$$
+    *(EF 最低不低于 1.3)*
+
+2.  **更新复习间隔 (I)**:
+    - 第 1 次复习成功 → 间隔 **1 天**
+    - 第 2 次复习成功 → 间隔 **6 天**
+    - 第 3 次及以后 → **上一次间隔 × EF'**
+
+### 3. 打分标准
+WordCard Coach 包含多种随机练习模式（口语、拼写、选义），为了公平起见，我们采用以下评分标准：
+
+| 您的表现 | 系统评分 (q) | 结果 |
+| :--- | :--- | :--- |
+| **回答正确** (无论何种模式) | **5 分 (完美)** | 复习成功，间隔延长 |
+| **使用了提示** (拼写模式) | **3 分 (勉强)** | 复习成功，间隔小幅延长 |
+| **回答错误 / 跳过** | **0 分 (失败)** | 复习失败，**进度重置** |
+
+### 4. 掌握标准
+- 当一个单词的计算复习间隔超过 **21 天** 时，系统判定该单词为 **已掌握 (Mastered)**。
+- 只有“已掌握”的单词才会在数据统计中计入“已掌握”图表。
+
+---
+
+## 📅 算法演练示例
+
+假设您学习了一个新单词 **"Apple"** (初始 EF=2.5)：
+
+### ✅ 场景一：一路顺风 (每次都答对)
+
+1.  **第 0 天 (学习日)**: 刚学完。
+    *   *下次复习: 明天 (第1天)*
+2.  **第 1 天 (第1次复习)**: 📅 答对了 (5分)。
+    *   间隔设定为 **1天**。
+    *   *下次复习: 明天 (第2天)*
+3.  **第 2 天 (第2次复习)**: 📅 答对了 (5分)。
+    *   间隔跳跃至 **6天**。
+    *   *下次复习: 第 8 天*
+4.  **第 8 天 (第3次复习)**: 📅 答对了 (5分)。
+    *   间隔计算: $6 \times 2.5 = 15$ 天。
+    *   *下次复习: 第 23 天*
+5.  **第 23 天 (第4次复习)**: 📅 答对了 (5分)。
+    *   间隔计算: $15 \times 2.5 = 37.5$ 天。
+    *   🎉 **判定**: 间隔 > 21天，**Apple 已被标记为“已掌握”！**
+
+### ❌ 场景二：中间忘记了
+
+假设在 **第 8 天** 的复习中，您**答错**了：
+
+*   **第 8 天**: ❌ 答错 (0分)。
+*   **后果**:
+    *   连续复习次数重置为 0。
+    *   复习间隔重置为 **1天**。
+*   **第 9 天**: 需要重新复习，从头开始积累间隔。
+
+---
+
+## 🚀 快速开始
+
+1. **环境准备**: Flutter SDK, Dart.
+2. **运行项目**:
+   ```bash
+   flutter pub get
+   flutter run
+   ```
