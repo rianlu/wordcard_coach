@@ -10,6 +10,7 @@ class Word {
   final String unit;
   final int difficulty;
   final String category;
+  final String bookId;
   final List<String> syllables;
   final List<Map<String, String>> examples; 
 
@@ -23,6 +24,7 @@ class Word {
     required this.unit,
     required this.difficulty,
     required this.category,
+    this.bookId = '',
     this.syllables = const [],
     this.examples = const [],
   });
@@ -67,6 +69,7 @@ class Word {
         unit: json['unit'] as String,
         difficulty: json['difficulty'] as int,
         category: json['category'] as String,
+        bookId: json['book_id'] as String? ?? '',
         syllables: syllablesList,
         examples: examplesList,
       );
@@ -82,6 +85,7 @@ class Word {
         'unit': unit,
         'difficulty': difficulty,
         'category': category,
+        'book_id': bookId,
         'syllables': jsonEncode(syllables), // Store as JSON string
         // examples not usually stored back to words table json unless we custom handle it
       };

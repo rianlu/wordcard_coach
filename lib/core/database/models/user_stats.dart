@@ -3,6 +3,7 @@ class UserStats {
   final String nickname;
   final int currentGrade;
   final int currentSemester;
+  final String currentBookId;
   final int totalWordsLearned;
   final int totalWordsMastered;
   final int totalReviews;
@@ -19,6 +20,7 @@ class UserStats {
     this.nickname = '学习者',
     this.currentGrade = 3,
     this.currentSemester = 1,
+    this.currentBookId = '',
     this.totalWordsLearned = 0,
     this.totalWordsMastered = 0,
     this.totalReviews = 0,
@@ -36,6 +38,7 @@ class UserStats {
         nickname: json['nickname'] as String,
         currentGrade: json['current_grade'] as int,
         currentSemester: json['current_semester'] as int,
+        currentBookId: json['current_book_id'] as String? ?? '',
         totalWordsLearned: json['total_words_learned'] as int,
         totalWordsMastered: json['total_words_mastered'] as int,
         totalReviews: json['total_reviews'] as int,
@@ -53,6 +56,7 @@ class UserStats {
         'nickname': nickname,
         'current_grade': currentGrade,
         'current_semester': currentSemester,
+        'current_book_id': currentBookId,
         'total_words_learned': totalWordsLearned,
         'total_words_mastered': totalWordsMastered,
         'total_reviews': totalReviews,
@@ -70,6 +74,7 @@ class UserStats {
     String? nickname,
     int? currentGrade,
     int? currentSemester,
+    String? currentBookId,
     int? totalWordsLearned,
     int? totalWordsMastered,
     int? totalReviews,
@@ -86,6 +91,7 @@ class UserStats {
       nickname: nickname ?? this.nickname,
       currentGrade: currentGrade ?? this.currentGrade,
       currentSemester: currentSemester ?? this.currentSemester,
+      currentBookId: currentBookId ?? this.currentBookId,
       totalWordsLearned: totalWordsLearned ?? this.totalWordsLearned,
       totalWordsMastered: totalWordsMastered ?? this.totalWordsMastered,
       totalReviews: totalReviews ?? this.totalReviews,

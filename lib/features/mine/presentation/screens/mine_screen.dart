@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
@@ -16,6 +18,7 @@ class _MineScreenState extends State<MineScreen> {
   final UserStatsDao _userStatsDao = UserStatsDao();
   UserStats? _stats;
   bool _isLoading = true;
+  List<dynamic> _booksManifest = [];
 
   @override
   void initState() {
@@ -25,6 +28,17 @@ class _MineScreenState extends State<MineScreen> {
 
   Future<void> _loadStats() async {
     final stats = await _userStatsDao.getUserStats();
+    
+    // Load manifest if not loaded
+    if (_booksManifest.isEmpty) {
+      try {
+        final jsonStr = await rootBundle.loadString('assets/data/books_manifest.json');
+        _booksManifest = jsonDecode(jsonStr);
+      } catch (e) {
+        // Error
+      }
+    }
+    
     if (mounted) {
       setState(() {
         _stats = stats;
@@ -94,8 +108,8 @@ class _MineScreenState extends State<MineScreen> {
              const SizedBox(height: 16),
              _buildMenuItem(
                icon: Icons.book,
-               title: '切换教材 (${_getGradeLabel(_stats?.currentGrade ?? 7, _stats?.currentSemester ?? 1)})',
-               onTap: _showGradeSelectionDialog,
+               title: '切换教材 (${_getCurrentBookName()})',
+               onTap: _showBookSelectionDialog,
              ),
              const SizedBox(height: 16),
              _buildMenuItem(
@@ -115,6 +129,36 @@ class _MineScreenState extends State<MineScreen> {
     );
   }
 
+  String _getCurrentBookName() {
+    if (_stats == null) return '加载中...';
+    
+    // 1. Try to find by ID
+    final bookId = _stats!.currentBookId;
+    if (bookId.isNotEmpty && _booksManifest.isNotEmpty) {
+      final book = _booksManifest.firstWhere(
+        (b) => b['id'] == bookId, 
+        orElse: () => null
+      );
+      if (book != null) {
+        return book['name'] as String;
+      }
+    }
+    
+    // 2. Try to find by grade/semester (legacy fallback)
+    if (_booksManifest.isNotEmpty) {
+       final book = _booksManifest.firstWhere(
+        (b) => b['grade'] == _stats!.currentGrade && b['semester'] == _stats!.currentSemester,
+        orElse: () => null
+      );
+      if (book != null) {
+        return book['name'] as String;
+      }
+    }
+
+    // 3. Fallback to simple label
+    return _getGradeLabel(_stats!.currentGrade, _stats!.currentSemester);
+  }
+
   String _getGradeLabel(int grade, int semester) {
     String gradeStr = '';
     switch (grade) {
@@ -127,7 +171,12 @@ class _MineScreenState extends State<MineScreen> {
     return '$gradeStr$semesterStr';
   }
 
-  void _showGradeSelectionDialog() {
+  Future<void> _showBookSelectionDialog() async {
+    // _booksManifest is already loaded in _loadStats
+    final books = _booksManifest;
+
+    if (!mounted) return;
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -136,45 +185,51 @@ class _MineScreenState extends State<MineScreen> {
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(24),
+          height: 500, // Fixed height or flexible
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               const Text(
                 '切换教材',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              _buildGradeOption(7, 1),
-              _buildGradeOption(7, 2),
-              _buildGradeOption(8, 1),
-              _buildGradeOption(8, 2),
-              _buildGradeOption(9, 1),
-              _buildGradeOption(9, 2),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: books.length,
+                  itemBuilder: (context, index) {
+                    final book = books[index];
+                    final id = book['id'];
+                    final name = book['name'];
+                    final grade = book['grade'];
+                    final semester = book['semester'];
+                    
+                    bool isSelected = (_stats?.currentBookId == id);
+                    if (!isSelected && (_stats?.currentBookId.isEmpty ?? true)) {
+                       // Fallback match by grade/semester
+                       if (_stats?.currentGrade == grade && _stats?.currentSemester == semester) {
+                         isSelected = true;
+                       }
+                    }
+
+                    return ListTile(
+                      title: Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      leading: Icon(
+                        isSelected ? Icons.check_circle : Icons.circle_outlined,
+                        color: isSelected ? AppColors.primary : Colors.grey,
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await _userStatsDao.updateCurrentBook(id, grade, semester);
+                        _loadStats();
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildGradeOption(int grade, int semester) {
-    bool isSelected = (_stats?.currentGrade == grade && _stats?.currentSemester == semester);
-    // Handle nulls safely
-    if (_stats != null) {
-        isSelected = (_stats!.currentGrade == grade && _stats!.currentSemester == semester);
-    }
-    
-    return ListTile(
-      title: Text(_getGradeLabel(grade, semester)),
-      leading: Icon(
-        isSelected ? Icons.check_circle : Icons.circle_outlined,
-        color: isSelected ? AppColors.primary : Colors.grey,
-      ),
-      onTap: () async {
-        Navigator.pop(context);
-        await _userStatsDao.updateGrade(grade, semester);
-        _loadStats();
       },
     );
   }

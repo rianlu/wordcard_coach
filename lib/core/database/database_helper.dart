@@ -56,9 +56,11 @@ class DatabaseHelper {
         unit TEXT NOT NULL,
         difficulty INTEGER NOT NULL,
         category TEXT NOT NULL,
+        book_id TEXT NOT NULL DEFAULT '',
         syllables TEXT
       )
     ''');
+    await db.execute('CREATE INDEX idx_words_book ON words(book_id)');
     await db.execute('CREATE INDEX idx_words_grade_semester ON words(grade, semester)');
     await db.execute('CREATE INDEX idx_words_unit ON words(unit)');
     await db.execute('CREATE INDEX idx_words_category ON words(category)');
@@ -134,13 +136,15 @@ class DatabaseHelper {
         total_study_days INTEGER NOT NULL DEFAULT 0,
         last_study_date TEXT NOT NULL DEFAULT '',
         total_study_minutes INTEGER NOT NULL DEFAULT 0,
+        current_book_id TEXT NOT NULL DEFAULT '',
         updated_at INTEGER NOT NULL
       )
     ''');
     // Initialize default user stats
     await db.insert('user_stats', {
       'id': 1,
-      'updated_at': DateTime.now().millisecondsSinceEpoch
+      'updated_at': DateTime.now().millisecondsSinceEpoch,
+      'current_book_id': ''
     });
 
     // 6. DailyRecords table
@@ -170,80 +174,72 @@ class DatabaseHelper {
   }
 
   Future<void> _seedData(Database db) async {
-    print('Starting data seeding...');
+    print('Starting data seeding from MANIFEST...');
     
-    // Support both TXT (legacy) and JSON (new rich data)
-    // We will prioritize JSON files if they exist.
+    List<dynamic> manifest = [];
+    try {
+      final  manifestContent = await rootBundle.loadString('assets/data/books_manifest.json');
+      manifest = jsonDecode(manifestContent);
+      print('Loaded manifest with ${manifest.length} books.');
+    } catch(e) {
+      print('Manifest load failed: $e. Falling back to legacy list.');
+      // Fallback or empty - currently empty fallback
+    }
     
-    // Example: user generates "grade7_vol1_module1.json"
-    // For now, let's look for a specific manifest or just scan known filenames.
-    // To keep it simple for the user, let's assume they might drop "grade7_vol1.json" which contains multiple modules,
-    // OR "grade7_vol1_module1.json". 
-    // Let's iterate through the standard list and check for .json extension first.
-    
-    final books = [
-      {'name': '外研版初中英语七年级上册', 'grade': 7, 'semester': 1},
-      {'name': '外研版初中英语七年级下册', 'grade': 7, 'semester': 2},
-      {'name': '外研版初中英语八年级上册', 'grade': 8, 'semester': 1},
-      {'name': '外研版初中英语八年级下册', 'grade': 8, 'semester': 2},
-      {'name': '外研版初中英语九年级上册', 'grade': 9, 'semester': 1},
-      {'name': '外研版初中英语九年级下册', 'grade': 9, 'semester': 2},
-    ];
+    if (manifest.isEmpty) {
+       print("Warning: Manifest empty or failed.");
+       return; 
+    }
 
     try {
       final batch = db.batch();
 
-      for (final book in books) {
-        final baseName = book['name'] as String;
+      for (final book in manifest) {
+        final bookId = book['id'] as String;
+        final filename = book['file'] as String;
         final grade = book['grade'] as int;
         final semester = book['semester'] as int;
-
-        // Try JSON first
+        
+        // Try JSON
         try {
-          // We assume the user might name it "外研版初中英语七年级上册.json"
-          final jsonContent = await rootBundle.loadString('assets/data/$baseName.json');
-          print("Found JSON for $baseName, importing rich data...");
-          await _seedFromJson(batch, jsonContent, grade, semester);
-          continue; // Successfully imported JSON, skip TXT
+          final jsonContent = await rootBundle.loadString('assets/data/$filename');
+          print("Importing $filename for book $bookId...");
+          await _seedFromJson(batch, jsonContent, grade, semester, bookId);
         } catch (e) {
-          // JSON not found, fall back to TXT
-          // print("JSON not found for $baseName, trying TXT...");
-        }
-
-        // Fallback to TXT
-        try {
-          final txtContent = await rootBundle.loadString('assets/data/$baseName.txt');
-          print("Found TXT for $baseName, importing basic data...");
-          await _seedFromTxt(batch, txtContent, grade, semester);
-        } catch (e) {
-          // print("TXT not found for $baseName: $e");
+          print("Error loading $filename: $e");
         }
       }
 
       await batch.commit(noResult: true);
       print('Data seeding completed.');
+      
+      // Auto-select the first book if available
+      if (manifest.isNotEmpty) {
+        final firstBook = manifest.first;
+        final bookId = firstBook['id'] as String;
+        final grade = firstBook['grade'] as int;
+        final semester = firstBook['semester'] as int;
+        
+        await db.update('user_stats', {
+          'current_book_id': bookId,
+          'current_grade': grade,
+          'current_semester': semester
+        }, where: 'id = 1');
+        print('Auto-selected default book: $bookId');
+      }
+      
     } catch (e) {
       print('Error seeding data: $e');
     }
   }
 
-  Future<void> _seedFromJson(Batch batch, String jsonString, int grade, int semester) async {
+  Future<void> _seedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId) async {
     // Expected JSON structure:
     // {
     //   "grade": 7,     <-- Optional coverage override
     //   "semester": 1,  <-- Optional coverage override
     //   "unit": "Module 1", <-- If file is per-module (or handled inside array)
     //   "data": [ ... ]
-    // }
-    // OR if it's a list of modules/words directly.
-    // Based on user agreement:
-    // {
-    //   "grade": 7,
-    //   "semester": 1,
-    //   "unit": "Module 1",
-    //   "data": [
-    //     { "text": "hello", "phonetic": "...", "meaning": "...", "app_sentences": [...] }
-    //   ]
     // }
     
     // We should be robust. Let's decode dynamically.
@@ -254,18 +250,12 @@ class DatabaseHelper {
     
     if (decoded is List) {
       // List of modules or words? 
-      // If user merges multiple module JSONs into one array:
-      // [ { "unit": "M1", "data": [...] }, { "unit": "M2", "data": [...] } ]
-      // We will handle that.
       items = decoded;
     } else if (decoded is Map<String, dynamic>) {
-       // Single object
        if (decoded.containsKey('data')) {
-          // It's the structure we agreed on
           if (decoded.containsKey('unit')) defaultUnit = decoded['unit'];
           items = decoded['data'];
        } else if (decoded.containsKey('words')) {
-           // Maybe user uses 'words' key
            items = decoded['words'];
        }
     }
@@ -284,39 +274,34 @@ class DatabaseHelper {
          // Determine if this is a WORD or a MODULE wrapper
          if (item.containsKey('data') || item.containsKey('words')) {
            // It's a module wrapper (recursive)
-           // e.g. { "unit": "Module 2", "data": [words...] }
            final moduleUnit = item['unit'] ?? defaultUnit;
            final moduleData = item['data'] ?? item['words'] ?? [];
-           await _seedWordList(batch, moduleData, grade, semester, moduleUnit);
+           await _seedWordList(batch, moduleData, grade, semester, moduleUnit, bookId);
          } else {
            // It's a word object directly
-           // We use the defaultUnit logic (which might need to be passed down if it changes)
-           // If we are processing a flat list of words, they all belong to 'defaultUnit' which might be wrong if the file covers whole book.
-           // However, for the agreed "Per Module" JSON, this is correct.
-           // We will delegate to a helper to write the single word.
            wordIndex++;
-           _insertWord(batch, item, grade, semester, defaultUnit, wordIndex);
+           _insertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId);
          }
       }
     }
   }
   
   // Helper for recursive module list processing
-  Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit) async {
+  Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId) async {
     int wordIndex = 0;
     for (var w in words) {
       if (w is Map<String, dynamic>) {
         wordIndex++;
-        _insertWord(batch, w, grade, semester, unit, wordIndex);
+        _insertWord(batch, w, grade, semester, unit, wordIndex, bookId);
       }
     }
   }
 
-  void _insertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index) {
+  void _insertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId) {
      final text = data['text'] as String? ?? '';
      if (text.isEmpty) return;
      
-     final id = 'word_${grade}_${semester}_${unit.hashCode}_$index';
+     final id = 'word_${bookId}_${unit.hashCode}_$index';
      
      List<String> syllables = [];
      if (data['syllables'] != null && data['syllables'] is List) {
@@ -334,6 +319,7 @@ class DatabaseHelper {
        difficulty: 1,
        category: 'general',
        syllables: syllables,
+       bookId: bookId,
      );
      
      batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);

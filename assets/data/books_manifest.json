@@ -1,0 +1,50 @@
+[
+    {
+        "id": "waiyan_7_1",
+        "name": "（旧版）外研版初中英语七年级上册",
+        "grade": 7,
+        "semester": 1,
+        "file": "外研版初中英语七年级上册.json",
+        "version": "1.0"
+    },
+    {
+        "id": "waiyan_7_2",
+        "name": "（旧版）外研版初中英语七年级下册",
+        "grade": 7,
+        "semester": 2,
+        "file": "外研版初中英语七年级下册.json",
+        "version": "1.0"
+    },
+    {
+        "id": "waiyan_8_1",
+        "name": "（旧版）外研版初中英语八年级上册",
+        "grade": 8,
+        "semester": 1,
+        "file": "外研版初中英语八年级上册.json",
+        "version": "1.0"
+    },
+    {
+        "id": "waiyan_8_2",
+        "name": "（旧版）外研版初中英语八年级下册",
+        "grade": 8,
+        "semester": 2,
+        "file": "外研版初中英语八年级下册.json",
+        "version": "1.0"
+    },
+    {
+        "id": "waiyan_9_1",
+        "name": "外研版初中英语九年级上册",
+        "grade": 9,
+        "semester": 1,
+        "file": "外研版初中英语九年级上册.json",
+        "version": "1.0"
+    },
+    {
+        "id": "waiyan_9_2",
+        "name": "外研版初中英语九年级下册",
+        "grade": 9,
+        "semester": 2,
+        "file": "外研版初中英语九年级下册.json",
+        "version": "1.0"
+    }
+]

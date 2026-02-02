@@ -85,23 +85,23 @@ class StatsDao {
     return activity;
   }
 
-  Future<MasteryDistribution> getMasteryDistribution(int grade, int semester) async {
+  Future<MasteryDistribution> getMasteryDistribution(String bookId) async {
     final db = await _dbHelper.database;
     
     // Total words in this book
     final int totalWords = Sqflite.firstIntValue(await db.rawQuery(
-      'SELECT COUNT(*) FROM words WHERE grade = ? AND semester = ?',
-      [grade, semester]
+      'SELECT COUNT(*) FROM words WHERE book_id = ?',
+      [bookId]
     )) ?? 0;
     
     // Words in progress for this book
-    // We join word_progress with words to filter by grade/semester
+    // We join word_progress with words to filter by book_id
     final List<Map<String, dynamic>> progressMaps = await db.rawQuery('''
       SELECT wp.mastery_level 
       FROM word_progress wp
       JOIN words w ON wp.word_id = w.id
-      WHERE w.grade = ? AND w.semester = ?
-    ''', [grade, semester]);
+      WHERE w.book_id = ?
+    ''', [bookId]);
     
     int learning = 0;
     int mastered = 0;
@@ -121,22 +121,22 @@ class StatsDao {
     return MasteryDistribution(newWords, learning, mastered);
   }
 
-  Future<BookProgress> getBookProgress(int grade, int semester) async {
+  Future<BookProgress> getBookProgress(String bookId) async {
     final db = await _dbHelper.database;
     
     // Total words in this book
     final int total = Sqflite.firstIntValue(await db.rawQuery(
-      'SELECT COUNT(*) FROM words WHERE grade = ? AND semester = ?',
-      [grade, semester]
+      'SELECT COUNT(*) FROM words WHERE book_id = ?',
+      [bookId]
     )) ?? 0;
     
     // Learned words in this book (exist in word_progress)
-    // We join word_progress with words to filter by grade/semester
+    // We join word_progress with words to filter by book_id
     final int learned = Sqflite.firstIntValue(await db.rawQuery('''
       SELECT COUNT(*) FROM word_progress wp
       JOIN words w ON wp.word_id = w.id
-      WHERE w.grade = ? AND w.semester = ?
-    ''', [grade, semester])) ?? 0;
+      WHERE w.book_id = ?
+    ''', [bookId])) ?? 0;
     
     return BookProgress(total, learned);
   }

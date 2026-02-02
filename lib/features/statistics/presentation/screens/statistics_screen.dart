@@ -32,10 +32,19 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Future<void> _loadData() async {
     final stats = await _userStatsDao.getUserStats();
-    final bookProg = await _statsDao.getBookProgress(stats.currentGrade, stats.currentSemester);
+    
+    // Determine bookId (Fallback to default convention if empty)
+    String bookId = stats.currentBookId;
+    if (bookId.isEmpty) {
+      // Assuming standard ID format: waiyan_{grade}_{semester}
+      // This is a temporary bridge for legacy state
+      bookId = 'waiyan_${stats.currentGrade}_${stats.currentSemester}';
+    }
+
+    final bookProg = await _statsDao.getBookProgress(bookId);
     final accuracy = await _statsDao.getOverallAccuracy();
     final growth = await _statsDao.getVocabularyGrowth();
-    final mastery = await _statsDao.getMasteryDistribution(stats.currentGrade, stats.currentSemester);
+    final mastery = await _statsDao.getMasteryDistribution(bookId);
 
     if (mounted) {
       setState(() {

@@ -33,10 +33,26 @@ class UserStatsDao {
   }
 
   Future<void> updateGrade(int grade, int semester) async {
+    // Deprecated? Or update bookId too if known?
+    // For now, only update grade/semester, but we should eventually migrate calls to updateCurrentBook
     final db = await _dbHelper.database;
     await db.update(
       'user_stats',
       {'current_grade': grade, 'current_semester': semester},
+      where: 'id = ?',
+      whereArgs: [1],
+    );
+  }
+
+  Future<void> updateCurrentBook(String bookId, int grade, int semester) async {
+    final db = await _dbHelper.database;
+    await db.update(
+      'user_stats',
+      {
+        'current_book_id': bookId,
+        'current_grade': grade, 
+        'current_semester': semester
+      },
       where: 'id = ?',
       whereArgs: [1],
     );
