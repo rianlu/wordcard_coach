@@ -8,7 +8,7 @@ import '../../../../core/database/models/word.dart';
 
 class SpellingPracticeView extends StatefulWidget {
   final Word word;
-  final Function(bool isCorrect) onCompleted;
+  final Function(int score) onCompleted;
 
   const SpellingPracticeView({
     super.key, 
@@ -22,6 +22,7 @@ class SpellingPracticeView extends StatefulWidget {
 
 class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   bool _isHintVisible = false;
+  int _hintsUsed = 0; // Track hints
 
   // Game State
   String _targetWord = "";
@@ -46,6 +47,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   void _initializeGame() {
     _targetWord = widget.word.text;
     _isHintVisible = false;
+    _hintsUsed = 0;
     
     final random = Random();
     int len = _targetWord.length;
@@ -105,6 +107,31 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     }
   }
 
+  void _useHint() {
+    // Find empty slots
+    List<int> emptyIndices = [];
+    for (int i = 0; i < _userInputs.length; i++) {
+      if (_userInputs[i].isEmpty) emptyIndices.add(i);
+    }
+
+    if (emptyIndices.isNotEmpty) {
+      setState(() {
+         // Pick random empty slot
+         final random = Random();
+         int slotIndex = emptyIndices[random.nextInt(emptyIndices.length)];
+         
+         // Find actual char from target word
+         // _missingIndices maps slot index -> word index
+         int wordIndex = _missingIndices[slotIndex];
+         String char = _targetWord[wordIndex].toUpperCase();
+         
+         _userInputs[slotIndex] = char;
+         _hintsUsed++;
+      });
+      _checkCompletion();
+    }
+  }
+
   void _checkCompletion() {
     if (!_userInputs.contains("")) {
       // Reconstruct word
@@ -129,7 +156,8 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(content: Text('Correct!'), backgroundColor: Colors.green, duration: Duration(milliseconds: 500))
                );
-               widget.onCompleted(true);
+               int score = _hintsUsed > 0 ? 3 : 5;
+               widget.onCompleted(score);
             }
          });
       } else {
@@ -180,6 +208,17 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                 ),
                 
                 const SizedBox(height: 16),
+
+                // Hint Button (New)
+                if (_userInputs.contains(""))
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: TextButton.icon(
+                      onPressed: _useHint,
+                      icon: const Icon(Icons.lightbulb_outline, color: Colors.orange),
+                      label: const Text("提示 (Hint)", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
                 
                 // Example Sentence with styling
                 Container(

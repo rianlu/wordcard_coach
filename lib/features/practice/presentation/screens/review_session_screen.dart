@@ -86,21 +86,13 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     }
   }
 
-  Future<void> _handleSuccess(bool isCorrect) async {
+  Future<void> _handleSuccess(int quality) async {
     final word = _reviewWords[_currentIndex];
     
-    // SM-2 Scoring:
-    // Correct = 5 (Perfect)
-    // Wrong/Skip = 0 (Fail)
-    // Passable = 3 (Hint used - if we had it)
-    
-    // Currently our views call this on "Completion", which implies success for Spelling/Speaking unless skipped.
-    // But Speaking/Spelling views only call onCompleted() when correct (or skipped).
-    // Let's refine:
-    // If isCorrect is true => 5
-    // If isCorrect is false (means skipped/wrong) => 0
-    
-    int quality = isCorrect ? 5 : 0;
+    // Quality passed directly from views:
+    // 5 = Perfect
+    // 3 = Passable (Hint used or Retry)
+    // 0 = Fail (Skip or Give up)
     
     await _wordDao.updateReviewStats(word.id, quality);
     

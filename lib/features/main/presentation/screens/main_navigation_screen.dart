@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../features/home/presentation/screens/home_dashboard_screen.dart';
-import '../../../../features/collection/presentation/screens/collection_gallery_screen.dart';
+import '../../../../features/dictionary/presentation/screens/dictionary_screen.dart';
 import 'package:wordcard_coach/features/statistics/presentation/screens/statistics_screen.dart';
 import '../../../../features/mine/presentation/screens/mine_screen.dart';
 
@@ -18,7 +18,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   List<Widget> get _screens => [
     const HomeDashboardScreen(),
-    const CollectionGalleryScreen(),
+    const DictionaryScreen(),
     StatisticsScreen(key: _statsKey),
     const MineScreen(),
   ];
@@ -74,8 +74,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               label: '学习',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.image), // grid_view in HTML, but image is close. Let's use grid_view if available in material
-              label: '图鉴',
+              icon: Icon(Icons.menu_book), // Dictionary icon
+              label: '词典',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart),

@@ -268,7 +268,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         ),
         const SizedBox(height: 16),
         BubblyButton(
-          onPressed: () {
+          onPressed: () async {
              // Navigate to Daily Learning Session
              await Navigator.push(
                context,
@@ -315,7 +315,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         ),
         const SizedBox(height: 16),
         BubblyButton(
-          onPressed: () {
+          onPressed: () async {
              await Navigator.push(
                context,
                MaterialPageRoute(builder: (context) => const ReviewSessionScreen()),

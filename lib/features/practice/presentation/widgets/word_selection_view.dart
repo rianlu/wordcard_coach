@@ -8,7 +8,7 @@ import '../../../../core/services/audio_service.dart';
 class WordSelectionView extends StatefulWidget {
   final Word word;
   final List<Word> options;
-  final Function(bool isCorrect) onCompleted;
+  final Function(int score) onCompleted;
 
   const WordSelectionView({
     super.key, 
@@ -23,6 +23,7 @@ class WordSelectionView extends StatefulWidget {
 
 class _WordSelectionViewState extends State<WordSelectionView> {
   String? _selectedOptionId;
+  int _wrongAttempts = 0;
 
   @override
   void didUpdateWidget(WordSelectionView oldWidget) {
@@ -46,9 +47,10 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     // Simple delay to show result then complete
     Future.delayed(const Duration(seconds: 1), () {
       if (mounted) {
-        if (isCorrect) {
-          widget.onCompleted();
-        } else {
+          if (isCorrect) {
+            // Perfect = 5, Retry = 3
+            widget.onCompleted(_wrongAttempts == 0 ? 5 : 3);
+          } else {
            // If wrong, maybe we want to shake or something, but for now let's just complete or reset
            // Usually in a daily session flow we might want to force retry or mark as incorrect. 
            // For simplicity let's just reset selection to allow retry if wrong, or proceed if correctness logic is handled by parent.

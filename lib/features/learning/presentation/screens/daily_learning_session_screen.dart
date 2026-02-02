@@ -380,7 +380,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
       case SessionPhase.speaking:
         return SpeakingPracticeView(
           word: word,
-          onCompleted: _next,
+          onCompleted: (_) => _next(),
         );
       case SessionPhase.selection:
         // Generate distractors
@@ -396,12 +396,12 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
         return WordSelectionView(
           word: word,
           options: options,
-          onCompleted: _next,
+          onCompleted: (_) => _next(),
         );
       case SessionPhase.spelling:
         return SpellingPracticeView(
           word: word,
-          onCompleted: _next,
+          onCompleted: (_) => _next(),
         );
       default:
         return const SizedBox();
