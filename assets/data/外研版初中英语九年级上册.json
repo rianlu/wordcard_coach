@@ -90,8 +90,8 @@
         "meaning": "conj. 虽然；尽管",
         "app_sentences": [
           {
-            "en": "Though it was raining",
-            "cn": "we went out."
+            "en": "Though it was raining, we went out.",
+            "cn": "虽然下着雨，我们还是出去了。"
           }
         ]
       },
@@ -118,8 +118,8 @@
         "meaning": "interj. 哇",
         "app_sentences": [
           {
-            "en": "Wow",
-            "cn": "what a beautiful picture!"
+            "en": "Wow, what a beautiful picture!",
+            "cn": "哇，多漂亮的画啊！"
           }
         ]
       },
@@ -152,8 +152,8 @@
         "meaning": "phr. 依某人看来",
         "app_sentences": [
           {
-            "en": "In my opinion",
-            "cn": "English is very important."
+            "en": "In my opinion, English is very important.",
+            "cn": "在我看来，英语非常重要。"
           }
         ]
       },
@@ -244,8 +244,8 @@
         "meaning": "n. 标志；迹象",
         "app_sentences": [
           {
-            "en": "v. 签名",
-            "cn": "Please look at the sign over there."
+            "en": "v. 签名,Please look at the sign over there.",
+            "cn": "请看那边的标志。"
           }
         ]
       },
@@ -502,8 +502,8 @@
         "meaning": "phr. 从那时起",
         "app_sentences": [
           {
-            "en": "He moved to Beijing in 2010",
-            "cn": "and since then he has lived there."
+            "en": "He moved to Beijing in 2010, and since then he has lived there.",
+            "cn": "他2010年搬到北京，从那时起就一直住在那里。"
           }
         ]
       },
@@ -1001,8 +1001,8 @@
         "meaning": "prep. 包括",
         "app_sentences": [
           {
-            "en": "The price is $100",
-            "cn": "including tax."
+            "en": "The price is $100, including tax.",
+            "cn": "价格是100美元，含税。"
           }
         ]
       },
@@ -1108,8 +1108,8 @@
         "meaning": "pron. 无论什么",
         "app_sentences": [
           {
-            "en": "Whatever you do",
-            "cn": "do it well."
+            "en": "Whatever you do, do it well.",
+            "cn": "无论你做什么，都要把它做好。"
           }
         ]
       },
@@ -1409,8 +1409,8 @@
         "meaning": "phr. 在那时",
         "app_sentences": [
           {
-            "en": "At that time",
-            "cn": "I was living in Shanghai."
+            "en": "At that time, I was living in Shanghai.",
+            "cn": "那时我住在上海。"
           }
         ]
       },
@@ -1627,8 +1627,8 @@
         "meaning": "v. 锁上",
         "app_sentences": [
           {
-            "en": "n. 锁",
-            "cn": "Don't forget to lock the door."
+            "en": "n. 锁,Don't forget to lock the door.",
+            "cn": "别忘了锁门。"
           }
         ]
       },
@@ -1687,8 +1687,8 @@
         "meaning": "v. 鸣响；打电话",
         "app_sentences": [
           {
-            "en": "n. 戒指",
-            "cn": "The telephone is ringing."
+            "en": "n. 戒指,The telephone is ringing.",
+            "cn": "电话在响。"
           }
         ]
       },
@@ -1797,8 +1797,8 @@
         "meaning": "adv. 实际上",
         "app_sentences": [
           {
-            "en": "Actually",
-            "cn": "I don't know him very well."
+            "en": "Actually, I don't know him very well.",
+            "cn": "实际上，我不太了解他。"
           }
         ]
       },
@@ -1858,8 +1858,8 @@
         "meaning": "n. 顺序；订单",
         "app_sentences": [
           {
-            "en": "v. 点餐",
-            "cn": "The books are arranged in alphabetical order."
+            "en": "v. 点餐,The books are arranged in alphabetical order.",
+            "cn": "这些书按字母顺序排列。"
           }
         ]
       },
@@ -2156,8 +2156,8 @@
         "meaning": "phr. 陷入困境；有麻烦",
         "app_sentences": [
           {
-            "en": "If you don't finish your homework",
-            "cn": "you will be in trouble."
+            "en": "If you don't finish your homework, you will be in trouble.",
+            "cn": "如果你不完成作业，你会有麻烦的。"
           }
         ]
       },
@@ -2199,7 +2199,7 @@
         "meaning": "n. 进入；入口",
         "app_sentences": [
           {
-            "en": "The sign says No Entry.",
+            "en": "The sign says \"No Entry\".",
             "cn": "牌子上写着“禁止入内”。"
           }
         ]
@@ -2246,8 +2246,8 @@
         "meaning": "phr. 难怪",
         "app_sentences": [
           {
-            "en": "No wonder he is late",
-            "cn": "he missed the bus."
+            "en": "No wonder he is late, he missed the bus.",
+            "cn": "难怪他迟到，他错过了公交车。"
           }
         ]
       },
@@ -2445,8 +2445,8 @@
         "meaning": "v. 控制",
         "app_sentences": [
           {
-            "en": "n. 控制",
-            "cn": "It's important to control your temper."
+            "en": "n. 控制,It's important to control your temper.",
+            "cn": "控制你的脾气很重要。"
           }
         ]
       },
@@ -2491,8 +2491,8 @@
         "meaning": "phr. 将...与...比较",
         "app_sentences": [
           {
-            "en": "If you compare this book with that one",
-            "cn": "you will see the difference."
+            "en": "If you compare this book with that one, you will see the difference.",
+            "cn": "如果你把这本书和那本比较，你会看出差别。"
           }
         ]
       },
@@ -2543,8 +2543,8 @@
         "meaning": "n. 交易",
         "app_sentences": [
           {
-            "en": "v. 处理",
-            "cn": "It's a good deal."
+            "en": "v. 处理,It's a good deal.",
+            "cn": "这是一笔好交易。"
           }
         ]
       },
@@ -2572,8 +2572,8 @@
         "meaning": "v. 失败；不及格",
         "app_sentences": [
           {
-            "en": "If you don't study hard",
-            "cn": "you might fail the exam."
+            "en": "If you don't study hard, you might fail the exam.",
+            "cn": "如果你不努力学习，你可能会考试不及格。"
           }
         ]
       },
@@ -2732,8 +2732,8 @@
         "meaning": "adv. 代替",
         "app_sentences": [
           {
-            "en": "If you are busy",
-            "cn": "I can go instead."
+            "en": "If you are busy, I can go instead.",
+            "cn": "如果你忙，我可以代替你去。"
           }
         ]
       },
@@ -2794,8 +2794,8 @@
         "meaning": "n. 点；观点",
         "app_sentences": [
           {
-            "en": "v. 指向",
-            "cn": "What is your point?"
+            "en": "v. 指向,What is your point?",
+            "cn": "你的观点是什么？"
           }
         ]
       },
@@ -3108,8 +3108,8 @@
         "meaning": "v. 复习；回顾",
         "app_sentences": [
           {
-            "en": "n. 评论",
-            "cn": "You should review your notes before the exam."
+            "en": "n. 评论,You should review your notes before the exam.",
+            "cn": "考试前你应该复习一下笔记。"
           }
         ]
       },
@@ -3124,8 +3124,8 @@
         "meaning": "n. 影响",
         "app_sentences": [
           {
-            "en": "v. 影响",
-            "cn": "His teacher has a great influence on him."
+            "en": "v. 影响,His teacher has a great influence on him.",
+            "cn": "他的老师对他影响很大。"
           }
         ]
       },
@@ -3138,8 +3138,8 @@
         "meaning": "n. 感觉；意识",
         "app_sentences": [
           {
-            "en": "v. 感觉到",
-            "cn": "He has a good sense of humor."
+            "en": "v. 感觉到,He has a good sense of humor.",
+            "cn": "他很有幽默感。"
           }
         ]
       },
@@ -3169,8 +3169,8 @@
         "meaning": "phr. 顺便说一下",
         "app_sentences": [
           {
-            "en": "By the way",
-            "cn": "have you seen my keys?"
+            "en": "By the way, have you seen my keys?",
+            "cn": "顺便问一下，你看到我的钥匙了吗？"
           }
         ]
       },
@@ -3233,8 +3233,8 @@
         "meaning": "phr. 惹上麻烦",
         "app_sentences": [
           {
-            "en": "If you are late again",
-            "cn": "you will get into trouble."
+            "en": "If you are late again, you will get into trouble.",
+            "cn": "如果你再迟到，你会惹上麻烦的。"
           }
         ]
       },
@@ -3482,8 +3482,8 @@
         "meaning": "phr. 代表；象征",
         "app_sentences": [
           {
-            "en": "What does UN stand for?",
-            "cn": "UN代表什么？"
+            "en": "What does \"UN\" stand for?",
+            "cn": "\"UN\"代表什么？"
           }
         ]
       },
@@ -3512,8 +3512,8 @@
         "meaning": "n. 点；要点",
         "app_sentences": [
           {
-            "en": "v. 指向",
-            "cn": "Can you explain the main point of the article?"
+            "en": "v. 指向,Can you explain the main point of the article?",
+            "cn": "你能解释一下文章的要点吗？"
           }
         ]
       },
@@ -3720,8 +3720,8 @@
         "meaning": "n. 赛跑；种族",
         "app_sentences": [
           {
-            "en": "v. 赛跑",
-            "cn": "He came first in the 100-meter race."
+            "en": "v. 赛跑,He came first in the 100-meter race.",
+            "cn": "他在100米赛跑中得了第一名。"
           }
         ]
       },
@@ -3735,8 +3735,8 @@
         "meaning": "n. 记录；唱片",
         "app_sentences": [
           {
-            "en": "v. 记录",
-            "cn": "She set a new world record."
+            "en": "v. 记录,She set a new world record.",
+            "cn": "她创造了一项新的世界纪录。"
           }
         ]
       },
@@ -3794,8 +3794,8 @@
         "meaning": "v. 打破；折断",
         "app_sentences": [
           {
-            "en": "n. 休息",
-            "cn": "Be careful not to break the glass."
+            "en": "n. 休息,Be careful not to break the glass.",
+            "cn": "小心别打碎玻璃。"
           }
         ]
       },
@@ -3810,8 +3810,8 @@
         "meaning": "n. 运动员",
         "app_sentences": [
           {
-            "en": "As a sportsperson",
-            "cn": "you need to train hard."
+            "en": "As a sportsperson, you need to train hard.",
+            "cn": "作为一名运动员，你需要刻苦训练。"
           }
         ]
       },
@@ -3825,8 +3825,8 @@
         "meaning": "adj. 亚洲的",
         "app_sentences": [
           {
-            "en": "n. 亚洲人",
-            "cn": "China is an Asian country."
+            "en": "n. 亚洲人,China is an Asian country.",
+            "cn": "中国是一个亚洲国家。"
           }
         ]
       },
@@ -4025,8 +4025,8 @@
         "meaning": "n. 邮件",
         "app_sentences": [
           {
-            "en": "v. 邮寄",
-            "cn": "I check my email every day."
+            "en": "v. 邮寄,I check my email every day.",
+            "cn": "我每天都查收电子邮件。"
           }
         ]
       },
@@ -4317,8 +4317,8 @@
         "meaning": "n. 贸易",
         "app_sentences": [
           {
-            "en": "v. 交易",
-            "cn": "International trade is important for the economy."
+            "en": "v. 交易,International trade is important for the economy.",
+            "cn": "国际贸易对经济很重要。"
           }
         ]
       },
@@ -4332,8 +4332,8 @@
         "meaning": "n. 结果",
         "app_sentences": [
           {
-            "en": "v. 导致",
-            "cn": "What was the result of the exam?"
+            "en": "v. 导致,What was the result of the exam?",
+            "cn": "考试结果怎么样？"
           }
         ]
       },
@@ -4362,8 +4362,8 @@
         "meaning": "phr. 在某种程度上",
         "app_sentences": [
           {
-            "en": "In a way",
-            "cn": "you are right."
+            "en": "In a way, you are right.",
+            "cn": "在某种程度上，你是对的。"
           }
         ]
       },
@@ -4425,8 +4425,8 @@
         "meaning": "n. 商店",
         "app_sentences": [
           {
-            "en": "v. 储存",
-            "cn": "We bought food from the store."
+            "en": "v. 储存,We bought food from the store.",
+            "cn": "我们从商店买了食物。"
           }
         ]
       },
@@ -4454,8 +4454,8 @@
         "meaning": "n. 形式；表格",
         "app_sentences": [
           {
-            "en": "v. 形成",
-            "cn": "Please fill in this form."
+            "en": "v. 形成,Please fill in this form.",
+            "cn": "请填写这张表格。"
           }
         ]
       },
@@ -4587,8 +4587,8 @@
         "meaning": "phr. 根据",
         "app_sentences": [
           {
-            "en": "According to the weather report",
-            "cn": "it will rain tomorrow."
+            "en": "According to the weather report, it will rain tomorrow.",
+            "cn": "根据天气预报，明天会下雨。"
           }
         ]
       },
@@ -4648,8 +4648,8 @@
         "meaning": "n. 东北",
         "app_sentences": [
           {
-            "en": "adj. 东北的",
-            "cn": "The wind is coming from the northeast."
+            "en": "adj. 东北的,The wind is coming from the northeast.",
+            "cn": "风从东北方向吹来。"
           }
         ]
       },
@@ -4690,8 +4690,8 @@
         "meaning": "v. 保持；继续",
         "app_sentences": [
           {
-            "en": "Keep quiet",
-            "cn": "please."
+            "en": "Keep quiet, please.",
+            "cn": "请保持安静。"
           }
         ]
       },
@@ -4741,8 +4741,8 @@
         "meaning": "v. 飞",
         "app_sentences": [
           {
-            "en": "n. 苍蝇",
-            "cn": "Birds can fly."
+            "en": "n. 苍蝇,Birds can fly.",
+            "cn": "鸟会飞。"
           }
         ]
       },
@@ -4865,8 +4865,8 @@
         "meaning": "n. 刷子",
         "app_sentences": [
           {
-            "en": "v. 刷",
-            "cn": "Brush your teeth twice a day."
+            "en": "v. 刷,Brush your teeth twice a day.",
+            "cn": "每天刷两次牙。"
           }
         ]
       },
@@ -4900,8 +4900,8 @@
         "meaning": "phr. 当时",
         "app_sentences": [
           {
-            "en": "At the time",
-            "cn": "I didn't understand what he meant."
+            "en": "At the time, I didn't understand what he meant.",
+            "cn": "当时，我不明白他的意思。"
           }
         ]
       },
@@ -4981,8 +4981,8 @@
         "meaning": "n. 亲戚",
         "app_sentences": [
           {
-            "en": "adj. 相对的",
-            "cn": "She is visiting her relatives."
+            "en": "adj. 相对的,She is visiting her relatives.",
+            "cn": "她正在拜访她的亲戚。"
           }
         ]
       },
@@ -5098,8 +5098,8 @@
         "meaning": "v. 骑",
         "app_sentences": [
           {
-            "en": "n. 乘坐",
-            "cn": "Can you ride a bike?"
+            "en": "n. 乘坐,Can you ride a bike?",
+            "cn": "你会骑自行车吗？"
           }
         ]
       }
@@ -5119,8 +5119,8 @@
         "meaning": "v. 打赌",
         "app_sentences": [
           {
-            "en": "n. 打赌",
-            "cn": "I bet he will win."
+            "en": "n. 打赌,I bet he will win.",
+            "cn": "我打赌他会赢。"
           }
         ]
       },
@@ -5150,8 +5150,8 @@
         "meaning": "phr. 问题是",
         "app_sentences": [
           {
-            "en": "The thing is",
-            "cn": "I don't have enough money."
+            "en": "The thing is, I don't have enough money.",
+            "cn": "问题是，我没有足够的钱。"
           }
         ]
       },
@@ -5181,8 +5181,8 @@
         "meaning": "n. 标准",
         "app_sentences": [
           {
-            "en": "adj. 标准的",
-            "cn": "The work is not up to standard."
+            "en": "adj. 标准的,The work is not up to standard.",
+            "cn": "这项工作未达到标准。"
           }
         ]
       },
@@ -5273,8 +5273,8 @@
         "meaning": "n. 菜单",
         "app_sentences": [
           {
-            "en": "May I see the menu",
-            "cn": "please?"
+            "en": "May I see the menu, please?",
+            "cn": "请给我看看菜单好吗？"
           }
         ]
       },
@@ -5291,8 +5291,8 @@
         "meaning": "phr. 有机会",
         "app_sentences": [
           {
-            "en": "If we play well",
-            "cn": "we are in with a chance of winning."
+            "en": "If we play well, we are in with a chance of winning.",
+            "cn": "如果我们打得好，我们就有机会赢。"
           }
         ]
       },
@@ -5352,8 +5352,8 @@
         "meaning": "phr. 与...相比",
         "app_sentences": [
           {
-            "en": "Compared with last year",
-            "cn": "our sales have increased."
+            "en": "Compared with last year, our sales have increased.",
+            "cn": "与去年相比，我们的销售额增加了。"
           }
         ]
       },
@@ -5368,8 +5368,8 @@
         "meaning": "phr. 即使",
         "app_sentences": [
           {
-            "en": "Even though it was raining",
-            "cn": "we went for a walk."
+            "en": "Even though it was raining, we went for a walk.",
+            "cn": "即使下着雨，我们还是去散步了。"
           }
         ]
       },
@@ -5382,8 +5382,8 @@
         "meaning": "v. 冲；匆忙",
         "app_sentences": [
           {
-            "en": "n. 匆忙",
-            "cn": "Don't rush! We have plenty of time."
+            "en": "n. 匆忙,Don't rush! We have plenty of time.",
+            "cn": "别急！我们时间很充裕。"
           }
         ]
       },
@@ -5495,8 +5495,8 @@
         "meaning": "n. 礼物",
         "app_sentences": [
           {
-            "en": "adj. 现在的",
-            "cn": "He gave me a present for my birthday."
+            "en": "adj. 现在的,He gave me a present for my birthday.",
+            "cn": "他送了我一份生日礼物。"
           }
         ]
       }
@@ -5563,8 +5563,8 @@
         "meaning": "n. 浪费；废物",
         "app_sentences": [
           {
-            "en": "v. 浪费",
-            "cn": "It's a waste of time."
+            "en": "v. 浪费,It's a waste of time.",
+            "cn": "这是浪费时间。"
           }
         ]
       },
@@ -5635,8 +5635,8 @@
         "meaning": "adj. 更少的",
         "app_sentences": [
           {
-            "en": "adv. 更少地",
-            "cn": "We should use less water."
+            "en": "adv. 更少地,We should use less water.",
+            "cn": "我们应该少用水。"
           }
         ]
       },
@@ -5695,8 +5695,8 @@
         "meaning": "n. 塑料",
         "app_sentences": [
           {
-            "en": "adj. 塑料的",
-            "cn": "Don't use too much plastic."
+            "en": "adj. 塑料的,Don't use too much plastic.",
+            "cn": "不要使用太多塑料。"
           }
         ]
       },
@@ -5890,8 +5890,8 @@
         "meaning": "n. 步骤；台阶",
         "app_sentences": [
           {
-            "en": "v. 踏",
-            "cn": "Follow the steps in the instructions."
+            "en": "v. 踏,Follow the steps in the instructions.",
+            "cn": "按照说明中的步骤操作。"
           }
         ]
       },

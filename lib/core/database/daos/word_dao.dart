@@ -88,7 +88,7 @@ class WordDao {
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT * FROM words 
       WHERE $whereClause
-      ORDER BY RANDOM()
+      ORDER BY rowid ASC
       LIMIT ?
     ''', args);
     
@@ -97,5 +97,36 @@ class WordDao {
     });
     
     return await _attachSentences(words);
+  }
+
+  Future<void> batchMarkAsLearned(List<Word> words) async {
+    final db = await _dbHelper.database;
+    final batch = db.batch();
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    for (var word in words) {
+      batch.insert('word_progress', {
+        'id': 'progress_${word.id}',
+        'word_id': word.id,
+        'created_at': now,
+        'updated_at': now,
+        // Defaults:
+        'easiness_factor': 2.5,
+        'interval': 1,
+        'repetition': 0,
+        'next_review_date': now, // Review immediately or next day? Usually 1 day later for interval 1.
+        // Let's set next_review_date to tomorrow for SM-2 logic start
+        // 'next_review_date': now + 86400000, 
+        // But for "Just Learned", maybe we keep it 0 or now. 
+        // Let's stick to the schema defaults which are 0, or explicit.
+        // If interval is 1 (day), next review should be now + 1 day.
+        'next_review_date': now + 86400000,
+        'last_review_date': now,
+        'review_count': 1, // Count as 1 review (the learning session)
+        'mastery_level': 1, // Level 1 = Learned
+      }, conflictAlgorithm: ConflictAlgorithm.ignore);
+    }
+
+    await batch.commit(noResult: true);
   }
 }

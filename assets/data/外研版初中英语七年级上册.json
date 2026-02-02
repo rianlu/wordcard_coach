@@ -14,8 +14,8 @@
         "meaning": "interj. 你好",
         "app_sentences": [
           {
-            "en": "Hello",
-            "cn": "my name is Tom."
+            "en": "Hello, my name is Tom.",
+            "cn": "你好，我的名字是汤姆。"
           }
         ]
       },
@@ -129,8 +129,8 @@
         "meaning": "phr. 早上好",
         "app_sentences": [
           {
-            "en": "Good morning",
-            "cn": "teacher!"
+            "en": "Good morning, teacher!",
+            "cn": "早上好，老师！"
           }
         ]
       },
@@ -162,8 +162,8 @@
         "meaning": "phr. 下午好",
         "app_sentences": [
           {
-            "en": "Good afternoon",
-            "cn": "everyone!"
+            "en": "Good afternoon, everyone!",
+            "cn": "大家下午好！"
           }
         ]
       },
@@ -177,8 +177,8 @@
         "meaning": "interj. 再见",
         "app_sentences": [
           {
-            "en": "Goodbye",
-            "cn": "see you tomorrow!"
+            "en": "Goodbye, see you tomorrow!",
+            "cn": "再见，明天见！"
           }
         ]
       },
@@ -375,8 +375,8 @@
         "meaning": "interj. 是的",
         "app_sentences": [
           {
-            "en": "Yes",
-            "cn": "I can."
+            "en": "Yes, I can.",
+            "cn": "是的，我能。"
           }
         ]
       },
@@ -431,8 +431,8 @@
         "meaning": "adj. 好的",
         "app_sentences": [
           {
-            "en": "I am fine",
-            "cn": "thank you."
+            "en": "I am fine, thank you.",
+            "cn": "我很好，谢谢你。"
           }
         ]
       },
@@ -656,8 +656,8 @@
         "meaning": "interj. 再见",
         "app_sentences": [
           {
-            "en": "Bye",
-            "cn": "see you later!"
+            "en": "Bye, see you later!",
+            "cn": "再见，回头见！"
           }
         ]
       },
@@ -849,8 +849,8 @@
         "meaning": "interj. 嗨",
         "app_sentences": [
           {
-            "en": "Hi",
-            "cn": "how are you?"
+            "en": "Hi, how are you?",
+            "cn": "嗨，你好吗？"
           }
         ]
       },
@@ -969,8 +969,8 @@
         "meaning": "conj. 但是",
         "app_sentences": [
           {
-            "en": "I like apples",
-            "cn": "but I don't like bananas."
+            "en": "I like apples, but I don't like bananas.",
+            "cn": "我喜欢苹果，但不喜欢香蕉。"
           }
         ]
       },
@@ -1134,8 +1134,8 @@
         "meaning": "adv. 向下",
         "app_sentences": [
           {
-            "en": "Sit down",
-            "cn": "please."
+            "en": "Sit down, please.",
+            "cn": "请坐下。"
           }
         ]
       },
@@ -1164,8 +1164,8 @@
         "meaning": "v. 打开",
         "app_sentences": [
           {
-            "en": "Open your book",
-            "cn": "please."
+            "en": "Open your book, please.",
+            "cn": "请打开你的书。"
           }
         ]
       },
@@ -1263,8 +1263,8 @@
         "meaning": "v. 站",
         "app_sentences": [
           {
-            "en": "Stand up",
-            "cn": "please."
+            "en": "Stand up, please.",
+            "cn": "请起立。"
           }
         ]
       },
@@ -1292,8 +1292,8 @@
         "meaning": "v. 关",
         "app_sentences": [
           {
-            "en": "Close the door",
-            "cn": "please."
+            "en": "Close the door, please.",
+            "cn": "请关上门。"
           }
         ]
       },
@@ -1335,8 +1335,8 @@
         "meaning": "adv. 这里",
         "app_sentences": [
           {
-            "en": "Come here",
-            "cn": "please."
+            "en": "Come here, please.",
+            "cn": "请过来。"
           }
         ]
       },
@@ -1671,8 +1671,8 @@
         "meaning": "num. 十八",
         "app_sentences": [
           {
-            "en": "In China",
-            "cn": "you can vote at eighteen."
+            "en": "In China, you can vote at eighteen.",
+            "cn": "在中国，十八岁可以投票。"
           }
         ]
       },
@@ -2738,8 +2738,8 @@
         "meaning": "interj. 好的",
         "app_sentences": [
           {
-            "en": "OK",
-            "cn": "I will do it."
+            "en": "OK, I will do it.",
+            "cn": "好的，我会做。"
           }
         ]
       },
@@ -2766,8 +2766,8 @@
         "meaning": "adv. 不",
         "app_sentences": [
           {
-            "en": "No",
-            "cn": "it isn't."
+            "en": "No, it isn't.",
+            "cn": "不，它不是。"
           }
         ]
       },
@@ -2880,8 +2880,8 @@
         "meaning": "pron. 我（宾格）",
         "app_sentences": [
           {
-            "en": "Help me",
-            "cn": "please."
+            "en": "Help me, please.",
+            "cn": "请帮我。"
           }
         ]
       },
@@ -2923,8 +2923,8 @@
         "meaning": "phr. 当然",
         "app_sentences": [
           {
-            "en": "Of course",
-            "cn": "I can help you."
+            "en": "Of course, I can help you.",
+            "cn": "当然，我可以帮你。"
           }
         ]
       },
@@ -3140,8 +3140,8 @@
         "meaning": "adj. 橙色的",
         "app_sentences": [
           {
-            "en": "n. 橘子",
-            "cn": "The orange is orange."
+            "en": "n. 橘子,The orange is orange.",
+            "cn": "橘子是橙色的。"
           }
         ]
       },
@@ -3486,8 +3486,8 @@
         "meaning": "interj. 哦",
         "app_sentences": [
           {
-            "en": "Oh",
-            "cn": "I see."
+            "en": "Oh, I see.",
+            "cn": "哦，我明白了。"
           }
         ]
       },
@@ -4099,8 +4099,8 @@
         "meaning": "v. 喜欢",
         "app_sentences": [
           {
-            "en": "prep. 像",
-            "cn": "I like apples."
+            "en": "prep. 像,I like apples.",
+            "cn": "我喜欢苹果。"
           }
         ]
       },
@@ -4335,8 +4335,8 @@
         "meaning": "n. 饮料",
         "app_sentences": [
           {
-            "en": "v. 喝",
-            "cn": "Would you like a drink?"
+            "en": "v. 喝,Would you like a drink?",
+            "cn": "你想喝点饮料吗？"
           }
         ]
       },
@@ -4617,8 +4617,8 @@
         "meaning": "n. 商店",
         "app_sentences": [
           {
-            "en": "v. 购物",
-            "cn": "There is a shop near here."
+            "en": "v. 购物,There is a shop near here.",
+            "cn": "附近有一家商店。"
           }
         ]
       },
@@ -4733,8 +4733,8 @@
         "meaning": "n. 种类",
         "app_sentences": [
           {
-            "en": "adj. 和善的",
-            "cn": "What kind of fruit do you like?"
+            "en": "adj. 和善的,What kind of fruit do you like?",
+            "cn": "你喜欢哪种水果？"
           }
         ]
       },
@@ -4762,8 +4762,8 @@
         "meaning": "adv. 如此",
         "app_sentences": [
           {
-            "en": "conj. 所以",
-            "cn": "The book is so interesting."
+            "en": "conj. 所以,The book is so interesting.",
+            "cn": "这本书如此有趣。"
           }
         ]
       },
@@ -5014,8 +5014,8 @@
         "meaning": "adj. 甜的",
         "app_sentences": [
           {
-            "en": "n. 糖果",
-            "cn": "The cake is too sweet."
+            "en": "n. 糖果,The cake is too sweet.",
+            "cn": "蛋糕太甜了。"
           }
         ]
       },
@@ -5217,8 +5217,8 @@
         "meaning": "adv. 好",
         "app_sentences": [
           {
-            "en": "adj. 健康的",
-            "cn": "She speaks English well."
+            "en": "adj. 健康的,She speaks English well.",
+            "cn": "她英语说得很好。"
           }
         ]
       },
@@ -5231,8 +5231,8 @@
         "meaning": "v. 停留",
         "app_sentences": [
           {
-            "en": "Stay here",
-            "cn": "please."
+            "en": "Stay here, please.",
+            "cn": "请留在这里。"
           }
         ]
       },
@@ -5260,8 +5260,8 @@
         "meaning": "phr. 变胖",
         "app_sentences": [
           {
-            "en": "If you eat too much",
-            "cn": "you will get fat."
+            "en": "If you eat too much, you will get fat.",
+            "cn": "如果你吃太多，你会变胖。"
           }
         ]
       },
@@ -5580,8 +5580,8 @@
         "meaning": "adv. 然后",
         "app_sentences": [
           {
-            "en": "First",
-            "cn": "we read; then we write."
+            "en": "First, we read; then we write.",
+            "cn": "首先，我们读；然后我们写。"
           }
         ]
       },
@@ -5594,8 +5594,8 @@
         "meaning": "v. 喜欢",
         "app_sentences": [
           {
-            "en": "prep. 像",
-            "cn": "I like playing football."
+            "en": "prep. 像,I like playing football.",
+            "cn": "我喜欢踢足球。"
           }
         ]
       },
@@ -5818,8 +5818,8 @@
         "meaning": "n. 工作",
         "app_sentences": [
           {
-            "en": "v. 工作",
-            "cn": "My father goes to work at 8 am."
+            "en": "v. 工作,My father goes to work at 8 am.",
+            "cn": "我父亲上午8点去上班。"
           }
         ]
       },
@@ -5832,8 +5832,8 @@
         "meaning": "n. 休息",
         "app_sentences": [
           {
-            "en": "v. 打破",
-            "cn": "We have a break between classes."
+            "en": "v. 打破,We have a break between classes.",
+            "cn": "我们在课间休息。"
           }
         ]
       },
@@ -5891,8 +5891,8 @@
         "meaning": "v. 观看",
         "app_sentences": [
           {
-            "en": "n. 手表",
-            "cn": "We watch football on TV."
+            "en": "n. 手表,We watch football on TV.",
+            "cn": "我们在电视上看足球赛。"
           }
         ]
       },
@@ -5980,8 +5980,8 @@
         "meaning": "v. 睡觉",
         "app_sentences": [
           {
-            "en": "n. 睡眠",
-            "cn": "I sleep for eight hours every night."
+            "en": "n. 睡眠,I sleep for eight hours every night.",
+            "cn": "我每晚睡八个小时。"
           }
         ]
       },
@@ -6433,8 +6433,8 @@
         "meaning": "prep. 作为",
         "app_sentences": [
           {
-            "en": "conj. 如同",
-            "cn": "We have subjects such as English and maths."
+            "en": "conj. 如同,We have subjects such as English and maths.",
+            "cn": "我们有如英语和数学之类的科目。"
           }
         ]
       },
@@ -6448,8 +6448,8 @@
         "meaning": "phr. 例如",
         "app_sentences": [
           {
-            "en": "There are many animals",
-            "cn": "such as lions and tigers."
+            "en": "There are many animals, such as lions and tigers.",
+            "cn": "有许多动物，例如狮子和老虎。"
           }
         ]
       },
@@ -6462,8 +6462,8 @@
         "meaning": "v. 来",
         "app_sentences": [
           {
-            "en": "Come here",
-            "cn": "please."
+            "en": "Come here, please.",
+            "cn": "请过来。"
           }
         ]
       },
@@ -6553,8 +6553,8 @@
         "meaning": "interj. 啊（表示厌恶）",
         "app_sentences": [
           {
-            "en": "Ugh",
-            "cn": "this food is bad!"
+            "en": "Ugh, this food is bad!",
+            "cn": "啊，这食物坏了！"
           }
         ]
       },
@@ -6582,8 +6582,8 @@
         "meaning": "n. 植物",
         "app_sentences": [
           {
-            "en": "v. 种植",
-            "cn": "Plants need water and sun."
+            "en": "v. 种植,Plants need water and sun.",
+            "cn": "植物需要水和阳光。"
           }
         ]
       },
@@ -6986,8 +6986,8 @@
         "meaning": "adj. 非洲的",
         "app_sentences": [
           {
-            "en": "n. 非洲人",
-            "cn": "African elephants are large."
+            "en": "n. 非洲人,African elephants are large.",
+            "cn": "非洲大象很大。"
           }
         ]
       },
@@ -7346,8 +7346,8 @@
         "meaning": "adv. 最后",
         "app_sentences": [
           {
-            "en": "Finally",
-            "cn": "we finished the project."
+            "en": "Finally, we finished the project.",
+            "cn": "最后，我们完成了项目。"
           }
         ]
       },
@@ -7497,8 +7497,8 @@
         "meaning": "n. 火车",
         "app_sentences": [
           {
-            "en": "v. 训练",
-            "cn": "The train arrives at 9 am."
+            "en": "v. 训练,The train arrives at 9 am.",
+            "cn": "火车在上午9点到。"
           }
         ]
       },
@@ -7526,8 +7526,8 @@
         "meaning": "n. 计划",
         "app_sentences": [
           {
-            "en": "v. 计划",
-            "cn": "We have a plan for the trip."
+            "en": "v. 计划,We have a plan for the trip.",
+            "cn": "我们有一个旅行计划。"
           }
         ]
       },
@@ -7916,8 +7916,8 @@
         "meaning": "v. 给",
         "app_sentences": [
           {
-            "en": "Give me the book",
-            "cn": "please."
+            "en": "Give me the book, please.",
+            "cn": "请把书给我。"
           }
         ]
       },
@@ -7975,8 +7975,8 @@
         "meaning": "interj. 哈哈（笑声）",
         "app_sentences": [
           {
-            "en": "Ha ha",
-            "cn": "that's funny!"
+            "en": "Ha ha, that's funny!",
+            "cn": "哈哈，真有趣！"
           }
         ]
       },
@@ -8063,8 +8063,8 @@
         "meaning": "n. 连衣裙",
         "app_sentences": [
           {
-            "en": "v. 穿衣",
-            "cn": "She wears a beautiful dress."
+            "en": "v. 穿衣,She wears a beautiful dress.",
+            "cn": "她穿了一件漂亮的连衣裙。"
           }
         ]
       },
@@ -8223,8 +8223,8 @@
         "meaning": "n. 比赛",
         "app_sentences": [
           {
-            "en": "v. 匹配",
-            "cn": "There is a football match tomorrow."
+            "en": "v. 匹配,There is a football match tomorrow.",
+            "cn": "明天有一场足球比赛。"
           }
         ]
       },
@@ -8268,8 +8268,8 @@
         "meaning": "adj. 亲爱的",
         "app_sentences": [
           {
-            "en": "Dear friends",
-            "cn": "thank you for coming."
+            "en": "Dear friends, thank you for coming.",
+            "cn": "亲爱的朋友们，谢谢你们的到来。"
           }
         ]
       },
@@ -8393,8 +8393,8 @@
         "meaning": "v. 打电话",
         "app_sentences": [
           {
-            "en": "n. 呼叫",
-            "cn": "I will call you later."
+            "en": "n. 呼叫,I will call you later.",
+            "cn": "我稍后打电话给你。"
           }
         ]
       },
@@ -8508,8 +8508,8 @@
         "meaning": "v. 步行",
         "app_sentences": [
           {
-            "en": "n. 散步",
-            "cn": "We walk to school every day."
+            "en": "n. 散步,We walk to school every day.",
+            "cn": "我们每天步行去学校。"
           }
         ]
       },
@@ -8611,8 +8611,8 @@
         "meaning": "adv. 无论如何",
         "app_sentences": [
           {
-            "en": "Anyway",
-            "cn": "I will try my best."
+            "en": "Anyway, I will try my best.",
+            "cn": "无论如何，我会尽力。"
           }
         ]
       },
@@ -8743,8 +8743,8 @@
         "meaning": "n. 时刻",
         "app_sentences": [
           {
-            "en": "Wait a moment",
-            "cn": "please."
+            "en": "Wait a moment, please.",
+            "cn": "请等一下。"
           }
         ]
       },
@@ -8842,8 +8842,8 @@
         "meaning": "v. 学习",
         "app_sentences": [
           {
-            "en": "n. 书房",
-            "cn": "We study hard for exams."
+            "en": "n. 书房,We study hard for exams.",
+            "cn": "我们为考试努力学习。"
           }
         ]
       }
@@ -8893,8 +8893,8 @@
         "meaning": "v. 跳舞",
         "app_sentences": [
           {
-            "en": "n. 舞蹈",
-            "cn": "She loves to dance."
+            "en": "n. 舞蹈,She loves to dance.",
+            "cn": "她喜欢跳舞。"
           }
         ]
       },
@@ -8907,8 +8907,8 @@
         "meaning": "v. 打扫",
         "app_sentences": [
           {
-            "en": "adj. 干净的",
-            "cn": "We clean the room every day."
+            "en": "adj. 干净的,We clean the room every day.",
+            "cn": "我们每天打扫房间。"
           }
         ]
       },
@@ -8949,8 +8949,8 @@
         "meaning": "v. 烹饪",
         "app_sentences": [
           {
-            "en": "n. 厨师",
-            "cn": "My mother cooks delicious food."
+            "en": "n. 厨师,My mother cooks delicious food.",
+            "cn": "我妈妈做饭很好吃。"
           }
         ]
       },
@@ -9147,8 +9147,8 @@
         "meaning": "adj. 困难的",
         "app_sentences": [
           {
-            "en": "adv. 努力地",
-            "cn": "The test is hard."
+            "en": "adv. 努力地,The test is hard.",
+            "cn": "考试很难。"
           }
         ]
       },
@@ -9176,8 +9176,8 @@
         "meaning": "v. 匆忙",
         "app_sentences": [
           {
-            "en": "Hurry up",
-            "cn": "or we'll be late."
+            "en": "Hurry up, or we'll be late.",
+            "cn": "快点，否则我们要迟到了。"
           }
         ]
       },
@@ -9393,8 +9393,8 @@
         "meaning": "n. 外套",
         "app_sentences": [
           {
-            "en": "Put on your coat",
-            "cn": "it's cold outside."
+            "en": "Put on your coat, it's cold outside.",
+            "cn": "穿上你的外套，外面冷。"
           }
         ]
       },

@@ -19,7 +19,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   
   bool _isLoading = true;
   UserStats? _userStats;
-  List<DailyActivity> _weeklyActivity = [];
+  BookProgress? _bookProgress;
+  AccuracyStats? _accuracyStats;
+  List<VocabGrowthPoint> _vocabGrowth = [];
   MasteryDistribution? _masteryDist;
 
   @override
@@ -30,13 +32,17 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Future<void> _loadData() async {
     final stats = await _userStatsDao.getUserStats();
-    final activity = await _statsDao.getWeeklyActivity();
-    final mastery = await _statsDao.getMasteryDistribution();
+    final bookProg = await _statsDao.getBookProgress(stats.currentGrade, stats.currentSemester);
+    final accuracy = await _statsDao.getOverallAccuracy();
+    final growth = await _statsDao.getVocabularyGrowth();
+    final mastery = await _statsDao.getMasteryDistribution(stats.currentGrade, stats.currentSemester);
 
     if (mounted) {
       setState(() {
         _userStats = stats;
-        _weeklyActivity = activity;
+        _bookProgress = bookProg;
+        _accuracyStats = accuracy;
+        _vocabGrowth = growth;
         _masteryDist = mastery;
         _isLoading = false;
       });
@@ -62,9 +68,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildSummaryCards(),
+                  _buildProgressAndAccuracyRow(),
                   const SizedBox(height: 24),
-                  _buildWeeklyActivityChart(),
+                  _buildVocabGrowthChart(),
                   const SizedBox(height: 24),
                   _buildMasteryPieChart(),
                 ],
@@ -73,136 +79,134 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     );
   }
 
-  Widget _buildSummaryCards() {
+  Widget _buildProgressAndAccuracyRow() {
     return Row(
       children: [
+        // Book Progress Card
         Expanded(
-          child: _buildStatCard(
-            '🔥 连续打卡',
-            '${_userStats?.continuousDays ?? 0}',
-            '天',
-            Colors.orange.shade50,
-            Colors.orange,
+          flex: 3,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 8), blurRadius: 20)],
+            ),
+            child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 Row(
+                   children: [
+                     Icon(Icons.book_rounded, color: AppColors.primary, size: 20),
+                     const SizedBox(width: 8),
+                     Text("本册进度", style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)),
+                   ],
+                 ),
+                 const SizedBox(height: 16),
+                 Text("${(_bookProgress?.percentage ?? 0 * 100).toStringAsFixed(1)}%", style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)),
+                 const SizedBox(height: 8),
+                 LinearProgressIndicator(
+                   value: _bookProgress?.percentage ?? 0,
+                   backgroundColor: AppColors.primary.withOpacity(0.1),
+                   color: AppColors.primary,
+                   minHeight: 8,
+                   borderRadius: BorderRadius.circular(4),
+                 ),
+                 const SizedBox(height: 8),
+                 Text("${_bookProgress?.learned ?? 0} / ${_bookProgress?.total ?? 0} 词", style: TextStyle(color: AppColors.textMediumEmphasis, fontSize: 12)),
+               ],
+            ),
           ),
         ),
         const SizedBox(width: 16),
+        // Accuracy Card
         Expanded(
-          child: _buildStatCard(
-            '⏱️ 学习时长',
-            '${(_userStats?.totalStudyMinutes ?? 0) ~/ 60}小时 ${(_userStats?.totalStudyMinutes ?? 0) % 60}分',
-            '累计',
-            Colors.blue.shade50,
-            Colors.blue,
+          flex: 2,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.3), offset: Offset(0, 8), blurRadius: 20)],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 Row(
+                   children: [
+                     Icon(Icons.track_changes, color: Colors.white.withOpacity(0.8), size: 20),
+                     const SizedBox(width: 8),
+                     Text("正确率", style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.8))),
+                   ],
+                 ),
+                 const SizedBox(height: 16),
+                 Text("${((_accuracyStats?.rate ?? 0) * 100).toInt()}%", style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white)),
+                 const SizedBox(height: 8),
+                 Text("保持专注!", style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12)),
+                 const SizedBox(height: 10), // fill space
+              ],
+            ),
           ),
-        ),
+        )
       ],
     );
   }
 
-  Widget _buildStatCard(String title, String value, String unit, Color bgColor, Color accentColor) {
+  Widget _buildVocabGrowthChart() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade100),
-        boxShadow: const [
-           BoxShadow(
-              color: AppColors.shadowWhite,
-              offset: Offset(0, 4),
-              blurRadius: 0,
-            )
-        ],
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 8), blurRadius: 20)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)),
-          const SizedBox(height: 8),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(value, style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)),
-                const SizedBox(width: 4),
-                Text(unit, style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWeeklyActivityChart() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-         border: Border.all(color: Colors.grey.shade100),
-          boxShadow: const [
-             BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
-          ]
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('本周学习趋势', style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text('词汇量增长', style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
           const SizedBox(height: 24),
           SizedBox(
             height: 200,
-            child: BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceAround,
-                maxY: 20, // max expected for demo
-                barTouchData: BarTouchData(enabled: false), // simplify for now
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(show: false),
                 titlesData: FlTitlesData(
-                  show: true,
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      reservedSize: 32,
+                      interval: 1,
                       getTitlesWidget: (value, meta) {
-                        // Assuming 0 is 6 days ago, 6 is today
-                        const style = TextStyle(color: AppColors.textMediumEmphasis, fontWeight: FontWeight.bold, fontSize: 10);
-                        String text = '';
-                        switch (value.toInt()) {
-                          case 0: text = '周一'; break;
-                          case 1: text = '周二'; break;
-                          case 2: text = '周三'; break;
-                          case 3: text = '周四'; break;
-                          case 4: text = '周五'; break;
-                          case 5: text = '周六'; break;
-                          case 6: text = '周日'; break;
+                        int index = value.toInt();
+                        if (index >= 0 && index < _vocabGrowth.length) {
+                           return Padding(
+                             padding: const EdgeInsets.only(top: 8.0),
+                             child: Text(_vocabGrowth[index].date, style: const TextStyle(fontSize: 10, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.bold)),
+                           );
                         }
-                        return SideTitleWidget(axisSide: meta.axisSide, child: Text(text, style: style));
+                        return const SizedBox();
                       },
                     ),
                   ),
-                  leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 ),
-                gridData: const FlGridData(show: false),
                 borderData: FlBorderData(show: false),
-                barGroups: _weeklyActivity.asMap().entries.map((entry) {
-                  return BarChartGroupData(
-                    x: entry.key,
-                    barRods: [
-                      BarChartRodData(
-                        toY: entry.value.count.toDouble(),
-                        color: AppColors.primary,
-                        width: 12,
-                        borderRadius: BorderRadius.circular(4),
-                        backDrawRodData: BackgroundBarChartRodData(
-                            show: true, toY: 20, color: Colors.grey.shade100),
-                      ),
-                    ],
-                  );
-                }).toList(),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: _vocabGrowth.asMap().entries.map((e) => FlSpot(e.key.toDouble(), e.value.totalWords.toDouble())).toList(),
+                    isCurved: true,
+                    color: AppColors.primary,
+                    barWidth: 4,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: AppColors.primary.withOpacity(0.1),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

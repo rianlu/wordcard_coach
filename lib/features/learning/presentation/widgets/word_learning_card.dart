@@ -271,12 +271,29 @@ class _WordLearningCardState extends State<WordLearningCard> {
                          ),
                          const SizedBox(height: 12),
                          if (widget.word.examples.isNotEmpty) ...[
-                           Text(
-                             widget.word.examples.first['en']!,
-                             style: GoogleFonts.plusJakartaSans(
-                               fontSize: 18, height: 1.5, color: AppColors.textHighEmphasis, fontWeight: FontWeight.w500
-                             ),
-                           ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                    child: Text(
+                                      widget.word.examples.first['en']!,
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 18, height: 1.5, color: AppColors.textHighEmphasis, fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                  icon: const Icon(Icons.volume_up_rounded, color: AppColors.primary, size: 20),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  visualDensity: VisualDensity.compact,
+                                )
+                              ],
+                            ),
                            const SizedBox(height: 8),
                            Text(
                              widget.word.examples.first['cn']!,

@@ -50,12 +50,21 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     final random = Random();
     int len = _targetWord.length;
     // Determine how many letters to hide (e.g., 30-50%)
-    int missingCount = (len * 0.4).ceil().clamp(1, len - 1);
+    // Ensure upper bound is at least 1 (for 1-letter words)
+    int upperLimit = max(1, len - 1);
+    int missingCount = (len * 0.4).ceil().clamp(1, upperLimit);
     
     // Select random unique indices
     Set<int> indices = {};
-    while (indices.length < missingCount) {
-      indices.add(random.nextInt(len));
+    // Retry limit to prevent infinite loop for all-space strings (unlikely)
+    int attempts = 0;
+    while (indices.length < missingCount && attempts < 100) {
+      attempts++;
+      int randIndex = random.nextInt(len);
+      // Don't hide spaces or non-alphanumeric chars if desired, but user specifically asked about spaces.
+      if (_targetWord[randIndex].trim().isEmpty) continue;
+      
+      indices.add(randIndex);
     }
     _missingIndices = indices.toList()..sort();
     _userInputs = List.filled(missingCount, "");
@@ -187,9 +196,24 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                       Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
                        const SizedBox(height: 8),
                        if (widget.word.examples.isNotEmpty)
-                          Text(
-                             widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
-                             style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                               Expanded(
+                                 child: GestureDetector(
+                                    onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                    child: Text(
+                                       widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
+                                       style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                                    ),
+                                 ),
+                               ),
+                               const SizedBox(width: 8),
+                               GestureDetector(
+                                 onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                 child: const Icon(Icons.volume_up_rounded, color: AppColors.primary, size: 20),
+                               ),
+                            ],
                           )
                        else
                           Text(

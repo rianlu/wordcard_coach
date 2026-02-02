@@ -193,8 +193,8 @@
         "meaning": "phr. 查找",
         "app_sentences": [
           {
-            "en": "If you don't know a word",
-            "cn": "look it up in the dictionary."
+            "en": "If you don't know a word, look it up in the dictionary.",
+            "cn": "如果你不认识单词，就在词典中查找。"
           }
         ]
       },
@@ -854,8 +854,8 @@
         "meaning": "adv. 尤其",
         "app_sentences": [
           {
-            "en": "I like fruit",
-            "cn": "especially apples."
+            "en": "I like fruit, especially apples.",
+            "cn": "我喜欢水果，尤其是苹果。"
           }
         ]
       },
@@ -1760,8 +1760,8 @@
         "meaning": "adv. 然而",
         "app_sentences": [
           {
-            "en": "He is young; however",
-            "cn": "he is very clever."
+            "en": "He is young; however, he is very clever.",
+            "cn": "他年轻，然而他很聪明。"
           }
         ]
       },
@@ -1856,8 +1856,8 @@
         "meaning": "phr. 最后",
         "app_sentences": [
           {
-            "en": "In the end",
-            "cn": "we decided to go by train."
+            "en": "In the end, we decided to go by train.",
+            "cn": "最后，我们决定坐火车去。"
           }
         ]
       },
@@ -2038,8 +2038,8 @@
         "meaning": "conj. 如果",
         "app_sentences": [
           {
-            "en": "If it rains",
-            "cn": "we will stay at home."
+            "en": "If it rains, we will stay at home.",
+            "cn": "如果下雨，我们将呆在家里。"
           }
         ]
       },
@@ -2148,8 +2148,8 @@
         "meaning": "phr. 最后",
         "app_sentences": [
           {
-            "en": "At last",
-            "cn": "we found the way home."
+            "en": "At last, we found the way home.",
+            "cn": "最后，我们找到了回家的路。"
           }
         ]
       },
@@ -2729,8 +2729,8 @@
         "meaning": "adv. 突然",
         "app_sentences": [
           {
-            "en": "Suddenly",
-            "cn": "it started to rain."
+            "en": "Suddenly, it started to rain.",
+            "cn": "突然，开始下雨了。"
           }
         ]
       },
@@ -2816,8 +2816,8 @@
         "meaning": "conj. 当...时",
         "app_sentences": [
           {
-            "en": "While I was reading",
-            "cn": "the phone rang."
+            "en": "While I was reading, the phone rang.",
+            "cn": "当我在读书时，电话响了。"
           }
         ]
       },
@@ -3353,8 +3353,8 @@
         "meaning": "phr. 稍等",
         "app_sentences": [
           {
-            "en": "Hang on",
-            "cn": "I'll be back in a minute."
+            "en": "Hang on, I'll be back in a minute.",
+            "cn": "稍等，我马上回来。"
           }
         ]
       },
@@ -3773,8 +3773,8 @@
         "meaning": "conj. 虽然",
         "app_sentences": [
           {
-            "en": "Although it was raining",
-            "cn": "we went out."
+            "en": "Although it was raining, we went out.",
+            "cn": "虽然下雨了，我们还是出去了。"
           }
         ]
       },
@@ -3938,8 +3938,8 @@
         "meaning": "phr. 有时",
         "app_sentences": [
           {
-            "en": "From time to time",
-            "cn": "we go to the cinema."
+            "en": "From time to time, we go to the cinema.",
+            "cn": "有时我们去电影院。"
           }
         ]
       }
@@ -4175,8 +4175,8 @@
         "meaning": "n. 例子",
         "app_sentences": [
           {
-            "en": "For example",
-            "cn": "you can use this word in a sentence."
+            "en": "For example, you can use this word in a sentence.",
+            "cn": "例如，你可以在句子中使用这个单词。"
           }
         ]
       },
@@ -4192,8 +4192,8 @@
         "meaning": "phr. 例如",
         "app_sentences": [
           {
-            "en": "Many people",
-            "cn": "for example"
+            "en": "Many people, for example, John, like swimming.",
+            "cn": "许多人，例如约翰，喜欢游泳。"
           }
         ]
       },

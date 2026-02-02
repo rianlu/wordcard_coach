@@ -130,8 +130,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     });
 
     if (_currentPhase == SessionPhase.completed) {
-       // Maybe show a dedicated completion screen or dialog
-       _showCompletionDialog();
+       _handleSessionCompletion();
     } else {
       // Show an interstitial or just transition? 
       // User might want to know they are entering a new phase.
@@ -145,23 +144,106 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     }
   }
   
+  Future<void> _handleSessionCompletion() async {
+     // Show waiting UI if needed, but dialog is instant
+     await _saveProgress();
+     if (mounted) _showCompletionDialog();
+  }
+
+  Future<void> _saveProgress() async {
+    try {
+       // 1. Mark words as learned
+       await _wordDao.batchMarkAsLearned(_sessionWords);
+       
+       // 2. Update User Stats
+       final stats = await _userStatsDao.getUserStats();
+       final now = DateTime.now();
+       final todayStr = "${now.year}-${now.month}-${now.day}";
+       
+       bool isNewDay = stats.lastStudyDate != todayStr;
+       
+       final newStats = stats.copyWith(
+         totalWordsLearned: stats.totalWordsLearned + _sessionWords.length,
+         totalStudyDays: isNewDay ? stats.totalStudyDays + 1 : stats.totalStudyDays,
+         continuousDays: isNewDay ? stats.continuousDays + 1 : stats.continuousDays, // Simple logic, needs proper check for broken streak
+         lastStudyDate: todayStr,
+         updatedAt: now.millisecondsSinceEpoch
+       );
+       
+       await _userStatsDao.updateUserStats(newStats);
+       
+       debugPrint("Progress Saved: ${_sessionWords.length} words.");
+    } catch (e) {
+      debugPrint("Error saving progress: $e");
+    }
+  }
+
   void _showCompletionDialog() {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return AlertDialog(
-          title: const Text("Session Completed!"),
-          content: const Text("You have successfully learned 10 new words today."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close dialog
-                Navigator.pop(context); // Exit session
-              },
-              child: const Text("Awesome!"),
-            )
-          ],
+        return Dialog(
+           backgroundColor: Colors.transparent,
+           insetPadding: const EdgeInsets.all(24),
+           child: Container(
+             padding: const EdgeInsets.all(32),
+             decoration: BoxDecoration(
+               color: Colors.white,
+               borderRadius: BorderRadius.circular(32),
+               boxShadow: [
+                 BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
+               ]
+             ),
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                 // Success Icon/Image
+                 Container(
+                   width: 80, height: 80,
+                   decoration: const BoxDecoration(
+                     color: Color(0xFFE8F5E9), // Light Green
+                     shape: BoxShape.circle,
+                   ),
+                   child: const Icon(Icons.emoji_events_rounded, size: 48, color: Color(0xFF4CAF50)),
+                 ),
+                 const SizedBox(height: 24),
+                 Text(
+                   "Session Completed!", 
+                   textAlign: TextAlign.center,
+                   style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)
+                 ),
+                 const SizedBox(height: 12),
+                 Text(
+                   "You have successfully learned ${_sessionWords.length} new words today.",
+                   textAlign: TextAlign.center,
+                   style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5)
+                 ),
+                 const SizedBox(height: 32),
+                 // Custom Action Button
+                 SizedBox(
+                   width: double.infinity,
+                   child: ElevatedButton(
+                     onPressed: () {
+                        Navigator.pop(context); // Close dialog
+                        Navigator.pop(context); // Exit session
+                     },
+                     style: ElevatedButton.styleFrom(
+                       backgroundColor: AppColors.primary,
+                       foregroundColor: Colors.white,
+                       padding: const EdgeInsets.symmetric(vertical: 16),
+                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                       elevation: 0,
+                     ),
+                     child: Text(
+                       "Awesome!",
+                       style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold)
+                     ),
+                   ),
+                 )
+               ],
+             ),
+           ),
         );
       }
     );

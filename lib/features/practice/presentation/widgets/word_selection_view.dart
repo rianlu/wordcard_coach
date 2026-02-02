@@ -87,8 +87,6 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                 const SizedBox(height: 16),
                 Text(widget.word.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
                 const SizedBox(height: 8),
-                Text(widget.word.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
-                const SizedBox(height: 8),
                 Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
                 const SizedBox(height: 24),
 
@@ -167,7 +165,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     }
 
     // Display meaning if available, otherwise word text (since meaning is placeholder)
-    final displayText = "${optionWord.meaning} (${optionWord.text})";
+    final displayText = optionWord.meaning;
 
     return BubblyButton(
       onPressed: () => _handleOptionSelected(optionWord.id),

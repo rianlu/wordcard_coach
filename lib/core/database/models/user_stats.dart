@@ -64,4 +64,38 @@ class UserStats {
         'total_study_minutes': totalStudyMinutes,
         'updated_at': updatedAt,
       };
+
+  UserStats copyWith({
+    int? id,
+    String? nickname,
+    int? currentGrade,
+    int? currentSemester,
+    int? totalWordsLearned,
+    int? totalWordsMastered,
+    int? totalReviews,
+    int? totalCorrect,
+    int? totalWrong,
+    int? continuousDays,
+    int? totalStudyDays,
+    String? lastStudyDate,
+    int? totalStudyMinutes,
+    int? updatedAt,
+  }) {
+    return UserStats(
+      id: id ?? this.id,
+      nickname: nickname ?? this.nickname,
+      currentGrade: currentGrade ?? this.currentGrade,
+      currentSemester: currentSemester ?? this.currentSemester,
+      totalWordsLearned: totalWordsLearned ?? this.totalWordsLearned,
+      totalWordsMastered: totalWordsMastered ?? this.totalWordsMastered,
+      totalReviews: totalReviews ?? this.totalReviews,
+      totalCorrect: totalCorrect ?? this.totalCorrect,
+      totalWrong: totalWrong ?? this.totalWrong,
+      continuousDays: continuousDays ?? this.continuousDays,
+      totalStudyDays: totalStudyDays ?? this.totalStudyDays,
+      lastStudyDate: lastStudyDate ?? this.lastStudyDate,
+      totalStudyMinutes: totalStudyMinutes ?? this.totalStudyMinutes,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
