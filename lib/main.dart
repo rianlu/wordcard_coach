@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
         '/battle/matching': (context) => const BossBattleMatchingScreen(),
         '/battle/speaking': (context) => const BossBattleSpeakingScreen(),
         '/battle/spelling': (context) => const BossBattleSpellingScreen(),
-        '/battle/spelling': (context) => const BossBattleSpellingScreen(),
         '/collection': (context) => const CollectionGalleryScreen(),
         '/statistics': (context) => const StatisticsScreen(),
       },

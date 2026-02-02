@@ -8,6 +8,7 @@ import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/daos/stats_dao.dart';
 import '../../../../core/database/models/user_stats.dart';
 import '../../../learning/presentation/screens/daily_learning_session_screen.dart';
+import '../../../practice/presentation/screens/review_session_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({super.key});
@@ -269,10 +270,13 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         BubblyButton(
           onPressed: () {
              // Navigate to Daily Learning Session
-             Navigator.push(
+             await Navigator.push(
                context,
                MaterialPageRoute(builder: (context) => const DailyLearningSessionScreen()),
              );
+             
+             // Refresh stats when returning
+             if (mounted) _loadStats();
           },
           color: AppColors.primary,
           shadowColor: AppColors.shadowBlue,
@@ -312,8 +316,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         const SizedBox(height: 16),
         BubblyButton(
           onPressed: () {
-             // Let's send review to spelling for variety
-             Navigator.pushNamed(context, '/practice/spelling');
+             await Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const ReviewSessionScreen()),
+             );
+             // Refresh stats when returning
+             if (mounted) _loadStats();
           },
           color: AppColors.secondary,
           shadowColor: AppColors.shadowYellow,

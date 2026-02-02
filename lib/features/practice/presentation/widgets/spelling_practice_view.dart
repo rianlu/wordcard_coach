@@ -121,7 +121,10 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
       if (constructed.toUpperCase() == _targetWord.toUpperCase()) {
          // Correct!
-         Future.delayed(const Duration(milliseconds: 500), () {
+         // Play word audio to consolidate memory
+         AudioService().playWord(widget.word);
+         
+         Future.delayed(const Duration(milliseconds: 1500), () {
             if (mounted) {
                ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(content: Text('Correct!'), backgroundColor: Colors.green, duration: Duration(milliseconds: 500))
@@ -200,18 +203,10 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                                Expanded(
-                                 child: GestureDetector(
-                                    onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
-                                    child: Text(
-                                       widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
-                                       style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
-                                    ),
+                                 child: Text(
+                                    widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
+                                    style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
                                  ),
-                               ),
-                               const SizedBox(width: 8),
-                               GestureDetector(
-                                 onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
-                                 child: const Icon(Icons.volume_up_rounded, color: AppColors.primary, size: 20),
                                ),
                             ],
                           )

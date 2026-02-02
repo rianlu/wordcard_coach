@@ -63,10 +63,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false, // Don't show back button automatically (since it's a tab)
         title: const Text('数据统计', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),

@@ -99,6 +99,48 @@ class WordDao {
     return await _attachSentences(words);
   }
 
+  Future<List<Word>> getWordsDueForReview(int limit, {String? bookId, int? grade, int? semester}) async {
+    final db = await _dbHelper.database;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    
+    // We join words and word_progress
+    // Filter words that ARE in word_progress AND next_review_date <= now
+    
+    String whereClause = 'p.next_review_date <= ?';
+    List<dynamic> args = [now];
+
+    // Filter by book if possible
+    if (bookId != null && bookId.isNotEmpty) {
+       whereClause += ' AND w.book_id = ?';
+       args.add(bookId);
+    } else {
+      // Legacy fallback
+      if (grade != null) {
+        whereClause += ' AND w.grade = ?';
+        args.add(grade);
+      }
+      if (semester != null) {
+        whereClause += ' AND w.semester = ?';
+        args.add(semester);
+      }
+    }
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+      SELECT w.* 
+      FROM words w
+      INNER JOIN word_progress p ON w.id = p.word_id
+      WHERE $whereClause
+      ORDER BY p.next_review_date ASC
+      LIMIT ?
+    ''', [...args, limit]);
+    
+    final words = List.generate(maps.length, (i) {
+      return Word.fromJson(maps[i]);
+    });
+    
+    return await _attachSentences(words);
+  }
+
   Future<void> batchMarkAsLearned(List<Word> words) async {
     final db = await _dbHelper.database;
     final batch = db.batch();
@@ -128,5 +170,19 @@ class WordDao {
     }
 
     await batch.commit(noResult: true);
+  }
+
+  Future<List<Word>> getRandomWords(int limit) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'words',
+      orderBy: 'RANDOM()',
+      limit: limit,
+    );
+     final words = List.generate(maps.length, (i) {
+      return Word.fromJson(maps[i]);
+    });
+    // We don't necessarily need sentences for distractors
+    return words;
   }
 }

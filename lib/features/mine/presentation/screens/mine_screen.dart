@@ -101,12 +101,6 @@ class _MineScreenState extends State<MineScreen> {
 
              // Menu Items
              _buildMenuItem(
-               icon: Icons.bar_chart_rounded,
-               title: '学习统计',
-               onTap: () => Navigator.pushNamed(context, '/statistics'),
-             ),
-             const SizedBox(height: 16),
-             _buildMenuItem(
                icon: Icons.book,
                title: '切换教材 (${_getCurrentBookName()})',
                onTap: _showBookSelectionDialog,

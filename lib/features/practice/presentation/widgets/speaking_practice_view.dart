@@ -7,6 +7,8 @@ import '../../../../core/services/speech_service.dart';
 import '../../../../core/utils/phonetic_utils.dart';
 import 'dart:ui';
 
+import '../../../../core/widgets/bubbly_button.dart';
+
 
 
 class SpeakingPracticeView extends StatefulWidget {
@@ -28,6 +30,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   bool _isListening = false;
   String _lastHeard = '';
   bool _showSuccess = false; 
+  bool _showSkip = false;
+  
+  // Timer for skip button
+  Future<void>? _skipTimer;
   
   // Simple Levenshtein distance for fuzzy matching
   int _levenshtein(String s, String t) {
@@ -77,8 +83,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
      _isListening = false;
      _lastHeard = '';
      _showSuccess = false;
+     _showSkip = false;
      _controller.reset();
      SpeechService().stopListening();
+     // Reset skip timer logic logic if needed, actually startPractice will handle it
   }
 
   @override
@@ -95,6 +103,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
        // Play Audio and Wait
        await AudioService().playWord(widget.word);
        
+       // Start lazy timer for skip button (e.g. 5 seconds)
+       if (mounted) {
+         Future.delayed(const Duration(seconds: 5), () {
+           if (mounted && !_showSuccess) {
+             setState(() => _showSkip = true);
+           }
+         });
+       }
+
        // Start listening after audio
        if (mounted) _startListeningSession();
      }
@@ -130,7 +147,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
      }
   }
 
-  void _stopListeningSession() async {
+  Future<void> _stopListeningSession() async {
     _isListening = false; // Kill watchdog loop
     await SpeechService().stopListening();
     if (mounted) {
@@ -194,6 +211,11 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     } else {
       _startListeningSession();
     }
+  }
+
+  Future<void> _skip() async {
+    await _stopListeningSession();
+    widget.onCompleted();
   }
 
 
@@ -406,10 +428,31 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                     ),
                   ),
                 ),
+                
+                 // Skip Button (Delayed) - Moved here for better visibility
+                if (_showSkip && !_showSuccess) ...[
+                   const SizedBox(height: 32),
+                   BubblyButton(
+                     onPressed: _skip,
+                     color: const Color(0xFFFFF3E0), // Light Orange
+                     shadowColor: const Color(0xFFFFB74D),
+                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                     borderRadius: 30,
+                     child: Row(
+                       mainAxisSize: MainAxisSize.min,
+                       children: [
+                          Icon(Icons.fast_forward_rounded, color: Colors.orange.shade800, size: 24),
+                          const SizedBox(width: 8),
+                          Text("跳过此词", style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 16, color: Colors.orange.shade800)),
+                       ],
+                     ),
+                   ),
+                ]
               ],
             ),
           ),
         ),
+
       ],
     ),
         
