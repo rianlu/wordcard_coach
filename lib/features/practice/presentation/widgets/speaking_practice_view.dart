@@ -37,6 +37,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   
   Timer? _skipTimer;
   Timer? _successTimer;
+  StreamSubscription<bool>? _listeningSubscription;
   
   // Simple Levenshtein distance for fuzzy matching
   int _levenshtein(String s, String t) {
@@ -73,6 +74,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     
     // Start Practice
     _startPracticeSequence();
+    
+    // Subscribe to listening state for instant UI feedback & Sound Cue
+    _listeningSubscription = SpeechService().listeningState.listen((isPlaying) {
+      if (mounted) {
+         setState(() => _isMicActive = isPlaying);
+         if (isPlaying) {
+            // Play "Ping" sound cue when mic actually activates
+            AudioService().playAsset('mic_start.mp3');
+         }
+      }
+    });
   }
 
 
@@ -98,6 +110,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   void dispose() {
+    _listeningSubscription?.cancel();
     _skipTimer?.cancel();
     _successTimer?.cancel();
     _controller.dispose();
@@ -145,13 +158,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   void _monitorListening({bool initial = false}) async {
      // Watchdog Loop: Keeps checking if we should be listening but aren't
      while (mounted && _isListening && !_showSuccess) {
-         // Sync Mic State
-         bool engineActive = SpeechService().isListening;
-         if (_isMicActive != engineActive) {
-             setState(() => _isMicActive = engineActive);
-         }
-
-         if (!engineActive) {
+         // Check frequency
+         await Future.delayed(const Duration(milliseconds: 500)); // Faster checks
+     }
+  }
              // Only throttle if NOT initial start
              if (!initial) {
                  debugPrint("Watchdog: Restarting Listening...");
@@ -160,12 +170,18 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
              initial = false; // Clear initial flag after first check
              
              if (mounted && _isListening && !_showSuccess) {
-                await SpeechService().startListening(
-                  onResult: (text) {
-                    if (!mounted) return;
-                    _handleSpeechResult(text);
-                  },
-                );
+                try {
+                   await SpeechService().startListening(
+                     onResult: (text) {
+                       if (!mounted) return;
+                       _handleSpeechResult(text);
+                     },
+                   );
+                 } catch (e) {
+                   debugPrint("Watchdog: Start Listening Failed: $e");
+                   // Wait a bit before retrying to avoid rapid loop
+                   await Future.delayed(const Duration(milliseconds: 1000));
+                 }
              }
          }
          // Check frequency
@@ -215,18 +231,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
              _isMicActive = false;
              SpeechService().stopListening(); 
                           // Show nice success badge
-              if (mounted) {
-                setState(() {
-                  _showSuccess = true;
-                });
-              }
+             // Show nice success badge as Dialog
+             if (mounted) {
+               _showSuccessOverlay();
+             }
              
              // Play success sound logic here (optional)
-             
-             // Delay to show success message then advance
-             _successTimer = Timer(const Duration(milliseconds: 1500), () {
-               if (mounted) widget.onCompleted(5); // Perfect
-             });
           }
   }
   
@@ -249,18 +259,21 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   @override
   Widget build(BuildContext context) {
     // Determine Status Text
-    String statusText = '点击说话';
+    String statusText = '准备中...'; // Default to Preparing
     Color statusColor = AppColors.textMediumEmphasis;
     
     if (_isListening) {
         if (_isMicActive) {
-            statusText = '正在听...';
+            statusText = '请大声朗读'; // Only show this when actually ready
             statusColor = AppColors.secondary;
         } else {
             statusText = '准备中...'; // Connecting/Initializing
-            statusColor = AppColors.secondary.withOpacity(0.5); // Softer Orange
+            statusColor = AppColors.secondary.withOpacity(0.5); 
         }
+    } else {
+       statusText = '点击麦克风开始';
     }
+    
     if (_lastHeard.isNotEmpty) {
         statusText = '听到: $_lastHeard';
         statusColor = AppColors.primary;
@@ -502,13 +515,32 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       ],
     ),
         
-      if (_showSuccess)
-        PracticeSuccessOverlay(
-          word: widget.word,
-          title: "太棒了!",
-          subtitle: "发音完美!",
-        ),
       ],
     );
+  }
+
+  void _showSuccessOverlay() {
+    AudioService().playAsset('correct.mp3');
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierLabel: "Success",
+      barrierColor: Colors.transparent, // Blur handles the background
+      transitionDuration: Duration.zero, // Overlay has internal animation
+      pageBuilder: (_, __, ___) {
+        return PracticeSuccessOverlay(
+          word: widget.word,
+          title: "正确!",
+        );
+      },
+    );
+
+    // Auto-advance Timer
+    _successTimer = Timer(const Duration(milliseconds: 1200), () {
+      if (mounted) {
+        Navigator.of(context).pop(); // Close overlay
+        widget.onCompleted(5); // Advance
+      }
+    });
   }
 }

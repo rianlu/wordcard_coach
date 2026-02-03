@@ -163,15 +163,13 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
          // 2. Play Audio Concurrently
          AudioService().playWord(widget.word);
          
-         // 3. Delay then Advance
-         Future.delayed(const Duration(milliseconds: 1500), () {
-            if (mounted) {
-               int score = _hintsUsed > 0 ? 3 : 5;
-               widget.onCompleted(score);
-            }
-         });
+         // 3. Show Success Overlay
+         if (mounted) {
+            _showSuccessOverlay();
+         }
       } else {
         // Wrong
+         AudioService().playAsset('wrong.mp3');
          Future.delayed(const Duration(milliseconds: 500), () {
             if (mounted) {
                _showErrorToast();
@@ -362,14 +360,34 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
         ],
       ),
       
-      if (_showSuccess)
-        PracticeSuccessOverlay(
-          word: widget.word,
-          title: "太棒了!",
-          subtitle: "拼写正确!",
-        ),
       ],
     );
+  }
+
+  void _showSuccessOverlay() {
+    AudioService().playAsset('correct.mp3');
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierLabel: "Success",
+      barrierColor: Colors.transparent, 
+      transitionDuration: Duration.zero,
+      pageBuilder: (_, __, ___) {
+        return PracticeSuccessOverlay(
+          word: widget.word,
+          title: "正确!",
+        );
+      },
+    );
+
+    // Delay then Advance
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      if (mounted) {
+         Navigator.of(context).pop(); // Close overlay
+         int score = _hintsUsed > 0 ? 3 : 5;
+         widget.onCompleted(score);
+      }
+    });
   }
 
   Widget _buildLetterButton(String char) {

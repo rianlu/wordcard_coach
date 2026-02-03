@@ -163,6 +163,18 @@ class AudioService {
       }
   }
 
+  Future<void> playAsset(String fileName) async {
+    try {
+       await stop(); // Stop existing audio to prevent overlap if needed, or allow concurrent? For UI sounds, maybe allow?
+       // Actually for UI sounds like "Ding", we might want them to mix or be quick.
+       // Let's create a separate player for UI sounds if we want them concurrent, but single player is safer for now.
+       // Re-using _audioPlayer for simplicity.
+       await _audioPlayer.play(AssetSource('sounds/$fileName'));
+    } catch (e) {
+      debugPrint("Asset playback failed ($fileName): $e");
+    }
+  }
+
   Future<void> stop() async {
     await _audioPlayer.stop();
     await _flutterTts.stop();

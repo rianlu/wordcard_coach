@@ -1,125 +1,140 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/database/models/word.dart';
+import 'dart:math' as math;
 
 class PracticeSuccessOverlay extends StatelessWidget {
   final Word word;
-  final String title;
+  final String title; // Repurposed for "CORRECT!" localization if needed
   final String? subtitle;
 
   const PracticeSuccessOverlay({
     super.key,
     required this.word,
-    this.title = 'Great Job!',
+    this.title = 'CORRECT!',
     this.subtitle,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fill(
+    return BackdropFilter(
+      filter: ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
       child: Container(
-        color: Colors.black54, // Dim background
+        color: Colors.black.withOpacity(0.05), // Very light dim - kept for consistency
         child: Center(
           child: TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOutQuint, // Smooth, non-bouncy
+            curve: Curves.easeOutBack, // Slight bounce for the pop
             builder: (context, value, child) {
               return Transform.scale(
-                scale: 0.9 + (0.1 * value), // Subtle zoom 0.9 -> 1.0
+                scale: 0.8 + (0.2 * value),
                 child: Opacity(
-                  opacity: value,
+                  opacity: value.clamp(0.0, 1.0),
                   child: child,
                 ),
               );
             },
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.fromLTRB(32, 40, 32, 32),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: const [
-                    BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 8), blurRadius: 16),
-                    BoxShadow(color: Colors.black26, offset: Offset(0, 4), blurRadius: 10),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Icon
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.check_rounded, color: AppColors.primary, size: 40),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Header
-                    Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.textHighEmphasis,
-                      ),
-                    ),
-                    if (subtitle != null) ...[
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFEF3C7), // Yellow 100
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xFFFCD34D), width: 1.5),
-                        ),
-                        child: Text(
-                          subtitle!,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                            color: const Color(0xFFD97706),
-                            letterSpacing: 0.5
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                   // Subtle Sparkles behind
+                   const Positioned.fill(
+                     child: SparkleBackground(),
+                   ),
+                   
+                   // Main Card
+                   Container(
+                     margin: const EdgeInsets.symmetric(horizontal: 24),
+                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                     decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
                           ),
-                        ),
-                      ),
-                    ],
-
-                    const SizedBox(height: 32),
-
-                    // Word & Meaning
-                    Text(
-                      word.text,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      word.phonetic,
-                      style: GoogleFonts.notoSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textMediumEmphasis,
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 40),
-                    
-                    const SizedBox(height: 16),
-                  ],
-                ),
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                     ),
+                     child: Row(
+                       mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Left Checkmark
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFDCFCE7), // Light Green 100
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.check_rounded, 
+                              color: Color(0xFF22C55E), // Green 500 
+                              size: 28,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          
+                          // Right Content
+                          Flexible(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  title.toUpperCase(),
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w900,
+                                    color: const Color(0xFF22C55E),
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  word.text,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColors.primary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                        ],
+                     ),
+                   ),
+                   
+                   // Little Floating Sparkle Icon for extra flair
+                   Positioned(
+                     top: -10,
+                     right: 15,
+                     child: TweenAnimationBuilder<double>(
+                       tween: Tween(begin: 0.0, end: 1.0),
+                       duration: const Duration(milliseconds: 800),
+                       builder: (context, val, child) {
+                         return Transform.rotate(
+                           angle: val * math.pi / 4,
+                           child: Icon(Icons.auto_awesome_rounded, color: Colors.amber.shade400, size: 24),
+                         );
+                       },
+                     ),
+                   ),
+                ],
               ),
             ),
           ),
@@ -127,4 +142,85 @@ class PracticeSuccessOverlay extends StatelessWidget {
       ),
     );
   }
+}
+
+class SparkleBackground extends StatefulWidget {
+  const SparkleBackground({super.key});
+
+  @override
+  State<SparkleBackground> createState() => _SparkleBackgroundState();
+}
+
+class _SparkleBackgroundState extends State<SparkleBackground> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  final List<SparkleParticle> particles = List.generate(12, (index) => SparkleParticle());
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return CustomPaint(
+          painter: SparklePainter(particles, _controller.value),
+        );
+      },
+    );
+  }
+}
+
+class SparkleParticle {
+  late double x, y;
+  late double size;
+  late double opacity;
+  
+  SparkleParticle() {
+    reset();
+  }
+  
+  void reset() {
+    final random = math.Random();
+    x = random.nextDouble() * 300 - 150;
+    y = random.nextDouble() * 150 - 75;
+    size = random.nextDouble() * 4 + 2;
+    opacity = random.nextDouble();
+  }
+}
+
+class SparklePainter extends CustomPainter {
+  final List<SparkleParticle> particles;
+  final double animationValue;
+
+  SparklePainter(this.particles, this.animationValue);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.amber.shade300;
+    
+    for (var particle in particles) {
+      final double progress = (animationValue + particle.opacity) % 1.0;
+      final double currentOpacity = math.sin(progress * math.pi) * 0.6;
+      paint.color = Colors.amber.shade300.withOpacity(currentOpacity);
+      
+      canvas.drawCircle(
+        Offset(size.width / 2 + particle.x, size.height / 2 + particle.y),
+        particle.size,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
