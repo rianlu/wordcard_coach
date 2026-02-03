@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/models/word.dart';
@@ -8,6 +9,7 @@ import '../../../../core/utils/phonetic_utils.dart';
 import 'dart:ui';
 
 import '../../../../core/widgets/bubbly_button.dart';
+import 'practice_success_overlay.dart';
 
 
 
@@ -27,13 +29,14 @@ class SpeakingPracticeView extends StatefulWidget {
 
 class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  bool _isListening = false;
+  bool _isListening = false; // Session Active Flag
+  bool _isMicActive = false; // Actual Mic Status Flag
   String _lastHeard = '';
   bool _showSuccess = false; 
   bool _showSkip = false;
   
-  // Timer for skip button
-  Future<void>? _skipTimer;
+  Timer? _skipTimer;
+  Timer? _successTimer;
   
   // Simple Levenshtein distance for fuzzy matching
   int _levenshtein(String s, String t) {
@@ -65,6 +68,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       vsync: this,
       duration: const Duration(seconds: 2),
     );
+    // Pre-warm the speech engine (Init only, don't listen yet)
+    SpeechService().init();
+    
     // Start Practice
     _startPracticeSequence();
   }
@@ -81,16 +87,19 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   void _resetState() {
      _isListening = false;
+     _isMicActive = false;
      _lastHeard = '';
      _showSuccess = false;
-     _showSkip = false;
+     _skipTimer?.cancel();
+     _successTimer?.cancel();
      _controller.reset();
      SpeechService().stopListening();
-     // Reset skip timer logic logic if needed, actually startPractice will handle it
   }
 
   @override
   void dispose() {
+    _skipTimer?.cancel();
+    _successTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -103,9 +112,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
        // Play Audio and Wait
        await AudioService().playWord(widget.word);
        
+       // Allow audio focus to clear
+       if (mounted) await Future.delayed(const Duration(milliseconds: 500));
+       
        // Start lazy timer for skip button (e.g. 5 seconds)
        if (mounted) {
-         Future.delayed(const Duration(seconds: 5), () {
+         _skipTimer = Timer(const Duration(seconds: 5), () {
            if (mounted && !_showSuccess) {
              setState(() => _showSkip = true);
            }
@@ -127,23 +139,37 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
      });
      
      // Start Monitor Loop
-     _monitorListening();
+     _monitorListening(initial: true);
   }
   
-  void _monitorListening() async {
+  void _monitorListening({bool initial = false}) async {
      // Watchdog Loop: Keeps checking if we should be listening but aren't
      while (mounted && _isListening && !_showSuccess) {
-         if (!SpeechService().isListening) {
-             debugPrint("Watchdog: Restarting Listening...");
-             await SpeechService().startListening(
-               onResult: (text) {
-                 if (!mounted) return;
-                 _handleSpeechResult(text);
-               },
-             );
+         // Sync Mic State
+         bool engineActive = SpeechService().isListening;
+         if (_isMicActive != engineActive) {
+             setState(() => _isMicActive = engineActive);
+         }
+
+         if (!engineActive) {
+             // Only throttle if NOT initial start
+             if (!initial) {
+                 debugPrint("Watchdog: Restarting Listening...");
+                 await Future.delayed(const Duration(milliseconds: 1000));
+             }
+             initial = false; // Clear initial flag after first check
+             
+             if (mounted && _isListening && !_showSuccess) {
+                await SpeechService().startListening(
+                  onResult: (text) {
+                    if (!mounted) return;
+                    _handleSpeechResult(text);
+                  },
+                );
+             }
          }
          // Check frequency
-         await Future.delayed(const Duration(milliseconds: 1000));
+         await Future.delayed(const Duration(milliseconds: 500)); // Faster checks
      }
   }
 
@@ -152,6 +178,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     await SpeechService().stopListening();
     if (mounted) {
       setState(() {
+         _isMicActive = false;
          _controller.stop();
          _controller.reset();
       });
@@ -185,6 +212,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       if (exactMatch || fuzzyMatch || phoneticMatch) {
              // Success logic upgrade
              _isListening = false; // Stop loop
+             _isMicActive = false;
              SpeechService().stopListening(); 
                           // Show nice success badge
               if (mounted) {
@@ -196,9 +224,8 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
              // Play success sound logic here (optional)
              
              // Delay to show success message then advance
-             Future.delayed(const Duration(milliseconds: 1500), () {
+             _successTimer = Timer(const Duration(milliseconds: 1500), () {
                if (mounted) widget.onCompleted(5); // Perfect
-               // We don't verify mounted after onCompleted because this widget might be disposed.
              });
           }
   }
@@ -221,6 +248,24 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   Widget build(BuildContext context) {
+    // Determine Status Text
+    String statusText = '点击说话';
+    Color statusColor = AppColors.textMediumEmphasis;
+    
+    if (_isListening) {
+        if (_isMicActive) {
+            statusText = '正在听...';
+            statusColor = AppColors.secondary;
+        } else {
+            statusText = '准备中...'; // Connecting/Initializing
+            statusColor = AppColors.secondary.withOpacity(0.5); // Softer Orange
+        }
+    }
+    if (_lastHeard.isNotEmpty) {
+        statusText = '听到: $_lastHeard';
+        statusColor = AppColors.primary;
+    }
+
     return Stack(
       children: [
         Column(
@@ -276,6 +321,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                                 // Actually better to flag it.
                                 setState(() {
                                    _isListening = false;
+                                   _isMicActive = false;
                                    _controller.stop();
                                    _controller.reset();
                                 });
@@ -341,12 +387,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
                 const SizedBox(height: 48),
                 Text(
-                    _isListening ? 'Listening...' : (_lastHeard.isNotEmpty ? 'Heard: $_lastHeard' : 'TAP TO SPEAK'),
+                    statusText,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.plusJakartaSans(
                         fontSize: 14, // Slightly larger
                         fontWeight: FontWeight.w900,
-                        color: _isListening ? AppColors.secondary : (_lastHeard.isNotEmpty ? AppColors.primary : AppColors.textMediumEmphasis),
+                        color: statusColor,
                         letterSpacing: 1.0
                     )
                 ),
@@ -362,7 +408,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // Ripple Effect (Multi-Ring)
+                        // Ripple Effect (Multi-Ring) - Only if Mic Active
                         if (_isListening) ...[
                           // Ring 1
                           AnimatedBuilder(
@@ -382,7 +428,8 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                               );
                             },
                           ),
-                          // Ring 2 (Staggered or Scaled)
+                          // Ring 2 (Staggered or Scaled) - Only if Mic Active for visual feedback of 'alive'
+                          if (_isMicActive)
                           AnimatedBuilder(
                             animation: _controller,
                             builder: (context, child) {
@@ -405,7 +452,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                           height: _isListening ? 100 : 90,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: AppColors.secondary,
+                            color: _isMicActive ? AppColors.secondary : (_isListening ? Colors.grey : AppColors.secondary), // Grey if preparing? OR just keep secondary.
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 4),
                             boxShadow: [
@@ -455,40 +502,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       ],
     ),
         
-        // Success Overlay (Lightweight)
-        if (_showSuccess)
-          Positioned(
-            top: 100, left: 0, right: 0,
-            child: Center(
-              child: TweenAnimationBuilder<double>(
-                 tween: Tween(begin: 0.0, end: 1.0),
-                 duration: const Duration(milliseconds: 300),
-                 curve: Curves.elasticOut,
-                 builder: (context, value, child) {
-                    return Transform.scale(
-                      scale: value,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [BoxShadow(color: Colors.green.withOpacity(0.4), blurRadius: 10, offset: Offset(0, 4))]
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.check_circle, color: Colors.white, size: 28),
-                            const SizedBox(width: 8),
-                            Text("Perfect!", style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-                          ],
-                        ),
-                      ),
-                    );
-                 },
-              ),
-            ),
-          ),
-          
+      if (_showSuccess)
+        PracticeSuccessOverlay(
+          word: widget.word,
+          title: "太棒了!",
+          subtitle: "发音完美!",
+        ),
       ],
     );
   }

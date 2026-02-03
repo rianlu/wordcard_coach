@@ -55,8 +55,8 @@ class SpeechService {
       await _speech.listen(
         onResult: (val) => onResult(val.recognizedWords),
         localeId: localeId,
-        listenFor: const Duration(seconds: 30), // Increased for better UX
-        pauseFor: const Duration(seconds: 5), // Increased pause tolerance
+        listenFor: const Duration(seconds: 60), // Allow up to 60s per session
+        pauseFor: const Duration(seconds: 20), // Allow 20s of silence before auto-stop
         cancelOnError: true,
         listenMode: stt.ListenMode.confirmation
       );

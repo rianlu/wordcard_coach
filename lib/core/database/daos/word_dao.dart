@@ -102,13 +102,16 @@ class WordDao {
 
   Future<List<Word>> getWordsDueForReview(int limit, {String? bookId, int? grade, int? semester}) async {
     final db = await _dbHelper.database;
-    final now = DateTime.now().millisecondsSinceEpoch;
+    
+    // Calculate end of today (23:59:59) to include everything scheduled for today
+    final now = DateTime.now();
+    final endOfToday = DateTime(now.year, now.month, now.day, 23, 59, 59).millisecondsSinceEpoch;
     
     // We join words and word_progress
-    // Filter words that ARE in word_progress AND next_review_date <= now
+    // Filter words that ARE in word_progress AND next_review_date <= endOfToday
     
     String whereClause = 'p.next_review_date <= ?';
-    List<dynamic> args = [now];
+    List<dynamic> args = [endOfToday];
 
     // Filter by book if possible
     if (bookId != null && bookId.isNotEmpty) {

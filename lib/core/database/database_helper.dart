@@ -395,6 +395,164 @@ class DatabaseHelper {
         }
   }
 
+  /// Safe Update: Updates words from JSON without deleting progress
+  Future<void> updateLibraryFromAssets() async {
+    final db = await database;
+    print('Starting SAFE library update from MANIFEST...');
+    
+    List<dynamic> manifest = [];
+    try {
+      final manifestContent = await rootBundle.loadString('assets/data/books_manifest.json');
+      manifest = jsonDecode(manifestContent);
+      print('Loaded manifest with ${manifest.length} books.');
+    } catch(e) {
+      print('Manifest load failed: $e');
+      return;
+    }
+    
+    if (manifest.isEmpty) return;
+
+    try {
+      final batch = db.batch();
+
+      for (final book in manifest) {
+        final bookId = book['id'] as String;
+        final filename = book['file'] as String;
+        final grade = book['grade'] as int;
+        final semester = book['semester'] as int;
+        
+        try {
+          final jsonContent = await rootBundle.loadString('assets/data/$filename');
+          print("Updating $filename for book $bookId...");
+          await _safeSeedFromJson(batch, jsonContent, grade, semester, bookId);
+        } catch (e) {
+          print("Error loading $filename: $e");
+        }
+      }
+
+      await batch.commit(noResult: true);
+      print('Library update completed successfully.');
+      
+    } catch (e) {
+      print('Error updating library: $e');
+    }
+  }
+
+  Future<void> _safeSeedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId) async {
+    final dynamic decoded = jsonDecode(jsonString);
+    List<dynamic> items = [];
+    String defaultUnit = "Module 1";
+    
+    if (decoded is List) {
+      items = decoded;
+    } else if (decoded is Map<String, dynamic>) {
+       if (decoded.containsKey('data')) {
+          if (decoded.containsKey('unit')) defaultUnit = decoded['unit'];
+          items = decoded['data'];
+       } else if (decoded.containsKey('words')) {
+           items = decoded['words'];
+       }
+    }
+    
+    int wordIndex = 0;
+    for (var item in items) {
+      if (item is Map<String, dynamic>) {
+         if (item.containsKey('data') || item.containsKey('words')) {
+           final moduleUnit = item['unit'] ?? defaultUnit;
+           final moduleData = item['data'] ?? item['words'] ?? [];
+           await _safeSeedWordList(batch, moduleData, grade, semester, moduleUnit, bookId);
+         } else {
+           wordIndex++;
+           _upsertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId);
+         }
+      }
+    }
+  }
+
+  Future<void> _safeSeedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId) async {
+    int wordIndex = 0;
+    for (var w in words) {
+      if (w is Map<String, dynamic>) {
+        wordIndex++;
+        _upsertWord(batch, w, grade, semester, unit, wordIndex, bookId);
+      }
+    }
+  }
+
+  void _upsertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId) {
+     final text = data['text'] as String? ?? '';
+     if (text.isEmpty) return;
+     
+     final id = 'word_${bookId}_${unit.hashCode}_$index';
+     
+     // IMPORTANT: Use INSERT OR UPDATE logic to preserve ID and Foreign Keys
+     // SQLite 'INSERT OR REPLACE' deletes the old row, triggering Cascade Delete on foreign keys.
+     // We must use explicit UPSERT syntax.
+     
+     final meaning = data['meaning'] ?? '[释义]';
+     final phonetic = data['phonetic'] ?? '';
+     // Syllables and others
+     String syllablesJson = '[]';
+     if (data['syllables'] != null && data['syllables'] is List) {
+       syllablesJson = jsonEncode(data['syllables']); // Store as simple string if needed or just comma sep
+       // Actually 'words' table defines syllables as TEXT, but logic above used List -> which might be error in _insertWord? 
+       // Checked _insertWord: it initializes List but ignores it for DB insert unless Word.toJson() handles it.
+       // Word.toJson stores it as JSON string usually. Let's assume Word model handles serialization.
+     }
+     
+     // Construct the SQL with rawInsert for Upsert support
+     // ON CONFLICT(id) DO UPDATE SET ...
+     batch.rawInsert('''
+       INSERT INTO words (id, text, meaning, phonetic, grade, semester, unit, difficulty, category, book_id, syllables)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(id) DO UPDATE SET
+         text = excluded.text,
+         meaning = excluded.meaning,
+         phonetic = excluded.phonetic,
+         syllables = excluded.syllables,
+         unit = excluded.unit
+     ''', [
+       id, text, meaning, phonetic, grade, semester, unit, 1, 'general', bookId, syllablesJson
+     ]);
+
+      // Sentences: These are less critical to preserve progress since they don't hold progress directly (usually).
+      // But WordSentenceMap does. 
+      // For sentences, we can just replace them if their IDs are deterministic.
+      // IDs are 'sentence_${wordId}_$index'.
+      
+      if (data.containsKey('app_sentences')) {
+       final sentences = data['app_sentences'] as List;
+       int sIndex = 0;
+       for (var s in sentences) {
+         if (s is Map<String, dynamic>) {
+           sIndex++;
+           final en = s['en'] as String? ?? '';
+           final cn = s['cn'] as String? ?? '';
+           if (en.isNotEmpty) {
+             final sId = 'sentence_${id}_$sIndex';
+             
+             // Upsert Sentence
+             batch.rawInsert('''
+               INSERT INTO sentences (id, text, translation, category, difficulty)
+               VALUES (?, ?, ?, ?, ?)
+               ON CONFLICT(id) DO UPDATE SET
+                 text = excluded.text,
+                 translation = excluded.translation
+             ''', [sId, en, cn, 'example', 1]);
+             
+             // Ensure Map exists (safe to replace strictly speaking as it's just a link)
+             batch.insert('word_sentence_map', {
+               'word_id': id,
+               'sentence_id': sId,
+               'is_primary': sIndex == 1 ? 1 : 0, 
+               'word_position': -1
+             }, conflictAlgorithm: ConflictAlgorithm.ignore); // Ignore if exists
+           }
+         }
+       }
+     }
+  }
+
   // Helper method to reset DB (for debugging)
   Future<void> resetDB() async {
      final dbPath = await getDatabasesPath();

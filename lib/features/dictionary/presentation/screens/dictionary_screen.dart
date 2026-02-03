@@ -616,15 +616,18 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
-        child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: const [
-                    BoxShadow(color: Colors.black26, blurRadius: 40, offset: Offset(0, 10))
-                ]
-            ),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 450),
+          child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: const [
+                      BoxShadow(color: Colors.black26, blurRadius: 40, offset: Offset(0, 10))
+                  ]
+              ),
             child: SingleChildScrollView(
               child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -737,6 +740,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                   ],
               ),
             ),
+          ),
         ),
       ),
     );

@@ -119,229 +119,238 @@ class _WordLearningCardState extends State<WordLearningCard> {
     // Show phonics if available AND (toggled on OR playing)
     final showPhonics = hasSyllables && (_isPhonicsVisible || _isPlaying);
 
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                   // Main Card
-                   Container(
-                     padding: const EdgeInsets.all(32),
-                     decoration: BoxDecoration(
-                       color: Colors.white,
-                       borderRadius: BorderRadius.circular(24),
-                       boxShadow: const [
-                         BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 8), blurRadius: 16),
-                         BoxShadow(color: Colors.black12, offset: Offset(0, 4), blurRadius: 4),
-                       ],
-                     ),
-                     child: Column(
-                       children: [
-                         // Word Display Area
-                         Stack(
-                           alignment: Alignment.center,
-                           clipBehavior: Clip.none,
-                           children: [
-                             GestureDetector(
-                               onTap: hasSyllables ? _togglePhonics : null,
-                               child: showPhonics
-                                 ? RichText(
-                                     textAlign: TextAlign.center,
-                                     text: TextSpan(
-                                       children: widget.word.syllables.asMap().entries.map((entry) {
-                                          final index = entry.key;
-                                          final syllable = entry.value;
-                                          final color = index % 2 == 0 
-                                              ? AppColors.primary 
-                                              : const Color(0xFFE91E63);
-                                          return TextSpan(
-                                            text: syllable,
-                                            style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 40, 
-                                              fontWeight: FontWeight.w900, 
-                                              color: color
-                                            )
-                                          );
-                                       }).toList()
-                                     ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 100), // Extra bottom padding for floating button
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                 // Main Card
+                 Container(
+                   padding: const EdgeInsets.all(32),
+                   decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(24),
+                     boxShadow: const [
+                       BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 8), blurRadius: 16),
+                       BoxShadow(color: Colors.black12, offset: Offset(0, 4), blurRadius: 4),
+                     ],
+                   ),
+                   child: Column(
+                     children: [
+                       // Word Display Area
+                       Stack(
+                         alignment: Alignment.center,
+                         clipBehavior: Clip.none,
+                         children: [
+                           GestureDetector(
+                             onTap: hasSyllables ? _togglePhonics : null,
+                             child: showPhonics
+                               ? RichText(
+                                   textAlign: TextAlign.center,
+                                   text: TextSpan(
+                                     children: widget.word.syllables.asMap().entries.map((entry) {
+                                        final index = entry.key;
+                                        final syllable = entry.value;
+                                        final color = index % 2 == 0 
+                                            ? AppColors.primary 
+                                            : const Color(0xFFE91E63);
+                                        return TextSpan(
+                                          text: syllable,
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 40, 
+                                            fontWeight: FontWeight.w900, 
+                                            color: color
+                                          )
+                                        );
+                                     }).toList()
+                                   ),
+                                 )
+                               : Text(
+                                   widget.word.text, 
+                                   textAlign: TextAlign.center,
+                                   style: GoogleFonts.plusJakartaSans(
+                                     fontSize: 40, fontWeight: FontWeight.w900, color: AppColors.primary
                                    )
-                                 : Text(
-                                     widget.word.text, 
-                                     textAlign: TextAlign.center,
-                                     style: GoogleFonts.plusJakartaSans(
-                                       fontSize: 40, fontWeight: FontWeight.w900, color: AppColors.primary
-                                     )
-                                   ),
-                             ),
-                             
-                             // Manual Toggle Icon (Visual Hint)
-                             if (hasSyllables)
-                               Positioned(
-                                 right: -40,
-                                 top: 0,
-                                 bottom: 0,
-                                 child: IconButton(
-                                   icon: Icon(
-                                     showPhonics ? Icons.visibility_off_outlined : Icons.auto_awesome_outlined,
-                                     color: AppColors.secondary.withOpacity(0.5),
-                                     size: 20,
-                                   ),
-                                   onPressed: _togglePhonics,
-                                   tooltip: "Toggle Phonics",
                                  ),
+                           ),
+                           
+                           // Manual Toggle Icon (Visual Hint)
+                           if (hasSyllables)
+                             Positioned(
+                               right: -40,
+                               top: 0,
+                               bottom: 0,
+                               child: IconButton(
+                                 icon: Icon(
+                                   showPhonics ? Icons.visibility_off_outlined : Icons.auto_awesome_outlined,
+                                   color: AppColors.secondary.withOpacity(0.5),
+                                   size: 20,
+                                 ),
+                                 onPressed: _togglePhonics,
+                                 tooltip: "Toggle Phonics",
                                ),
-                           ],
-                         ),
+                             ),
+                         ],
+                       ),
 
-                         const SizedBox(height: 12),
-                         Container(
-                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                           decoration: BoxDecoration(
-                             color: AppColors.background,
-                             borderRadius: BorderRadius.circular(12)
-                           ),
-                           child: Text(
-                             widget.word.phonetic, 
-                             style: GoogleFonts.notoSans(
-                               fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textMediumEmphasis
-                             )
-                           ),
+                       const SizedBox(height: 12),
+                       Container(
+                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                         decoration: BoxDecoration(
+                           color: AppColors.background,
+                           borderRadius: BorderRadius.circular(12)
                          ),
-                         const SizedBox(height: 24),
-                         const Divider(height: 1),
-                         const SizedBox(height: 24),
-                         Text(
-                           widget.word.meaning, 
-                           textAlign: TextAlign.center,
+                         child: Text(
+                           widget.word.phonetic, 
                            style: GoogleFonts.notoSans(
-                             fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis
+                             fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textMediumEmphasis
                            )
                          ),
-                         const SizedBox(height: 32),
-                         // TTS
-                         Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.primary.withOpacity(0.1),
-                            ),
-                            child: IconButton(
-                              iconSize: 32,
-                              padding: const EdgeInsets.all(16),
-                              onPressed: _playAudio,
-
+                       ),
+                       const SizedBox(height: 24),
+                       const Divider(height: 1),
+                       const SizedBox(height: 24),
+                       Text(
+                         widget.word.meaning, 
+                         textAlign: TextAlign.center,
+                         style: GoogleFonts.notoSans(
+                           fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis
+                         )
+                       ),
+                       const SizedBox(height: 32),
+                       // TTS Area
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.primary.withOpacity(0.1),
+                              ),
+                              child: IconButton(
+                                iconSize: 32,
+                                padding: const EdgeInsets.all(16),
+                                onPressed: _playAudio,
                                 icon: const Icon(Icons.volume_up_rounded, color: AppColors.primary),
-
+                              ),
                             ),
-                          ),
-                       ],
-                     ),
+                         ],
+                       ),
+                     ],
                    ),
+                 ),
 
-                   const SizedBox(height: 24),
+                 const SizedBox(height: 24),
 
-                   // Sentence Card
-                   Container(
-                     padding: const EdgeInsets.all(24),
-                     decoration: BoxDecoration(
-                       color: Colors.white,
-                       borderRadius: BorderRadius.circular(16),
-                       border: const Border(left: BorderSide(color: AppColors.secondary, width: 4)),
-                       boxShadow: const [
-                          BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 4),
-                       ],
-                     ),
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Row(
-                           children: [
-                             const Icon(Icons.format_quote_rounded, color: AppColors.secondary),
-                             const SizedBox(width: 8),
-                             Text(
-                               "EXAMPLE", 
-                               style: GoogleFonts.plusJakartaSans(
-                                 fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.secondary, letterSpacing: 1.2
-                               )
-                             ),
-                           ],
-                         ),
-                         const SizedBox(height: 12),
-                         if (widget.word.examples.isNotEmpty) ...[
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
-                                    child: Text(
-                                      widget.word.examples.first['en']!,
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 18, height: 1.5, color: AppColors.textHighEmphasis, fontWeight: FontWeight.w500
-                                      ),
+                 // Sentence Card
+                 Container(
+                   padding: const EdgeInsets.all(24),
+                   decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(16),
+                     border: const Border(left: BorderSide(color: AppColors.secondary, width: 4)),
+                     boxShadow: const [
+                        BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 4),
+                     ],
+                   ),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Row(
+                         children: [
+                           const Icon(Icons.format_quote_rounded, color: AppColors.secondary),
+                           const SizedBox(width: 8),
+                           Text(
+                             "EXAMPLE", 
+                             style: GoogleFonts.plusJakartaSans(
+                               fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.secondary, letterSpacing: 1.2
+                             )
+                           ),
+                         ],
+                       ),
+                       const SizedBox(height: 12),
+                       if (widget.word.examples.isNotEmpty) ...[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                  child: Text(
+                                    widget.word.examples.first['en']!,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 18, height: 1.5, color: AppColors.textHighEmphasis, fontWeight: FontWeight.w500
                                     ),
                                   ),
                                 ),
-                                IconButton(
-                                  onPressed: () => AudioService().playSentence(widget.word.examples.first['en']!),
-                                  icon: const Icon(Icons.volume_up_rounded, color: AppColors.primary, size: 20),
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  visualDensity: VisualDensity.compact,
-                                )
-                              ],
-                            ),
-                           const SizedBox(height: 8),
-                           Text(
-                             widget.word.examples.first['cn']!,
-                             style: GoogleFonts.notoSans(
-                               fontSize: 16, height: 1.5, color: AppColors.textMediumEmphasis
-                             ),
+                              ),
+                              IconButton(
+                                onPressed: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                icon: const Icon(Icons.volume_up_rounded, color: AppColors.primary, size: 20),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                visualDensity: VisualDensity.compact,
+                              )
+                            ],
+                          ),
+                         const SizedBox(height: 8),
+                         Text(
+                           widget.word.examples.first['cn']!,
+                           style: GoogleFonts.notoSans(
+                             fontSize: 16, height: 1.5, color: AppColors.textMediumEmphasis
                            ),
-                         ] else ...[
-                           Text(
-                             "No example sentence available.",
-                             style: GoogleFonts.plusJakartaSans(
-                               fontSize: 18, height: 1.5, color: AppColors.textHighEmphasis, fontWeight: FontWeight.w500
-                             ),
+                         ),
+                       ] else ...[
+                         Text(
+                           "No example sentence available.",
+                           style: GoogleFonts.plusJakartaSans(
+                             fontSize: 18, height: 1.5, color: AppColors.textHighEmphasis, fontWeight: FontWeight.w500
                            ),
-                           const SizedBox(height: 8),
-                           Text(
-                             "暂无例句",
-                             style: GoogleFonts.notoSans(
-                               fontSize: 16, height: 1.5, color: AppColors.textMediumEmphasis
-                             ),
+                         ),
+                         const SizedBox(height: 8),
+                         Text(
+                           "暂无例句",
+                           style: GoogleFonts.notoSans(
+                             fontSize: 16, height: 1.5, color: AppColors.textMediumEmphasis
                            ),
-                         ],
+                         ),
                        ],
-                     ),
+                     ],
                    ),
-                ],
-              ),
+                 ),
+              ],
             ),
           ),
-          
-          const SizedBox(height: 16),
-          BubblyButton(
+        ),
+
+        // Floating Next Button
+        Positioned(
+          left: 24, right: 24, bottom: 24,
+          child: BubblyButton(
             onPressed: widget.onNext,
             color: AppColors.primary,
             shadowColor: const Color(0xFF1e3a8a), // Darker blue
-            borderRadius: 16,
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: const Center(
-              child: Text(
-                "下一个 / Next",
-                style: TextStyle(
-                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold
+            borderRadius: 30, // More rounded, pill shape
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Next Word",
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold
+                  ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20)
+              ],
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

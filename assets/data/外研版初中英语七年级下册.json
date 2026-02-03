@@ -70,10 +70,10 @@
         "syllables": [
           "watch"
         ],
-        "meaning": "n. 手表",
+        "meaning": "n. 手表,v. 观看",
         "app_sentences": [
           {
-            "en": "v. 观看,My watch is new.",
+            "en": "My watch is new.",
             "cn": "我的手表是新的。"
           }
         ]
@@ -616,10 +616,10 @@
         "syllables": [
           "play"
         ],
-        "meaning": "v. 玩；演奏",
+        "meaning": "v. 玩；演奏,n. 戏剧",
         "app_sentences": [
           {
-            "en": "n. 戏剧,Children play in the park.",
+            "en": "Children play in the park.",
             "cn": "孩子们在公园里玩。"
           }
         ]
@@ -661,10 +661,10 @@
         "syllables": [
           "ride"
         ],
-        "meaning": "v. 骑",
+        "meaning": "v. 骑,n. 乘坐",
         "app_sentences": [
           {
-            "en": "n. 乘坐,Can you ride a bike?",
+            "en": "Can you ride a bike?",
             "cn": "你会骑自行车吗？"
           }
         ]
@@ -703,10 +703,10 @@
         "syllables": [
           "board"
         ],
-        "meaning": "n. 板；董事会",
+        "meaning": "n. 板；董事会,v. 上船",
         "app_sentences": [
           {
-            "en": "v. 上船,Write your answer on the board.",
+            "en": "Write your answer on the board.",
             "cn": "把你的答案写在板上。"
           }
         ]
@@ -732,10 +732,10 @@
         "syllables": [
           "well"
         ],
-        "meaning": "adv. 好",
+        "meaning": "adv. 好,adj. 健康的",
         "app_sentences": [
           {
-            "en": "adj. 健康的,She speaks English well.",
+            "en": "She speaks English well.",
             "cn": "她英语说得很好。"
           }
         ]
@@ -746,10 +746,10 @@
         "syllables": [
           "all"
         ],
-        "meaning": "adj. 所有的",
+        "meaning": "adj. 所有的,pron. 全部",
         "app_sentences": [
           {
-            "en": "pron. 全部,All students are here.",
+            "en": "All students are here.",
             "cn": "所有学生都到了。"
           }
         ]
@@ -920,10 +920,10 @@
           "prom",
           "ise"
         ],
-        "meaning": "v. 承诺",
+        "meaning": "v. 承诺,n. 诺言",
         "app_sentences": [
           {
-            "en": "n. 诺言,He promised to help me.",
+            "en": "He promised to help me.",
             "cn": "他承诺帮助我。"
           }
         ]
@@ -934,10 +934,10 @@
         "syllables": [
           "fast"
         ],
-        "meaning": "adj. 快的",
+        "meaning": "adj. 快的,adv. 快",
         "app_sentences": [
           {
-            "en": "adv. 快,The car is very fast.",
+            "en": "The car is very fast.",
             "cn": "这辆车很快。"
           }
         ]
@@ -948,10 +948,10 @@
         "syllables": [
           "fit"
         ],
-        "meaning": "v. 适合",
+        "meaning": "v. 适合,adj. 健康的",
         "app_sentences": [
           {
-            "en": "adj. 健康的,These shoes fit me well.",
+            "en": "These shoes fit me well.",
             "cn": "这双鞋很合我的脚。"
           }
         ]
@@ -1018,10 +1018,10 @@
         "syllables": [
           "best"
         ],
-        "meaning": "adj. 最好的",
+        "meaning": "adj. 最好的,adv. 最好地",
         "app_sentences": [
           {
-            "en": "adv. 最好地,She is my best friend.",
+            "en": "She is my best friend.",
             "cn": "她是我最好的朋友。"
           }
         ]
@@ -1032,10 +1032,10 @@
         "syllables": [
           "score"
         ],
-        "meaning": "n. 分数",
+        "meaning": "n. 分数,v. 得分",
         "app_sentences": [
           {
-            "en": "v. 得分,What is the score of the game?",
+            "en": "What is the score of the game?",
             "cn": "比赛的比分是多少？"
           }
         ]
@@ -1047,10 +1047,10 @@
           "ti",
           "dy"
         ],
-        "meaning": "adj. 整洁的",
+        "meaning": "adj. 整洁的,v. 整理",
         "app_sentences": [
           {
-            "en": "v. 整理,Keep your room tidy.",
+            "en": "Keep your room tidy.",
             "cn": "保持你的房间整洁。"
           }
         ]
@@ -1123,10 +1123,10 @@
         "syllables": [
           "fly"
         ],
-        "meaning": "v. 飞",
+        "meaning": "v. 飞,n. 苍蝇",
         "app_sentences": [
           {
-            "en": "n. 苍蝇,Birds can fly.",
+            "en": "Birds can fly.",
             "cn": "鸟会飞。"
           }
         ]
@@ -1397,10 +1397,10 @@
         "syllables": [
           "cheer"
         ],
-        "meaning": "v. 欢呼",
+        "meaning": "v. 欢呼,n. 欢呼声",
         "app_sentences": [
           {
-            "en": "n. 欢呼声,We cheer for our team.",
+            "en": "We cheer for our team.",
             "cn": "我们为我们的队伍欢呼。"
           }
         ]
@@ -1426,10 +1426,10 @@
         "syllables": [
           "hope"
         ],
-        "meaning": "v. 希望",
+        "meaning": "v. 希望,n. 希望",
         "app_sentences": [
           {
-            "en": "n. 希望,I hope to visit Beijing one day.",
+            "en": "I hope to visit Beijing one day.",
             "cn": "我希望有一天能访问北京。"
           }
         ]
@@ -1530,10 +1530,10 @@
         "syllables": [
           "late"
         ],
-        "meaning": "adj. 迟的",
+        "meaning": "adj. 迟的,adv. 晚",
         "app_sentences": [
           {
-            "en": "adv. 晚,He is late for school.",
+            "en": "He is late for school.",
             "cn": "他上学迟到了。"
           }
         ]
@@ -1544,10 +1544,10 @@
         "syllables": [
           "walk"
         ],
-        "meaning": "v. 步行",
+        "meaning": "v. 步行,n. 散步",
         "app_sentences": [
           {
-            "en": "n. 散步,We walk to school every day.",
+            "en": "We walk to school every day.",
             "cn": "我们每天步行去学校。"
           }
         ]
@@ -1620,10 +1620,10 @@
           "lit",
           "ter"
         ],
-        "meaning": "n. 垃圾",
+        "meaning": "n. 垃圾,v. 乱扔",
         "app_sentences": [
           {
-            "en": "v. 乱扔,Don't litter in the park.",
+            "en": "Don't litter in the park.",
             "cn": "不要在公园里乱扔垃圾。"
           }
         ]
@@ -1634,10 +1634,10 @@
         "syllables": [
           "fun"
         ],
-        "meaning": "n. 乐趣",
+        "meaning": "n. 乐趣,adj. 有趣的",
         "app_sentences": [
           {
-            "en": "adj. 有趣的,We have fun at the party.",
+            "en": "We have fun at the party.",
             "cn": "我们在聚会上玩得开心。"
           }
         ]
@@ -1666,10 +1666,10 @@
         "syllables": [
           "camp"
         ],
-        "meaning": "n. 营地",
+        "meaning": "n. 营地,v. 露营",
         "app_sentences": [
           {
-            "en": "v. 露营,We go camping in summer.",
+            "en": "We go camping in summer.",
             "cn": "我们夏天去露营。"
           }
         ]
@@ -1683,10 +1683,10 @@
           "li",
           "an"
         ],
-        "meaning": "adj. 澳大利亚的",
+        "meaning": "adj. 澳大利亚的,n. 澳大利亚人",
         "app_sentences": [
           {
-            "en": "n. 澳大利亚人,Australian animals are unique.",
+            "en": "Australian animals are unique.",
             "cn": "澳大利亚的动物很独特。"
           }
         ]
@@ -1745,10 +1745,10 @@
           "ear",
           "ly"
         ],
-        "meaning": "adj. 早的",
+        "meaning": "adj. 早的,adv. 早",
         "app_sentences": [
           {
-            "en": "adv. 早,She gets up early.",
+            "en": "She gets up early.",
             "cn": "她早起。"
           }
         ]
@@ -1810,10 +1810,10 @@
         "syllables": [
           "change"
         ],
-        "meaning": "v. 改变",
+        "meaning": "v. 改变,n. 变化",
         "app_sentences": [
           {
-            "en": "n. 变化,The weather changes quickly.",
+            "en": "The weather changes quickly.",
             "cn": "天气变化很快。"
           }
         ]
@@ -1886,10 +1886,10 @@
         "syllables": [
           "need"
         ],
-        "meaning": "v. 需要",
+        "meaning": "v. 需要,n. 需要",
         "app_sentences": [
           {
-            "en": "n. 需要,We need water to live.",
+            "en": "We need water to live.",
             "cn": "我们需要水来生存。"
           }
         ]
@@ -1900,10 +1900,10 @@
         "syllables": [
           "will"
         ],
-        "meaning": "aux. 将",
+        "meaning": "aux. 将,n. 意志",
         "app_sentences": [
           {
-            "en": "n. 意志,I will study hard.",
+            "en": "I will study hard.",
             "cn": "我会努力学习。"
           }
         ]
@@ -2019,10 +2019,10 @@
         "syllables": [
           "more"
         ],
-        "meaning": "adj. 更多的",
+        "meaning": "adj. 更多的,adv. 更",
         "app_sentences": [
           {
-            "en": "adv. 更,I want more water.",
+            "en": "I want more water.",
             "cn": "我想要更多的水。"
           }
         ]
@@ -2079,10 +2079,10 @@
         "syllables": [
           "land"
         ],
-        "meaning": "n. 土地",
+        "meaning": "n. 土地,v. 着陆",
         "app_sentences": [
           {
-            "en": "v. 着陆,The plane will land soon.",
+            "en": "The plane will land soon.",
             "cn": "飞机很快要着陆了。"
           }
         ]
@@ -2108,10 +2108,10 @@
         "syllables": [
           "rain"
         ],
-        "meaning": "n. 雨",
+        "meaning": "n. 雨,v. 下雨",
         "app_sentences": [
           {
-            "en": "v. 下雨,It rains a lot in summer.",
+            "en": "It rains a lot in summer.",
             "cn": "夏天雨很多。"
           }
         ]
@@ -2424,10 +2424,10 @@
         "syllables": [
           "light"
         ],
-        "meaning": "adj. 轻的；明亮的",
+        "meaning": "adj. 轻的；明亮的,n. 光",
         "app_sentences": [
           {
-            "en": "n. 光,The bag is light.",
+            "en": "The bag is light.",
             "cn": "这个包很轻。"
           }
         ]
@@ -2496,10 +2496,10 @@
         "syllables": [
           "rise"
         ],
-        "meaning": "v. 上升",
+        "meaning": "v. 上升,n. 上升",
         "app_sentences": [
           {
-            "en": "n. 上升,The sun rises in the east.",
+            "en": "The sun rises in the east.",
             "cn": "太阳从东方升起。"
           }
         ]
@@ -2668,10 +2668,10 @@
         "syllables": [
           "try"
         ],
-        "meaning": "v. 尝试",
+        "meaning": "v. 尝试,n. 尝试",
         "app_sentences": [
           {
-            "en": "n. 尝试,Try your best.",
+            "en": "Try your best.",
             "cn": "尽你最大努力。"
           }
         ]
@@ -2758,10 +2758,10 @@
         "syllables": [
           "look"
         ],
-        "meaning": "v. 看",
+        "meaning": "v. 看,n. 样子",
         "app_sentences": [
           {
-            "en": "n. 样子,Look at the picture.",
+            "en": "Look at the picture.",
             "cn": "看这幅画。"
           }
         ]
@@ -2865,10 +2865,10 @@
         "syllables": [
           "pay"
         ],
-        "meaning": "v. 支付",
+        "meaning": "v. 支付,n. 工资",
         "app_sentences": [
           {
-            "en": "n. 工资,Please pay the bill.",
+            "en": "Please pay the bill.",
             "cn": "请付账。"
           }
         ]
@@ -2879,10 +2879,10 @@
         "syllables": [
           "post"
         ],
-        "meaning": "n. 邮件；职位",
+        "meaning": "n. 邮件；职位,v. 邮寄",
         "app_sentences": [
           {
-            "en": "v. 邮寄,I will post the letter tomorrow.",
+            "en": "I will post the letter tomorrow.",
             "cn": "我明天寄信。"
           }
         ]
@@ -3058,10 +3058,10 @@
           "o",
           "pen"
         ],
-        "meaning": "v. 打开",
+        "meaning": "v. 打开,adj. 开着的",
         "app_sentences": [
           {
-            "en": "adj. 开着的,Open the window, please.",
+            "en": "Open the window, please.",
             "cn": "请打开窗户。"
           }
         ]
@@ -3131,10 +3131,10 @@
         "syllables": [
           "one"
         ],
-        "meaning": "num. 一",
+        "meaning": "num. 一,pron. 一个",
         "app_sentences": [
           {
-            "en": "pron. 一个,I have one brother.",
+            "en": "I have one brother.",
             "cn": "我有一个兄弟。"
           }
         ]
@@ -3212,10 +3212,10 @@
         "syllables": [
           "cross"
         ],
-        "meaning": "v. 穿过",
+        "meaning": "v. 穿过,n. 十字架",
         "app_sentences": [
           {
-            "en": "n. 十字架,Be careful when you cross the road.",
+            "en": "Be careful when you cross the road.",
             "cn": "过马路时要小心。"
           }
         ]
@@ -3258,10 +3258,10 @@
           "ex",
           "cuse"
         ],
-        "meaning": "n. 借口",
+        "meaning": "n. 借口,v. 原谅",
         "app_sentences": [
           {
-            "en": "v. 原谅,That's no excuse for being late.",
+            "en": "That's no excuse for being late.",
             "cn": "那不是迟到的借口。"
           }
         ]
@@ -3302,10 +3302,10 @@
         "syllables": [
           "turn"
         ],
-        "meaning": "v. 转弯",
+        "meaning": "v. 转弯,n. 轮流",
         "app_sentences": [
           {
-            "en": "n. 轮流,Turn left at the corner.",
+            "en": "Turn left at the corner.",
             "cn": "在拐角处左转。"
           }
         ]
@@ -3406,10 +3406,10 @@
           "der",
           "ground"
         ],
-        "meaning": "adj. 地下的",
+        "meaning": "adj. 地下的,n. 地铁",
         "app_sentences": [
           {
-            "en": "n. 地铁,We take the underground to work.",
+            "en": "We take the underground to work.",
             "cn": "我们乘地铁上班。"
           }
         ]
@@ -3434,10 +3434,10 @@
         "syllables": [
           "tour"
         ],
-        "meaning": "n. 旅行",
+        "meaning": "n. 旅行,v. 旅游",
         "app_sentences": [
           {
-            "en": "v. 旅游,We went on a tour of the city.",
+            "en": "We went on a tour of the city.",
             "cn": "我们游览了这座城市。"
           }
         ]
@@ -3463,10 +3463,10 @@
           "mid",
           "dle"
         ],
-        "meaning": "n. 中间",
+        "meaning": "n. 中间,adj. 中间的",
         "app_sentences": [
           {
-            "en": "adj. 中间的,We meet in the middle of the park.",
+            "en": "We meet in the middle of the park.",
             "cn": "我们在公园中间见面。"
           }
         ]
@@ -3566,10 +3566,10 @@
         "syllables": [
           "clear"
         ],
-        "meaning": "adj. 清晰的",
+        "meaning": "adj. 清晰的,v. 清除",
         "app_sentences": [
           {
-            "en": "v. 清除,The water is clear.",
+            "en": "The water is clear.",
             "cn": "水很清澈。"
           }
         ]
@@ -3609,10 +3609,10 @@
         "syllables": [
           "past"
         ],
-        "meaning": "prep. 过",
+        "meaning": "prep. 过,adj. 过去的",
         "app_sentences": [
           {
-            "en": "adj. 过去的,It is half past ten.",
+            "en": "It is half past ten.",
             "cn": "现在是十点半。"
           }
         ]
@@ -3710,10 +3710,10 @@
         "syllables": [
           "stop"
         ],
-        "meaning": "v. 停止",
+        "meaning": "v. 停止,n. 车站",
         "app_sentences": [
           {
-            "en": "n. 车站,The bus stops here.",
+            "en": "The bus stops here.",
             "cn": "公交车在这里停。"
           }
         ]
@@ -3991,10 +3991,10 @@
         "syllables": [
           "east"
         ],
-        "meaning": "n. 东方",
+        "meaning": "n. 东方,adj. 东方的",
         "app_sentences": [
           {
-            "en": "adj. 东方的,The sun rises in the east.",
+            "en": "The sun rises in the east.",
             "cn": "太阳从东方升起。"
           }
         ]
@@ -4034,10 +4034,10 @@
         "syllables": [
           "store"
         ],
-        "meaning": "n. 商店",
+        "meaning": "n. 商店,v. 储存",
         "app_sentences": [
           {
-            "en": "v. 储存,We buy food at the store.",
+            "en": "We buy food at the store.",
             "cn": "我们在商店买食物。"
           }
         ]
@@ -4127,10 +4127,10 @@
         "syllables": [
           "last"
         ],
-        "meaning": "adj. 最后的",
+        "meaning": "adj. 最后的,adv. 最后",
         "app_sentences": [
           {
-            "en": "adv. 最后,This is the last question.",
+            "en": "This is the last question.",
             "cn": "这是最后一个问题。"
           }
         ]
@@ -4178,10 +4178,10 @@
         "syllables": [
           "gold"
         ],
-        "meaning": "n. 黄金",
+        "meaning": "n. 黄金,adj. 金色的",
         "app_sentences": [
           {
-            "en": "adj. 金色的,The ring is made of gold.",
+            "en": "The ring is made of gold.",
             "cn": "这个戒指是金子做的。"
           }
         ]
@@ -4207,10 +4207,10 @@
         "syllables": [
           "once"
         ],
-        "meaning": "adv. 一次",
+        "meaning": "adv. 一次,conj. 一旦",
         "app_sentences": [
           {
-            "en": "conj. 一旦,I have been there once.",
+            "en": "I have been there once.",
             "cn": "我去过那里一次。"
           }
         ]
@@ -4302,10 +4302,10 @@
           "no",
           "tice"
         ],
-        "meaning": "v. 注意到",
+        "meaning": "v. 注意到,n. 通知",
         "app_sentences": [
           {
-            "en": "n. 通知,Did you notice the change?",
+            "en": "Did you notice the change?",
             "cn": "你注意到变化了吗？"
           }
         ]
@@ -4448,10 +4448,10 @@
         "syllables": [
           "knock"
         ],
-        "meaning": "v. 敲",
+        "meaning": "v. 敲,n. 敲门声",
         "app_sentences": [
           {
-            "en": "n. 敲门声,Knock on the door before entering.",
+            "en": "Knock on the door before entering.",
             "cn": "进门前先敲门。"
           }
         ]
@@ -4477,10 +4477,10 @@
           "an",
           "swer"
         ],
-        "meaning": "v. 回答",
+        "meaning": "v. 回答,n. 答案",
         "app_sentences": [
           {
-            "en": "n. 答案,Answer the question, please.",
+            "en": "Answer the question, please.",
             "cn": "请回答问题。"
           }
         ]
@@ -4653,10 +4653,10 @@
         "syllables": [
           "cry"
         ],
-        "meaning": "v. 哭",
+        "meaning": "v. 哭,n. 哭声",
         "app_sentences": [
           {
-            "en": "n. 哭声,The child cries loudly.",
+            "en": "The child cries loudly.",
             "cn": "孩子大声哭。"
           }
         ]
@@ -4682,10 +4682,10 @@
         "syllables": [
           "point"
         ],
-        "meaning": "v. 指向",
+        "meaning": "v. 指向,n. 点",
         "app_sentences": [
           {
-            "en": "n. 点,Point to the correct answer.",
+            "en": "Point to the correct answer.",
             "cn": "指向正确答案。"
           }
         ]
@@ -5161,10 +5161,10 @@
         "syllables": [
           "work"
         ],
-        "meaning": "n. 作品",
+        "meaning": "n. 作品,v. 工作",
         "app_sentences": [
           {
-            "en": "v. 工作,This is his best work.",
+            "en": "This is his best work.",
             "cn": "这是他最好的作品。"
           }
         ]
@@ -5203,10 +5203,10 @@
         "syllables": [
           "fire"
         ],
-        "meaning": "n. 火",
+        "meaning": "n. 火,v. 解雇",
         "app_sentences": [
           {
-            "en": "v. 解雇,Don't play with fire.",
+            "en": "Don't play with fire.",
             "cn": "不要玩火。"
           }
         ]
@@ -5300,10 +5300,10 @@
           "cif",
           "ic"
         ],
-        "meaning": "n. 太平洋",
+        "meaning": "n. 太平洋,adj. 太平洋的",
         "app_sentences": [
           {
-            "en": "adj. 太平洋的,The Pacific Ocean is large.",
+            "en": "The Pacific Ocean is large.",
             "cn": "太平洋很大。"
           }
         ]
@@ -5314,10 +5314,10 @@
         "syllables": [
           "so"
         ],
-        "meaning": "adv. 如此",
+        "meaning": "adv. 如此,conj. 所以",
         "app_sentences": [
           {
-            "en": "conj. 所以,The story is so interesting.",
+            "en": "The story is so interesting.",
             "cn": "这个故事如此有趣。"
           }
         ]
@@ -5328,10 +5328,10 @@
         "syllables": [
           "guess"
         ],
-        "meaning": "v. 猜",
+        "meaning": "v. 猜,n. 猜测",
         "app_sentences": [
           {
-            "en": "n. 猜测,Can you guess the answer?",
+            "en": "Can you guess the answer?",
             "cn": "你能猜出答案吗？"
           }
         ]
@@ -5418,10 +5418,10 @@
         "syllables": [
           "French"
         ],
-        "meaning": "adj. 法国的",
+        "meaning": "adj. 法国的,n. 法语",
         "app_sentences": [
           {
-            "en": "n. 法语,She speaks French.",
+            "en": "She speaks French.",
             "cn": "她说法语。"
           }
         ]
@@ -5446,10 +5446,10 @@
         "syllables": [
           "top"
         ],
-        "meaning": "n. 顶部",
+        "meaning": "n. 顶部,adj. 顶部的",
         "app_sentences": [
           {
-            "en": "adj. 顶部的,The book is on the top shelf.",
+            "en": "The book is on the top shelf.",
             "cn": "书在顶层架子上。"
           }
         ]
@@ -5474,10 +5474,10 @@
         "syllables": [
           "light"
         ],
-        "meaning": "n. 光",
+        "meaning": "n. 光,adj. 轻的",
         "app_sentences": [
           {
-            "en": "adj. 轻的,The room has good light.",
+            "en": "The room has good light.",
             "cn": "房间光线很好。"
           }
         ]
@@ -5540,10 +5540,10 @@
         "syllables": [
           "bow"
         ],
-        "meaning": "n. 鞠躬",
+        "meaning": "n. 鞠躬,v. 鞠躬",
         "app_sentences": [
           {
-            "en": "v. 鞠躬,He gave a bow to the audience.",
+            "en": "He gave a bow to the audience.",
             "cn": "他向观众鞠了一躬。"
           }
         ]
@@ -5554,10 +5554,10 @@
         "syllables": [
           "kiss"
         ],
-        "meaning": "n. 吻",
+        "meaning": "n. 吻,v. 亲吻",
         "app_sentences": [
           {
-            "en": "v. 亲吻,She gave her mother a kiss.",
+            "en": "She gave her mother a kiss.",
             "cn": "她亲吻了母亲。"
           }
         ]
@@ -5597,10 +5597,10 @@
         "syllables": [
           "smile"
         ],
-        "meaning": "n. 微笑",
+        "meaning": "n. 微笑,v. 微笑",
         "app_sentences": [
           {
-            "en": "v. 微笑,She always has a sweet smile.",
+            "en": "She always has a sweet smile.",
             "cn": "她总是带着甜美的微笑。"
           }
         ]
@@ -5627,10 +5627,10 @@
           "Ger",
           "man"
         ],
-        "meaning": "adj. 德国的",
+        "meaning": "adj. 德国的,n. 德语",
         "app_sentences": [
           {
-            "en": "n. 德语,She speaks German.",
+            "en": "She speaks German.",
             "cn": "她说德语。"
           }
         ]
@@ -5643,10 +5643,10 @@
           "a",
           "nese"
         ],
-        "meaning": "adj. 日本的",
+        "meaning": "adj. 日本的,n. 日语",
         "app_sentences": [
           {
-            "en": "n. 日语,Japanese food is delicious.",
+            "en": "Japanese food is delicious.",
             "cn": "日本食物很美味。"
           }
         ]
@@ -5658,10 +5658,10 @@
           "Rus",
           "sian"
         ],
-        "meaning": "adj. 俄罗斯的",
+        "meaning": "adj. 俄罗斯的,n. 俄语",
         "app_sentences": [
           {
-            "en": "n. 俄语,He is learning Russian.",
+            "en": "He is learning Russian.",
             "cn": "他在学习俄语。"
           }
         ]
@@ -5745,10 +5745,10 @@
         "syllables": [
           "hug"
         ],
-        "meaning": "n. 拥抱",
+        "meaning": "n. 拥抱,v. 拥抱",
         "app_sentences": [
           {
-            "en": "v. 拥抱,They hugged each other goodbye.",
+            "en": "They hugged each other goodbye.",
             "cn": "他们互相拥抱告别。"
           }
         ]
@@ -5759,10 +5759,10 @@
         "syllables": [
           "each"
         ],
-        "meaning": "adj. 每个",
+        "meaning": "adj. 每个,pron. 每个",
         "app_sentences": [
           {
-            "en": "pron. 每个,Each student has a book.",
+            "en": "Each student has a book.",
             "cn": "每个学生都有一本书。"
           }
         ]
@@ -5823,10 +5823,10 @@
           "o",
           "ri"
         ],
-        "meaning": "n. 毛利人",
+        "meaning": "n. 毛利人,adj. 毛利人的",
         "app_sentences": [
           {
-            "en": "adj. 毛利人的,The Maori culture is rich.",
+            "en": "The Maori culture is rich.",
             "cn": "毛利文化很丰富。"
           }
         ]
@@ -5837,10 +5837,10 @@
         "syllables": [
           "touch"
         ],
-        "meaning": "v. 触摸",
+        "meaning": "v. 触摸,n. 接触",
         "app_sentences": [
           {
-            "en": "n. 接触,Don't touch the hot stove.",
+            "en": "Don't touch the hot stove.",
             "cn": "不要触摸热炉子。"
           }
         ]
@@ -6137,10 +6137,10 @@
         "syllables": [
           "wave"
         ],
-        "meaning": "n. 波浪",
+        "meaning": "n. 波浪,v. 挥手",
         "app_sentences": [
           {
-            "en": "v. 挥手,She waved goodbye.",
+            "en": "She waved goodbye.",
             "cn": "她挥手告别。"
           }
         ]
@@ -6260,10 +6260,10 @@
         "syllables": [
           "pop"
         ],
-        "meaning": "n. 流行音乐",
+        "meaning": "n. 流行音乐,adj. 流行的",
         "app_sentences": [
           {
-            "en": "adj. 流行的,Pop music is popular among teenagers.",
+            "en": "Pop music is popular among teenagers.",
             "cn": "流行音乐在青少年中很受欢迎。"
           }
         ]
@@ -6304,10 +6304,10 @@
         "syllables": [
           "sound"
         ],
-        "meaning": "n. 声音",
+        "meaning": "n. 声音,v. 听起来",
         "app_sentences": [
           {
-            "en": "v. 听起来,The sound of music is beautiful.",
+            "en": "The sound of music is beautiful.",
             "cn": "音乐的声音很美妙。"
           }
         ]
@@ -6561,10 +6561,10 @@
           "el",
           "der"
         ],
-        "meaning": "adj. 年长的",
+        "meaning": "adj. 年长的,n. 长者",
         "app_sentences": [
           {
-            "en": "n. 长者,We should respect our elders.",
+            "en": "We should respect our elders.",
             "cn": "我们应该尊敬长者。"
           }
         ]
@@ -6607,10 +6607,10 @@
           "oth",
           "er"
         ],
-        "meaning": "adj. 另一个",
+        "meaning": "adj. 另一个,pron. 另一个",
         "app_sentences": [
           {
-            "en": "pron. 另一个,Would you like another apple?",
+            "en": "Would you like another apple?",
             "cn": "你想再要一个苹果吗？"
           }
         ]

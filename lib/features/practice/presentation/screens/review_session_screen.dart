@@ -206,11 +206,13 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     switch (mode) {
       case ReviewMode.speaking:
         return SpeakingPracticeView(
+          key: ValueKey(word.id),
           word: word,
           onCompleted: _handleSuccess, 
         );
       case ReviewMode.spelling:
         return SpellingPracticeView(
+          key: ValueKey(word.id),
           word: word,
           onCompleted: _handleSuccess,
         );
@@ -218,6 +220,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         // Generate options: Correct + 3 Distractors
         final options = _generateOptions(word);
         return WordSelectionView(
+          key: ValueKey(word.id),
           word: word,
           options: options,
           onCompleted: _handleSuccess,

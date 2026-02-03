@@ -4,6 +4,8 @@ import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/services/audio_service.dart';
+import '../../../../core/widgets/bubbly_button.dart';
 import '../widgets/word_learning_card.dart';
 import '../../../practice/presentation/widgets/speaking_practice_view.dart';
 import '../../../practice/presentation/widgets/word_selection_view.dart';
@@ -45,6 +47,12 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     _startSession();
   }
 
+  @override
+  void dispose() {
+    AudioService().stop();
+    super.dispose();
+  }
+
   Future<void> _startSession() async {
     setState(() => _isLoading = true);
     try {
@@ -75,13 +83,13 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
       });
     } else {
       // Phase completed, move to next phase
-      // Phase completed, move to next phase
       _triggerPhaseTransition();
     }
   }
 
   void _triggerPhaseTransition() {
     // Determine next phase first
+    AudioService().stop(); // Stop any playing audio
     SessionPhase next;
     switch (_currentPhase) {
         case SessionPhase.learning: next = SessionPhase.speaking; break;
@@ -110,7 +118,6 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
      for (int i = 3; i > 0; i--) {
        if (!mounted) return;
        setState(() => _transitionCountdown = i);
-       // Optional: Play a "tick" sound here if desired, but user said no header TTS.
        await Future.delayed(const Duration(seconds: 1));
      }
 
@@ -131,21 +138,10 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
     if (_currentPhase == SessionPhase.completed) {
        _handleSessionCompletion();
-    } else {
-      // Show an interstitial or just transition? 
-      // User might want to know they are entering a new phase.
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Starting ${_getPhaseTitle(_currentPhase)}!"), 
-          backgroundColor: AppColors.primary,
-          duration: const Duration(seconds: 2),
-        )
-      );
     }
   }
   
   Future<void> _handleSessionCompletion() async {
-     // Show waiting UI if needed, but dialog is instant
      await _saveProgress();
      if (mounted) _showCompletionDialog();
   }
@@ -165,7 +161,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
        final newStats = stats.copyWith(
          totalWordsLearned: stats.totalWordsLearned + _sessionWords.length,
          totalStudyDays: isNewDay ? stats.totalStudyDays + 1 : stats.totalStudyDays,
-         continuousDays: isNewDay ? stats.continuousDays + 1 : stats.continuousDays, // Simple logic, needs proper check for broken streak
+         continuousDays: isNewDay ? stats.continuousDays + 1 : stats.continuousDays,
          lastStudyDate: todayStr,
          updatedAt: now.millisecondsSinceEpoch
        );
@@ -184,68 +180,120 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-           backgroundColor: Colors.transparent,
-           insetPadding: const EdgeInsets.all(24),
-           child: Container(
-             padding: const EdgeInsets.all(32),
-             decoration: BoxDecoration(
-               color: Colors.white,
-               borderRadius: BorderRadius.circular(32),
-               boxShadow: [
-                 BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
-               ]
-             ),
-             child: Column(
-               mainAxisSize: MainAxisSize.min,
-               children: [
-                 // Success Icon/Image
-                 Container(
-                   width: 80, height: 80,
-                   decoration: const BoxDecoration(
-                     color: Color(0xFFE8F5E9), // Light Green
-                     shape: BoxShape.circle,
-                   ),
-                   child: const Icon(Icons.emoji_events_rounded, size: 48, color: Color(0xFF4CAF50)),
-                 ),
-                 const SizedBox(height: 24),
-                 Text(
-                   "Session Completed!", 
-                   textAlign: TextAlign.center,
-                   style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)
-                 ),
-                 const SizedBox(height: 12),
-                 Text(
-                   "You have successfully learned ${_sessionWords.length} new words today.",
-                   textAlign: TextAlign.center,
-                   style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5)
-                 ),
-                 const SizedBox(height: 32),
-                 // Custom Action Button
-                 SizedBox(
-                   width: double.infinity,
-                   child: ElevatedButton(
-                     onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                        Navigator.pop(context); // Exit session
-                     },
-                     style: ElevatedButton.styleFrom(
-                       backgroundColor: AppColors.primary,
-                       foregroundColor: Colors.white,
-                       padding: const EdgeInsets.symmetric(vertical: 16),
-                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                       elevation: 0,
-                     ),
-                     child: Text(
-                       "Awesome!",
-                       style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold)
-                     ),
-                   ),
-                 )
-               ],
-             ),
-           ),
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 450),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: const [
+                  BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
+                ]
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Success Icon
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0FDF4), // Green 50
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: const Color(0xFFDCFCE7).withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
+                      ]
+                    ),
+                    child: const Icon(Icons.emoji_events_rounded, size: 64, color: Color(0xFF22C55E)), // Green 500
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  Text(
+                    "任务完成!", 
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.plusJakartaSans(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "太棒了！你完成了今天的学习任务。",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5)
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Stats Row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey.shade100)
+                          ),
+                          child: Column(
+                            children: [
+                              Text("${_sessionWords.length}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                              Text("新学单词", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey.shade100)
+                          ),
+                          child: Column(
+                            children: [
+                              Text("+${_sessionWords.length * 10}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.secondary)),
+                              Text("获得经验", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 32),
+                  
+                  // Action Button
+                  BubblyButton(
+                    onPressed: () {
+                       Navigator.pop(context); // Close dialog
+                       Navigator.pop(context); // Exit session
+                    },
+                    color: AppColors.primary,
+                    shadowColor: const Color(0xFF1565C0),
+                    borderRadius: 20,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "继续",
+                          style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20)
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         );
-      }
+      },
     );
   }
 
@@ -276,8 +324,8 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("No new words available for this grade!"),
-              TextButton(onPressed: () => Navigator.pop(context), child: const Text("Go Back"))
+              const Text("该等级暂时没有新单词了!"),
+              TextButton(onPressed: () => Navigator.pop(context), child: const Text("返回"))
             ],
           ),
         ),
@@ -327,8 +375,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        // Show "Next: Speaking" etc
-                        "Next: ${_getPhaseTitle(_pendingNextPhase!)}",
+                        "下一项: ${_getPhaseTitle(_pendingNextPhase!)}",
                         style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis)
                       ),
                       const SizedBox(height: 32),
@@ -338,7 +385,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.primary,
-                          boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.4), blurRadius: 40, offset: Offset(0, 10))]
+                          boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.4), blurRadius: 40, offset: const Offset(0, 10))]
                         ),
                         child: Text(
                           "$_transitionCountdown",
@@ -346,7 +393,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                         ),
                       ),
                       const SizedBox(height: 32),
-                      Text("Get Ready!", style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textMediumEmphasis)),
+                      Text("准备开始!", style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textMediumEmphasis)),
                     ],
                   ),
                 ),
@@ -360,7 +407,6 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
   Widget _buildCurrentView() {
     final word = _sessionWords[_currentIndex];
 
-    // Animation switcher could be nice here
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: KeyedSubtree(
@@ -383,12 +429,6 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
           onCompleted: (_) => _next(),
         );
       case SessionPhase.selection:
-        // Generate distractors
-        // Ideally we should pre-fetch them or fetch async. 
-        // For simplicity let's pick 3 random words from session words (excluding current) + maybe incomplete logic.
-        // Actually picking from _sessionWords is risky if less than 4 words total.
-        // Let's create a wrapper that handles distractors if we want to fetch more, 
-        // OR just simple logic: use other session words as distractors.
         final distractors = List<Word>.from(_sessionWords)..removeWhere((w) => w.id == word.id);
         distractors.shuffle();
         final options = (distractors.take(3).toList() + [word])..shuffle();
