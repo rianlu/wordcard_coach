@@ -25,7 +25,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _createDB,
       onUpgrade: _onUpgrade,
       onOpen: _onOpen,
@@ -33,7 +33,8 @@ class DatabaseHelper {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-      // For development simplicity, just drop all and recreate
+    if (oldVersion < 3) {
+      // Legacy: Drop all for very old versions (dev only)
       await db.execute('DROP TABLE IF EXISTS words');
       await db.execute('DROP TABLE IF EXISTS sentences');
       await db.execute('DROP TABLE IF EXISTS word_sentence_map');
@@ -41,6 +42,48 @@ class DatabaseHelper {
       await db.execute('DROP TABLE IF EXISTS user_stats');
       await db.execute('DROP TABLE IF EXISTS daily_records');
       await _createDB(db, newVersion);
+      return; 
+    }
+
+    if (oldVersion < 4) {
+      // Safe Migration v3 -> v4 (add sync columns)
+      print("Migrating DB to version 4 (Cloud Sync Prep)...");
+      
+      // 1. word_progress
+      await _safeAddColumn(db, 'word_progress', 'account_id', 'TEXT');
+      await _safeAddColumn(db, 'word_progress', 'device_id', 'TEXT');
+      await _safeAddColumn(db, 'word_progress', 'last_updated_at', 'INTEGER DEFAULT 0');
+      await _safeAddColumn(db, 'word_progress', 'is_deleted', 'INTEGER DEFAULT 0');
+
+      // 2. user_stats
+      await _safeAddColumn(db, 'user_stats', 'account_id', 'TEXT');
+      await _safeAddColumn(db, 'user_stats', 'device_id', 'TEXT');
+      await _safeAddColumn(db, 'user_stats', 'last_updated_at', 'INTEGER DEFAULT 0');
+
+      // 3. daily_records
+      await _safeAddColumn(db, 'daily_records', 'account_id', 'TEXT');
+      await _safeAddColumn(db, 'daily_records', 'device_id', 'TEXT');
+      await _safeAddColumn(db, 'daily_records', 'last_updated_at', 'INTEGER DEFAULT 0');
+      await _safeAddColumn(db, 'daily_records', 'is_deleted', 'INTEGER DEFAULT 0');
+
+      // 4. sync_state table
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS sync_state (
+          table_name TEXT PRIMARY KEY NOT NULL,
+          last_synced_at INTEGER DEFAULT 0
+        )
+      ''');
+    }
+  }
+
+  // Helper for safe column addition
+  Future<void> _safeAddColumn(Database db, String table, String column, String type) async {
+    try {
+      await db.execute('ALTER TABLE $table ADD COLUMN $column $type');
+    } catch (e) {
+      // Ignore if column exists
+      print("Column $column already exists in $table");
+    }
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -111,6 +154,10 @@ class DatabaseHelper {
         select_mode_count INTEGER NOT NULL DEFAULT 0,
         spell_mode_count INTEGER NOT NULL DEFAULT 0,
         speak_mode_count INTEGER NOT NULL DEFAULT 0,
+        account_id TEXT,
+        device_id TEXT,
+        last_updated_at INTEGER DEFAULT 0,
+        is_deleted INTEGER DEFAULT 0,
         created_at INTEGER NOT NULL,
         updated_at INTEGER NOT NULL,
         FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
@@ -137,6 +184,9 @@ class DatabaseHelper {
         last_study_date TEXT NOT NULL DEFAULT '',
         total_study_minutes INTEGER NOT NULL DEFAULT 0,
         current_book_id TEXT NOT NULL DEFAULT '',
+        account_id TEXT,
+        device_id TEXT,
+        last_updated_at INTEGER DEFAULT 0,
         updated_at INTEGER NOT NULL
       )
     ''');
@@ -156,10 +206,22 @@ class DatabaseHelper {
         correct_count INTEGER NOT NULL DEFAULT 0,
         wrong_count INTEGER NOT NULL DEFAULT 0,
         study_minutes INTEGER NOT NULL DEFAULT 0,
+        account_id TEXT,
+        device_id TEXT,
+        last_updated_at INTEGER DEFAULT 0,
+        is_deleted INTEGER DEFAULT 0,
         created_at INTEGER NOT NULL
       )
     ''');
     await db.execute('CREATE INDEX idx_daily_records_date ON daily_records(date)');
+
+    // 7. Sync State Table
+    await db.execute('''
+      CREATE TABLE sync_state (
+        table_name TEXT PRIMARY KEY NOT NULL,
+        last_synced_at INTEGER DEFAULT 0
+      )
+    ''');
     
     // Seed data immediately after creation
     await _seedData(db);

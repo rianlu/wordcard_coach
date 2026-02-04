@@ -42,14 +42,13 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   void initState() {
     super.initState();
     _loadMetadata();
-    _loadMetadata();
     _searchController.addListener(_onSearchChanged);
-    GlobalStatsNotifier.instance.addListener(_reload);
+    GlobalStatsNotifier.instance.addListener(_fullReload);
   }
 
   @override
   void dispose() {
-    GlobalStatsNotifier.instance.removeListener(_reload);
+    GlobalStatsNotifier.instance.removeListener(_fullReload);
     _searchController.dispose();
     super.dispose();
   }
@@ -131,6 +130,23 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     return 0;
   }
 
+  /// Full reload - called when data is restored from backup
+  /// This reloads book context AND word data
+  Future<void> _fullReload() async {
+    try {
+      // Re-read user's current book from database
+      final stats = await _userStatsDao.getUserStats();
+      if (stats.currentBookId.isNotEmpty) {
+        _currentBookId = stats.currentBookId;
+      }
+      await _loadUnits();
+    } catch (e) {
+      debugPrint("Error in full reload: $e");
+    }
+    await _reload();
+  }
+
+  /// Regular reload - just refreshes word list with current filters
   Future<void> _reload() async {
     setState(() {
       _words = [];

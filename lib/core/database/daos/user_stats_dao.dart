@@ -29,6 +29,7 @@ class UserStatsDao {
       'user_stats',
       stats.toJson(),
       where: 'id = ?',
+      whereArgs: [1],
     );
   }
 

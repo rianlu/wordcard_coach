@@ -49,5 +49,51 @@
 	<string>This app needs access to microphone to practice pronunciation.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>This app needs access to speech recognition to evaluate your pronunciation.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>xhsdiscover</string>
+		<string>xhsuserprofile</string>
+		<string>https</string>
+	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>WordCard Coach Backup</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.example.wordcard_coach.wcc</string>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>WordCard Coach Backup</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.example.wordcard_coach.wcc</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>wcc</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

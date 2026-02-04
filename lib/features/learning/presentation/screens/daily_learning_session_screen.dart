@@ -196,15 +196,15 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
           backgroundColor: Colors.transparent,
           insetPadding: const EdgeInsets.all(24),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
+            constraints: const BoxConstraints(maxWidth: 380),
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: const [
-                  BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
+                borderRadius: BorderRadius.circular(28),
+                boxShadow: [
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
                 ]
               ),
               child: Column(
@@ -212,64 +212,63 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                 children: [
                   // Success Icon
                   Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF0FDF4), // Green 50
+                    padding: const EdgeInsets.all(16),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF0FDF4), // Green 50
                       shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(color: const Color(0xFFDCFCE7).withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
-                      ]
                     ),
-                    child: const Icon(Icons.emoji_events_rounded, size: 64, color: Color(0xFF22C55E)), // Green 500
+                    child: const Icon(Icons.emoji_events_rounded, size: 48, color: Color(0xFF22C55E)), // Green 500
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                   
                   Text(
                     "任务完成!", 
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)
+                    style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.textHighEmphasis)
                   ),
                   const SizedBox(height: 8),
                   Text(
                     "太棒了！你完成了今天的学习任务。",
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5)
+                    style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textMediumEmphasis, height: 1.4)
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
 
                   // Stats Row
                   Row(
                     children: [
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           decoration: BoxDecoration(
                             color: AppColors.background,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: Colors.grey.shade100)
                           ),
                           child: Column(
                             children: [
-                              Text("${_sessionWords.length}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary)),
-                              Text("新学单词", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
+                              Text("${_sessionWords.length}", style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                              const SizedBox(height: 2),
+                              Text("新学单词", style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMediumEmphasis)),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           decoration: BoxDecoration(
                             color: AppColors.background,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: Colors.grey.shade100)
                           ),
                           child: Column(
                             children: [
-                              Text("+${_sessionWords.length * 10}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.secondary)),
-                              Text("获得经验", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
+                              Text("+${_sessionWords.length * 10}", style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.secondary)),
+                              const SizedBox(height: 2),
+                              Text("获得经验", style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMediumEmphasis)),
                             ],
                           ),
                         ),
@@ -277,28 +276,31 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                     ],
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   
                   // Action Button
-                  BubblyButton(
-                    onPressed: () {
-                       Navigator.pop(context); // Close dialog
-                       Navigator.pop(context); // Exit session
-                    },
-                    color: AppColors.primary,
-                    shadowColor: const Color(0xFF1565C0),
-                    borderRadius: 20,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "完成",
-                          style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.check_rounded, color: Colors.white, size: 24)
-                      ],
+                  SizedBox(
+                    width: double.infinity,
+                    child: BubblyButton(
+                      onPressed: () {
+                         Navigator.pop(context); // Close dialog
+                         Navigator.pop(context); // Exit session
+                      },
+                      color: AppColors.primary,
+                      shadowColor: AppColors.shadowBlue,
+                      borderRadius: 14,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "完成",
+                            style: GoogleFonts.plusJakartaSans(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white)
+                          ),
+                          const SizedBox(width: 6),
+                          const Icon(Icons.check_rounded, color: Colors.white, size: 20)
+                        ],
+                      ),
                     ),
                   )
                 ],

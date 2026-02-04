@@ -40,6 +40,13 @@ dependencies:
   flutter_cache_manager: ^3.4.1
   path_provider: ^2.1.5
   speech_to_text: ^7.3.0
+  share_plus: ^10.1.4
+  file_picker: ^8.1.7
+  intl: ^0.19.0
+  url_launcher: ^6.3.0
+  encrypt: ^5.0.3
+  sqflite: ^2.3.0
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:
@@ -52,8 +59,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
 
-  # Database
-  sqflite: ^2.3.0
   path: ^1.8.3
   
   # Charts

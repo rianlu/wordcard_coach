@@ -10,6 +10,8 @@ import '../../../../core/database/models/user_stats.dart';
 import '../../../learning/presentation/screens/daily_learning_session_screen.dart';
 import '../../../practice/presentation/screens/review_session_screen.dart';
 
+import '../../../../core/services/global_stats_notifier.dart';
+
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({super.key});
 
@@ -30,6 +32,14 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   void initState() {
     super.initState();
     _loadStats();
+    // Subscribe to global stats updates (e.g. nickname change, learning progress)
+    GlobalStatsNotifier.instance.addListener(_loadStats);
+  }
+
+  @override
+  void dispose() {
+    GlobalStatsNotifier.instance.removeListener(_loadStats);
+    super.dispose();
   }
 
   Future<void> _loadStats() async {
@@ -76,8 +86,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                 children: [
                   const SizedBox(height: 16), // Status bar padding/safe area
                   _buildHeader(),
-                  const SizedBox(height: 8),
-                  _buildCurrentBookCard(),
                   const SizedBox(height: 24),
                   _buildDailyQuestSection(context),
                 ],
