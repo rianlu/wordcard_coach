@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:wordcard_coach/core/database/models/word.dart';
@@ -14,35 +15,54 @@ class AudioService {
   factory AudioService() => _instance;
   AudioService._internal();
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer(); // Main player for words
   final FlutterTts _flutterTts = FlutterTts();
   final DefaultCacheManager _cacheManager = DefaultCacheManager();
+  
+  // Dedicated low-latency players for SFX
+  final AudioPlayer _sfxCorrect = AudioPlayer();
+  final AudioPlayer _sfxWrong = AudioPlayer();
+  final AudioPlayer _sfxMic = AudioPlayer();
 
-  bool _isTtsInit = false;
+  bool _isInit = false;
 
-  // Initialize TTS as fallback
+  // Initialize Service
   Future<void> init() async {
-    if (_isTtsInit) return;
-    // await _flutterTts.awaitSpeakCompletion(true); // Disable this for now if it causes delay, or keep it if needed for sync. 
-    // Actually, we only use awaitSpeakCompletion for TTS. For AudioPlayer we manage it manually.
+    if (_isInit) return;
+    
+    // 1. Init TTS
     await _flutterTts.awaitSpeakCompletion(true);
-
     await _flutterTts.setLanguage("en-US");
     await _flutterTts.setSpeechRate(0.5);
-    await _flutterTts.setVolume(1.0);
-    await _flutterTts.setPitch(1.0);
-    _isTtsInit = true;
+    
+    // 2. Preload SFX inputs to reduce latency
+    // setSource prepares the file so play() is instant
+    try {
+        await _sfxCorrect.setSource(AssetSource('sounds/correct.mp3'));
+        await _sfxCorrect.setReleaseMode(ReleaseMode.stop); // Ready to query again
+        
+        await _sfxWrong.setSource(AssetSource('sounds/wrong.mp3'));
+        await _sfxWrong.setReleaseMode(ReleaseMode.stop);
+
+        await _sfxMic.setSource(AssetSource('sounds/mic_start.mp3'));
+        await _sfxMic.setReleaseMode(ReleaseMode.stop);
+    } catch (e) {
+        debugPrint("SFX Preload Error: $e");
+    }
+
+    _isInit = true;
   }
 
   /// Play audio for a word using Youdao API, fallback to TTS
   Future<void> playWord(Word word, {AudioType type = AudioType.us}) async {
     try {
-      // if (!_isTtsInit) await init(); // Optimization: Don't block MP3 playback for TTS init
+      if (!_isInit) await init(); 
 
-      
-      // Fire and forget stop command to avoid platform channel latency
+      // Fire and forget stop command
       _audioPlayer.stop();
       _flutterTts.stop();
+
+      // ... (Rest of playWord implementation logic remains same, just ensuring init is called)
 
 
 
@@ -125,7 +145,7 @@ class AudioService {
       // 3. Fallback to TTS (or if not English)
       print("Falling back to TTS for: ${word.text}");
        // Temporarily adjust speed for Chinese if needed, but for now keep default
-      if (!_isTtsInit) await init(); // Init TTS only when needed
+      if (!_isInit) await init(); // Init TTS only when needed
       await _flutterTts.speak(word.text);
       await _flutterTts.awaitSpeakCompletion(true);
       
@@ -155,7 +175,7 @@ class AudioService {
         }
 
         // Fallback
-        if (!_isTtsInit) await init();
+        if (!_isInit) await init();
         await _flutterTts.speak(sentence);
 
       } catch (e) {
@@ -165,11 +185,22 @@ class AudioService {
 
   Future<void> playAsset(String fileName) async {
     try {
-       await stop(); // Stop existing audio to prevent overlap if needed, or allow concurrent? For UI sounds, maybe allow?
-       // Actually for UI sounds like "Ding", we might want them to mix or be quick.
-       // Let's create a separate player for UI sounds if we want them concurrent, but single player is safer for now.
-       // Re-using _audioPlayer for simplicity.
-       await _audioPlayer.play(AssetSource('sounds/$fileName'));
+       // Route to dedicated pre-warmed players for zero latency
+       if (fileName.contains('correct')) {
+           if (_sfxCorrect.state == PlayerState.playing) await _sfxCorrect.stop();
+           await _sfxCorrect.resume(); // resume() starts from beginning if source is set
+       } else if (fileName.contains('wrong')) {
+           if (_sfxWrong.state == PlayerState.playing) await _sfxWrong.stop();
+           await _sfxWrong.resume();
+       } else if (fileName.contains('mic')) {
+           if (_sfxMic.state == PlayerState.playing) await _sfxMic.stop();
+           await _sfxMic.resume();
+       } else {
+           // Fallback for other assets
+           final tempPlayer = AudioPlayer();
+           await tempPlayer.play(AssetSource('sounds/$fileName'));
+           tempPlayer.onPlayerComplete.listen((_) => tempPlayer.dispose());
+       }
     } catch (e) {
       debugPrint("Asset playback failed ($fileName): $e");
     }
@@ -178,6 +209,9 @@ class AudioService {
   Future<void> stop() async {
     await _audioPlayer.stop();
     await _flutterTts.stop();
+    await _sfxCorrect.stop();
+    await _sfxWrong.stop();
+    await _sfxMic.stop();
   }
   
   bool _isEnglish(String text) {

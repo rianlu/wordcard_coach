@@ -273,46 +273,51 @@ class _MineScreenState extends State<MineScreen> {
     // Show confirmation dialog locally
     final confirm = await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(24),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 400),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(28),
+            padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 8))
+              borderRadius: BorderRadius.circular(32),
+              boxShadow: const [
+                 BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
               ]
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: const Color(0xFFEFF6FF), // Blue 50
                     shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: const Color(0xFFDBEAFE).withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
+                    ]
                   ),
-                  child: const Icon(Icons.cloud_sync_rounded, color: AppColors.primary, size: 32),
+                  child: const Icon(Icons.cloud_sync_rounded, color: AppColors.primary, size: 48),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 Text(
                   '更新词库',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
                     color: AppColors.textHighEmphasis,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
                 Text(
                   '这将使用本地最新的 JSON 文件更新词库定义（如释义、例句）。\n\n您的学习进度（掌握程度、打卡记录）将完全保留，不会丢失。',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14,
+                    fontSize: 16,
                     height: 1.6,
                     color: AppColors.textMediumEmphasis,
                   ),
@@ -324,31 +329,36 @@ class _MineScreenState extends State<MineScreen> {
                       child: TextButton(
                         onPressed: () => Navigator.pop(context, false),
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          backgroundColor: Colors.grey.shade100,
                         ),
                         child: Text(
                           '取消',
                           style: GoogleFonts.plusJakartaSans(
+                            fontSize: 16,
                             color: AppColors.textMediumEmphasis,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: BubblyButton(
                         onPressed: () => Navigator.pop(context, true),
                         color: AppColors.primary,
                         shadowColor: const Color(0xFF1e3a8a),
-                        borderRadius: 12,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        child: Text(
-                          '更新',
-                          style: GoogleFonts.plusJakartaSans(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        borderRadius: 16,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: Text(
+                            '确认更新',
+                            style: GoogleFonts.plusJakartaSans(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -380,19 +390,23 @@ class _MineScreenState extends State<MineScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(24),
+              boxShadow: const [
+                 BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
+              ]
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                  strokeWidth: 3,
+                  strokeWidth: 4,
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  "正在更新词库...",
+                  "正在更新...",
                   style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
                     color: AppColors.textHighEmphasis,
                   ),
                 )
@@ -406,6 +420,8 @@ class _MineScreenState extends State<MineScreen> {
     // Perform Update
     try {
        await DatabaseHelper().updateLibraryFromAssets();
+       // Artificial delay for UX perception if too fast
+       await Future.delayed(const Duration(milliseconds: 800));
     } catch(e) {
        // ignore error
     }
@@ -415,14 +431,22 @@ class _MineScreenState extends State<MineScreen> {
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          '词库已成功更新！',
-          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold),
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white),
+            const SizedBox(width: 12),
+            Text(
+              '词库已成功更新！',
+              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ],
         ),
         backgroundColor: Colors.green.shade600,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(24),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        elevation: 8,
       )
     );
   }

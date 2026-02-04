@@ -8,6 +8,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/audio_service.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/models/word.dart';
+import '../../../../core/services/global_stats_notifier.dart';
 
 class DictionaryScreen extends StatefulWidget {
   const DictionaryScreen({super.key});
@@ -41,11 +42,14 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   void initState() {
     super.initState();
     _loadMetadata();
+    _loadMetadata();
     _searchController.addListener(_onSearchChanged);
+    GlobalStatsNotifier.instance.addListener(_reload);
   }
 
   @override
   void dispose() {
+    GlobalStatsNotifier.instance.removeListener(_reload);
     _searchController.dispose();
     super.dispose();
   }

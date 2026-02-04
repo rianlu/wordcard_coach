@@ -110,6 +110,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   void dispose() {
+    // CRITICAL: Stop everything immediately to prevent race conditions with next word
+    AudioService().stop();
+    SpeechService().stopListening();
+    
     _listeningSubscription?.cancel();
     _skipTimer?.cancel();
     _successTimer?.cancel();
@@ -118,6 +122,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   void _startPracticeSequence() async {
+     // CRITICAL: Wait for previous widget's disposal to clear the singleton request
+     if (mounted) await Future.delayed(const Duration(milliseconds: 300));
+     
      // Ensure we start clean
      SpeechService().stopListening();
      
@@ -158,16 +165,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   void _monitorListening({bool initial = false}) async {
      // Watchdog Loop: Keeps checking if we should be listening but aren't
      while (mounted && _isListening && !_showSuccess) {
-         // Check frequency
-         await Future.delayed(const Duration(milliseconds: 500)); // Faster checks
-     }
-  }
-             // Only throttle if NOT initial start
+         bool engineActive = SpeechService().isListening;
+         
+         // Only Act if engine DROPPED (or initial start)
+         if (!engineActive) {
              if (!initial) {
-                 debugPrint("Watchdog: Restarting Listening...");
-                 await Future.delayed(const Duration(milliseconds: 1000));
+                 debugPrint("Watchdog: Engine dropped, restarting...");
+                 // Small delay before restart to prevent rapid fire
+                 await Future.delayed(const Duration(milliseconds: 500));
              }
-             initial = false; // Clear initial flag after first check
              
              if (mounted && _isListening && !_showSuccess) {
                 try {
@@ -179,13 +185,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                    );
                  } catch (e) {
                    debugPrint("Watchdog: Start Listening Failed: $e");
-                   // Wait a bit before retrying to avoid rapid loop
+                   // Wait a bit before retrying
                    await Future.delayed(const Duration(milliseconds: 1000));
                  }
              }
          }
+         
+         initial = false; // Clear initial flag
          // Check frequency
-         await Future.delayed(const Duration(milliseconds: 500)); // Faster checks
+         await Future.delayed(const Duration(milliseconds: 500)); 
      }
   }
 
@@ -271,7 +279,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
             statusColor = AppColors.secondary.withOpacity(0.5); 
         }
     } else {
-       statusText = '点击麦克风开始';
+       statusText = '请大声朗读';
     }
     
     if (_lastHeard.isNotEmpty) {
@@ -520,7 +528,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   void _showSuccessOverlay() {
+    // 1. Instant SFX (No waiting)
     AudioService().playAsset('correct.mp3');
+    
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -535,8 +545,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       },
     );
 
-    // Auto-advance Timer
-    _successTimer = Timer(const Duration(milliseconds: 1200), () {
+    // 2. Play Word Pronunciation (Delayed slightly to follow SFX)
+    Future.delayed(const Duration(milliseconds: 600), () {
+        if (mounted) {
+           AudioService().playWord(widget.word);
+        }
+    });
+
+    // Auto-advance Timer (Extended to allow word to finish playing)
+    _successTimer = Timer(const Duration(milliseconds: 2500), () {
       if (mounted) {
         Navigator.of(context).pop(); // Close overlay
         widget.onCompleted(5); // Advance

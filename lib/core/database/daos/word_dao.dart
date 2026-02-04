@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import '../database_helper.dart';
 import '../models/word.dart';
 import '../models/word_progress.dart';
+import '../../services/global_stats_notifier.dart';
 
 class WordDao {
   final DatabaseHelper _dbHelper = DatabaseHelper();
@@ -168,6 +169,7 @@ class WordDao {
     }
 
     await batch.commit(noResult: true);
+    GlobalStatsNotifier.instance.notify();
   }
 
   Future<List<Word>> getRandomWords(int limit) async {
@@ -246,6 +248,7 @@ class WordDao {
       where: 'word_id = ?',
       whereArgs: [wordId],
     );
+    GlobalStatsNotifier.instance.notify();
   }
 
   Future<Map<int, int>> getWordCounts({String? bookId, String? unit, String? searchQuery}) async {

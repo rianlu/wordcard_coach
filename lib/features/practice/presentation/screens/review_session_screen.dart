@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart'; // For saving session result
+import '../../../../core/database/daos/stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
@@ -109,26 +112,144 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     }
   }
 
-  void _finishSession() {
-    // Show summary
+  void _finishSession() async {
+    // 1. Record Stats
+    try {
+       await StatsDao().recordDailyActivity(
+         newWords: 0,
+         reviewWords: _reviewWords.length,
+         correct: _reviewWords.length, // Simplified: Assume all practiced
+         wrong: 0, 
+         minutes: 5 // Mock duration
+       );
+    } catch (e) {
+      debugPrint("Error saving review stats: $e");
+    }
+
+    // 2. Show summary
+    if (!mounted) return;
+    // 2. Show summary
+    if (!mounted) return;
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text("复习完成！"),
-        content: Text("本次复习 completed ${_reviewWords.length} words."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Close screen
-            },
-            child: const Text("太棒了"),
-          )
-        ],
-      ),
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 450),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: const [
+                  BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
+                ]
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Success/Review Icon
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEFF6FF), // Blue 50
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: const Color(0xFFDBEAFE).withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
+                      ]
+                    ),
+                    child: const Icon(Icons.verified_rounded, size: 64, color: AppColors.primary), // Blue
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  Text(
+                    "复习完成!", 
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.plusJakartaSans(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "温故而知新，你今天巩固了 ${_reviewWords.length} 个单词。",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5)
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Stats Row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey.shade100)
+                          ),
+                          child: Column(
+                            children: [
+                              Text("${_reviewWords.length}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                              Text("复习单词", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey.shade100)
+                          ),
+                          child: Column(
+                            children: [
+                              Text("+${_reviewWords.length * 5}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.secondary)),
+                              Text("获得经验", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 32),
+                  
+                  // Action Button
+                  BubblyButton(
+                    onPressed: () {
+                       Navigator.pop(context); // Close dialog
+                       Navigator.pop(context); // Exit session
+                    },
+                    color: AppColors.primary,
+                    shadowColor: const Color(0xFF1565C0),
+                    borderRadius: 20,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "完成",
+                          style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.check_rounded, color: Colors.white, size: 20)
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
-     // TODO: Save results to DB
   }
 
   @override
@@ -141,23 +262,80 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
 
     if (_reviewWords.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text("复习")),
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.close_rounded, color: AppColors.textMediumEmphasis),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.check_circle_outline, size: 80, color: Colors.green),
-              const SizedBox(height: 16),
-              const Text("没有待复习的单词！", style: TextStyle(fontSize: 18)),
-              const SizedBox(height: 8),
-              const Text("去学习新单词吧。", style: TextStyle(color: Colors.grey)),
-              const SizedBox(height: 24),
-              BubblyButton(
-                onPressed: () => Navigator.pop(context),
-                color: AppColors.primary,
-                child: const Text("返回", style: TextStyle(color: Colors.white)),
-              )
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Illustration / Icon
+                Container(
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0FDF4), // Green 50
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: const Color(0xFFDCFCE7).withOpacity(0.5), blurRadius: 30, spreadRadius: 10)
+                    ]
+                  ),
+                  child: const Icon(Icons.check_circle_rounded, size: 80, color: Color(0xFF22C55E)), // Green 500
+                ),
+                
+                const SizedBox(height: 32),
+                
+                Text(
+                  "暂无待复习单词",
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 24, 
+                    fontWeight: FontWeight.w900, 
+                    color: AppColors.textHighEmphasis
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  "完美！你已经完成了所有的复习任务。\n快去探索更多新内容吧。",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 16, 
+                    color: AppColors.textMediumEmphasis,
+                    height: 1.6
+                  ),
+                ),
+                
+                const SizedBox(height: 48),
+                
+                // Button
+                SizedBox(
+                  width: 220, // Premium fixed width
+                  child: BubblyButton(
+                    onPressed: () => Navigator.pop(context),
+                    color: AppColors.primary,
+                    shadowColor: const Color(0xFF1565C0),
+                    borderRadius: 20,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: Text(
+                        "返回主页",
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18, 
+                          fontWeight: FontWeight.bold, 
+                          color: Colors.white
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );

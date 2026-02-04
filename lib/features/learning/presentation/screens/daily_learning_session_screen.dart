@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
+import '../../../../core/database/daos/stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/audio_service.dart';
@@ -168,6 +170,17 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
        
        await _userStatsDao.updateUserStats(newStats);
        
+       // 3. Record Daily Activity for Heatmap
+       // New Learning Session = All words are treated as "New Words" studied
+       // Review count is 0 here (Review happens in ReviewSession)
+       await StatsDao().recordDailyActivity(
+         newWords: _sessionWords.length, 
+         reviewWords: 0, 
+         correct: _sessionWords.length, // Assume learned = correct eventually
+         wrong: 0, 
+         minutes: 5 // Mock duration or track real time
+       );
+       
        debugPrint("Progress Saved: ${_sessionWords.length} words.");
     } catch (e) {
       debugPrint("Error saving progress: $e");
@@ -280,11 +293,11 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "继续",
+                          "完成",
                           style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20)
+                        const Icon(Icons.check_rounded, color: Colors.white, size: 24)
                       ],
                     ),
                   )

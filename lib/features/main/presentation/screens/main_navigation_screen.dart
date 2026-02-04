@@ -14,12 +14,12 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
-  Key _statsKey = UniqueKey(); // Key to force refresh
+  // Key _statsKey = UniqueKey(); // Removed to preserve scroll state
 
   List<Widget> get _screens => [
     const HomeDashboardScreen(),
     const DictionaryScreen(),
-    StatisticsScreen(key: _statsKey),
+    const StatisticsScreen(), // Removed key
     const MineScreen(),
   ];
 
@@ -45,10 +45,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) {
-            if (index == 2) {
-               // Force refresh of Statistics screen
-               _statsKey = UniqueKey();
-            }
+            // if (index == 2) {
+            //    // _statsKey = UniqueKey(); 
+            // }
             setState(() {
               _currentIndex = index;
             });
