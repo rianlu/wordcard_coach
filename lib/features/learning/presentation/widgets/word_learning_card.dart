@@ -214,18 +214,6 @@ class _WordLearningCardState extends State<WordLearningCard> {
                              color: AppColors.textMediumEmphasis
                            ),
                          ),
-                         const SizedBox(height: 12),
-                         Align(
-                           alignment: Alignment.centerRight,
-                           child: IconButton(
-                              onPressed: () => AudioService().playSentence(widget.word.examples.first['en']!),
-                              icon: const Icon(Icons.volume_up_rounded, color: AppColors.primary),
-                              style: IconButton.styleFrom(
-                                backgroundColor: AppColors.primary.withOpacity(0.1),
-                                highlightColor: AppColors.primary.withOpacity(0.2),
-                              ),
-                           ),
-                         )
                        ] else ...[
                          Text(
                            "No example sentence available.",

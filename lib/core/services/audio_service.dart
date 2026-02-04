@@ -67,7 +67,42 @@ class AudioService {
 
 
 
-      // 1. Try Google Dictionary API (Primary for Single Words)
+      // 1. Try Youdao API (Primary - Fast in China)
+      if (_isEnglish(word.text)) {
+        final int apiType = type == AudioType.us ? 0 : 1;
+        final String url = "http://dict.youdao.com/dictvoice?type=$apiType&audio=${Uri.encodeComponent(word.text)}";
+        
+        try {
+          // Check Cache First
+          final FileInfo? cachedFile = await _cacheManager.getFileFromCache(url);
+          if (cachedFile != null && await cachedFile.file.exists()) {
+             // print("Audio Cache Hit (Youdao): ${word.text}");
+             await _audioPlayer.play(DeviceFileSource(cachedFile.file.path));
+             try {
+                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
+             } catch (_) {}
+             return;
+          }
+
+          // Download if not in cache
+          // print("Audio Downloading (Youdao): ${word.text}");
+          File file = await _cacheManager.getSingleFile(url);
+          if (await file.exists()) {
+             // print("Played Downloaded (Youdao): ${word.text}");
+             await _audioPlayer.play(DeviceFileSource(file.path));
+             try {
+                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
+             } catch (_) {}
+             return;
+          }
+
+        } catch (e) {
+          print("Youdao API failed for ${word.text}, falling back to Google. Error: $e");
+          // Fallthrough to Google
+        }
+      }
+
+      // 2. Try Google Dictionary API (Secondary - Good quality but unstable in China)
       // URL Format: https://ssl.gstatic.com/dictionary/static/sounds/oxford/{word}--_us_1.mp3
       // Constraint: Single words only (no spaces)
       bool isSingleWord = !word.text.trim().contains(' ');
@@ -80,7 +115,7 @@ class AudioService {
            // Check Cache First
            final FileInfo? cachedFile = await _cacheManager.getFileFromCache(googleUrl);
            if (cachedFile != null && await cachedFile.file.exists()) {
-             print("Audio Cache Hit (Google): $cleanWord");
+             // print("Audio Cache Hit (Google): $cleanWord");
              await _audioPlayer.play(DeviceFileSource(cachedFile.file.path));
              try {
                 await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
@@ -89,10 +124,10 @@ class AudioService {
            }
 
            // Download if not in cache
-           print("Audio Downloading (Google): $cleanWord");
+           // print("Audio Downloading (Google): $cleanWord");
            File file = await _cacheManager.getSingleFile(googleUrl);
            if (await file.exists()) {
-             print("Played Downloaded (Google): $cleanWord");
+             // print("Played Downloaded (Google): $cleanWord");
              await _audioPlayer.play(DeviceFileSource(file.path));
              try {
                 await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
@@ -102,42 +137,7 @@ class AudioService {
 
 
         } catch (e) {
-          print("Google API failed for ${word.text}, falling back to Youdao. Error: $e");
-          // Fallthrough to Youdao
-        }
-      }
-
-      // 2. Try Youdao API (Secondary / For Phrases)
-      if (_isEnglish(word.text)) {
-        final int apiType = type == AudioType.us ? 0 : 1;
-        final String url = "http://dict.youdao.com/dictvoice?type=$apiType&audio=${Uri.encodeComponent(word.text)}";
-        
-        try {
-          // Check Cache First
-          final FileInfo? cachedFile = await _cacheManager.getFileFromCache(url);
-          if (cachedFile != null && await cachedFile.file.exists()) {
-             print("Audio Cache Hit (Youdao): ${word.text}");
-             await _audioPlayer.play(DeviceFileSource(cachedFile.file.path));
-             try {
-                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
-             } catch (_) {}
-             return;
-          }
-
-          // Download if not in cache
-          print("Audio Downloading (Youdao): ${word.text}");
-          File file = await _cacheManager.getSingleFile(url);
-          if (await file.exists()) {
-             print("Played Downloaded (Youdao): ${word.text}");
-             await _audioPlayer.play(DeviceFileSource(file.path));
-             try {
-                await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 10));
-             } catch (_) {}
-             return;
-          }
-
-        } catch (e) {
-          print("Youdao API failed for ${word.text}, falling back to TTS. Error: $e");
+          print("Google API failed for ${word.text}, falling back to TTS. Error: $e");
           // Fallthrough to TTS
         }
       }

@@ -265,9 +265,12 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                  Expanded(
-                                   child: Text(
-                                      widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
-                                      style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                                   child: GestureDetector(
+                                     onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                                     child: Text(
+                                        widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
+                                        style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                                     ),
                                    ),
                                  ),
                               ],

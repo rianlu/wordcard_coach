@@ -382,9 +382,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                       Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
                        const SizedBox(height: 8),
                        if (widget.word.examples.isNotEmpty) ...[
-                         Text(
-                           widget.word.examples.first['en']!,
-                           style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                         GestureDetector(
+                           onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                           child: Text(
+                             widget.word.examples.first['en']!,
+                             style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
+                           ),
                          ),
                          const SizedBox(height: 8),
                          Text(
