@@ -25,7 +25,11 @@ class SpellingPracticeView extends StatefulWidget {
 class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   bool _isHintVisible = false;
   bool _showSuccess = false; // Add success state
-  int _hintsUsed = 0; 
+  int _hintsUsed = 0;
+  bool _revealFullWord = false; // Show full word when hints exhausted + wrong
+  
+  // Configuration
+  static const int _maxHints = 2; // Maximum hints allowed
 
   // Game State
   String _targetWord = "";
@@ -52,6 +56,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     _isHintVisible = false;
     _showSuccess = false;
     _hintsUsed = 0;
+    _revealFullWord = false;
     
     final random = Random();
     int len = _targetWord.length;
@@ -114,7 +119,9 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   }
 
   void _useHint() {
-    if (_showSuccess) return;
+    if (_showSuccess || _revealFullWord) return;
+    if (_hintsUsed >= _maxHints) return; // Limit reached
+    
     // Find empty slots
     List<int> emptyIndices = [];
     for (int i = 0; i < _userInputs.length; i++) {
@@ -138,6 +145,8 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
       _checkCompletion();
     }
   }
+
+  bool get _canUseHint => _hintsUsed < _maxHints && !_showSuccess && !_revealFullWord;
 
   void _checkCompletion() {
     if (!_userInputs.contains("")) {
@@ -170,14 +179,39 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
       } else {
         // Wrong
          AudioService().playAsset('wrong.mp3');
-         Future.delayed(const Duration(milliseconds: 500), () {
-            if (mounted) {
-               _showErrorToast();
-               setState(() {
-                 _userInputs = List.filled(_userInputs.length, "");
-               });
-            }
-         });
+         
+         // Check if hints are exhausted
+         if (_hintsUsed >= _maxHints) {
+           // Hints exhausted + wrong answer -> reveal full word
+           setState(() {
+             _revealFullWord = true;
+             // Fill in all missing letters
+             for (int i = 0; i < _missingIndices.length; i++) {
+               int wordIndex = _missingIndices[i];
+               _userInputs[i] = _targetWord[wordIndex].toUpperCase();
+             }
+           });
+           
+           // Play word pronunciation
+           AudioService().playWord(widget.word);
+           
+           // Auto-advance after showing full word
+           Future.delayed(const Duration(milliseconds: 2000), () {
+             if (mounted) {
+               widget.onCompleted(0); // 0 score for revealed word
+             }
+           });
+         } else {
+           // Still have hints, let user retry
+           Future.delayed(const Duration(milliseconds: 500), () {
+              if (mounted) {
+                 _showErrorToast();
+                 setState(() {
+                   _userInputs = List.filled(_userInputs.length, "");
+                 });
+              }
+           });
+         }
       }
     }
   }
@@ -231,14 +265,23 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                   Padding(
                      padding: const EdgeInsets.only(bottom: 16),
                      child: Visibility(
-                       visible: _userInputs.contains(""),
+                       visible: _userInputs.contains("") && !_revealFullWord,
                        maintainSize: true,
                        maintainAnimation: true,
                        maintainState: true,
                        child: TextButton.icon(
-                         onPressed: _useHint,
-                         icon: const Icon(Icons.lightbulb_outline, color: Colors.orange),
-                         label: const Text("提示 (Hint)", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+                         onPressed: _canUseHint ? _useHint : null,
+                         icon: Icon(
+                           Icons.lightbulb_outline, 
+                           color: _canUseHint ? Colors.orange : Colors.grey,
+                         ),
+                         label: Text(
+                           "提示 ($_hintsUsed/$_maxHints)", 
+                           style: TextStyle(
+                             color: _canUseHint ? Colors.orange : Colors.grey, 
+                             fontWeight: FontWeight.bold,
+                           ),
+                         ),
                        ),
                      ),
                    ),

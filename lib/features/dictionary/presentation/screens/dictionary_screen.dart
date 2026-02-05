@@ -298,86 +298,131 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     
     return InkWell(
         onTap: () {
-            showModalBottomSheet(context: context, 
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                builder: (c) {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
+              builder: (context) {
                 return Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(24))
-                    ),
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                    const Text("切换教材", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                                    IconButton(
-                                        icon: const Icon(Icons.close, color: Colors.grey),
-                                        onPressed: () => Navigator.pop(context),
-                                    )
-                                ],
+                  constraints: const BoxConstraints(maxHeight: 500),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Handle
+                      Container(
+                        margin: const EdgeInsets.only(top: 12),
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      // Title
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '切换教材',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textHighEmphasis,
+                              ),
                             ),
-                            const SizedBox(height: 16),
-                            Expanded(
-                                child: ListView.separated(
-                                    itemCount: _books.length + 1,
-                                    separatorBuilder: (ctx, i) => const Divider(height: 1),
-                                    itemBuilder: (ctx, i) {
-                                        if (i == 0) {
-                                            return ListTile(
-                                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                                leading: Container(
-                                                    padding: const EdgeInsets.all(8),
-                                                    decoration: BoxDecoration(
-                                                        color: _currentBookId == null ? AppColors.primary.withOpacity(0.1) : Colors.grey.shade100,
-                                                        borderRadius: BorderRadius.circular(12)
-                                                    ),
-                                                    child: Icon(Icons.all_inclusive, color: _currentBookId == null ? AppColors.primary : Colors.grey)
-                                                ),
-                                                title: const Text("全部教材", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                                subtitle: const Text("查看所有已添加单词", style: TextStyle(fontSize: 12, color: Colors.grey)),
-                                                trailing: _currentBookId == null ? const Icon(Icons.check_circle, color: AppColors.primary) : null,
-                                                onTap: () async {
-                                                    Navigator.pop(context);
-                                                    _currentBookId = null;
-                                                    await _loadUnits(); // Clear units
-                                                    _reload();
-                                                },
-                                            );
-                                        }
-                                        final book = _books[i-1];
-                                        final isSelected = book['id'] == _currentBookId;
-                                        return ListTile(
-                                            contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                            leading: Container(
-                                                padding: const EdgeInsets.all(8),
-                                                decoration: BoxDecoration(
-                                                    color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.grey.shade100,
-                                                    borderRadius: BorderRadius.circular(12)
-                                                ),
-                                                child: Icon(Icons.menu_book, color: isSelected ? AppColors.primary : Colors.grey)
+                          ],
+                        ),
+                      ),
+                      // Divider
+                      Divider(height: 1, color: Colors.grey.shade100),
+                      // Items
+                      Flexible(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          itemCount: _books.length + 1,
+                          separatorBuilder: (_, __) => const SizedBox(height: 4),
+                          itemBuilder: (ctx, i) {
+                            final isAllBooks = i == 0;
+                            final book = isAllBooks ? null : _books[i - 1];
+                            final id = isAllBooks ? null : book['id'];
+                            final String label = isAllBooks ? "全部教材" : book['name'];
+                            final bool isSelected = _currentBookId == id;
+
+                            return InkWell(
+                              onTap: () async {
+                                Navigator.pop(context);
+                                _currentBookId = id;
+                                await _loadUnits();
+                                _reload();
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                decoration: BoxDecoration(
+                                  color: isSelected ? AppColors.primary.withValues(alpha: 0.08) : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: isSelected ? AppColors.primary.withValues(alpha: 0.15) : Colors.grey.shade100,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Icon(
+                                        isSelected ? Icons.check_circle_rounded : (isAllBooks ? Icons.all_inclusive_rounded : Icons.menu_book_rounded),
+                                        color: isSelected ? AppColors.primary : Colors.grey.shade400,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 14),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            label,
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 15,
+                                              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                                              color: isSelected ? AppColors.primary : AppColors.textHighEmphasis,
                                             ),
-                                            title: Text(book['name'], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                            trailing: isSelected ? const Icon(Icons.check_circle, color: AppColors.primary) : null,
-                                            onTap: () async {
-                                                Navigator.pop(context);
-                                                _currentBookId = book['id'];
-                                                await _loadUnits();
-                                                _reload();
-                                            },
-                                        );
-                                    }
-                                )
-                            )
-                        ]
-                    ),
+                                          ),
+                                          if (isAllBooks)
+                                            Text(
+                                              "查看所有已添加单词",
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 12,
+                                                color: isSelected ? AppColors.primary.withValues(alpha: 0.7) : Colors.grey.shade500,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (isSelected)
+                                      const Icon(Icons.check_rounded, color: AppColors.primary, size: 22),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      // Safe area padding
+                      SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
+                    ],
+                  ),
                 );
-            });
+              },
+            );
         },
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -418,56 +463,124 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       child: Row(
         children: [
            // Unit Selector
-           if (_units.isNotEmpty)
-             Padding(
-                 padding: const EdgeInsets.only(right: 8),
-                 child: _buildDropdownChip(
-                     _currentUnit == null ? "所有单元" : _currentUnit!,
-                     () {
-                         showModalBottomSheet(context: context, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))), builder: (c) {
-                             return Container(
-                                height: 400,
-                                padding: const EdgeInsets.all(24),
+            if (_units.isNotEmpty)
+              Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: _buildDropdownChip(
+                      _currentUnit == null ? "所有单元" : _currentUnit!,
+                      () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (context) {
+                              return Container(
+                                constraints: const BoxConstraints(maxHeight: 500),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                                ),
                                 child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                        const Text("选择单元", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 16),
-                                        Expanded(
-                                            child: ListView.builder(
-                                                itemCount: _units.length + 1,
-                                                itemBuilder: (ctx, i) {
-                                                    if (i == 0) {
-                                                         return ListTile(
-                                                            title: const Text("所有单元"),
-                                                            leading: const Icon(Icons.all_inclusive),
-                                                            onTap: () {
-                                                                Navigator.pop(context);
-                                                                setState(() => _currentUnit = null);
-                                                                _reload();
-                                                            },
-                                                         );
-                                                    }
-                                                    final unit = _units[i-1];
-                                                    return ListTile(
-                                                        title: Text(unit),
-                                                        selected: _currentUnit == unit,
-                                                        onTap: () {
-                                                            Navigator.pop(context);
-                                                            setState(() => _currentUnit = unit);
-                                                            _reload();
-                                                        },
-                                                    );
-                                                }
-                                            )
-                                        )
-                                    ],
-                                )
-                             );
-                         });
-                     }
-                 ),
-             ),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Handle
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 12),
+                                      width: 40,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade300,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                    // Title
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            '选择单元',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800,
+                                              color: AppColors.textHighEmphasis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Divider
+                                    Divider(height: 1, color: Colors.grey.shade100),
+                                    // Items
+                                    Flexible(
+                                      child: ListView.separated(
+                                        shrinkWrap: true,
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                        itemCount: _units.length + 1,
+                                        separatorBuilder: (_, __) => const SizedBox(height: 4),
+                                        itemBuilder: (ctx, i) {
+                                          final isAllUnits = i == 0;
+                                          final unit = isAllUnits ? null : _units[i - 1];
+                                          final bool isSelected = _currentUnit == unit;
+                                          final String label = isAllUnits ? "所有单元" : unit!;
+
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              setState(() => _currentUnit = unit);
+                                              _reload();
+                                            },
+                                            child: Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                              decoration: BoxDecoration(
+                                                color: isSelected ? AppColors.primary.withValues(alpha: 0.08) : Colors.transparent,
+                                                borderRadius: BorderRadius.circular(14),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    padding: const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: isSelected ? AppColors.primary.withValues(alpha: 0.15) : Colors.grey.shade100,
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),
+                                                    child: Icon(
+                                                      isSelected ? Icons.check_circle_rounded : (isAllUnits ? Icons.all_inclusive_rounded : Icons.circle_outlined),
+                                                      color: isSelected ? AppColors.primary : Colors.grey.shade400,
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 14),
+                                                  Expanded(
+                                                    child: Text(
+                                                      label,
+                                                      style: GoogleFonts.plusJakartaSans(
+                                                        fontSize: 15,
+                                                        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                                                        color: isSelected ? AppColors.primary : AppColors.textHighEmphasis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  if (isSelected)
+                                                    const Icon(Icons.check_rounded, color: AppColors.primary, size: 22),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    // Safe area padding
+                                    SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                      }
+                  ),
+              ),
         
           _buildFilterChip("全部 ($total)", null),
           const SizedBox(width: 8),
@@ -529,6 +642,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     final meaning = item['meaning'] as String;
     final mastery = item['mastery_level'] as int? ?? 0; // null if not learned (left join)
     final isLearned = (item['is_learned'] as int? ?? 0) == 1;
+    final interval = item['interval'] as int? ?? 1;
 
     Color badgeColor = Colors.grey.shade400;
     String badgeText = "未开始";
@@ -540,9 +654,23 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
         badgeText = "已掌握";
         badgeIcon = Icons.check_circle;
       } else {
-        badgeColor = const Color(0xFFFFA000); // Amber
-        badgeText = "学习中";
-        badgeIcon = Icons.schedule;
+        // Learning - differentiate by interval
+        // interval 1-2: just started (light orange)
+        // interval 3-7: progressing (orange)
+        // interval 8+: almost there (yellow-green)
+        if (interval >= 8) {
+          badgeColor = const Color(0xFF8BC34A); // Light green - almost mastered
+          badgeText = "熟练中";
+          badgeIcon = Icons.trending_up;
+        } else if (interval >= 3) {
+          badgeColor = const Color(0xFFFF9800); // Orange - progressing
+          badgeText = "学习中";
+          badgeIcon = Icons.schedule;
+        } else {
+          badgeColor = const Color(0xFFFFB74D); // Light orange - just started
+          badgeText = "初学";
+          badgeIcon = Icons.flag;
+        }
       }
     }
 
@@ -615,20 +743,35 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     final mastery = item['mastery_level'] as int? ?? 0;
 
     // Memory strength (0.0 to 1.0) for visualization
-    // Logic: if mastered, >0.8. If learning, 0.3-0.8 depending on interval. If new, 0.
+    // Logic: if mastered, >0.8. If learning, varies by interval. If new, 0.
     double memoryStrength = 0.0;
     Color memoryColor = Colors.grey;
+    String memoryLabel = "未学习";
+    
     if (isLearned) {
+        final int currentInterval = interval ?? 1;
         if (mastery == 2) {
-             double ratio = (interval ?? 1) / 30.0; // cap at 30 days
+             double ratio = currentInterval / 30.0; // cap at 30 days
              if (ratio > 1.0) ratio = 1.0;
              memoryStrength = 0.8 + (ratio * 0.2); // 0.8 - 1.0
              memoryColor = Colors.green;
+             memoryLabel = "已掌握";
         } else {
-             // learning
-             double ratio = (interval ?? 1) / 21.0;
-             memoryStrength = 0.2 + (ratio * 0.6); // 0.2 - 0.8
-             memoryColor = Colors.amber;
+             // Learning - differentiate by interval
+             if (currentInterval >= 8) {
+               memoryStrength = 0.65 + (currentInterval / 21.0) * 0.15; // 0.65 - 0.8
+               if (memoryStrength > 0.8) memoryStrength = 0.8;
+               memoryColor = const Color(0xFF8BC34A); // Light green
+               memoryLabel = "熟练中";
+             } else if (currentInterval >= 3) {
+               memoryStrength = 0.35 + (currentInterval / 8.0) * 0.3; // 0.35 - 0.65
+               memoryColor = const Color(0xFFFF9800); // Orange
+               memoryLabel = "学习中";
+             } else {
+               memoryStrength = 0.15 + (currentInterval / 3.0) * 0.2; // 0.15 - 0.35
+               memoryColor = const Color(0xFFFFB74D); // Light orange
+               memoryLabel = "初学";
+             }
         }
     }
 
@@ -715,7 +858,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                      Text(mastery == 2 ? "已掌握" : "学习中", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: memoryColor)),
+                                      Text(memoryLabel, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: memoryColor)),
                                       Text("下次复习: ${_formatNextReview(nextReviewTs)}", style: const TextStyle(fontSize: 12, color: Colors.grey)),
                                   ],
                               ),

@@ -201,12 +201,6 @@ class _MineScreenState extends State<MineScreen> {
                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
                },
              ),
-             const SizedBox(height: 16),
-             _buildMenuItem(
-               icon: Icons.help_outline_rounded,
-               title: '帮助与反馈',
-               onTap: () {}, // TODO
-             ),
              const SizedBox(height: 40),
              Center(
                child: Text(
@@ -537,8 +531,6 @@ class _MineScreenState extends State<MineScreen> {
     );
   }
 
-
-
   Future<void> _showEditNicknameDialog() async {
     final TextEditingController _controller = TextEditingController(text: _stats?.nickname ?? '');
     
@@ -548,92 +540,89 @@ class _MineScreenState extends State<MineScreen> {
         backgroundColor: Colors.transparent,
         insetPadding: const EdgeInsets.all(24),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 400),
+          constraints: const BoxConstraints(maxWidth: 380),
           child: SingleChildScrollView(
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: const [
-                   BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
+                borderRadius: BorderRadius.circular(28),
+                boxShadow: [
+                   BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
                 ]
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEFF6FF), // Blue 50
+                    padding: const EdgeInsets.all(16),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEFF6FF), // Blue 50
                       shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(color: const Color(0xFFDBEAFE).withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
-                      ]
                     ),
                     child: const Icon(Icons.mode_edit_outline_rounded, color: AppColors.primary, size: 32),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
                   Text(
                     '修改昵称',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
                       color: AppColors.textHighEmphasis,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: _controller,
                     maxLength: 12,
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textHighEmphasis
                     ),
                     decoration: InputDecoration(
                       hintText: '请输入新的昵称',
-                      hintStyle: GoogleFonts.plusJakartaSans(color: Colors.grey.shade400),
+                      hintStyle: GoogleFonts.plusJakartaSans(color: Colors.grey.shade400, fontSize: 14),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.grey.shade200, width: 2),
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(color: Colors.grey.shade100, width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(color: AppColors.primary, width: 2),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       counterText: '',
                       filled: true,
-                      fillColor: Colors.grey.shade50,
+                      fillColor: AppColors.background,
                     ),
                     autofocus: true,
                     textInputAction: TextInputAction.done,
                     onSubmitted: (value) => Navigator.pop(context, value),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   Row(
                     children: [
                       Expanded(
                         child: TextButton(
                           onPressed: () => Navigator.pop(context),
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                            backgroundColor: Colors.grey.shade100,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                            backgroundColor: AppColors.background,
                           ),
                           child: Text(
                             '取消',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 16,
+                              fontSize: 15,
                               color: AppColors.textMediumEmphasis,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: BubblyButton(
                           onPressed: () {
@@ -643,16 +632,16 @@ class _MineScreenState extends State<MineScreen> {
                             }
                           },
                           color: AppColors.primary,
-                          shadowColor: const Color(0xFF1e3a8a),
-                          borderRadius: 16,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shadowColor: AppColors.shadowBlue,
+                          borderRadius: 14,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           child: Center(
                             child: Text(
-                              '保存',
+                              '确认修改',
                               style: GoogleFonts.plusJakartaSans(
                                 color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),

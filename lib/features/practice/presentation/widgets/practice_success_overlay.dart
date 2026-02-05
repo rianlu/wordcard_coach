@@ -7,15 +7,18 @@ import 'dart:math' as math;
 
 class PracticeSuccessOverlay extends StatelessWidget {
   final Word word;
-  final String title; // Repurposed for "CORRECT!" localization if needed
+  final String title;
   final String? subtitle;
+  final int stars; // 1-3 stars for speaking practice
 
   const PracticeSuccessOverlay({
     super.key,
     required this.word,
     this.title = 'CORRECT!',
     this.subtitle,
+    this.stars = 0, // 0 = don't show stars (for spelling practice)
   });
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,14 +95,28 @@ class PracticeSuccessOverlay extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  title.toUpperCase(),
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w900,
-                                    color: const Color(0xFF22C55E),
-                                    letterSpacing: 1.0,
-                                  ),
+                                // Title with optional stars
+                                Row(
+                                  children: [
+                                    Text(
+                                      title.toUpperCase(),
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w900,
+                                        color: const Color(0xFF22C55E),
+                                        letterSpacing: 1.0,
+                                      ),
+                                    ),
+                                    // Show stars for speaking practice
+                                    if (stars > 0) ...[
+                                      const SizedBox(width: 8),
+                                      ...List.generate(3, (i) => Icon(
+                                        i < stars ? Icons.star_rounded : Icons.star_outline_rounded,
+                                        color: i < stars ? Colors.amber : Colors.grey.shade300,
+                                        size: 18,
+                                      )),
+                                    ],
+                                  ],
                                 ),
                                 const SizedBox(height: 2),
                                 Text(

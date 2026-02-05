@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/widgets/bubbly_button.dart';
+import '../../../../core/widgets/animated_speaker_button.dart';
 import '../../../../core/services/audio_service.dart';
 
 class WordLearningCard extends StatefulWidget {
@@ -117,30 +118,13 @@ class _WordLearningCardState extends State<WordLearningCard> {
                        
                        const SizedBox(height: 24),
                        
-                       // Audio Button (Integrated)
-                       GestureDetector(
-                         onTap: _playAudio,
-                         child: AnimatedContainer(
-                           duration: const Duration(milliseconds: 200),
-                           padding: const EdgeInsets.all(16),
-                           decoration: BoxDecoration(
-                             shape: BoxShape.circle,
-                             color: _isPlaying ? AppColors.secondary : AppColors.primary,
-                             boxShadow: [
-                               BoxShadow(
-                                 color: (_isPlaying ? AppColors.secondary : AppColors.primary).withOpacity(0.4),
-                                 blurRadius: 20,
-                                 offset: const Offset(0, 8)
-                               )
-                             ]
-                           ),
-                           child: Icon(
-                             _isPlaying ? Icons.graphic_eq_rounded : Icons.volume_up_rounded,
-                             color: Colors.white,
-                             size: 32,
-                           ),
-                         ),
+                       // Audio Button with animation
+                       AnimatedSpeakerButton(
+                         onPressed: _playAudio,
+                         isPlaying: _isPlaying,
+                         size: 32,
                        ),
+
 
                        const SizedBox(height: 32),
                        const Divider(height: 1, color: Color(0xFFF1F5F9)), // slate-100
@@ -245,7 +229,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
             color: AppColors.primary,
             shadowColor: const Color(0xFF1e3a8a), // Darker blue
             borderRadius: 32,
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 32),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -253,13 +237,13 @@ class _WordLearningCardState extends State<WordLearningCard> {
                   "下一个", // Next
                   style: GoogleFonts.notoSans(
                     color: Colors.white, 
-                    fontSize: 20, 
+                    fontSize: 18, 
                     fontWeight: FontWeight.w900,
                     letterSpacing: 2.0
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 24)
+                const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 22)
               ],
             ),
           ),

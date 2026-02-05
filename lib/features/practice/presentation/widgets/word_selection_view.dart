@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
+import '../../../../core/widgets/animated_speaker_button.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/services/audio_service.dart';
 import 'practice_success_overlay.dart';
@@ -26,6 +27,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   String? _selectedOptionId;
   int _wrongAttempts = 0;
   bool _showSuccess = false;
+  bool _isPlaying = false;
 
   @override
   void didUpdateWidget(WordSelectionView oldWidget) {
@@ -33,7 +35,23 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     if (oldWidget.word.id != widget.word.id) {
        setState(() {
          _selectedOptionId = null;
+         _wrongAttempts = 0;
+         _showSuccess = false;
+         _isPlaying = false;
        });
+    }
+  }
+
+  Future<void> _playAudio() async {
+    if (_isPlaying) return;
+    setState(() => _isPlaying = true);
+    try {
+      await AudioService().playWord(widget.word);
+    } finally {
+      if (mounted) {
+        await Future.delayed(const Duration(milliseconds: 50));
+        if (mounted) setState(() => _isPlaying = false);
+      }
     }
   }
 
@@ -55,7 +73,8 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                _showSuccessOverlay();
              }
           } else {
-            // If wrong...
+            // If wrong - play sound and reset
+            AudioService().playAsset('wrong.mp3');
             _showErrorToast();
             setState(() {
               _selectedOptionId = null;
@@ -139,24 +158,11 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                 Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
                 const SizedBox(height: 24),
 
-                // TTS Button
-                Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.primary,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withOpacity(0.4),
-                          blurRadius: 24,
-                          offset: const Offset(0, 8),
-                        ),
-                      ]
-                  ),
-                  child: IconButton(
-                    padding: const EdgeInsets.all(14),
-                    onPressed: () => AudioService().playWord(widget.word),
-                    icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
-                  ),
+                // TTS Button with animation
+                AnimatedSpeakerButton(
+                  onPressed: _playAudio,
+                  isPlaying: _isPlaying,
+                  size: 32,
                 ),
               ],
             ),
