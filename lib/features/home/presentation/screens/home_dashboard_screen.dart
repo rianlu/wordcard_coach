@@ -128,116 +128,113 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     }
   }
 
-  /// Wavy/Stamp style daily sentence card
+  /// Ticket style daily sentence card
   Widget _buildDailySentenceCard() {
     return GestureDetector(
       onTap: _playDailyAudio,
       child: PhysicalShape(
-        clipper: WavyClipper(),
+        clipper: const TicketClipper(holeRadius: 20, holePositionRatio: 0.72), // 72% split
         color: Colors.white,
-        clipBehavior: Clip.antiAlias, // Ensure background image is clipped to waves
+        clipBehavior: Clip.antiAlias,
         elevation: 6,
-        shadowColor: AppColors.primary.withOpacity(0.2),
-        child: Stack(
-          children: [
-             // 1. Subtle Background Image
-            if (_dailySentence?.imageUrl != null)
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.12,
-                  child: Image.network(
-                    _dailySentence!.imageUrl!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_,__,___) => const SizedBox(),
-                  ),
-                ),
-              ),
-            
-            // 2. Content
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // Ensure it doesn't try to take infinite height
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                         BoxShadow(
-                          color: AppColors.secondary.withOpacity(0.3),
-                          blurRadius: 6,
-                          offset: const Offset(0, 3),
-                        ),
-                      ]
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                         const Icon(Icons.lightbulb_rounded, color: Colors.white, size: 14),
-                         const SizedBox(width: 4),
-                         Text(
-                           'Daily Quote',
-                           style: GoogleFonts.plusJakartaSans(
-                             fontSize: 11,
-                             fontWeight: FontWeight.w800,
-                             color: Colors.white,
+        shadowColor: AppColors.primary.withOpacity(0.15), 
+        child: SizedBox(
+          height: 180, // Fixed height for ticket look
+          child: Stack(
+            children: [
+               // 1. Dashed Line (Vertical) at 72%
+               Positioned(
+                 left: MediaQuery.of(context).size.width * 0.65, // Approximate visual adjust
+                 top: 10, 
+                 bottom: 10,
+                 child: CustomPaint(
+                   size: const Size(1, double.infinity),
+                   painter: DashedLinePainter(
+                     color: const Color(0xFFE5E7EB), // Grey-200
+                     dashHeight: 8,
+                     dashSpace: 6,
+                   ),
+                 ),
+               ),
+
+               Row(
+                 children: [
+                   // --- LEFT SECTION (Content) ---
+                   Expanded(
+                     flex: 72,
+                     child: Padding(
+                       padding: const EdgeInsets.fromLTRB(24, 20, 12, 20),
+                       child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           // Badge
+                           Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                               'DAILY QUOTE',
+                               style: GoogleFonts.plusJakartaSans(
+                                 fontSize: 10,
+                                 fontWeight: FontWeight.w900,
+                                 color: Colors.white,
+                                 letterSpacing: 0.5,
+                               ),
+                            ),
                            ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 20),
+                           
+                           const Spacer(),
 
-                  // English (Main Focus)
-                  Text(
-                    _dailySentence!.englishContent,
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 18, 
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textHighEmphasis,
-                      height: 1.3,
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 16),
+                           // English
+                           Text(
+                            _dailySentence!.englishContent,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 16, 
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textHighEmphasis,
+                              height: 1.3,
+                            ),
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                           ),
+                           
+                           const SizedBox(height: 8),
 
-                  // Footer: Chinese + Mini Play Button
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          _dailySentence!.chineseNote,
-                          style: GoogleFonts.notoSans(
-                            fontSize: 13,
-                            color: AppColors.textMediumEmphasis,
-                            height: 1.4,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      // Mini Play Button
-                      AnimatedSpeakerButton(
-                         onPressed: _playDailyAudio,
-                         isPlaying: _isPlayingAudio,
-                         size: 20,
-                         primaryColor: AppColors.secondary.withOpacity(0.8),
-                         playingColor: AppColors.primary,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+                           // Chinese
+                           Text(
+                              _dailySentence!.chineseNote,
+                              style: GoogleFonts.notoSans(
+                                fontSize: 12,
+                                color: AppColors.textMediumEmphasis,
+                                height: 1.4,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                         ],
+                       ),
+                     ),
+                   ),
+
+                   // --- RIGHT SECTION (Action) ---
+                   Expanded(
+                     flex: 28,
+                     child: Center(
+                       child: AnimatedSpeakerButton(
+                          onPressed: _playDailyAudio,
+                          isPlaying: _isPlayingAudio,
+                          size: 32, // Slightly larger since it's solo
+                          primaryColor: AppColors.secondary, 
+                          playingColor: AppColors.primary,
+                       ),
+                     ),
+                   ),
+                 ],
+               ),
+            ],
+          ),
         ),
       ),
     );
@@ -570,4 +567,77 @@ class WavyClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+class TicketClipper extends CustomClipper<Path> {
+  final double holeRadius;
+  final double holePositionRatio; // 0.0 to 1.0
+
+  const TicketClipper({this.holeRadius = 16, this.holePositionRatio = 0.7});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    final holeX = size.width * holePositionRatio;
+
+    path.moveTo(0, 0);
+    
+    // Top Edge with Cutout
+    path.lineTo(holeX - holeRadius, 0);
+    path.arcToPoint(
+      Offset(holeX + holeRadius, 0),
+      radius: Radius.circular(holeRadius),
+      clockwise: false,
+    );
+    path.lineTo(size.width, 0);
+
+    // Right Edge
+    path.lineTo(size.width, size.height);
+
+    // Bottom Edge with Cutout
+    path.lineTo(holeX + holeRadius, size.height);
+    path.arcToPoint(
+      Offset(holeX - holeRadius, size.height),
+      radius: Radius.circular(holeRadius),
+      clockwise: false,
+    );
+    path.lineTo(0, size.height);
+
+    // Left Edge
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TicketClipper oldClipper) => true;
+}
+
+class DashedLinePainter extends CustomPainter {
+  final Color color;
+  final double dashHeight;
+  final double dashSpace;
+
+  DashedLinePainter({
+    required this.color,
+    this.dashHeight = 5,
+    this.dashSpace = 5,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    double startY = 0;
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+
+    while (startY < size.height) {
+      canvas.drawLine(Offset(0, startY), Offset(0, startY + dashHeight), paint);
+      startY += dashHeight + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
