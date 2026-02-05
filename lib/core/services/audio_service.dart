@@ -213,6 +213,81 @@ class AudioService {
     await _sfxWrong.stop();
     await _sfxMic.stop();
   }
+
+  /// Play audio from a URL directly (e.g., for daily sentence)
+  /// If playback fails, uses [fallbackText] with TTS as a backup.
+  Future<void> playUrl(String url, {String? fallbackText}) async {
+    // 1. If URL is missing, try fallback text immediately
+    if (url.isEmpty || !url.startsWith('http')) {
+      debugPrint("AudioService: No valid URL found ($url), using TTS fallback...");
+      if (fallbackText != null && fallbackText.isNotEmpty) {
+        if (!_isInit) await init();
+        await stop();
+        await _flutterTts.speak(fallbackText);
+        await _flutterTts.awaitSpeakCompletion(true);
+      }
+      return;
+    }
+
+    try {
+      debugPrint("AudioService: Attempting to play URL: $url");
+      if (!_isInit) await init();
+      await stop(); 
+      
+      bool playedSuccessfully = false;
+
+      // Helper to wait for playback (either finishes or times out)
+      Future<void> wait() async {
+        try {
+          await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 20));
+        } catch (e) {
+          debugPrint("AudioService: Playback finished or timed out: $e");
+        }
+      }
+
+      try {
+        // Step A: Try playing via Cache
+        final FileInfo? cachedFile = await _cacheManager.getFileFromCache(url);
+        if (cachedFile != null && await cachedFile.file.exists()) {
+          debugPrint("AudioService: Playing from cache: ${cachedFile.file.path}");
+          await _audioPlayer.play(DeviceFileSource(cachedFile.file.path));
+          await wait();
+          playedSuccessfully = true;
+        } else {
+          // Step B: Download to Cache and Play
+          debugPrint("AudioService: Downloading to cache...");
+          File file = await _cacheManager.getSingleFile(url);
+          if (await file.exists()) {
+            debugPrint("AudioService: Downloaded, playing: ${file.path}");
+            await _audioPlayer.play(DeviceFileSource(file.path));
+            await wait();
+            playedSuccessfully = true;
+          }
+        }
+      } catch (e) {
+        debugPrint("AudioService: Cache/Direct file playback failed: $e. Trying direct URL source...");
+        try {
+          // Step C: Last resort - Stream directly from URL
+          await _audioPlayer.play(UrlSource(url));
+          await wait();
+          playedSuccessfully = true;
+        } catch (e2) {
+          debugPrint("AudioService: Direct URL source also failed: $e2");
+        }
+      }
+
+      // Step D: Ultimate Fallback to System TTS only if URL fails
+      if (!playedSuccessfully && fallbackText != null && fallbackText.isNotEmpty) {
+        debugPrint("AudioService: All URL sources failed. Falling back to system TTS for: $fallbackText");
+        _flutterTts.stop();
+        await _flutterTts.speak(fallbackText);
+        await _flutterTts.awaitSpeakCompletion(true);
+      }
+      
+    } catch (e) {
+      debugPrint("AudioService: playUrl Critical Error: $e");
+    }
+  }
   
   bool _isEnglish(String text) {
     return RegExp(r'^[a-zA-Z\s\.,\?!]+$').hasMatch(text);

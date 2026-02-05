@@ -47,6 +47,8 @@ dependencies:
   encrypt: ^5.0.3
   sqflite: ^2.3.0
   uuid: ^4.5.1
+  shared_preferences: ^2.2.2
+  http: ^1.2.0
 
 dev_dependencies:
   flutter_test:

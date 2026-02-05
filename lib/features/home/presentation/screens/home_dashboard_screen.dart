@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
+import '../../../../core/widgets/animated_speaker_button.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui' as ui;
 import 'dart:convert';
 import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/daos/stats_dao.dart';
 import '../../../../core/database/models/user_stats.dart';
+import '../../../../core/services/iciba_daily_service.dart';
+import '../../../../core/services/audio_service.dart';
 import '../../../learning/presentation/screens/daily_learning_session_screen.dart';
 import '../../../practice/presentation/screens/review_session_screen.dart';
 
@@ -27,13 +31,23 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   BookProgress? _bookProgress;
   bool _isLoading = true;
   List<dynamic> _booksManifest = [];
+  DailySentence? _dailySentence;
+  bool _isPlayingAudio = false;
 
   @override
   void initState() {
     super.initState();
     _loadStats();
+    _loadQuote();
     // Subscribe to global stats updates (e.g. nickname change, learning progress)
     GlobalStatsNotifier.instance.addListener(_loadStats);
+  }
+
+  Future<void> _loadQuote() async {
+    final sentence = await IcibaDailyService().getTodaySentence();
+    if (mounted) {
+      setState(() => _dailySentence = sentence);
+    }
   }
 
   @override
@@ -84,13 +98,148 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 16), // Status bar padding/safe area
+                  SizedBox(height: MediaQuery.of(context).padding.top),
                   _buildHeader(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
+                  if (_dailySentence != null) _buildDailySentenceCard(),
+                  if (_dailySentence != null) const SizedBox(height: 20),
                   _buildDailyQuestSection(context),
                 ],
               ),
             ),
+    );
+  }
+
+  Future<void> _playDailyAudio() async {
+    // Allow playing if we have a URL OR fallback text
+    if (_isPlayingAudio || (_dailySentence?.audioUrl == null && _dailySentence?.englishContent == null)) return;
+    
+    setState(() => _isPlayingAudio = true);
+    try {
+      await AudioService().playUrl(
+        _dailySentence!.audioUrl ?? "", // Pass empty string if null
+        fallbackText: _dailySentence!.englishContent,
+      );
+    } finally {
+      if (mounted) {
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (mounted) setState(() => _isPlayingAudio = false);
+      }
+    }
+  }
+
+  /// Wavy/Stamp style daily sentence card
+  Widget _buildDailySentenceCard() {
+    return GestureDetector(
+      onTap: _playDailyAudio,
+      child: PhysicalShape(
+        clipper: WavyClipper(),
+        color: Colors.white,
+        clipBehavior: Clip.antiAlias, // Ensure background image is clipped to waves
+        elevation: 6,
+        shadowColor: AppColors.primary.withOpacity(0.2),
+        child: Stack(
+          children: [
+             // 1. Subtle Background Image
+            if (_dailySentence?.imageUrl != null)
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.12,
+                  child: Image.network(
+                    _dailySentence!.imageUrl!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_,__,___) => const SizedBox(),
+                  ),
+                ),
+              ),
+            
+            // 2. Content
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Ensure it doesn't try to take infinite height
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                         BoxShadow(
+                          color: AppColors.secondary.withOpacity(0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ]
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                         const Icon(Icons.lightbulb_rounded, color: Colors.white, size: 14),
+                         const SizedBox(width: 4),
+                         Text(
+                           'Daily Quote',
+                           style: GoogleFonts.plusJakartaSans(
+                             fontSize: 11,
+                             fontWeight: FontWeight.w800,
+                             color: Colors.white,
+                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 20),
+
+                  // English (Main Focus)
+                  Text(
+                    _dailySentence!.englishContent,
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textHighEmphasis,
+                      height: 1.3,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 16),
+
+                  // Footer: Chinese + Mini Play Button
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _dailySentence!.chineseNote,
+                          style: GoogleFonts.notoSans(
+                            fontSize: 13,
+                            color: AppColors.textMediumEmphasis,
+                            height: 1.4,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      // Mini Play Button
+                      AnimatedSpeakerButton(
+                         onPressed: _playDailyAudio,
+                         isPlaying: _isPlayingAudio,
+                         size: 20,
+                         primaryColor: AppColors.secondary.withOpacity(0.8),
+                         playingColor: AppColors.primary,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -371,4 +520,54 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 
 
+}
+
+class WavyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    // Enhanced wave effect
+    double waveHeight = 6.0; // Increased fro 4.0
+    double frequency = 20.0; // Increased from 18.0
+
+    path.moveTo(0, 0);
+
+    // Top Edge
+    for (double i = 0; i < size.width; i += frequency) {
+      path.quadraticBezierTo(
+        i + frequency / 2, waveHeight, 
+        i + frequency, 0
+      );
+    }
+    
+    // Right Edge
+    for (double i = 0; i < size.height; i += frequency) {
+       path.quadraticBezierTo(
+        size.width - waveHeight, i + frequency / 2, 
+        size.width, i + frequency
+      );
+    }
+
+    // Bottom Edge
+    for (double i = size.width; i > 0; i -= frequency) {
+        path.quadraticBezierTo(
+        i - frequency / 2, size.height - waveHeight, 
+        i - frequency, size.height
+      );
+    }
+
+    // Left Edge
+    for (double i = size.height; i > 0; i -= frequency) {
+      path.quadraticBezierTo(
+        waveHeight, i - frequency / 2, 
+        0, i - frequency
+      );
+    }
+    
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
