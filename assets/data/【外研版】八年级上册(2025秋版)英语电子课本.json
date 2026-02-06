@@ -1,0 +1,2202 @@
+[
+  {
+    "grade": 8,
+    "semester": 1,
+    "unit": "Unit 1",
+    "data": [
+      {
+        "text": "suppose",
+        "phonetic": "[səˈpəʊz]",
+        "pos": "vt.",
+        "meaning": "推想, 假设, 以为, 想像, 假定",
+        "app_sentences": [
+          {
+            "en": "I suppose we will have a test next Monday.",
+            "cn": "我想我们下星期一会有一次测验。"
+          }
+        ]
+      },
+      {
+        "text": "birthmark",
+        "phonetic": "[ˈbɜːθmɑːk]",
+        "pos": "n.",
+        "meaning": "胎记, 胎痣",
+        "app_sentences": []
+      },
+      {
+        "text": "bright",
+        "phonetic": "[braɪt]",
+        "pos": "a.",
+        "meaning": "明亮的, 聪明的, 鲜明的, 欢快的",
+        "app_sentences": [
+          {
+            "en": "The classroom is bright and clean with many windows.",
+            "cn": "教室有很多窗户，明亮又干净。"
+          },
+          {
+            "en": "The sun is very bright today, so wear your hat.",
+            "cn": "今天太阳很亮，所以戴上你的帽子。"
+          }
+        ]
+      },
+      {
+        "text": "strawberry",
+        "phonetic": "[ˈstrɔːbəri]",
+        "pos": "n.",
+        "meaning": "草莓",
+        "app_sentences": []
+      },
+      {
+        "text": "crowded",
+        "phonetic": "[ˈkraʊdɪd]",
+        "pos": "a.",
+        "meaning": "拥挤的, 塞满的",
+        "app_sentences": []
+      },
+      {
+        "text": "disaster",
+        "phonetic": "[dɪˈzɑːstə]",
+        "pos": "n.",
+        "meaning": "灾祸, 不幸, 彻底失败",
+        "app_sentences": []
+      },
+      {
+        "text": "therefore",
+        "phonetic": "[ˈðeəfɔː]",
+        "pos": "adv.",
+        "meaning": "因此, 所以",
+        "app_sentences": []
+      },
+      {
+        "text": "cover",
+        "phonetic": "[ˈkʌvə]",
+        "pos": "n.",
+        "meaning": "盖子, 封面, 藉口",
+        "app_sentences": []
+      },
+      {
+        "text": "instead",
+        "phonetic": "[ɪnˈsted]",
+        "pos": "adv.",
+        "meaning": "作为替代, 反而",
+        "app_sentences": [
+          {
+            "en": "I didn't go swimming; I played basketball instead.",
+            "cn": "我没有去游泳，而是打了篮球。"
+          }
+        ]
+      },
+      {
+        "text": "instead of",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "代替",
+        "app_sentences": [
+          {
+            "en": "Let's take a walk instead of watching TV all afternoon.",
+            "cn": "我们别整个下午看电视，去散步吧。"
+          }
+        ]
+      },
+      {
+        "text": "although",
+        "phonetic": "[ɔːlˈðəʊ]",
+        "pos": "conj.",
+        "meaning": "虽然, 尽管",
+        "app_sentences": []
+      },
+      {
+        "text": "bathroom",
+        "phonetic": "[ˈbɑːθrʊm]",
+        "pos": "n.",
+        "meaning": "浴室, 厕所",
+        "app_sentences": []
+      },
+      {
+        "text": "quickly",
+        "phonetic": "[ˈkwɪkli]",
+        "pos": "adv.",
+        "meaning": "很快地",
+        "app_sentences": []
+      },
+      {
+        "text": "truly",
+        "phonetic": "[ˈtruːli]",
+        "pos": "adv.",
+        "meaning": "真实地, 不假",
+        "app_sentences": []
+      },
+      {
+        "text": "paint",
+        "phonetic": "[peɪnt]",
+        "pos": "n.",
+        "meaning": "油漆, 颜料, 绘画作品, 涂漆",
+        "app_sentences": [
+          {
+            "en": "We will paint the fence white during the art class tomorrow.",
+            "cn": "明天美术课上我们要把栅栏漆成白色。"
+          }
+        ]
+      },
+      {
+        "text": "yet",
+        "phonetic": "[jet]",
+        "pos": "adv.",
+        "meaning": "还, 尚, 仍然, 已经, 然而",
+        "app_sentences": [
+          {
+            "en": "He has not finished his project for school yet.",
+            "cn": "他还没有完成他的学校项目。"
+          }
+        ]
+      },
+      {
+        "text": "anyway",
+        "phonetic": "[ˈeniweɪ]",
+        "pos": "adv.",
+        "meaning": "无论如何, 至少",
+        "app_sentences": []
+      },
+      {
+        "text": "already",
+        "phonetic": "[ɔːlˈredi]",
+        "pos": "adv.",
+        "meaning": "已经, 早已",
+        "app_sentences": []
+      },
+      {
+        "text": "difference",
+        "phonetic": "[ˈdɪfərəns]",
+        "pos": "n.",
+        "meaning": "不同, 差异",
+        "app_sentences": []
+      },
+      {
+        "text": "hate",
+        "phonetic": "[heɪt]",
+        "pos": "n.",
+        "meaning": "憎恨, 恨, 厌恶",
+        "app_sentences": [
+          {
+            "en": "I hate getting up early on cold winter mornings.",
+            "cn": "我讨厌在寒冷的冬日早晨早起。"
+          }
+        ]
+      },
+      {
+        "text": "successful",
+        "phonetic": "[səkˈsesfəl]",
+        "pos": "a.",
+        "meaning": "成功的, 一帆风顺的, 顺利的",
+        "app_sentences": []
+      },
+      {
+        "text": "scientific",
+        "phonetic": "[ˌsaɪənˈtɪfɪk]",
+        "pos": "a.",
+        "meaning": "科学的, 系统的, 符合科学规律的",
+        "app_sentences": []
+      },
+      {
+        "text": "wise",
+        "phonetic": "[waɪz]",
+        "pos": "a.",
+        "meaning": "明智的, 慎虑的, 聪明的, 博学的, 狡猾的, 机灵的",
+        "app_sentences": [
+          {
+            "en": "My grandfather always gives me wise advice.",
+            "cn": "我的祖父总是给我明智的建议。"
+          }
+        ]
+      },
+      {
+        "text": "perfect",
+        "phonetic": "[ˈpɜːfɪkt]",
+        "pos": "n.",
+        "meaning": "完成时",
+        "app_sentences": []
+      },
+      {
+        "text": "row",
+        "phonetic": "[rəʊ]",
+        "pos": "n.",
+        "meaning": "排, 行, 街道, 划船, 吵闹",
+        "app_sentences": [
+          {
+            "en": "We sit in the front row during the school assembly.",
+            "cn": "在学校集会时我们坐在前排。"
+          }
+        ]
+      },
+      {
+        "text": "height",
+        "phonetic": "[haɪt]",
+        "pos": "n.",
+        "meaning": "高度, 海拔, 高地, 顶点",
+        "app_sentences": [
+          {
+            "en": "His height makes him a good basketball player.",
+            "cn": "他的身高使他成为一名优秀的篮球运动员。"
+          }
+        ]
+      },
+      {
+        "text": "literature",
+        "phonetic": "[ˈlɪtərətʃə]",
+        "pos": "n.",
+        "meaning": "文学, 文艺, 著作",
+        "app_sentences": []
+      },
+      {
+        "text": "character",
+        "phonetic": "[ˈkærəktə]",
+        "pos": "n.",
+        "meaning": "个性, 字符, 人物, 性质, 品格, 资格",
+        "app_sentences": [
+          {
+            "en": "The main character in the book is a brave young girl.",
+            "cn": "书中的主要角色是一个勇敢的小女孩。"
+          }
+        ]
+      },
+      {
+        "text": "wizard",
+        "phonetic": "[ˈwɪzəd]",
+        "pos": "n.",
+        "meaning": "男巫, 术士, 奇才",
+        "app_sentences": []
+      },
+      {
+        "text": "brain",
+        "phonetic": "[breɪn]",
+        "pos": "n.",
+        "meaning": "脑",
+        "app_sentences": []
+      },
+      {
+        "text": "value",
+        "phonetic": "[ˈvæljuː]",
+        "pos": "n.",
+        "meaning": "价值, 价格, 购买力, 评价, 估价, 计算结果",
+        "app_sentences": [
+          {
+            "en": "My grandmother taught me the value of being honest.",
+            "cn": "我的祖母教会了我诚实的价值。"
+          }
+        ]
+      },
+      {
+        "text": "quality",
+        "phonetic": "[ˈkwɒləti]",
+        "pos": "n.",
+        "meaning": "品质, 特性, 才能, 质量",
+        "app_sentences": []
+      },
+      {
+        "text": "impossible",
+        "phonetic": "[ɪmˈpɒsəbəl]",
+        "pos": "a.",
+        "meaning": "不可能的, 难以置信的, 令人无法忍受的",
+        "app_sentences": [
+          {
+            "en": "It is impossible to finish all this homework in one hour.",
+            "cn": "在一小时内完成所有这些家庭作业是不可能的。"
+          }
+        ]
+      },
+      {
+        "text": "nothing",
+        "phonetic": "[ˈnʌθɪŋ]",
+        "pos": "n.",
+        "meaning": "无, 不关紧要之事, 零",
+        "app_sentences": []
+      },
+      {
+        "text": "British",
+        "phonetic": "[ˈbrɪtɪʃ]",
+        "pos": "a.",
+        "meaning": "英国的",
+        "app_sentences": []
+      },
+      {
+        "text": "actress",
+        "phonetic": "[ˈæktrɪs]",
+        "pos": "n.",
+        "meaning": "女演员",
+        "app_sentences": [
+          {
+            "en": "She wants to be a famous actress when she grows up.",
+            "cn": "她长大后想成为一名著名的女演员。"
+          }
+        ]
+      },
+      {
+        "text": "silver",
+        "phonetic": "[ˈsɪlvə]",
+        "pos": "n.",
+        "meaning": "银, 银币, 银器",
+        "app_sentences": [
+          {
+            "en": "My grandmother gave me a beautiful silver necklace.",
+            "cn": "我的祖母给了我一条漂亮的银项链。"
+          }
+        ]
+      },
+      {
+        "text": "the silver screen",
+        "phonetic": "",
+        "pos": "n.",
+        "meaning": "电影业",
+        "app_sentences": []
+      },
+      {
+        "text": "doubt",
+        "phonetic": "[daʊt]",
+        "pos": "n.",
+        "meaning": "怀疑, 疑惑",
+        "app_sentences": []
+      },
+      {
+        "text": "fear",
+        "phonetic": "[fɪə]",
+        "pos": "n.",
+        "meaning": "恐怖, 害怕, 担心",
+        "app_sentences": [
+          {
+            "en": "Many children fear the dark and like to sleep with a light on.",
+            "cn": "许多孩子害怕黑暗，喜欢开着灯睡觉。"
+          }
+        ]
+      },
+      {
+        "text": "succeed",
+        "phonetic": "[səkˈsiːd]",
+        "pos": "vi.",
+        "meaning": "成功, 继承, 继续",
+        "app_sentences": [
+          {
+            "en": "If you work hard, you will succeed in the final exam.",
+            "cn": "如果你努力学习，你会在期末考试中取得成功。"
+          }
+        ]
+      },
+      {
+        "text": "excellent",
+        "phonetic": "[ˈeksələnt]",
+        "pos": "a.",
+        "meaning": "优良的, 杰出的, 出色的",
+        "app_sentences": []
+      },
+      {
+        "text": "second",
+        "phonetic": "[ˈsekənd]",
+        "pos": "n.",
+        "meaning": "秒, 瞬间, 第二名, 支持者, 助手",
+        "app_sentences": []
+      },
+      {
+        "text": "satisfied",
+        "phonetic": "[ˈsætəsfaɪd]",
+        "pos": "a.",
+        "meaning": "感到满意的",
+        "app_sentences": []
+      },
+      {
+        "text": "risky",
+        "phonetic": "[ˈrɪski]",
+        "pos": "a.",
+        "meaning": "危险的",
+        "app_sentences": []
+      },
+      {
+        "text": "zero",
+        "phonetic": "[ˈzɪərəʊ]",
+        "pos": "n.",
+        "meaning": "零, 零点, 零度, 无, 乌有, 最低点",
+        "app_sentences": [
+          {
+            "en": "The temperature dropped to zero degrees last night.",
+            "cn": "昨晚气温降到了零度。"
+          }
+        ]
+      },
+      {
+        "text": "Olympics",
+        "phonetic": "[əˈlɪmpɪks]",
+        "pos": "n.",
+        "meaning": "奥林匹克运动会",
+        "app_sentences": []
+      },
+      {
+        "text": "athlete",
+        "phonetic": "[ˈæθliːt]",
+        "pos": "n.",
+        "meaning": "运动员, 运动选手",
+        "app_sentences": []
+      },
+      {
+        "text": "stick",
+        "phonetic": "[stɪk]",
+        "pos": "n.",
+        "meaning": "棍, 棒, 刺, 枯枝, 茎, 条状物",
+        "app_sentences": [
+          {
+            "en": "We use glue to stick the pictures onto the paper.",
+            "cn": "我们用胶水把图片粘到纸上。"
+          }
+        ]
+      },
+      {
+        "text": "stick to",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "粘住",
+        "app_sentences": []
+      },
+      {
+        "text": "superman",
+        "phonetic": "[ˈsuːpəmæn]",
+        "pos": "n.",
+        "meaning": "具有超人能力的人, 超人",
+        "app_sentences": []
+      }
+    ]
+  },
+  {
+    "grade": 8,
+    "semester": 1,
+    "unit": "Unit 2",
+    "data": [
+      {
+        "text": "shout",
+        "phonetic": "[ʃaʊt]",
+        "pos": "n.",
+        "meaning": "呼喊, 喊声",
+        "app_sentences": []
+      },
+      {
+        "text": "gate",
+        "phonetic": "[ɡeɪt]",
+        "pos": "n.",
+        "meaning": "门, 牌楼, 大门, 通道, 闸",
+        "app_sentences": []
+      },
+      {
+        "text": "build",
+        "phonetic": "[bɪld]",
+        "pos": "v.",
+        "meaning": "建立, 建筑",
+        "app_sentences": []
+      },
+      {
+        "text": "since",
+        "phonetic": "[sɪns]",
+        "pos": "prep.",
+        "meaning": "自...以后, 自...以来",
+        "app_sentences": [
+          {
+            "en": "I have known my best friend since we were in primary school.",
+            "cn": "我从小学就认识我最好的朋友了。"
+          }
+        ]
+      },
+      {
+        "text": "nor",
+        "phonetic": "[nɔː]",
+        "pos": "conj.",
+        "meaning": "也不, 也没有",
+        "app_sentences": []
+      },
+      {
+        "text": "hole",
+        "phonetic": "[həʊl]",
+        "pos": "n.",
+        "meaning": "孔, 洞, 穴, 漏洞",
+        "app_sentences": []
+      },
+      {
+        "text": "glad",
+        "phonetic": "[ɡlæd]",
+        "pos": "a.",
+        "meaning": "高兴的, 喜欢的, 情愿的",
+        "app_sentences": []
+      },
+      {
+        "text": "knock",
+        "phonetic": "[nɒk]",
+        "pos": "n.",
+        "meaning": "敲, 敲打, 敲门",
+        "app_sentences": []
+      },
+      {
+        "text": "knock down",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "击倒, 拆卸, 拍卖出",
+        "app_sentences": []
+      },
+      {
+        "text": "afraid",
+        "phonetic": "[əˈfreɪd]",
+        "pos": "a.",
+        "meaning": "害怕的, 恐怕的, 遗憾的",
+        "app_sentences": []
+      },
+      {
+        "text": "message",
+        "phonetic": "[ˈmesɪdʒ]",
+        "pos": "n.",
+        "meaning": "消息, 通讯, 讯息, 教训, 预言, 广告词",
+        "app_sentences": [
+          {
+            "en": "I left a message on your phone about our meeting time.",
+            "cn": "我在你手机上留言了，是关于我们开会时间的。"
+          }
+        ]
+      },
+      {
+        "text": "double",
+        "phonetic": "[ˈdʌbəl]",
+        "pos": "n.",
+        "meaning": "两倍",
+        "app_sentences": [
+          {
+            "en": "This math problem is double the difficulty of the last one.",
+            "cn": "这道数学题的难度是上一道的两倍。"
+          }
+        ]
+      },
+      {
+        "text": "understanding",
+        "phonetic": "[ˌʌndəˈstændɪŋ]",
+        "pos": "n.",
+        "meaning": "理解, 谅解",
+        "app_sentences": []
+      },
+      {
+        "text": "return",
+        "phonetic": "[rɪˈtɜːn]",
+        "pos": "n.",
+        "meaning": "回来, 返回, 来回票, 归还, 报答, 利润率, 报告书",
+        "app_sentences": []
+      },
+      {
+        "text": "lively",
+        "phonetic": "[ˈlaɪvli]",
+        "pos": "a.",
+        "meaning": "活泼的, 鲜明的, 生动的",
+        "app_sentences": []
+      },
+      {
+        "text": "theirs",
+        "phonetic": "[ðeəz]",
+        "pos": "pron.",
+        "meaning": "他们的",
+        "app_sentences": []
+      },
+      {
+        "text": "grade",
+        "phonetic": "[ɡreɪd]",
+        "pos": "n.",
+        "meaning": "等级, 年级, 阶段, 成绩, 程度, 坡度, 斜坡",
+        "app_sentences": []
+      },
+      {
+        "text": "article",
+        "phonetic": "[ˈɑːtɪkəl]",
+        "pos": "n.",
+        "meaning": "文章, 冠词, 物品, 物件, 条款, 契约",
+        "app_sentences": [
+          {
+            "en": "I read an interesting article about space in the magazine.",
+            "cn": "我在杂志上读到一篇关于太空的有趣文章。"
+          }
+        ]
+      },
+      {
+        "text": "priceless",
+        "phonetic": "[ˈpraɪsləs]",
+        "pos": "a.",
+        "meaning": "无价的, 极贵重的",
+        "app_sentences": []
+      },
+      {
+        "text": "offer",
+        "phonetic": "[ˈɒfə]",
+        "pos": "n.",
+        "meaning": "给予(物), 出价, 提议, 意图, 报价",
+        "app_sentences": []
+      },
+      {
+        "text": "plan",
+        "phonetic": "[plæn]",
+        "pos": "n.",
+        "meaning": "计划, 方案, 策略, 方法, 进度表, 程序表, 平面图, 设计图, 轮廓, 示意图",
+        "app_sentences": [
+          {
+            "en": "We plan to visit our grandparents during the summer holiday.",
+            "cn": "我们计划暑假期间去看望祖父母。"
+          }
+        ]
+      },
+      {
+        "text": "quite",
+        "phonetic": "[kwaɪt]",
+        "pos": "adv.",
+        "meaning": "相当, 完全, 十分",
+        "app_sentences": []
+      },
+      {
+        "text": "stressed",
+        "phonetic": "[strest]",
+        "pos": "a.",
+        "meaning": "感到有压力的；紧张的",
+        "app_sentences": []
+      },
+      {
+        "text": "recently",
+        "phonetic": "[ˈriːsəntli]",
+        "pos": "adv.",
+        "meaning": "最近",
+        "app_sentences": [
+          {
+            "en": "I recently read a very interesting science fiction book.",
+            "cn": "我最近读了一本非常有趣的科幻书。"
+          }
+        ]
+      },
+      {
+        "text": "online",
+        "phonetic": "[ˈɒnlaɪn]",
+        "pos": "计",
+        "meaning": "联机",
+        "app_sentences": []
+      },
+      {
+        "text": "allow",
+        "phonetic": "[əˈlaʊ]",
+        "pos": "vt.",
+        "meaning": "允许, 同意给予, 承认",
+        "app_sentences": []
+      },
+      {
+        "text": "ticket",
+        "phonetic": "[ˈtɪkɪt]",
+        "pos": "n.",
+        "meaning": "票, 券, 车票, 标签, 入场券, 证明书",
+        "app_sentences": []
+      },
+      {
+        "text": "true",
+        "phonetic": "[truː]",
+        "pos": "a.",
+        "meaning": "真实的, 正确的, 忠诚的, 可靠的, 纯粹的, 正式的",
+        "app_sentences": []
+      },
+      {
+        "text": "respect",
+        "phonetic": "[rɪˈspekt]",
+        "pos": "n.",
+        "meaning": "尊敬, 尊重, 问候",
+        "app_sentences": []
+      },
+      {
+        "text": "narrow",
+        "phonetic": "[ˈnærəʊ]",
+        "pos": "n.",
+        "meaning": "狭窄部分, 隘路",
+        "app_sentences": []
+      },
+      {
+        "text": "lane",
+        "phonetic": "[leɪn]",
+        "pos": "n.",
+        "meaning": "小路, 巷, 弄, 单行道",
+        "app_sentences": []
+      },
+      {
+        "text": "perhaps",
+        "phonetic": "[pəˈhæps]",
+        "pos": "adv.",
+        "meaning": "也许, 大概",
+        "app_sentences": [
+          {
+            "en": "Perhaps we can go to the library together after school.",
+            "cn": "也许放学后我们可以一起去图书馆。"
+          }
+        ]
+      },
+      {
+        "text": "argue",
+        "phonetic": "[ˈɑːɡjuː]",
+        "pos": "vi.",
+        "meaning": "提出理由, 争论, 辩论",
+        "app_sentences": []
+      },
+      {
+        "text": "divide",
+        "phonetic": "[dəˈvaɪd]",
+        "pos": "vi.",
+        "meaning": "分开, 分配, 分裂",
+        "app_sentences": [
+          {
+            "en": "Please divide the cake into eight equal pieces.",
+            "cn": "请把蛋糕分成八等份。"
+          }
+        ]
+      },
+      {
+        "text": "dividing line",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "分界线,界限",
+        "app_sentences": []
+      },
+      {
+        "text": "reach",
+        "phonetic": "[riːtʃ]",
+        "pos": "n.",
+        "meaning": "伸出, 延伸, 区域, 范围, 流域, 岬",
+        "app_sentences": [
+          {
+            "en": "I cannot reach the top shelf because I am not tall enough.",
+            "cn": "我够不到顶层的架子，因为我不够高。"
+          }
+        ]
+      },
+      {
+        "text": "agreement",
+        "phonetic": "[əˈɡriːmənt]",
+        "pos": "n.",
+        "meaning": "同意, 合约, 协议",
+        "app_sentences": [
+          {
+            "en": "After long discussion, they finally reached an agreement.",
+            "cn": "经过长时间的讨论，他们终于达成了一致。"
+          }
+        ]
+      },
+      {
+        "text": "relative",
+        "phonetic": "[ˈrelətɪv]",
+        "pos": "n.",
+        "meaning": "亲戚, 关系词",
+        "app_sentences": [
+          {
+            "en": "Many relatives came to my grandmother's birthday party.",
+            "cn": "许多亲戚来参加了我祖母的生日聚会。"
+          }
+        ]
+      },
+      {
+        "text": "government",
+        "phonetic": "[ˈɡʌvəmənt]",
+        "pos": "n.",
+        "meaning": "政府, 内阁",
+        "app_sentences": []
+      },
+      {
+        "text": "poem",
+        "phonetic": "[ˈpəʊɪm]",
+        "pos": "n.",
+        "meaning": "诗, 诗般美的事物",
+        "app_sentences": []
+      },
+      {
+        "text": "inside",
+        "phonetic": "[ɪnˈsaɪd]",
+        "pos": "n.",
+        "meaning": "内部, 内脏, 内幕",
+        "app_sentences": []
+      },
+      {
+        "text": "neighbour",
+        "phonetic": "[ˈneɪbə]",
+        "pos": "n.",
+        "meaning": "邻居, 邻接的东西, 邻国, 邻座, 邻人, 世人",
+        "app_sentences": [
+          {
+            "en": "Our neighbour is a kind old lady who often helps us.",
+            "cn": "我们的邻居是一位善良的老太太，经常帮助我们。"
+          }
+        ]
+      },
+      {
+        "text": "act",
+        "phonetic": "[ækt]",
+        "pos": "n.",
+        "meaning": "行动, 行为, 幕, 法案",
+        "app_sentences": []
+      },
+      {
+        "text": "pass",
+        "phonetic": "[pɑːs]",
+        "pos": "n.",
+        "meaning": "经过, 要隘, 途径, 通行, 护照, 及格",
+        "app_sentences": [
+          {
+            "en": "I hope I can pass all my subjects this term.",
+            "cn": "我希望这学期我能通过所有科目。"
+          },
+          {
+            "en": "Please pass the salt to me during dinner.",
+            "cn": "请吃饭时把盐递给我。"
+          }
+        ]
+      },
+      {
+        "text": "whenever",
+        "phonetic": "[wenˈevə]",
+        "pos": "conj.",
+        "meaning": "每当",
+        "app_sentences": [
+          {
+            "en": "You can call me whenever you need help with your homework.",
+            "cn": "无论何时你需要作业帮助，你都可以打电话给我。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 8,
+    "semester": 1,
+    "unit": "Unit 3",
+    "data": [
+      {
+        "text": "fair",
+        "phonetic": "[feə]",
+        "pos": "n.",
+        "meaning": "展览会, 市集, 美好的事物",
+        "app_sentences": [
+          {
+            "en": "Our teacher is always fair when she gives us marks.",
+            "cn": "我们的老师在给我们打分时总是很公平。"
+          },
+          {
+            "en": "It's not fair that she got more candy than I did.",
+            "cn": "她得到的糖果比我多，这不公平。"
+          }
+        ]
+      },
+      {
+        "text": "block",
+        "phonetic": "[blɒk]",
+        "pos": "n.",
+        "meaning": "街区, 木块, 石块, 块",
+        "app_sentences": []
+      },
+      {
+        "text": "artificial",
+        "phonetic": "[ˌɑːtɪˈfɪʃəl]",
+        "pos": "a.",
+        "meaning": "人造的, 假的, 非原地产的",
+        "app_sentences": []
+      },
+      {
+        "text": "condition",
+        "phonetic": "[kənˈdɪʃən]",
+        "pos": "n.",
+        "meaning": "情况, 条件",
+        "app_sentences": [
+          {
+            "en": "You must keep your books in good condition.",
+            "cn": "你必须保持你的书完好无损。"
+          }
+        ]
+      },
+      {
+        "text": "cost",
+        "phonetic": "[kɒst]",
+        "pos": "n.",
+        "meaning": "代价, 价值, 费用",
+        "app_sentences": []
+      },
+      {
+        "text": "lend",
+        "phonetic": "[lend]",
+        "pos": "vt.",
+        "meaning": "借, 贷款给, 增添, 提供, 出租",
+        "app_sentences": [
+          {
+            "en": "Could you lend me your pen? I need to write something down.",
+            "cn": "你能把你的笔借给我吗？我需要写点东西。"
+          }
+        ]
+      },
+      {
+        "text": "printer",
+        "phonetic": "[ˈprɪntə]",
+        "pos": "n.",
+        "meaning": "印刷工, 打印机",
+        "app_sentences": []
+      },
+      {
+        "text": "invent",
+        "phonetic": "[ɪnˈvent]",
+        "pos": "vt.",
+        "meaning": "发明, 创作, 虚构",
+        "app_sentences": [
+          {
+            "en": "Thomas Edison worked hard to invent the light bulb.",
+            "cn": "托马斯·爱迪生努力发明了电灯泡。"
+          }
+        ]
+      },
+      {
+        "text": "weigh",
+        "phonetic": "[weɪ]",
+        "pos": "vt.",
+        "meaning": "称...重量, 衡量, 把...压弯, 考虑, 权衡, 起锚",
+        "app_sentences": [
+          {
+            "en": "The doctor asked me to weigh myself every week.",
+            "cn": "医生要求我每周称体重。"
+          }
+        ]
+      },
+      {
+        "text": "kilogram",
+        "phonetic": "[ˈkɪləɡræm]",
+        "pos": "n.",
+        "meaning": "千克, 公斤",
+        "app_sentences": []
+      },
+      {
+        "text": "fix",
+        "phonetic": "[fɪks]",
+        "pos": "vt.",
+        "meaning": "使固定, 修理, 准备, 安装, 凝视, 牢记, 确定, 整理",
+        "app_sentences": [
+          {
+            "en": "My dad can fix my broken bicycle chain.",
+            "cn": "我爸爸能修理我坏掉的自行车链条。"
+          }
+        ]
+      },
+      {
+        "text": "invention",
+        "phonetic": "[ɪnˈvenʃən]",
+        "pos": "n.",
+        "meaning": "发明, 创作能力, 虚构的故事",
+        "app_sentences": [
+          {
+            "en": "The telephone is a great invention that changed the world.",
+            "cn": "电话是一项改变了世界的伟大发明。"
+          }
+        ]
+      },
+      {
+        "text": "download",
+        "phonetic": "[ˌdaʊnˈləʊd]",
+        "pos": "计",
+        "meaning": "卸载, 下栽",
+        "app_sentences": []
+      },
+      {
+        "text": "apply",
+        "phonetic": "[əˈplaɪ]",
+        "pos": "vt.",
+        "meaning": "涂, 应用",
+        "app_sentences": []
+      },
+      {
+        "text": "blind",
+        "phonetic": "[blaɪnd]",
+        "pos": "n.",
+        "meaning": "蒙蔽物, 窗帘",
+        "app_sentences": [
+          {
+            "en": "The blind man walks across the street with the help of his dog.",
+            "cn": "那位盲人在他的狗的帮助下过马路。"
+          }
+        ]
+      },
+      {
+        "text": "machine",
+        "phonetic": "[məˈʃiːn]",
+        "pos": "n.",
+        "meaning": "机器, 机械装置, 机构, 自动售货机, 机械般工作的人",
+        "app_sentences": []
+      },
+      {
+        "text": "warn",
+        "phonetic": "[wɔːn]",
+        "pos": "vt.",
+        "meaning": "警告, 提醒, 通知",
+        "app_sentences": []
+      },
+      {
+        "text": "object",
+        "phonetic": "[ˈɒbdʒɪkt]",
+        "pos": "n.",
+        "meaning": "物体, 目标, 目的, 对象, 宾语, 客体",
+        "app_sentences": []
+      },
+      {
+        "text": "sense",
+        "phonetic": "[sens]",
+        "pos": "n.",
+        "meaning": "感应, 感觉, 感官, 意识, 观念, 情理, 知觉, 理智",
+        "app_sentences": [
+          {
+            "en": "Wearing a helmet when riding a bike makes good sense.",
+            "cn": "骑自行车时戴头盔是很有道理的。"
+          }
+        ]
+      },
+      {
+        "text": "congratulations",
+        "phonetic": "[kənˌɡrætʃəˈleɪʃənz]",
+        "pos": "n.",
+        "meaning": "祝贺词, 祝贺语",
+        "app_sentences": [
+          {
+            "en": "Congratulations on winning the first prize in the contest!",
+            "cn": "祝贺你在比赛中获得一等奖！"
+          }
+        ]
+      },
+      {
+        "text": "advertisement",
+        "phonetic": "[ədˈvɜːtəsmənt]",
+        "pos": "n.",
+        "meaning": "广告, 启事, 广告宣传",
+        "app_sentences": []
+      },
+      {
+        "text": "everyday",
+        "phonetic": "[ˈevrideɪ]",
+        "pos": "a.",
+        "meaning": "每天的, 日常的, 平常的",
+        "app_sentences": [
+          {
+            "en": "Wearing a school uniform is part of our everyday life.",
+            "cn": "穿校服是我们日常生活的一部分。"
+          }
+        ]
+      },
+      {
+        "text": "trouble",
+        "phonetic": "[ˈtrʌbəl]",
+        "pos": "n.",
+        "meaning": "烦恼, 麻烦, 困难, 动乱, 故障",
+        "app_sentences": []
+      },
+      {
+        "text": "creative",
+        "phonetic": "[kriˈeɪtɪv]",
+        "pos": "a.",
+        "meaning": "有创造力的, 创作的, 产生的",
+        "app_sentences": []
+      },
+      {
+        "text": "imaginative",
+        "phonetic": "[ɪˈmædʒənətɪv]",
+        "pos": "a.",
+        "meaning": "想像的, 虚构的",
+        "app_sentences": []
+      },
+      {
+        "text": "inventor",
+        "phonetic": "[ɪnˈventə]",
+        "pos": "n.",
+        "meaning": "发明家",
+        "app_sentences": []
+      },
+      {
+        "text": "widely",
+        "phonetic": "[ˈwaɪdli]",
+        "pos": "adv.",
+        "meaning": "广泛地",
+        "app_sentences": []
+      },
+      {
+        "text": "curiosity",
+        "phonetic": "[ˌkjʊəriˈɒsəti]",
+        "pos": "n.",
+        "meaning": "好奇心, 新奇的事物, 珍品",
+        "app_sentences": []
+      },
+      {
+        "text": "talent",
+        "phonetic": "[ˈtælənt]",
+        "pos": "n.",
+        "meaning": "天才, 才能, 有才干的人, 天资",
+        "app_sentences": []
+      },
+      {
+        "text": "electricity",
+        "phonetic": "[ɪˌlekˈtrɪsəti]",
+        "pos": "n.",
+        "meaning": "电, 电流, 电学, 热情, 电力供应",
+        "app_sentences": [
+          {
+            "en": "Remember to turn off the lights to save electricity.",
+            "cn": "记得关灯节约用电。"
+          }
+        ]
+      },
+      {
+        "text": "lightning",
+        "phonetic": "[ˈlaɪtnɪŋ]",
+        "pos": "n.",
+        "meaning": "闪电",
+        "app_sentences": []
+      },
+      {
+        "text": "lightning rod",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "避雷针",
+        "app_sentences": []
+      },
+      {
+        "text": "pioneer",
+        "phonetic": "[ˌpaɪəˈnɪə]",
+        "pos": "n.",
+        "meaning": "先锋, 拓荒者, 创始人",
+        "app_sentences": [
+          {
+            "en": "He is a pioneer in the field of computer science.",
+            "cn": "他是计算机科学领域的先驱。"
+          }
+        ]
+      },
+      {
+        "text": "exploration",
+        "phonetic": "[ˌekspləˈreɪʃən]",
+        "pos": "n.",
+        "meaning": "探险, 踏勘, 探测",
+        "app_sentences": []
+      },
+      {
+        "text": "test",
+        "phonetic": "[test]",
+        "pos": "n.",
+        "meaning": "测试, 试验, 化验, 检验, 考验, 甲壳",
+        "app_sentences": [
+          {
+            "en": "We will have a vocabulary test in English class next Friday.",
+            "cn": "我们下周五英语课将有一次词汇测验。"
+          }
+        ]
+      },
+      {
+        "text": "despite",
+        "phonetic": "[dɪˈspaɪt]",
+        "pos": "n.",
+        "meaning": "轻视, 憎恨",
+        "app_sentences": []
+      },
+      {
+        "text": "failure",
+        "phonetic": "[ˈfeɪljə]",
+        "pos": "n.",
+        "meaning": "失败, 失败者, 不足, 缺乏, 破产",
+        "app_sentences": []
+      },
+      {
+        "text": "future",
+        "phonetic": "[ˈfjuːtʃə]",
+        "pos": "n.",
+        "meaning": "未来, 将来",
+        "app_sentences": []
+      },
+      {
+        "text": "explorer",
+        "phonetic": "[ɪkˈsplɔːrə]",
+        "pos": "n.",
+        "meaning": "探险家, 探测者, 勘探器",
+        "app_sentences": []
+      },
+      {
+        "text": "risk",
+        "phonetic": "[rɪsk]",
+        "pos": "n.",
+        "meaning": "冒险, 危险, 保险额",
+        "app_sentences": []
+      },
+      {
+        "text": "drive",
+        "phonetic": "[draɪv]",
+        "pos": "n.",
+        "meaning": "驾车, 快车道, 推进力, 驱动, 动力, 击球, 驱动器",
+        "app_sentences": []
+      },
+      {
+        "text": "earthquake",
+        "phonetic": "[ˈɜːθkweɪk]",
+        "pos": "n.",
+        "meaning": "地震",
+        "app_sentences": [
+          {
+            "en": "The earthquake caused a lot of damage to the buildings.",
+            "cn": "地震对建筑物造成了很大破坏。"
+          }
+        ]
+      },
+      {
+        "text": "keyhole",
+        "phonetic": "[ˈkiːhəʊl]",
+        "pos": "n.",
+        "meaning": "键孔, 栓孔, 锁眼",
+        "app_sentences": []
+      }
+    ]
+  },
+  {
+    "grade": 8,
+    "semester": 1,
+    "unit": "Unit 4",
+    "data": [
+      {
+        "text": "digital",
+        "phonetic": "[ˈdɪdʒətl]",
+        "pos": "a.",
+        "meaning": "数字显示的, 数字的",
+        "app_sentences": []
+      },
+      {
+        "text": "century",
+        "phonetic": "[ˈsentʃəri]",
+        "pos": "n.",
+        "meaning": "世纪, 百年",
+        "app_sentences": []
+      },
+      {
+        "text": "forever",
+        "phonetic": "[fərˈevə]",
+        "pos": "adv.",
+        "meaning": "永远",
+        "app_sentences": []
+      },
+      {
+        "text": "smartphone",
+        "phonetic": "[ˈsmɑːtfəʊn]",
+        "pos": "n.",
+        "meaning": "智能手机",
+        "app_sentences": []
+      },
+      {
+        "text": "wallet",
+        "phonetic": "[ˈwɒlɪt]",
+        "pos": "n.",
+        "meaning": "皮夹",
+        "app_sentences": []
+      },
+      {
+        "text": "payment",
+        "phonetic": "[ˈpeɪmənt]",
+        "pos": "n.",
+        "meaning": "付款, 支付的款项(或实物), 偿还, 报应, 惩罚",
+        "app_sentences": []
+      },
+      {
+        "text": "cash",
+        "phonetic": "[kæʃ]",
+        "pos": "n.",
+        "meaning": "现金",
+        "app_sentences": []
+      },
+      {
+        "text": "app",
+        "phonetic": "[æp]",
+        "pos": "计",
+        "meaning": "应用, 应用程序; 相联并行处理器",
+        "app_sentences": []
+      },
+      {
+        "text": "oven",
+        "phonetic": "[ˈʌvən]",
+        "pos": "n.",
+        "meaning": "烤箱, 灶, 子宫",
+        "app_sentences": []
+      },
+      {
+        "text": "except",
+        "phonetic": "[ɪkˈsept]",
+        "pos": "vt.",
+        "meaning": "除, 除外",
+        "app_sentences": []
+      },
+      {
+        "text": "convenient",
+        "phonetic": "[kənˈviːniənt]",
+        "pos": "a.",
+        "meaning": "方便的, 合宜的",
+        "app_sentences": []
+      },
+      {
+        "text": "development",
+        "phonetic": "[dɪˈveləpmənt]",
+        "pos": "n.",
+        "meaning": "发展",
+        "app_sentences": [
+          {
+            "en": "The rapid development of technology changes our lives.",
+            "cn": "科技的快速发展改变了我们的生活。"
+          }
+        ]
+      },
+      {
+        "text": "mobile",
+        "phonetic": "[ˈməʊbaɪl]",
+        "pos": "a.",
+        "meaning": "移动的, 易变的, 机动的",
+        "app_sentences": []
+      },
+      {
+        "text": "anywhere",
+        "phonetic": "[ˈeniweə]",
+        "pos": "adv.",
+        "meaning": "无论何处",
+        "app_sentences": []
+      },
+      {
+        "text": "a great deal",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "大量",
+        "app_sentences": []
+      },
+      {
+        "text": "via",
+        "phonetic": "[ˈvaɪə]",
+        "pos": "prep.",
+        "meaning": "经由, 经过, 通过",
+        "app_sentences": []
+      },
+      {
+        "text": "progress",
+        "phonetic": "[ˈprəʊɡres]",
+        "pos": "n.",
+        "meaning": "进步, 发展, 前进",
+        "app_sentences": [
+          {
+            "en": "My English teacher is happy with my progress this term.",
+            "cn": "我的英语老师对我这学期的进步感到高兴。"
+          }
+        ]
+      },
+      {
+        "text": "offline",
+        "phonetic": "[ˌɒfˈlaɪn]",
+        "pos": "计",
+        "meaning": "挂线, 脱机",
+        "app_sentences": []
+      },
+      {
+        "text": "nowadays",
+        "phonetic": "[ˈnaʊədeɪz]",
+        "pos": "n.",
+        "meaning": "现在, 现时, 当今",
+        "app_sentences": []
+      },
+      {
+        "text": "simply",
+        "phonetic": "[ˈsɪmpli]",
+        "pos": "adv.",
+        "meaning": "简单地, 只是, 简直, 简朴地, 坦白地",
+        "app_sentences": [
+          {
+            "en": "You can simply click this button to start the game.",
+            "cn": "你只需点击这个按钮就可以开始游戏。"
+          }
+        ]
+      },
+      {
+        "text": "save",
+        "phonetic": "[seɪv]",
+        "pos": "n.",
+        "meaning": "救球",
+        "app_sentences": [
+          {
+            "en": "We should save water by turning off the tap when not using it.",
+            "cn": "我们应该节约用水，不用水时关掉水龙头。"
+          }
+        ]
+      },
+      {
+        "text": "advantage",
+        "phonetic": "[ədˈvɑːntɪdʒ]",
+        "pos": "n.",
+        "meaning": "优点, 便利, 好处, 优势",
+        "app_sentences": []
+      },
+      {
+        "text": "effect",
+        "phonetic": "[ɪˈfekt]",
+        "pos": "n.",
+        "meaning": "结果, 影响, 效果, 印象",
+        "app_sentences": []
+      },
+      {
+        "text": "glue",
+        "phonetic": "[ɡluː]",
+        "pos": "n.",
+        "meaning": "胶, 粘性物",
+        "app_sentences": [
+          {
+            "en": "Can I borrow your glue to fix my broken notebook?",
+            "cn": "我能借你的胶水来修补我破损的笔记本吗？"
+          }
+        ]
+      },
+      {
+        "text": "be glued to sth",
+        "phonetic": "",
+        "pos": "网络",
+        "meaning": "粘在一起",
+        "app_sentences": []
+      },
+      {
+        "text": "strange",
+        "phonetic": "[streɪndʒ]",
+        "pos": "a.",
+        "meaning": "奇怪的, 陌生的, 生疏的, 不熟悉的, 不可思议的, 外行的, 外地的, 异乡的",
+        "app_sentences": []
+      },
+      {
+        "text": "throw",
+        "phonetic": "[θrəʊ]",
+        "pos": "vt.",
+        "meaning": "投, 掷, 抛, 发射, 摔下, 匆匆穿上(或脱下), 抛弃, 摆脱",
+        "app_sentences": []
+      },
+      {
+        "text": "guess",
+        "phonetic": "[ɡes]",
+        "pos": "n.",
+        "meaning": "猜测, 臆测",
+        "app_sentences": []
+      },
+      {
+        "text": "anyone",
+        "phonetic": "[ˈeniwʌn]",
+        "pos": "pron.",
+        "meaning": "任何人",
+        "app_sentences": []
+      },
+      {
+        "text": "bedroom",
+        "phonetic": "[ˈbedrʊm]",
+        "pos": "n.",
+        "meaning": "卧室",
+        "app_sentences": []
+      },
+      {
+        "text": "homework",
+        "phonetic": "[ˈhəʊmwɜːk]",
+        "pos": "n.",
+        "meaning": "家庭作业, 家里做的工作",
+        "app_sentences": [
+          {
+            "en": "I spent one hour doing my maths homework yesterday evening.",
+            "cn": "我昨天晚上花了一个小时做数学作业。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 8,
+    "semester": 1,
+    "unit": "Unit 5",
+    "data": [
+      {
+        "text": "opposite",
+        "phonetic": "[ˈɒpəzət]",
+        "pos": "a.",
+        "meaning": "相对的, 相反的, 对面的",
+        "app_sentences": []
+      },
+      {
+        "text": "packet",
+        "phonetic": "[ˈpækɪt]",
+        "pos": "n.",
+        "meaning": "小包, 一批信件, 大量, 信息包",
+        "app_sentences": []
+      },
+      {
+        "text": "picnic",
+        "phonetic": "[ˈpɪknɪk]",
+        "pos": "n.",
+        "meaning": "野餐, 远足, 愉快的经历",
+        "app_sentences": []
+      },
+      {
+        "text": "smelly",
+        "phonetic": "[ˈsmeli]",
+        "pos": "a.",
+        "meaning": "发臭的, 有臭味的",
+        "app_sentences": []
+      },
+      {
+        "text": "cheese",
+        "phonetic": "[tʃiːz]",
+        "pos": "n.",
+        "meaning": "乳酪",
+        "app_sentences": []
+      },
+      {
+        "text": "noise",
+        "phonetic": "[nɔɪz]",
+        "pos": "n.",
+        "meaning": "噪音, 杂音, 响声, 喧闹",
+        "app_sentences": []
+      },
+      {
+        "text": "reduce",
+        "phonetic": "[rɪˈdjuːs]",
+        "pos": "vt.",
+        "meaning": "减少, 分解, 降低, 使衰退, 把...分解, 把...归纳",
+        "app_sentences": []
+      },
+      {
+        "text": "kick",
+        "phonetic": "[kɪk]",
+        "pos": "n.",
+        "meaning": "踢, 反冲, 后座力, 凹底",
+        "app_sentences": [
+          {
+            "en": "He can kick the football very far.",
+            "cn": "他能把足球踢得很远。"
+          }
+        ]
+      },
+      {
+        "text": "seat",
+        "phonetic": "[siːt]",
+        "pos": "n.",
+        "meaning": "座, 座位, 位子, 席位, 所在地",
+        "app_sentences": [
+          {
+            "en": "Please take a seat and wait for your name to be called.",
+            "cn": "请坐下，等待叫到你的名字。"
+          }
+        ]
+      },
+      {
+        "text": "passenger",
+        "phonetic": "[ˈpæsɪndʒə]",
+        "pos": "n.",
+        "meaning": "乘客, 旅客",
+        "app_sentences": [
+          {
+            "en": "All passengers must wear seat belts on the bus.",
+            "cn": "所有乘客在公交车上都必须系安全带。"
+          }
+        ]
+      },
+      {
+        "text": "anything",
+        "phonetic": "[ˈeniθɪŋ]",
+        "pos": "pron.",
+        "meaning": "任何事",
+        "app_sentences": []
+      },
+      {
+        "text": "fool",
+        "phonetic": "[fuːl]",
+        "pos": "n.",
+        "meaning": "愚人, 受骗者, 奶油拌水果",
+        "app_sentences": []
+      },
+      {
+        "text": "sign",
+        "phonetic": "[saɪn]",
+        "pos": "n.",
+        "meaning": "符号, 招牌, 征兆, 正负号, 手势",
+        "app_sentences": [
+          {
+            "en": "There is a 'No Smoking' sign on the wall of the classroom.",
+            "cn": "教室墙上有一个'禁止吸烟'的标志。"
+          }
+        ]
+      },
+      {
+        "text": "throat",
+        "phonetic": "[θrəʊt]",
+        "pos": "n.",
+        "meaning": "咽喉, 喉咙, 嗓音",
+        "app_sentences": []
+      },
+      {
+        "text": "clear your throat",
+        "phonetic": "",
+        "pos": "网络",
+        "meaning": "清嗓子；干咳",
+        "app_sentences": []
+      },
+      {
+        "text": "responsibility",
+        "phonetic": "[rɪˌspɒnsəˈbɪləti]",
+        "pos": "n.",
+        "meaning": "责任, 职责, 负担, 可靠性",
+        "app_sentences": []
+      },
+      {
+        "text": "cause",
+        "phonetic": "[kɔːz]",
+        "pos": "n.",
+        "meaning": "原因, 目标",
+        "app_sentences": []
+      },
+      {
+        "text": "belt",
+        "phonetic": "[belt]",
+        "pos": "n.",
+        "meaning": "带子, 地带",
+        "app_sentences": []
+      },
+      {
+        "text": "seat belt",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "安全带",
+        "app_sentences": []
+      },
+      {
+        "text": "station",
+        "phonetic": "[ˈsteɪʃən]",
+        "pos": "n.",
+        "meaning": "车站, 站, 局, 驻地, 位置, 身分, 地位",
+        "app_sentences": []
+      },
+      {
+        "text": "flowerpot",
+        "phonetic": "[ˈflaʊəpɒt]",
+        "pos": "n.",
+        "meaning": "花盆, 花钵",
+        "app_sentences": []
+      },
+      {
+        "text": "pick up",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "掘地, 捡起, 获得, 学会, 看到, 中途带, 搭乘, 重新找到, 振作, 加快, 好转, 整理",
+        "app_sentences": [
+          {
+            "en": "Please pick up the piece of paper you dropped on the floor.",
+            "cn": "请把你掉在地上的那张纸捡起来。"
+          }
+        ]
+      },
+      {
+        "text": "mess",
+        "phonetic": "[mes]",
+        "pos": "n.",
+        "meaning": "食堂, 伙食, 用膳, 一份食品, 混乱, 乱七八糟, 困境",
+        "app_sentences": [
+          {
+            "en": "My brother's room is always a mess with toys everywhere.",
+            "cn": "我弟弟的房间总是一团糟，玩具到处都是。"
+          }
+        ]
+      },
+      {
+        "text": "honesty",
+        "phonetic": "[ˈɒnəsti]",
+        "pos": "n.",
+        "meaning": "诚实, 公正, 正直",
+        "app_sentences": []
+      },
+      {
+        "text": "spread",
+        "phonetic": "[spred]",
+        "pos": "n.",
+        "meaning": "传播, 散布, 伸展",
+        "app_sentences": [
+          {
+            "en": "We should try to spread kindness and help others.",
+            "cn": "我们应该努力传播善意并帮助他人。"
+          }
+        ]
+      },
+      {
+        "text": "law",
+        "phonetic": "[lɔː]",
+        "pos": "n.",
+        "meaning": "法律, 法则, 定律, 法律的制约, 法学, 司法界, 诉讼",
+        "app_sentences": []
+      },
+      {
+        "text": "lawyer",
+        "phonetic": "[ˈlɔːjə]",
+        "pos": "n.",
+        "meaning": "律师",
+        "app_sentences": []
+      },
+      {
+        "text": "urgent",
+        "phonetic": "[ˈɜːdʒənt]",
+        "pos": "a.",
+        "meaning": "紧急的, 急迫的, 催逼的",
+        "app_sentences": []
+      },
+      {
+        "text": "citizen",
+        "phonetic": "[ˈsɪtɪzən]",
+        "pos": "n.",
+        "meaning": "市民, 公民",
+        "app_sentences": []
+      },
+      {
+        "text": "click",
+        "phonetic": "[klɪk]",
+        "pos": "n.",
+        "meaning": "咔哒声, 啪嗒声",
+        "app_sentences": []
+      },
+      {
+        "text": "basic",
+        "phonetic": "[ˈbeɪsɪk]",
+        "pos": "n.",
+        "meaning": "基本原理, 要素, 基本规律",
+        "app_sentences": []
+      },
+      {
+        "text": "personal",
+        "phonetic": "[ˈpɜːsənəl]",
+        "pos": "a.",
+        "meaning": "私人的, 涉及隐私的, 有人性的, 人称的, 亲自的, 身体的",
+        "app_sentences": []
+      },
+      {
+        "text": "private",
+        "phonetic": "[ˈpraɪvət]",
+        "pos": "a.",
+        "meaning": "私人的, 秘密的, 私立的, 隐蔽的",
+        "app_sentences": [
+          {
+            "en": "This diary is private, so please do not read it.",
+            "cn": "这本日记是私人的，所以请不要阅读。"
+          }
+        ]
+      },
+      {
+        "text": "avoid",
+        "phonetic": "[əˈvɔɪd]",
+        "pos": "vt.",
+        "meaning": "避免, 防止, 撤消",
+        "app_sentences": [
+          {
+            "en": "You should avoid making the same mistake next time.",
+            "cn": "你应该避免下次再犯同样的错误。"
+          }
+        ]
+      },
+      {
+        "text": "address",
+        "phonetic": "[əˈdres]",
+        "pos": "n.",
+        "meaning": "住址, 演说, 举止, 灵巧, 求爱",
+        "app_sentences": [
+          {
+            "en": "Please write down your name and address on this form.",
+            "cn": "请在这张表格上写下你的姓名和地址。"
+          }
+        ]
+      },
+      {
+        "text": "passport",
+        "phonetic": "[ˈpɑːspɔːt]",
+        "pos": "n.",
+        "meaning": "护照, 手段, 通行证",
+        "app_sentences": [
+          {
+            "en": "You need a passport to travel to another country.",
+            "cn": "你需要护照才能去另一个国家旅行。"
+          }
+        ]
+      },
+      {
+        "text": "limit",
+        "phonetic": "[ˈlɪmɪt]",
+        "pos": "n.",
+        "meaning": "界限, 边界, 限度, 极限, 限制",
+        "app_sentences": []
+      },
+      {
+        "text": "careless",
+        "phonetic": "[ˈkeələs]",
+        "pos": "a.",
+        "meaning": "粗心的, 不关心的, 无忧无虑的",
+        "app_sentences": []
+      },
+      {
+        "text": "aware",
+        "phonetic": "[əˈweə]",
+        "pos": "a.",
+        "meaning": "知道的, 有觉悟的",
+        "app_sentences": []
+      },
+      {
+        "text": "cheat",
+        "phonetic": "[tʃiːt]",
+        "pos": "n.",
+        "meaning": "欺骗, 作弊, 骗子",
+        "app_sentences": []
+      },
+      {
+        "text": "trust",
+        "phonetic": "[trʌst]",
+        "pos": "n.",
+        "meaning": "信任, 信赖, 相信, 受托, 职责, 信心, 托拉斯",
+        "app_sentences": [
+          {
+            "en": "Good friends should always trust each other.",
+            "cn": "好朋友应该总是相互信任。"
+          }
+        ]
+      },
+      {
+        "text": "enemy",
+        "phonetic": "[ˈenəmi]",
+        "pos": "n.",
+        "meaning": "敌人, 仇敌, 敌军",
+        "app_sentences": [
+          {
+            "en": "In the story, the brave knight fought against the enemy.",
+            "cn": "在故事中，勇敢的骑士与敌人战斗。"
+          }
+        ]
+      },
+      {
+        "text": "behave",
+        "phonetic": "[bɪˈheɪv]",
+        "pos": "vi.",
+        "meaning": "举止端正, 行为规矩",
+        "app_sentences": []
+      },
+      {
+        "text": "cyberbullying",
+        "phonetic": "[ˈsaɪbəˌbʊliɪŋ]",
+        "pos": "",
+        "meaning": "网上欺凌",
+        "app_sentences": []
+      }
+    ]
+  },
+  {
+    "grade": 8,
+    "semester": 1,
+    "unit": "Unit 6",
+    "data": [
+      {
+        "text": "lost",
+        "phonetic": "[lɒst]",
+        "pos": "a.",
+        "meaning": "失去的, 遗失的, 迷惑的",
+        "app_sentences": []
+      },
+      {
+        "text": "ground",
+        "phonetic": "[ɡraʊnd]",
+        "pos": "n.",
+        "meaning": "土地, 战场, 场地, 地面, 范围",
+        "app_sentences": [
+          {
+            "en": "Don't throw rubbish on the ground. Put it in the bin.",
+            "cn": "不要把垃圾扔在地上，放进垃圾桶里。"
+          }
+        ]
+      },
+      {
+        "text": "scared",
+        "phonetic": "[skeəd]",
+        "pos": "a.",
+        "meaning": "害怕的, 担惊受怕的, 惊慌的, 吓坏了的",
+        "app_sentences": []
+      },
+      {
+        "text": "shut",
+        "phonetic": "[ʃʌt]",
+        "pos": "n.",
+        "meaning": "关闭",
+        "app_sentences": [
+          {
+            "en": "Please shut the window because it's cold outside.",
+            "cn": "请关上窗户，因为外面很冷。"
+          }
+        ]
+      },
+      {
+        "text": "shocking",
+        "phonetic": "[ˈʃɒkɪŋ]",
+        "pos": "a.",
+        "meaning": "令人震惊的, 极坏的, 不正当的",
+        "app_sentences": []
+      },
+      {
+        "text": "coach",
+        "phonetic": "[kəʊtʃ]",
+        "pos": "n.",
+        "meaning": "四轮大马车, 教练",
+        "app_sentences": []
+      },
+      {
+        "text": "straight",
+        "phonetic": "[streɪt]",
+        "pos": "n.",
+        "meaning": "直线, 直",
+        "app_sentences": [
+          {
+            "en": "Go straight along this road, and you will see the post office.",
+            "cn": "沿着这条路直走，你就会看到邮局。"
+          }
+        ]
+      },
+      {
+        "text": "sand",
+        "phonetic": "[sænd]",
+        "pos": "n.",
+        "meaning": "沙, 沙子, 沙滩, 光阴, 生涯",
+        "app_sentences": [
+          {
+            "en": "Children like to play with sand on the beach.",
+            "cn": "孩子们喜欢在海滩上玩沙子。"
+          }
+        ]
+      },
+      {
+        "text": "flood",
+        "phonetic": "[flʌd]",
+        "pos": "n.",
+        "meaning": "洪水, 大量之水, 涨潮",
+        "app_sentences": []
+      },
+      {
+        "text": "thick",
+        "phonetic": "[θɪk]",
+        "pos": "a.",
+        "meaning": "厚的, 粗壮的, 浓的, 迟钝的, 浑浊的, 多雾的, 过分的, 口齿不清的",
+        "app_sentences": []
+      },
+      {
+        "text": "smoke",
+        "phonetic": "[sməʊk]",
+        "pos": "n.",
+        "meaning": "烟, 雾气, 烟熏剂, 抽烟, 烟色",
+        "app_sentences": []
+      },
+      {
+        "text": "shower",
+        "phonetic": "[ˈʃaʊə]",
+        "pos": "n.",
+        "meaning": "阵雨, 淋浴, 一阵, 展出者, 显示者",
+        "app_sentences": []
+      },
+      {
+        "text": "historical",
+        "phonetic": "[hɪˈstɒrɪkəl]",
+        "pos": "a.",
+        "meaning": "历史的, 史实的, 历史上的",
+        "app_sentences": []
+      },
+      {
+        "text": "expert",
+        "phonetic": "[ˈekspɜːt]",
+        "pos": "n.",
+        "meaning": "专家, 行家",
+        "app_sentences": []
+      },
+      {
+        "text": "timeline",
+        "phonetic": "[ˈtaɪmlaɪn]",
+        "pos": "n.",
+        "meaning": "时间轴, 时间表",
+        "app_sentences": []
+      },
+      {
+        "text": "reaction",
+        "phonetic": "[riˈækʃən]",
+        "pos": "n.",
+        "meaning": "反应, 反作用, 反动",
+        "app_sentences": []
+      },
+      {
+        "text": "airline",
+        "phonetic": "[ˈeəlaɪn]",
+        "pos": "n.",
+        "meaning": "航线, 航线的设备, 航空公司",
+        "app_sentences": []
+      },
+      {
+        "text": "weekday",
+        "phonetic": "[ˈwiːkdeɪ]",
+        "pos": "n.",
+        "meaning": "周日, 平日",
+        "app_sentences": []
+      },
+      {
+        "text": "railway",
+        "phonetic": "[ˈreɪlweɪ]",
+        "pos": "n.",
+        "meaning": "铁路, 轨道",
+        "app_sentences": []
+      },
+      {
+        "text": "rainstorm",
+        "phonetic": "[ˈreɪnstɔːm]",
+        "pos": "n.",
+        "meaning": "雨暴",
+        "app_sentences": []
+      },
+      {
+        "text": "service",
+        "phonetic": "[ˈsɜːvɪs]",
+        "pos": "n.",
+        "meaning": "服务, 贡献, 雇佣, 公职, 服役, 功劳, 仪式, 送达, 行政部门",
+        "app_sentences": []
+      },
+      {
+        "text": "search",
+        "phonetic": "[sɜːtʃ]",
+        "pos": "n.",
+        "meaning": "搜寻, 查究",
+        "app_sentences": []
+      },
+      {
+        "text": "motherland",
+        "phonetic": "[ˈmʌðəlænd]",
+        "pos": "n.",
+        "meaning": "祖国",
+        "app_sentences": []
+      },
+      {
+        "text": "terrible",
+        "phonetic": "[ˈterəbəl]",
+        "pos": "a.",
+        "meaning": "可怕的, 令人恐惧的, 极坏的",
+        "app_sentences": []
+      },
+      {
+        "text": "danger",
+        "phonetic": "[ˈdeɪndʒə]",
+        "pos": "n.",
+        "meaning": "危险, 威胁",
+        "app_sentences": []
+      },
+      {
+        "text": "tsunami",
+        "phonetic": "[tsʊˈnɑːmi]",
+        "pos": "n.",
+        "meaning": "海啸",
+        "app_sentences": []
+      },
+      {
+        "text": "warning",
+        "phonetic": "[ˈwɔːnɪŋ]",
+        "pos": "n.",
+        "meaning": "警告, 预告, 预兆, 通知",
+        "app_sentences": []
+      },
+      {
+        "text": "iron",
+        "phonetic": "[ˈaɪən]",
+        "pos": "n.",
+        "meaning": "铁, 熨斗, 铁器, 坚强, 烙铁, 镣铐",
+        "app_sentences": []
+      },
+      {
+        "text": "fashion",
+        "phonetic": "[ˈfæʃən]",
+        "pos": "n.",
+        "meaning": "流行, 风尚, 时样",
+        "app_sentences": []
+      },
+      {
+        "text": "slim",
+        "phonetic": "[slɪm]",
+        "pos": "a.",
+        "meaning": "瘦的, 苗条的, 微小的, 稀少的, 微薄的",
+        "app_sentences": []
+      },
+      {
+        "text": "bleed",
+        "phonetic": "[bliːd]",
+        "pos": "vi.",
+        "meaning": "流血, 悲痛, 渗出",
+        "app_sentences": []
+      },
+      {
+        "text": "uncomfortable",
+        "phonetic": "[ʌnˈkʌmftəbəl]",
+        "pos": "a.",
+        "meaning": "不舒服的, 不自在的, 不安的",
+        "app_sentences": []
+      },
+      {
+        "text": "jeans",
+        "phonetic": "[dʒiːnz]",
+        "pos": "n.",
+        "meaning": "工装裤, 牛仔裤",
+        "app_sentences": [
+          {
+            "en": "I usually wear jeans and a T-shirt to school.",
+            "cn": "我通常穿牛仔裤和T恤去上学。"
+          }
+        ]
+      },
+      {
+        "text": "encouraging",
+        "phonetic": "[ɪnˈkʌrədʒɪŋ]",
+        "pos": "a.",
+        "meaning": "鼓励的, 促进的",
+        "app_sentences": []
+      },
+      {
+        "text": "herself",
+        "phonetic": "[həˈself]",
+        "pos": "pron.",
+        "meaning": "她自己, 她亲自",
+        "app_sentences": [
+          {
+            "en": "She made the birthday cake all by herself.",
+            "cn": "她完全是自己做的生日蛋糕。"
+          }
+        ]
+      },
+      {
+        "text": "university",
+        "phonetic": "[ˌjuːnəˈvɜːsəti]",
+        "pos": "n.",
+        "meaning": "大学",
+        "app_sentences": [
+          {
+            "en": "My dream is to go to a good university after high school.",
+            "cn": "我的梦想是高中毕业后去一所好大学。"
+          }
+        ]
+      },
+      {
+        "text": "honour",
+        "phonetic": "[ˈɒnə]",
+        "pos": "n.",
+        "meaning": "荣誉, 头衔, 信用, 尊敬, 名誉, 阁下, 勋章",
+        "app_sentences": []
+      },
+      {
+        "text": "wound",
+        "phonetic": "[wuːnd]",
+        "pos": "n.",
+        "meaning": "创伤, 伤口, 伤疤, 伤害, 痛苦",
+        "app_sentences": [
+          {
+            "en": "The doctor cleaned and bandaged the soldier's wound.",
+            "cn": "医生清洗并包扎了士兵的伤口。"
+          }
+        ]
+      },
+      {
+        "text": "heroine",
+        "phonetic": "[ˈherəʊɪn]",
+        "pos": "n.",
+        "meaning": "巾帼英雄, 烈妇, 女主角",
+        "app_sentences": []
+      }
+    ]
+  }
+]

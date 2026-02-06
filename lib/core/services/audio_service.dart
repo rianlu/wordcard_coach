@@ -290,6 +290,6 @@ class AudioService {
   }
   
   bool _isEnglish(String text) {
-    return RegExp(r'^[a-zA-Z\s\.,\?!]+$').hasMatch(text);
+    return RegExp(r"^[a-zA-Z\s\.,\?!'-]+$").hasMatch(text);
   }
 }

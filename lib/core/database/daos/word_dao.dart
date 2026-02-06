@@ -344,8 +344,8 @@ class WordDao {
       sql += ' WHERE ${whereConditions.join(' AND ')}';
     }
 
-    // Order by logical sequence: Grade -> Semester -> Unit -> ID (assuming insertion order)
-    sql += ' ORDER BY w.grade ASC, w.semester ASC, w.unit ASC, w.id ASC LIMIT ? OFFSET ?';
+    // Order by logical sequence: Grade -> Semester -> Unit -> orderIndex
+    sql += ' ORDER BY w.grade ASC, w.semester ASC, w.unit ASC, w.order_index ASC LIMIT ? OFFSET ?';
     args.add(limit);
     args.add(offset);
 

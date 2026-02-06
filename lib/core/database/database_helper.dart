@@ -25,7 +25,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 4,
+      version: 6,
       onCreate: _createDB,
       onUpgrade: _onUpgrade,
       onOpen: _onOpen,
@@ -74,6 +74,18 @@ class DatabaseHelper {
         )
       ''');
     }
+
+    if (oldVersion < 5) {
+      // Migration v4 -> v5 (add pos column to words table)
+      print("Migrating DB to version 5 (Adding pos column)...");
+      await _safeAddColumn(db, 'words', 'pos', "TEXT NOT NULL DEFAULT ''");
+    }
+
+    if (oldVersion < 6) {
+      // Migration v5 -> v6 (add order_index column to words table)
+      print("Migrating DB to version 6 (Adding order_index column)...");
+      await _safeAddColumn(db, 'words', 'order_index', "INTEGER NOT NULL DEFAULT 0");
+    }
   }
 
   // Helper for safe column addition
@@ -94,12 +106,14 @@ class DatabaseHelper {
         text TEXT NOT NULL,
         meaning TEXT NOT NULL,
         phonetic TEXT NOT NULL,
+        pos TEXT NOT NULL DEFAULT '',
         grade INTEGER NOT NULL,
         semester INTEGER NOT NULL,
         unit TEXT NOT NULL,
         difficulty INTEGER NOT NULL,
         category TEXT NOT NULL,
         book_id TEXT NOT NULL DEFAULT '',
+        order_index INTEGER NOT NULL DEFAULT 0,
         syllables TEXT
       )
     ''');
@@ -375,6 +389,7 @@ class DatabaseHelper {
        text: text,
        meaning: data['meaning'] ?? '[释义]',
        phonetic: data['phonetic'] ?? '',
+       pos: data['pos'] ?? '',
        grade: grade,
        semester: semester,
        unit: unit,
@@ -382,6 +397,7 @@ class DatabaseHelper {
        category: 'general',
        syllables: syllables,
        bookId: bookId,
+       orderIndex: index,
      );
      
      batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
@@ -564,17 +580,20 @@ class DatabaseHelper {
      
      // Construct the SQL with rawInsert for Upsert support
      // ON CONFLICT(id) DO UPDATE SET ...
+     final pos = data['pos'] ?? '';
      batch.rawInsert('''
-       INSERT INTO words (id, text, meaning, phonetic, grade, semester, unit, difficulty, category, book_id, syllables)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       INSERT INTO words (id, text, meaning, phonetic, pos, grade, semester, unit, difficulty, category, book_id, order_index, syllables)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(id) DO UPDATE SET
          text = excluded.text,
          meaning = excluded.meaning,
          phonetic = excluded.phonetic,
+         pos = excluded.pos,
+         order_index = excluded.order_index,
          syllables = excluded.syllables,
          unit = excluded.unit
      ''', [
-       id, text, meaning, phonetic, grade, semester, unit, 1, 'general', bookId, syllablesJson
+       id, text, meaning, phonetic, pos, grade, semester, unit, 1, 'general', bookId, index, syllablesJson
      ]);
 
       // Sentences: These are less critical to preserve progress since they don't hold progress directly (usually).

@@ -1,0 +1,5036 @@
+[
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Unit 1",
+    "data": [
+      {
+        "text": "review",
+        "phonetic": "[rɪˈvjuː]",
+        "pos": "n.",
+        "meaning": "检讨, 复习, 回顾, 检阅, 评论",
+        "app_sentences": [
+          {
+            "en": "We should review all the new words before the test.",
+            "cn": "考试前我们应该复习所有新单词。"
+          },
+          {
+            "en": "I need to review all the lessons before the final exam.",
+            "cn": "期末考试前我需要复习所有的课程。"
+          }
+        ]
+      },
+      {
+        "text": "chocolate",
+        "phonetic": "['t1=kl2t]",
+        "pos": "n.",
+        "meaning": "巧克力",
+        "app_sentences": [
+          {
+            "en": "My sister loves to eat dark chocolate after dinner.",
+            "cn": "我妹妹喜欢在晚饭后吃黑巧克力。"
+          }
+        ]
+      },
+      {
+        "text": "factory",
+        "phonetic": "[ˈfæktəri]",
+        "pos": "n.",
+        "meaning": "工厂, 产生地, 代理店",
+        "app_sentences": [
+          {
+            "en": "My father works in a car factory near our town.",
+            "cn": "我父亲在我们镇附近的一家汽车厂工作。"
+          },
+          {
+            "en": "His father works in a car factory outside the city.",
+            "cn": "他父亲在城外的一家汽车厂工作。"
+          }
+        ]
+      },
+      {
+        "text": "exciting",
+        "phonetic": "[ɪkˈsaɪtɪŋ]",
+        "pos": "a.",
+        "meaning": "令人兴奋的, 刺激的",
+        "app_sentences": [
+          {
+            "en": "The school trip to the museum was very exciting for everyone.",
+            "cn": "去博物馆的学校旅行对每个人来说都非常令人兴奋。"
+          }
+        ]
+      },
+      {
+        "text": "most",
+        "phonetic": "[m2%st]",
+        "pos": "n.",
+        "meaning": "最多, 最大",
+        "app_sentences": [
+          {
+            "en": "Math is the most difficult subject for me this term.",
+            "cn": "这学期数学对我来说是最难的科目。"
+          }
+        ]
+      },
+      {
+        "text": "magical",
+        "phonetic": "[ˈmædʒɪkəl]",
+        "pos": "a.",
+        "meaning": "魔术的, 有魔力的, 不可思议的",
+        "app_sentences": [
+          {
+            "en": "The story about a magical forest is my favourite to read.",
+            "cn": "那个关于魔法森林的故事是我最喜欢读的。"
+          },
+          {
+            "en": "The story about the magical kingdom is very popular.",
+            "cn": "那个关于魔法王国的故事非常受欢迎。"
+          }
+        ]
+      },
+      {
+        "text": "part",
+        "phonetic": "[pɑːt]",
+        "pos": "n.",
+        "meaning": "部分, 局部, 零件, 要素, 等分, 职责, 角色, 部位",
+        "app_sentences": [
+          {
+            "en": "Reading is an important part of my daily life.",
+            "cn": "阅读是我日常生活的一个重要部分。"
+          },
+          {
+            "en": "The best part of my day is playing basketball with friends.",
+            "cn": "我一天中最好的部分是和朋友打篮球。"
+          }
+        ]
+      },
+      {
+        "text": "side",
+        "phonetic": "[saɪd]",
+        "pos": "n.",
+        "meaning": "旁边, 侧, 方面, 胁, 侧边, 血统",
+        "app_sentences": [
+          {
+            "en": "My school is on the other side of the park.",
+            "cn": "我的学校在公园的另一边。"
+          }
+        ]
+      },
+      {
+        "text": "town",
+        "phonetic": "[taʊn]",
+        "pos": "n.",
+        "meaning": "城镇, 市, 镇",
+        "app_sentences": [
+          {
+            "en": "There is a new library in the center of our small town.",
+            "cn": "我们小镇的中心新建了一个图书馆。"
+          }
+        ]
+      },
+      {
+        "text": "poor",
+        "phonetic": "[pɔː]",
+        "pos": "a.",
+        "meaning": "贫穷的, 贫乏的, 不幸的, 可怜的, 拙劣的, 卑鄙的",
+        "app_sentences": [
+          {
+            "en": "The kind boy often shares his lunch with the poor old man.",
+            "cn": "那个善良的男孩经常把他的午餐分给那位可怜的老人。"
+          }
+        ]
+      },
+      {
+        "text": "stay",
+        "phonetic": "[ste!]",
+        "pos": "n.",
+        "meaning": "停留, 逗留, 制止, 延缓, 停止, 支柱, 支撑物, 支索",
+        "app_sentences": [
+          {
+            "en": "I will stay at my grandparents' house during the winter holiday.",
+            "cn": "寒假期间我将待在祖父母家。"
+          },
+          {
+            "en": "I will stay at my grandparents' house during the summer holiday.",
+            "cn": "暑假期间我会待在祖父母家。"
+          }
+        ]
+      },
+      {
+        "text": "only",
+        "phonetic": "['2%nli]",
+        "pos": "a.",
+        "meaning": "唯一的, 仅有的, 最佳的",
+        "app_sentences": [
+          {
+            "en": "She is the only student in our class who can play the violin.",
+            "cn": "她是我们班唯一会拉小提琴的学生。"
+          }
+        ]
+      },
+      {
+        "text": "watery",
+        "phonetic": "[ˈwɔːtəri]",
+        "pos": "a.",
+        "meaning": "水的, 湿的, 平淡的, 稀薄的, 水淋淋的",
+        "app_sentences": [
+          {
+            "en": "The soup became too watery after I added more water.",
+            "cn": "我加了更多水后，汤变得太稀了。"
+          }
+        ]
+      },
+      {
+        "text": "cabbage",
+        "phonetic": "[ˈkæbɪdʒ]",
+        "pos": "n.",
+        "meaning": "卷心菜",
+        "app_sentences": [
+          {
+            "en": "My mother makes a delicious salad with fresh cabbage.",
+            "cn": "我妈妈用新鲜的卷心菜做美味的沙拉。"
+          }
+        ]
+      },
+      {
+        "text": "freezing",
+        "phonetic": "[ˈfriːzɪŋ]",
+        "pos": "a.",
+        "meaning": "冰冻的, 冷冻用的, 严寒的",
+        "app_sentences": [
+          {
+            "en": "It was freezing cold when we went outside without coats.",
+            "cn": "我们没穿外套出去时，天气冷极了。"
+          }
+        ]
+      },
+      {
+        "text": "forget",
+        "phonetic": "[fəˈɡet]",
+        "pos": "vt.",
+        "meaning": "忘记, 忽略, 忘",
+        "app_sentences": [
+          {
+            "en": "Don't forget to bring your sports shoes for P.E. class tomorrow.",
+            "cn": "别忘了明天体育课带你的运动鞋。"
+          },
+          {
+            "en": "Please do not forget to bring your homework to school tomorrow.",
+            "cn": "请不要忘记明天把你的作业带到学校来。"
+          }
+        ]
+      },
+      {
+        "text": "touch",
+        "phonetic": "[tʌtʃ]",
+        "pos": "n.",
+        "meaning": "触觉, 碰, 触, 机灵, 轻触, 格调, 少许, 缺点, 弹力",
+        "app_sentences": [
+          {
+            "en": "Do not touch the hot stove because it is very dangerous.",
+            "cn": "不要触摸热炉子，因为它很危险。"
+          }
+        ]
+      },
+      {
+        "text": "once",
+        "phonetic": "[wʌns]",
+        "pos": "adv.",
+        "meaning": "一次, 曾经, 一旦",
+        "app_sentences": [
+          {
+            "en": "I visit my cousin in the city once a month.",
+            "cn": "我每个月去城里看望我的表弟一次。"
+          }
+        ]
+      },
+      {
+        "text": "sunless",
+        "phonetic": "[ˈsʌnləs]",
+        "pos": "a.",
+        "meaning": "阳光照射不到的, 阴暗的",
+        "app_sentences": [
+          {
+            "en": "The room felt cold and sunless without any windows.",
+            "cn": "那个房间没有窗户，感觉又冷又暗。"
+          }
+        ]
+      },
+      {
+        "text": "choose",
+        "phonetic": "[t1uːz]",
+        "pos": "vt.",
+        "meaning": "选择, 宁愿, 欲",
+        "app_sentences": [
+          {
+            "en": "You can choose any book you like from the school library.",
+            "cn": "你可以从学校图书馆选择任何你喜欢的书。"
+          }
+        ]
+      },
+      {
+        "text": "everything",
+        "phonetic": "[ˈevriθɪŋ]",
+        "pos": "pron.",
+        "meaning": "每件事物, 所有事物",
+        "app_sentences": [
+          {
+            "en": "My mother packed everything we need for the picnic.",
+            "cn": "我妈妈打包了野餐所需的一切东西。"
+          }
+        ]
+      },
+      {
+        "text": "rich",
+        "phonetic": "[rɪtʃ]",
+        "pos": "a.",
+        "meaning": "富裕的, 富饶的, 浓厚的, 贵重的",
+        "app_sentences": [
+          {
+            "en": "The cake tastes very rich because it has lots of butter.",
+            "cn": "这蛋糕尝起来很浓郁，因为它有很多黄油。"
+          }
+        ]
+      },
+      {
+        "text": "complete",
+        "phonetic": "[kəmˈpliːt]",
+        "pos": "a.",
+        "meaning": "完全的, 十足的, 完成的",
+        "app_sentences": [
+          {
+            "en": "I need one more hour to complete my science project.",
+            "cn": "我需要再多一个小时来完成我的科学项目。"
+          }
+        ]
+      },
+      {
+        "text": "expression",
+        "phonetic": "[ɪkˈspreʃən]",
+        "pos": "n.",
+        "meaning": "表达, 表现, 词语, 措辞",
+        "app_sentences": [
+          {
+            "en": "Her happy expression showed she liked the birthday present.",
+            "cn": "她快乐的表情显示她喜欢这个生日礼物。"
+          }
+        ]
+      },
+      {
+        "text": "passage",
+        "phonetic": "[ˈpæsɪdʒ]",
+        "pos": "n.",
+        "meaning": "通道, 通过, 移居, 航行, 一段, 走廊",
+        "app_sentences": [
+          {
+            "en": "Please read the passage on page ten and answer the questions.",
+            "cn": "请阅读第十页的文章并回答问题。"
+          }
+        ]
+      },
+      {
+        "text": "comment",
+        "phonetic": "[ˈkɒment]",
+        "pos": "n.",
+        "meaning": "注解, 批评, 评论, 备注",
+        "app_sentences": [
+          {
+            "en": "The teacher wrote a positive comment on my English essay.",
+            "cn": "老师在我的英语作文上写了一个积极的评语。"
+          }
+        ]
+      },
+      {
+        "text": "description",
+        "phonetic": "[dɪˈskrɪpʃən]",
+        "pos": "n.",
+        "meaning": "描述, 说明, 种类",
+        "app_sentences": [
+          {
+            "en": "Her description of the accident was very clear and helpful.",
+            "cn": "她对事故的描述非常清晰且有用。"
+          }
+        ]
+      },
+      {
+        "text": "theme",
+        "phonetic": "[θiːm]",
+        "pos": "n.",
+        "meaning": "主题, 话题, 题目",
+        "app_sentences": [
+          {
+            "en": "The theme of our school art exhibition is 'Nature and Cities'.",
+            "cn": "我们学校艺术展的主题是'自然与城市'。"
+          }
+        ]
+      },
+      {
+        "text": "agree",
+        "phonetic": "[əˈɡriː]",
+        "pos": "vi.",
+        "meaning": "同意, 赞成, 应允, 适合",
+        "app_sentences": [
+          {
+            "en": "I agree with you that summer is the best season of the year.",
+            "cn": "我同意你的看法，夏天是一年中最好的季节。"
+          }
+        ]
+      },
+      {
+        "text": "paragraph",
+        "phonetic": "[ˈpærəɡrɑːf]",
+        "pos": "n.",
+        "meaning": "段落, 短评",
+        "app_sentences": [
+          {
+            "en": "Each paragraph in your essay should have one main idea.",
+            "cn": "你文章中的每一个段落都应该有一个中心思想。"
+          }
+        ]
+      },
+      {
+        "text": "understand",
+        "phonetic": "[ˌʌndəˈstænd]",
+        "pos": "vt.",
+        "meaning": "理解, 了解, 领会, 听说, 懂",
+        "app_sentences": [
+          {
+            "en": "I did not understand the maths problem until my friend explained it.",
+            "cn": "直到我朋友解释后，我才理解了那道数学题。"
+          }
+        ]
+      },
+      {
+        "text": "other",
+        "phonetic": "['762]",
+        "pos": "a.",
+        "meaning": "其他的, 另外的, 从前的",
+        "app_sentences": [
+          {
+            "en": "Some students are playing football, and other students are reading.",
+            "cn": "一些学生在踢足球，其他学生在看书。"
+          }
+        ]
+      },
+      {
+        "text": "relate",
+        "phonetic": "[rɪˈleɪt]",
+        "pos": "vt.",
+        "meaning": "讲, 叙述, 使互相关联",
+        "app_sentences": [
+          {
+            "en": "The story can help us relate to the feelings of the main character.",
+            "cn": "这个故事能帮助我们理解主人公的感受。"
+          }
+        ]
+      },
+      {
+        "text": "experience",
+        "phonetic": "[ɪkˈspɪəriəns]",
+        "pos": "n.",
+        "meaning": "经历, 经验, 体验",
+        "app_sentences": [
+          {
+            "en": "My first experience of camping was fun but also a little scary.",
+            "cn": "我第一次露营的经历很有趣，但也有点吓人。"
+          }
+        ]
+      },
+      {
+        "text": "opinion",
+        "phonetic": "[əˈpɪnjən]",
+        "pos": "n.",
+        "meaning": "意见, 评价, 主张",
+        "app_sentences": [
+          {
+            "en": "In my opinion, reading books is more fun than watching TV.",
+            "cn": "在我看来，读书比看电视更有趣。"
+          },
+          {
+            "en": "In my opinion, riding a bike to school is good for health.",
+            "cn": "在我看来，骑自行车上学对健康有益。"
+          }
+        ]
+      },
+      {
+        "text": "topic",
+        "phonetic": "[ˈtɒpɪk]",
+        "pos": "n.",
+        "meaning": "主题, 论题, 话题",
+        "app_sentences": [
+          {
+            "en": "Our discussion topic for today is how to protect the environment.",
+            "cn": "我们今天讨论的话题是如何保护环境。"
+          }
+        ]
+      },
+      {
+        "text": "grammar",
+        "phonetic": "[ˈɡræmə]",
+        "pos": "n.",
+        "meaning": "语法学, 入门书",
+        "app_sentences": [
+          {
+            "en": "We learned some new grammar rules in our English class today.",
+            "cn": "今天我们在英语课上学了一些新的语法规则。"
+          }
+        ]
+      },
+      {
+        "text": "rule",
+        "phonetic": "[ruːl]",
+        "pos": "n.",
+        "meaning": "规则, 统治, 控制, 支配, 规律, 标准, 章程, 破折号, 铅线",
+        "app_sentences": [
+          {
+            "en": "The most important rule in the library is to be quiet.",
+            "cn": "图书馆里最重要的规则是保持安静。"
+          },
+          {
+            "en": "It's a school rule that students must wear uniforms.",
+            "cn": "学生必须穿校服是学校的规定。"
+          }
+        ]
+      },
+      {
+        "text": "more",
+        "phonetic": "[mɔː]",
+        "pos": "n.",
+        "meaning": "更多",
+        "app_sentences": [
+          {
+            "en": "I need more time to finish drawing this picture for art class.",
+            "cn": "我需要更多时间来完成美术课的这幅画。"
+          }
+        ]
+      },
+      {
+        "text": "correct",
+        "phonetic": "[kəˈrekt]",
+        "pos": "a.",
+        "meaning": "正确的, 合适的",
+        "app_sentences": [
+          {
+            "en": "Please correct the spelling mistakes in your homework.",
+            "cn": "请改正你作业中的拼写错误。"
+          }
+        ]
+      },
+      {
+        "text": "form",
+        "phonetic": "[fɔːm]",
+        "pos": "n.",
+        "meaning": "形状, 形体, 类型, 方式, 表格, 形式",
+        "app_sentences": [
+          {
+            "en": "We need to fill in a form to join the school chess club.",
+            "cn": "我们需要填一张表格才能加入学校国际象棋俱乐部。"
+          },
+          {
+            "en": "Please fill in this form with your name and address.",
+            "cn": "请在这张表格上填写你的姓名和地址。"
+          },
+          {
+            "en": "Please fill in this form with your personal information.",
+            "cn": "请用你的个人信息填写这张表格。"
+          }
+        ]
+      },
+      {
+        "text": "chess",
+        "phonetic": "[tʃes]",
+        "pos": "n.",
+        "meaning": "国际象棋",
+        "app_sentences": [
+          {
+            "en": "My grandfather teaches me how to play chess every Sunday.",
+            "cn": "我爷爷每个星期天都教我下国际象棋。"
+          }
+        ]
+      },
+      {
+        "text": "trip",
+        "phonetic": "[tr!p]",
+        "pos": "n.",
+        "meaning": "旅行, 绊倒, 摔倒, 失足, 差错, 旅程",
+        "app_sentences": [
+          {
+            "en": "Our class trip to the science museum is next Friday.",
+            "cn": "我们班去科学博物馆的旅行是在下周五。"
+          }
+        ]
+      },
+      {
+        "text": "post",
+        "phonetic": "[pəʊst]",
+        "pos": "n.",
+        "meaning": "柱, 杆, 准星, 邮件, 邮政, 标竿, 职位, 岗位, 哨所, 兵营",
+        "app_sentences": [
+          {
+            "en": "I will post a letter to my pen pal in Canada tomorrow.",
+            "cn": "我明天要寄一封信给我在加拿大的笔友。"
+          }
+        ]
+      },
+      {
+        "text": "dragon",
+        "phonetic": "['dr*g2n]",
+        "pos": "n.",
+        "meaning": "龙, 凶暴的人",
+        "app_sentences": [
+          {
+            "en": "The dragon in the story protects a magical treasure in a cave.",
+            "cn": "故事中的龙保护着洞穴里的魔法宝藏。"
+          }
+        ]
+      },
+      {
+        "text": "bath",
+        "phonetic": "[bɑːθ]",
+        "pos": "n.",
+        "meaning": "沐浴, 浴室",
+        "app_sentences": [
+          {
+            "en": "I usually take a warm bath before going to bed at night.",
+            "cn": "我晚上睡觉前通常洗个热水澡。"
+          }
+        ]
+      },
+      {
+        "text": "decide",
+        "phonetic": "[dɪˈsaɪd]",
+        "pos": "v.",
+        "meaning": "决定, 判决",
+        "app_sentences": [
+          {
+            "en": "I can't decide which book to borrow from the library.",
+            "cn": "我无法决定从图书馆借哪本书。"
+          },
+          {
+            "en": "We need to decide what game to play at the class party.",
+            "cn": "我们需要决定在班级派对上玩什么游戏。"
+          }
+        ]
+      },
+      {
+        "text": "basket",
+        "phonetic": "[ˈbɑːskɪt]",
+        "pos": "n.",
+        "meaning": "篮, 篮子",
+        "app_sentences": [
+          {
+            "en": "My mother puts all the fresh fruit in a big basket.",
+            "cn": "我妈妈把所有新鲜水果都放在一个大篮子里。"
+          }
+        ]
+      },
+      {
+        "text": "princess",
+        "phonetic": "[ˌprɪnˈses]",
+        "pos": "n.",
+        "meaning": "公主, 王妃, 女巨头",
+        "app_sentences": [
+          {
+            "en": "The kind princess in the story helps all the poor people.",
+            "cn": "故事中善良的公主帮助了所有穷人。"
+          }
+        ]
+      },
+      {
+        "text": "example",
+        "phonetic": "[ɪɡˈzɑːmpəl]",
+        "pos": "n.",
+        "meaning": "例子, 样本, 实例",
+        "app_sentences": [
+          {
+            "en": "The teacher showed us an example of a good book report.",
+            "cn": "老师给我们看了一份优秀读书报告的范例。"
+          }
+        ]
+      },
+      {
+        "text": "believe",
+        "phonetic": "[bɪˈliːv]",
+        "pos": "v.",
+        "meaning": "相信",
+        "app_sentences": [
+          {
+            "en": "I believe that I can improve my English if I practice every day.",
+            "cn": "我相信如果我每天练习，我能提高我的英语水平。"
+          }
+        ]
+      },
+      {
+        "text": "survey",
+        "phonetic": "[ˈsɜːveɪ]",
+        "pos": "n.",
+        "meaning": "纵览, 视察, 测量, 俯瞰, 调查",
+        "app_sentences": [
+          {
+            "en": "We did a survey to find out our classmates' favourite sports.",
+            "cn": "我们做了一个调查来了解同学们最喜欢的运动。"
+          }
+        ]
+      },
+      {
+        "text": "empty",
+        "phonetic": "[ˈempti]",
+        "pos": "a.",
+        "meaning": "空的, 空虚的, 空腹的, 空洞的",
+        "app_sentences": [
+          {
+            "en": "The classroom was empty after all the students went home.",
+            "cn": "所有学生回家后，教室空无一人。"
+          },
+          {
+            "en": "The bottle is empty; we need to buy some more water.",
+            "cn": "瓶子空了；我们需要再买些水。"
+          }
+        ]
+      },
+      {
+        "text": "happen",
+        "phonetic": "['h*p2n]",
+        "pos": "vi.",
+        "meaning": "发生, 发生, 恰巧",
+        "app_sentences": [
+          {
+            "en": "Do you know what will happen in the next chapter of the story?",
+            "cn": "你知道故事下一章会发生什么吗？"
+          }
+        ]
+      },
+      {
+        "text": "presentation",
+        "phonetic": "[ˌprezənˈteɪʃən]",
+        "pos": "n.",
+        "meaning": "赠与, 描述, 介绍",
+        "app_sentences": [
+          {
+            "en": "She gave a great presentation about her summer holiday.",
+            "cn": "她做了一个关于她暑假的精彩演讲。"
+          }
+        ]
+      },
+      {
+        "text": "positive",
+        "phonetic": "[ˈpɒzətɪv]",
+        "pos": "a.",
+        "meaning": "肯定的, 积极的, 有把握的",
+        "app_sentences": [
+          {
+            "en": "My teacher always gives me positive advice about my studies.",
+            "cn": "我的老师总是给我的学习提出积极的建议。"
+          }
+        ]
+      },
+      {
+        "text": "blow",
+        "phonetic": "[bləʊ]",
+        "pos": "n.",
+        "meaning": "吹, 打击, 殴打, 花开",
+        "app_sentences": [
+          {
+            "en": "The strong wind can blow the leaves off the trees in autumn.",
+            "cn": "秋天的大风能把树叶从树上吹落。"
+          }
+        ]
+      },
+      {
+        "text": "wave",
+        "phonetic": "[weɪv]",
+        "pos": "n.",
+        "meaning": "波, 波浪, 波动, 起伏, 高潮, 潮涌, 挥手致意, (气压)突变",
+        "app_sentences": [
+          {
+            "en": "We saw big waves at the beach during the storm.",
+            "cn": "暴风雨期间我们在海滩上看到了巨浪。"
+          }
+        ]
+      },
+      {
+        "text": "voice",
+        "phonetic": "[vɔɪs]",
+        "pos": "n.",
+        "meaning": "声音, 嗓音, 嗓子, 愿望, 发言权, 表达, 喉舌, 语态",
+        "app_sentences": [
+          {
+            "en": "She has a very soft voice when she reads stories to us.",
+            "cn": "她给我们读故事时声音非常轻柔。"
+          }
+        ]
+      },
+      {
+        "text": "just",
+        "phonetic": "[dʒəst]",
+        "pos": "a.",
+        "meaning": "正直的, 合理的, 正确的, 应得的",
+        "app_sentences": [
+          {
+            "en": "I just finished my homework, so now I can watch TV.",
+            "cn": "我刚做完作业，所以现在可以看电视了。"
+          },
+          {
+            "en": "I just finished reading an interesting book about space.",
+            "cn": "我刚读完一本关于太空的有趣的书。"
+          }
+        ]
+      },
+      {
+        "text": "himself",
+        "phonetic": "[hɪmˈself]",
+        "pos": "pron.",
+        "meaning": "他自己, 他亲自",
+        "app_sentences": [
+          {
+            "en": "My little brother dressed himself for school this morning.",
+            "cn": "我弟弟今天早上自己穿好衣服去上学。"
+          },
+          {
+            "en": "The little boy dressed himself this morning.",
+            "cn": "这个小男孩今天早上自己穿好了衣服。"
+          }
+        ]
+      },
+      {
+        "text": "shame",
+        "phonetic": "[ʃeɪm]",
+        "pos": "n.",
+        "meaning": "羞耻, 羞愧, 耻辱",
+        "app_sentences": [
+          {
+            "en": "It is a shame that the school sports day was cancelled because of rain.",
+            "cn": "很遗憾，学校运动会因为下雨取消了。"
+          },
+          {
+            "en": "It's a shame that you can't come to my birthday party.",
+            "cn": "你不能来参加我的生日聚会真可惜。"
+          }
+        ]
+      },
+      {
+        "text": "finally",
+        "phonetic": "['fa!n2li]",
+        "pos": "adv.",
+        "meaning": "最后, 终于",
+        "app_sentences": [
+          {
+            "en": "After a long walk, we finally reached the top of the hill.",
+            "cn": "走了很长一段路后，我们终于到达了山顶。"
+          }
+        ]
+      },
+      {
+        "text": "into",
+        "phonetic": "[ˈɪntə]",
+        "pos": "prep.",
+        "meaning": "进入...之内, 朝..., 深入...之中, 成为...状况",
+        "app_sentences": [
+          {
+            "en": "The cat jumped into the box and fell asleep quickly.",
+            "cn": "猫跳进箱子里很快就睡着了。"
+          }
+        ]
+      },
+      {
+        "text": "barber",
+        "phonetic": "[ˈbɑːbə]",
+        "pos": "n.",
+        "meaning": "理发师",
+        "app_sentences": [
+          {
+            "en": "My father goes to the barber every month to cut his hair.",
+            "cn": "我父亲每个月都去理发店理发。"
+          }
+        ]
+      },
+      {
+        "text": "fall",
+        "phonetic": "[f0ːl]",
+        "pos": "n.",
+        "meaning": "落下, 瀑布, 采伐量, 下降, 落差, 降低, 堕落, 秋天",
+        "app_sentences": [
+          {
+            "en": "Be careful not to fall on the wet floor in the hallway.",
+            "cn": "小心别在走廊潮湿的地板上摔倒。"
+          },
+          {
+            "en": "Leaves turn yellow and fall from the trees in autumn.",
+            "cn": "秋天，树叶变黄并从树上落下。"
+          }
+        ]
+      },
+      {
+        "text": "shoulder",
+        "phonetic": "[ˈʃəʊldə]",
+        "pos": "n.",
+        "meaning": "肩, 肩膀, 衣肩",
+        "app_sentences": [
+          {
+            "en": "My bag is heavy, and it hurts my shoulder after a long walk.",
+            "cn": "我的包很重，走了一段长路后我的肩膀很痛。"
+          }
+        ]
+      },
+      {
+        "text": "customer",
+        "phonetic": "['k7st2m2]",
+        "pos": "n.",
+        "meaning": "消费者",
+        "app_sentences": [
+          {
+            "en": "The friendly shop assistant helped the customer find a book.",
+            "cn": "友善的店员帮助顾客找到了一本书。"
+          }
+        ]
+      },
+      {
+        "text": "surprised",
+        "phonetic": "[səˈpraɪzd]",
+        "pos": "a.",
+        "meaning": "感到惊讶的",
+        "app_sentences": [
+          {
+            "en": "I was very surprised to see my cousin at my school gate.",
+            "cn": "我很惊讶在学校门口看到我的表弟。"
+          },
+          {
+            "en": "I was very surprised to see my cousin at the party.",
+            "cn": "在聚会上看到我的表弟我感到非常惊讶。"
+          }
+        ]
+      },
+      {
+        "text": "scissors",
+        "phonetic": "[ˈsɪzəz]",
+        "pos": "pl.",
+        "meaning": "剪刀",
+        "app_sentences": [
+          {
+            "en": "We use scissors to cut paper in our art and craft class.",
+            "cn": "我们在手工美术课上用剪刀剪纸。"
+          },
+          {
+            "en": "We need a pair of scissors to cut this paper.",
+            "cn": "我们需要一把剪刀来剪这张纸。"
+          }
+        ]
+      },
+      {
+        "text": "office",
+        "phonetic": "['=f!s]",
+        "pos": "n.",
+        "meaning": "办公室, 部, 公职, 职责",
+        "app_sentences": [
+          {
+            "en": "My mother works in a small office near the train station.",
+            "cn": "我母亲在火车站附近的一间小办公室里工作。"
+          }
+        ]
+      },
+      {
+        "text": "receive",
+        "phonetic": "[rɪˈsiːv]",
+        "pos": "vt.",
+        "meaning": "收到, 接到, 得到, 接待, 迎接, 承受",
+        "app_sentences": [
+          {
+            "en": "I hope to receive a letter from my friend in America soon.",
+            "cn": "我希望能很快收到我美国朋友的来信。"
+          }
+        ]
+      },
+      {
+        "text": "cancer",
+        "phonetic": "[ˈkænsə]",
+        "pos": "n.",
+        "meaning": "癌, 恶性肿瘤",
+        "app_sentences": [
+          {
+            "en": "Many people wear a ribbon to show support for cancer patients.",
+            "cn": "许多人佩戴丝带以示对癌症患者的支持。"
+          }
+        ]
+      },
+      {
+        "text": "wig",
+        "phonetic": "[wɪɡ]",
+        "pos": "n.",
+        "meaning": "假发, 斥责",
+        "app_sentences": [
+          {
+            "en": "The actor wore a funny red wig for the school play.",
+            "cn": "那位演员为学校戏剧戴了一顶滑稽的红色假发。"
+          }
+        ]
+      },
+      {
+        "text": "smart",
+        "phonetic": "[smɑːt]",
+        "pos": "a.",
+        "meaning": "聪明的, 漂亮的, 刺痛的, 剧烈的, 敏捷的, 巧妙的, 伶俐的, 潇洒的",
+        "app_sentences": [
+          {
+            "en": "My sister is very smart and always gets good grades at school.",
+            "cn": "我妹妹很聪明，在学校总是取得好成绩。"
+          },
+          {
+            "en": "She is a smart student and always gets good grades.",
+            "cn": "她是个聪明的学生，总是取得好成绩。"
+          }
+        ]
+      },
+      {
+        "text": "smile",
+        "phonetic": "[smaɪl]",
+        "pos": "n.",
+        "meaning": "微笑, 喜色, 笑容",
+        "app_sentences": [
+          {
+            "en": "She always has a warm smile on her face when she helps others.",
+            "cn": "她帮助别人时脸上总是带着温暖的微笑。"
+          },
+          {
+            "en": "A warm smile can make other people feel happy and welcome.",
+            "cn": "一个温暖的微笑能让别人感到快乐和受欢迎。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Unit 2",
+    "data": [
+      {
+        "text": "last but not least",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "最后但并不是最不重要的(一点)",
+        "app_sentences": [
+          {
+            "en": "Last but not least, I want to thank my family for their help.",
+            "cn": "最后但同样重要的是，我要感谢我家人的帮助。"
+          }
+        ]
+      },
+      {
+        "text": "marathon",
+        "phonetic": "[ˈmærəθən]",
+        "pos": "n.",
+        "meaning": "马拉松, 耐力的考验",
+        "app_sentences": [
+          {
+            "en": "My uncle is training hard to run in the city marathon next month.",
+            "cn": "我叔叔正在为下个月的城市马拉松努力训练。"
+          }
+        ]
+      },
+      {
+        "text": "however",
+        "phonetic": "[haʊˈevə]",
+        "pos": "adv.",
+        "meaning": "然而, 无论如何, 究竟怎样",
+        "app_sentences": [
+          {
+            "en": "I like swimming; however, I am not very good at it yet.",
+            "cn": "我喜欢游泳；然而，我还不是很擅长。"
+          }
+        ]
+      },
+      {
+        "text": "still",
+        "phonetic": "[st!l]",
+        "pos": "n.",
+        "meaning": "蒸馏室, 寂静, 剧照",
+        "app_sentences": [
+          {
+            "en": "It is raining, but I still want to go to the park with my friends.",
+            "cn": "天在下雨，但我仍然想和朋友们去公园。"
+          },
+          {
+            "en": "Please sit still while the teacher is talking.",
+            "cn": "老师讲话时请安静地坐着别动。"
+          }
+        ]
+      },
+      {
+        "text": "metre",
+        "phonetic": "[ˈmiːtə]",
+        "pos": "n.",
+        "meaning": "公尺, 格律, 韵律",
+        "app_sentences": [
+          {
+            "en": "The swimming pool at our school is twenty-five metres long.",
+            "cn": "我们学校的游泳池长二十五米。"
+          }
+        ]
+      },
+      {
+        "text": "line",
+        "phonetic": "[la!n]",
+        "pos": "n.",
+        "meaning": "列, 线, 绳, 电线, 线路, 路线, 航线, 作业线, 界线, 战线, 外形, 排, 家系",
+        "app_sentences": [
+          {
+            "en": "Please stand in a straight line when we wait for the school bus.",
+            "cn": "等校车时，请站成一条直线。"
+          }
+        ]
+      },
+      {
+        "text": "breath",
+        "phonetic": "[breθ]",
+        "pos": "n.",
+        "meaning": "呼吸, 气息, 瞬间",
+        "app_sentences": [
+          {
+            "en": "After running, I stopped to take a deep breath and rest.",
+            "cn": "跑步后，我停下来深呼吸休息。"
+          }
+        ]
+      },
+      {
+        "text": "hold your breath",
+        "phonetic": "",
+        "pos": "网络",
+        "meaning": "屏住呼吸；屏息以待；屏气",
+        "app_sentences": [
+          {
+            "en": "You need to hold your breath when you swim under the water.",
+            "cn": "在水下游泳时，你需要屏住呼吸。"
+          }
+        ]
+      },
+      {
+        "text": "would",
+        "phonetic": "[w%d]",
+        "pos": "aux.",
+        "meaning": "将, 愿意",
+        "app_sentences": [
+          {
+            "en": "I would like to visit the Great Wall of China one day.",
+            "cn": "我希望有一天能去参观中国的长城。"
+          }
+        ]
+      },
+      {
+        "text": "con",
+        "phonetic": "",
+        "pos": "vt.",
+        "meaning": "精读, 仔细研究, 默记",
+        "app_sentences": [
+          {
+            "en": "One con of living in a big city is the heavy traffic.",
+            "cn": "生活在大城市的一个缺点是交通拥堵。"
+          }
+        ]
+      },
+      {
+        "text": "stomachache",
+        "phonetic": "[ˈstʌmək-eɪk]",
+        "pos": "n.",
+        "meaning": "胃痛, 肚子痛",
+        "app_sentences": [
+          {
+            "en": "I had a stomachache after eating too much ice cream.",
+            "cn": "我吃了太多冰淇淋后肚子疼。"
+          }
+        ]
+      },
+      {
+        "text": "shall",
+        "phonetic": "[1*l；1el]",
+        "pos": "aux.",
+        "meaning": "将",
+        "app_sentences": [
+          {
+            "en": "Shall we go to the library to study for the test together?",
+            "cn": "我们一起去图书馆为考试学习好吗？"
+          }
+        ]
+      },
+      {
+        "text": "either",
+        "phonetic": "[ˈaɪðə]",
+        "pos": "a.",
+        "meaning": "(两者之中)任一的, (两者之中)各一的",
+        "app_sentences": [
+          {
+            "en": "You can have either an apple or a banana for your snack.",
+            "cn": "你的点心可以吃一个苹果或者一根香蕉。"
+          }
+        ]
+      },
+      {
+        "text": "choice",
+        "phonetic": "[tʃɔɪs]",
+        "pos": "n.",
+        "meaning": "选择, 精选品, 选择权",
+        "app_sentences": [
+          {
+            "en": "It is your choice to decide which book to read first.",
+            "cn": "由你选择先读哪本书。"
+          }
+        ]
+      },
+      {
+        "text": "seem",
+        "phonetic": "[siːm]",
+        "pos": "vi.",
+        "meaning": "象是, 似乎",
+        "app_sentences": [
+          {
+            "en": "You seem very happy today. Did something good happen?",
+            "cn": "你今天看起来很高兴。发生了什么好事吗？"
+          }
+        ]
+      },
+      {
+        "text": "someone",
+        "phonetic": "[ˈsʌmwʌn]",
+        "pos": "pron.",
+        "meaning": "有人, 某人",
+        "app_sentences": [
+          {
+            "en": "I think someone is knocking on the door of our classroom.",
+            "cn": "我想有人在敲我们教室的门。"
+          }
+        ]
+      },
+      {
+        "text": "neither",
+        "phonetic": "[ˈnaɪðə]",
+        "pos": "adv.",
+        "meaning": "皆不, 两个都不",
+        "app_sentences": [
+          {
+            "en": "Neither my brother nor my sister likes to eat vegetables.",
+            "cn": "我弟弟和妹妹都不喜欢吃蔬菜。"
+          }
+        ]
+      },
+      {
+        "text": "cheer",
+        "phonetic": "[tʃɪə]",
+        "pos": "n.",
+        "meaning": "愉快, 振奋, 欢呼",
+        "app_sentences": [
+          {
+            "en": "We all cheer loudly when our school team wins a football match.",
+            "cn": "当我们校队赢得足球比赛时，我们都大声欢呼。"
+          }
+        ]
+      },
+      {
+        "text": "cross",
+        "phonetic": "[kr=s]",
+        "pos": "n.",
+        "meaning": "十字架, 十字架形物件, 交叉, 十字标, 交叉路, 磨难, 杂交",
+        "app_sentences": [
+          {
+            "en": "Remember to look both ways before you cross the street.",
+            "cn": "过马路前记得左右看看。"
+          }
+        ]
+      },
+      {
+        "text": "lifelong",
+        "phonetic": "[ˈlaɪflɒŋ]",
+        "pos": "a.",
+        "meaning": "终身的, 毕生的",
+        "app_sentences": [
+          {
+            "en": "My grandfather says that learning is a lifelong journey.",
+            "cn": "我爷爷说学习是一生的旅程。"
+          }
+        ]
+      },
+      {
+        "text": "dream",
+        "phonetic": "[driːm]",
+        "pos": "n.",
+        "meaning": "梦, 空想, 愿望",
+        "app_sentences": [
+          {
+            "en": "My dream is to become a scientist and discover new things.",
+            "cn": "我的梦想是成为一名科学家，发现新事物。"
+          },
+          {
+            "en": "My dream is to become a doctor and help sick people.",
+            "cn": "我的梦想是成为一名医生，帮助生病的人。"
+          }
+        ]
+      },
+      {
+        "text": "past",
+        "phonetic": "[p4ːst]",
+        "pos": "n.",
+        "meaning": "过去, 昔时, 往事, 早年经历, 过去时",
+        "app_sentences": [
+          {
+            "en": "We learned about life in the past in our history class today.",
+            "cn": "今天的历史课上我们学习了过去的生活。"
+          }
+        ]
+      },
+      {
+        "text": "record",
+        "phonetic": "[ˈrekɔːd]",
+        "pos": "n.",
+        "meaning": "记录, 履历, 档案, 审判记录, 最高纪录, 唱片",
+        "app_sentences": [
+          {
+            "en": "She set a new school record for the one hundred metre race.",
+            "cn": "她创造了一百米赛跑的新校记录。"
+          },
+          {
+            "en": "She broke the school record for the long jump.",
+            "cn": "她打破了学校的跳远记录。"
+          }
+        ]
+      },
+      {
+        "text": "none",
+        "phonetic": "[nʌn]",
+        "pos": "adv.",
+        "meaning": "一点也不, 毫不",
+        "app_sentences": [
+          {
+            "en": "None of the students in our class failed the English exam.",
+            "cn": "我们班没有一个学生英语考试不及格。"
+          },
+          {
+            "en": "None of the students in my class failed the math test.",
+            "cn": "我们班上没有一个学生数学测验不及格。"
+          }
+        ]
+      },
+      {
+        "text": "member",
+        "phonetic": "[ˈmembə]",
+        "pos": "n.",
+        "meaning": "成员, 会员",
+        "app_sentences": [
+          {
+            "en": "I am a member of the school reading club and we meet every week.",
+            "cn": "我是学校阅读俱乐部的成员，我们每周都见面。"
+          },
+          {
+            "en": "Every member of our family helps with the housework.",
+            "cn": "我们家的每个成员都帮忙做家务。"
+          }
+        ]
+      },
+      {
+        "text": "moment",
+        "phonetic": "['m2%m2nt]",
+        "pos": "n.",
+        "meaning": "片刻, 瞬间, 重要, 阶段, 力矩",
+        "app_sentences": [
+          {
+            "en": "Wait a moment, please. I need to tie my shoe first.",
+            "cn": "请稍等片刻。我需要先系鞋带。"
+          }
+        ]
+      },
+      {
+        "text": "if",
+        "phonetic": "[ɪf]",
+        "pos": "conj.",
+        "meaning": "如果, 是否, 无论何时, 假设, 即使",
+        "app_sentences": [
+          {
+            "en": "If it is sunny tomorrow, we will have a picnic in the park.",
+            "cn": "如果明天天气晴朗，我们将在公园里野餐。"
+          }
+        ]
+      },
+      {
+        "text": "possible",
+        "phonetic": "[ˈpɒsəbəl]",
+        "pos": "a.",
+        "meaning": "可能的, 潜在的, 合适的",
+        "app_sentences": [
+          {
+            "en": "Please finish your homework as soon as possible.",
+            "cn": "请尽快完成你的作业。"
+          }
+        ]
+      },
+      {
+        "text": "purpose",
+        "phonetic": "[ˈpɜːpəs]",
+        "pos": "n.",
+        "meaning": "目的, 意向, 决心, 用途, 效果, 论题",
+        "app_sentences": [
+          {
+            "en": "The main purpose of this meeting is to plan the class trip.",
+            "cn": "这次会议的主要目的是计划班级旅行。"
+          },
+          {
+            "en": "The main purpose of our meeting is to plan the class trip.",
+            "cn": "我们会议的主要目的是计划班级旅行。"
+          }
+        ]
+      },
+      {
+        "text": "raise",
+        "phonetic": "[reɪz]",
+        "pos": "n.",
+        "meaning": "上升, 高地, 增高",
+        "app_sentences": [
+          {
+            "en": "We want to raise money to buy new books for the school library.",
+            "cn": "我们想筹钱为学校图书馆购买新书。"
+          }
+        ]
+      },
+      {
+        "text": "charity",
+        "phonetic": "[ˈtʃærəti]",
+        "pos": "n.",
+        "meaning": "慈悲, 博爱, 慈善团体, 施舍",
+        "app_sentences": [
+          {
+            "en": "Our school holds a charity run to help sick children every year.",
+            "cn": "我们学校每年都举办慈善跑步来帮助生病的孩子。"
+          }
+        ]
+      },
+      {
+        "text": "encourage",
+        "phonetic": "[ɪnˈkʌrɪdʒ]",
+        "pos": "vt.",
+        "meaning": "鼓励, 支持, 激励",
+        "app_sentences": [
+          {
+            "en": "My parents always encourage me to try my best in everything.",
+            "cn": "我的父母总是鼓励我在每件事上都尽力而为。"
+          }
+        ]
+      },
+      {
+        "text": "teach",
+        "phonetic": "[tiːtʃ]",
+        "pos": "vt.",
+        "meaning": "教, 讲授, 教导, 教育",
+        "app_sentences": [
+          {
+            "en": "My mother teaches me how to cook simple meals on weekends.",
+            "cn": "我妈妈在周末教我如何做简单的饭菜。"
+          }
+        ]
+      },
+      {
+        "text": "note",
+        "phonetic": "[n2%t]",
+        "pos": "n.",
+        "meaning": "笔记, 记录, 注解, 票据, 符号, 显要, 注重, 便笺, 照会",
+        "app_sentences": [
+          {
+            "en": "I wrote a note to remind myself about the meeting after school.",
+            "cn": "我写了一张便条提醒自己放学后开会。"
+          },
+          {
+            "en": "I left a note on the fridge to remind my brother about the meeting.",
+            "cn": "我在冰箱上留了张便条提醒我弟弟开会的事。"
+          },
+          {
+            "en": "My mother left a note on the table to remind me.",
+            "cn": "我妈妈在桌子上留了张纸条提醒我。"
+          }
+        ]
+      },
+      {
+        "text": "during",
+        "phonetic": "[ˈdjʊərɪŋ]",
+        "pos": "prep.",
+        "meaning": "在...的时候",
+        "app_sentences": [
+          {
+            "en": "We must not talk loudly during the film in the cinema.",
+            "cn": "在电影院看电影时，我们不可以大声说话。"
+          }
+        ]
+      },
+      {
+        "text": "consider",
+        "phonetic": "[kənˈsɪdə]",
+        "pos": "v.",
+        "meaning": "考虑, 思考, 认为",
+        "app_sentences": [
+          {
+            "en": "You should consider joining the art club because you draw well.",
+            "cn": "你应该考虑加入美术俱乐部，因为你画得很好。"
+          },
+          {
+            "en": "We should consider other people's feelings before we act.",
+            "cn": "我们在行动前应该考虑他人的感受。"
+          }
+        ]
+      },
+      {
+        "text": "both",
+        "phonetic": "[bəʊθ]",
+        "pos": "a.",
+        "meaning": "两者的",
+        "app_sentences": [
+          {
+            "en": "Both my brother and I enjoy playing computer games together.",
+            "cn": "我弟弟和我都喜欢一起玩电脑游戏。"
+          }
+        ]
+      },
+      {
+        "text": "sink",
+        "phonetic": "[sɪŋk]",
+        "pos": "n.",
+        "meaning": "藏垢的场所, 沟渠, 污水槽",
+        "app_sentences": [
+          {
+            "en": "Be careful! The heavy stone will sink in the water quickly.",
+            "cn": "小心！那块重石头会很快沉入水中。"
+          }
+        ]
+      },
+      {
+        "text": "sink or swim",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "不管成败如何, 沉浮全看自己",
+        "app_sentences": [
+          {
+            "en": "When I started to learn English, it was a sink or swim situation.",
+            "cn": "当我开始学英语时，那是一种要么成功要么失败的局面。"
+          }
+        ]
+      },
+      {
+        "text": "as",
+        "phonetic": "[*z；2z]",
+        "pos": "adv.",
+        "meaning": "同样地, 例如",
+        "app_sentences": [
+          {
+            "en": "As it is getting late, we should all go home now.",
+            "cn": "天色渐晚，我们现在都应该回家了。"
+          },
+          {
+            "en": "As it is raining, we will have our PE class indoors today.",
+            "cn": "因为正在下雨，我们今天将在室内上体育课。"
+          }
+        ]
+      },
+      {
+        "text": "surfer",
+        "phonetic": "[ˈsɜːfə]",
+        "pos": "n.",
+        "meaning": "冲浪运动员",
+        "app_sentences": [
+          {
+            "en": "The brave surfer rode a very high wave at the beach.",
+            "cn": "那个勇敢的冲浪者在海滩上驾驭了一个很高的浪。"
+          }
+        ]
+      },
+      {
+        "text": "shark",
+        "phonetic": "[ʃɑːk]",
+        "pos": "n.",
+        "meaning": "鲨鱼, 骗子",
+        "app_sentences": [
+          {
+            "en": "We learned that a shark has many sharp teeth in science class.",
+            "cn": "我们在科学课上学到鲨鱼有很多锋利的牙齿。"
+          }
+        ]
+      },
+      {
+        "text": "attack",
+        "phonetic": "[əˈtæk]",
+        "pos": "n.",
+        "meaning": "攻击, 抨击",
+        "app_sentences": [
+          {
+            "en": "The small dog will not attack people if you do not scare it.",
+            "cn": "如果你不吓它，那只小狗不会攻击人。"
+          }
+        ]
+      },
+      {
+        "text": "nearly",
+        "phonetic": "[ˈnɪəli]",
+        "pos": "adv.",
+        "meaning": "几乎, 密切地",
+        "app_sentences": [
+          {
+            "en": "I nearly missed the school bus because I woke up late.",
+            "cn": "我差点错过校车，因为我起晚了。"
+          },
+          {
+            "en": "I nearly finished my homework when my friend called me.",
+            "cn": "我朋友打电话来时，我作业差不多做完了。"
+          }
+        ]
+      },
+      {
+        "text": "die",
+        "phonetic": "[daɪ]",
+        "pos": "vi.",
+        "meaning": "死亡, 消逝, 平息, 熄灭, 漠然, 渴望",
+        "app_sentences": [
+          {
+            "en": "Plants will die if they do not get enough water and sunlight.",
+            "cn": "如果得不到足够的水和阳光，植物就会死亡。"
+          }
+        ]
+      },
+      {
+        "text": "sur",
+        "phonetic": "",
+        "pos": "法",
+        "meaning": "根据",
+        "app_sentences": [
+          {
+            "en": "The sur- in 'surface' means the top or outside part.",
+            "cn": "'表面'中的'sur-'意思是顶部或外部。"
+          }
+        ]
+      },
+      {
+        "text": "competition",
+        "phonetic": "[ˌkɒmpəˈtɪʃən]",
+        "pos": "n.",
+        "meaning": "竞争, 竞赛",
+        "app_sentences": [
+          {
+            "en": "There is a drawing competition in our school next week.",
+            "cn": "下周我们学校有一场绘画比赛。"
+          },
+          {
+            "en": "Our class won first place in the singing competition last week.",
+            "cn": "我们班在上周的歌唱比赛中赢得了第一名。"
+          }
+        ]
+      },
+      {
+        "text": "compare",
+        "phonetic": "[kəmˈpeə]",
+        "pos": "vt.",
+        "meaning": "比较, 比喻, 对照",
+        "app_sentences": [
+          {
+            "en": "Let's compare these two maps to see which one is better.",
+            "cn": "我们来比较一下这两张地图，看看哪一张更好。"
+          },
+          {
+            "en": "Let's compare these two pictures and find the differences.",
+            "cn": "让我们比较一下这两张图片，找出不同之处。"
+          }
+        ]
+      },
+      {
+        "text": "achievement",
+        "phonetic": "[əˈtʃiːvmənt]",
+        "pos": "n.",
+        "meaning": "完成, 成就, 功业",
+        "app_sentences": [
+          {
+            "en": "Winning the race was a great achievement for the young runner.",
+            "cn": "赢得比赛对那位年轻的跑步者来说是一项巨大的成就。"
+          }
+        ]
+      },
+      {
+        "text": "surfboard",
+        "phonetic": "[ˈsɜːfbɔːd]",
+        "pos": "n.",
+        "meaning": "冲浪板, 用冲浪板滑水",
+        "app_sentences": [
+          {
+            "en": "The surfer carried his surfboard to the beach every morning.",
+            "cn": "那个冲浪者每天早上都把他的冲浪板带到海滩。"
+          }
+        ]
+      },
+      {
+        "text": "ride",
+        "phonetic": "[raɪd]",
+        "pos": "n.",
+        "meaning": "骑马, 乘坐, 乘车, 搭便车",
+        "app_sentences": [
+          {
+            "en": "I love to ride my bicycle along the river after school.",
+            "cn": "我喜欢放学后沿着河边骑自行车。"
+          },
+          {
+            "en": "Can you ride a bicycle to school by yourself?",
+            "cn": "你能自己骑自行车上学吗？"
+          }
+        ]
+      },
+      {
+        "text": "lover",
+        "phonetic": "[ˈlʌvə]",
+        "pos": "n.",
+        "meaning": "爱人, 爱好者",
+        "app_sentences": [
+          {
+            "en": "My uncle is a nature lover and he often goes hiking in the mountains.",
+            "cn": "我叔叔是一个自然爱好者，他经常去山里徒步。"
+          }
+        ]
+      },
+      {
+        "text": "gold",
+        "phonetic": "[ɡəʊld]",
+        "pos": "n.",
+        "meaning": "黄金, 钱财, 金块, 金色, 宝贵",
+        "app_sentences": [
+          {
+            "en": "She won a gold medal in the school swimming competition.",
+            "cn": "她在学校游泳比赛中赢得了一枚金牌。"
+          }
+        ]
+      },
+      {
+        "text": "medal",
+        "phonetic": "[ˈmedl]",
+        "pos": "n.",
+        "meaning": "奖牌, 勋章",
+        "app_sentences": [
+          {
+            "en": "The athlete showed us the silver medal he won in the race.",
+            "cn": "那位运动员向我们展示他在比赛中赢得的银牌。"
+          },
+          {
+            "en": "She won a gold medal in the school swimming competition.",
+            "cn": "她在学校游泳比赛中赢得了一枚金牌。"
+          }
+        ]
+      },
+      {
+        "text": "proud",
+        "phonetic": "[praʊd]",
+        "pos": "a.",
+        "meaning": "骄傲的, 自大的, 自豪的, 辉煌的, 壮丽的",
+        "app_sentences": [
+          {
+            "en": "My parents are proud of me when I help others.",
+            "cn": "当我帮助别人时，我的父母为我感到骄傲。"
+          },
+          {
+            "en": "My parents are proud of my good grades at school.",
+            "cn": "我的父母为我学校的好成绩感到骄傲。"
+          }
+        ]
+      },
+      {
+        "text": "fit",
+        "phonetic": "[fɪt]",
+        "pos": "n.",
+        "meaning": "适宜, 合身, 发作, 痉挛",
+        "app_sentences": [
+          {
+            "en": "Eating healthy food and exercising can help you stay fit.",
+            "cn": "吃健康食品和锻炼能帮助你保持健康。"
+          }
+        ]
+      },
+      {
+        "text": "final",
+        "phonetic": "[ˈfaɪnəl]",
+        "pos": "n.",
+        "meaning": "期末考试, 结局, 决赛",
+        "app_sentences": [
+          {
+            "en": "We are studying hard for our final exams next month.",
+            "cn": "我们正在为下个月的期末考试努力学习。"
+          }
+        ]
+      },
+      {
+        "text": "team",
+        "phonetic": "[tiːm]",
+        "pos": "n.",
+        "meaning": "队, 组",
+        "app_sentences": [
+          {
+            "en": "Our school football team won the match last Saturday.",
+            "cn": "我们学校足球队上周六赢了比赛。"
+          },
+          {
+            "en": "Our school basketball team practices every Tuesday and Thursday.",
+            "cn": "我们学校篮球队每周二和周四训练。"
+          }
+        ]
+      },
+      {
+        "text": "even",
+        "phonetic": "['iːvn]",
+        "pos": "a.",
+        "meaning": "平坦的, 相等的, 连贯的, 均等的, 公平的, 偶数的, 平均的, 平衡的, 恰好的",
+        "app_sentences": [
+          {
+            "en": "Even young children can learn to use a computer these days.",
+            "cn": "如今，即使是小孩子也能学会使用电脑。"
+          }
+        ]
+      },
+      {
+        "text": "worse",
+        "phonetic": "[wɜːs]",
+        "pos": "n.",
+        "meaning": "更坏的事, 更恶劣的事, 败局",
+        "app_sentences": [
+          {
+            "en": "My cold is worse today, so I need to stay at home and rest.",
+            "cn": "我今天感冒更严重了，所以我需要呆在家里休息。"
+          }
+        ]
+      },
+      {
+        "text": "pay attention",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "专心",
+        "app_sentences": [
+          {
+            "en": "You must pay attention to the teacher when she is speaking.",
+            "cn": "老师讲话时你必须注意听。"
+          }
+        ]
+      },
+      {
+        "text": "continue",
+        "phonetic": "[kənˈtɪnjuː]",
+        "pos": "vi.",
+        "meaning": "继续, 延续, 延长",
+        "app_sentences": [
+          {
+            "en": "The rain will continue for the rest of the day, so stay inside.",
+            "cn": "雨会持续下到今天结束，所以待在室内吧。"
+          },
+          {
+            "en": "Please continue reading the next paragraph.",
+            "cn": "请继续读下一段。"
+          }
+        ]
+      },
+      {
+        "text": "brave",
+        "phonetic": "[breɪv]",
+        "pos": "a.",
+        "meaning": "勇敢的, 美好的, 华丽的",
+        "app_sentences": [
+          {
+            "en": "The brave firefighter saved the cat from the tall tree.",
+            "cn": "那位勇敢的消防员从高高的树上救下了那只猫。"
+          }
+        ]
+      },
+      {
+        "text": "action",
+        "phonetic": "[ˈækʃən]",
+        "pos": "n.",
+        "meaning": "行动, 活动, 动作, 作用, 战斗, 行为, 诉讼",
+        "app_sentences": [
+          {
+            "en": "We need to take action to keep our school clean and tidy.",
+            "cn": "我们需要采取行动来保持我们学校的干净整洁。"
+          },
+          {
+            "en": "Actions speak louder than words.",
+            "cn": "行动胜于雄辩。"
+          }
+        ]
+      },
+      {
+        "text": "fight",
+        "phonetic": "[faɪt]",
+        "pos": "n.",
+        "meaning": "打架, 争吵, 斗志",
+        "app_sentences": [
+          {
+            "en": "We should use words, not fists, to fight against unfair things.",
+            "cn": "我们应该用言语，而不是拳头，来对抗不公平的事情。"
+          },
+          {
+            "en": "The two heroes in the story fight against the evil monster.",
+            "cn": "故事中的两位英雄与邪恶的怪物战斗。"
+          }
+        ]
+      },
+      {
+        "text": "score",
+        "phonetic": "[skɔː]",
+        "pos": "n.",
+        "meaning": "得分, 抓痕, 二十个, 刻痕, 帐目, 乐谱, 起跑线, 终点线, 大量",
+        "app_sentences": [
+          {
+            "en": "What was the final score in yesterday's football match?",
+            "cn": "昨天足球比赛的最终比分是多少？"
+          }
+        ]
+      },
+      {
+        "text": "goal",
+        "phonetic": "[ɡəʊl]",
+        "pos": "n.",
+        "meaning": "目标, 终点, 得分, 球门, 守门员",
+        "app_sentences": [
+          {
+            "en": "My main goal this term is to improve my English speaking skills.",
+            "cn": "我这学期的主要目标是提高我的英语口语技能。"
+          }
+        ]
+      },
+      {
+        "text": "victory",
+        "phonetic": "[ˈvɪktəri]",
+        "pos": "n.",
+        "meaning": "胜利, 战胜, 克服",
+        "app_sentences": [
+          {
+            "en": "Our team celebrated its victory with juice and cookies.",
+            "cn": "我们队用果汁和饼干庆祝胜利。"
+          },
+          {
+            "en": "Our team celebrated our victory after the football match.",
+            "cn": "足球比赛后我们队庆祝了我们的胜利。"
+          }
+        ]
+      },
+      {
+        "text": "lead",
+        "phonetic": "[liːd]",
+        "pos": "n.",
+        "meaning": "铅, 铅条, 领导, 超前量, 领引, 榜样, 主角, 导线",
+        "app_sentences": [
+          {
+            "en": "The old path will lead you to a beautiful small lake.",
+            "cn": "这条旧小路会引你到一个美丽的小湖。"
+          },
+          {
+            "en": "The teacher asked a student to lead the group discussion.",
+            "cn": "老师让一个学生来引导小组讨论。"
+          }
+        ]
+      },
+      {
+        "text": "international",
+        "phonetic": "[ˌɪntəˈnæʃənəl]",
+        "pos": "a.",
+        "meaning": "国际的",
+        "app_sentences": [
+          {
+            "en": "We have an international food festival at our school every year.",
+            "cn": "我们学校每年都有一个国际美食节。"
+          },
+          {
+            "en": "English is an important international language.",
+            "cn": "英语是一门重要的国际语言。"
+          }
+        ]
+      },
+      {
+        "text": "chance",
+        "phonetic": "[tʃɑːns]",
+        "pos": "n.",
+        "meaning": "机会, 意外, 可能性",
+        "app_sentences": [
+          {
+            "en": "This is a good chance for you to make new friends at camp.",
+            "cn": "这是你在营地结交新朋友的好机会。"
+          }
+        ]
+      },
+      {
+        "text": "improve",
+        "phonetic": "[ɪmˈpruːv]",
+        "pos": "vt.",
+        "meaning": "改良, 提高...的价值, 改善, 利用",
+        "app_sentences": [
+          {
+            "en": "Reading English books every day can help improve your vocabulary.",
+            "cn": "每天读英文书可以帮助你提高词汇量。"
+          }
+        ]
+      },
+      {
+        "text": "create",
+        "phonetic": "[kriˈeɪt]",
+        "pos": "vt.",
+        "meaning": "创造, 建造, 引起, 任命",
+        "app_sentences": [
+          {
+            "en": "We used old boxes to create a model spaceship for science class.",
+            "cn": "我们用旧盒子为科学课制作了一个宇宙飞船模型。"
+          }
+        ]
+      },
+      {
+        "text": "wonder",
+        "phonetic": "[ˈwʌndə]",
+        "pos": "n.",
+        "meaning": "奇迹, 惊奇, 惊愕",
+        "app_sentences": [
+          {
+            "en": "I wonder what life was like for children one hundred years ago.",
+            "cn": "我想知道一百年前孩子们的生活是什么样的。"
+          },
+          {
+            "en": "I wonder what my English teacher will teach us tomorrow.",
+            "cn": "我想知道我的英语老师明天会教我们什么。"
+          }
+        ]
+      },
+      {
+        "text": "success",
+        "phonetic": "[səkˈses]",
+        "pos": "n.",
+        "meaning": "成功, 成就, 胜利",
+        "app_sentences": [
+          {
+            "en": "Hard work is often the key to success in school and in life.",
+            "cn": "努力通常是学校和生活中取得成功的关键。"
+          },
+          {
+            "en": "Hard work is the key to success in any field.",
+            "cn": "努力工作是任何领域取得成功的关键。"
+          }
+        ]
+      },
+      {
+        "text": "explain",
+        "phonetic": "[ɪkˈspleɪn]",
+        "pos": "v.",
+        "meaning": "解释, 说明",
+        "app_sentences": [
+          {
+            "en": "Can you explain how to solve this maths problem to me?",
+            "cn": "你能给我解释一下如何解这道数学题吗？"
+          },
+          {
+            "en": "Can you explain this math problem to me again, please?",
+            "cn": "你能再给我解释一下这道数学题吗？"
+          }
+        ]
+      },
+      {
+        "text": "simple",
+        "phonetic": "[ˈsɪmpəl]",
+        "pos": "a.",
+        "meaning": "简单的, 普通的, 朴素的, 单纯的, 绝对的, 初级的, 原始的, 迟钝的",
+        "app_sentences": [
+          {
+            "en": "The teacher gave us simple instructions for the science experiment.",
+            "cn": "老师给了我们简单的科学实验说明。"
+          },
+          {
+            "en": "The question is simple, and everyone can answer it.",
+            "cn": "这个问题很简单，每个人都能回答。"
+          }
+        ]
+      },
+      {
+        "text": "same",
+        "phonetic": "[se!m]",
+        "pos": "a.",
+        "meaning": "相同的, 同样的",
+        "app_sentences": [
+          {
+            "en": "My best friend and I have the same favourite colour - blue.",
+            "cn": "我最好的朋友和我有相同的最喜欢的颜色——蓝色。"
+          }
+        ]
+      },
+      {
+        "text": "courage",
+        "phonetic": "[ˈkʌrɪdʒ]",
+        "pos": "n.",
+        "meaning": "勇气, 胆量",
+        "app_sentences": [
+          {
+            "en": "It takes courage to stand up and speak in front of the whole class.",
+            "cn": "在全班同学面前站起来发言需要勇气。"
+          },
+          {
+            "en": "It takes courage to admit your own mistakes.",
+            "cn": "承认自己的错误需要勇气。"
+          }
+        ]
+      },
+      {
+        "text": "ahead",
+        "phonetic": "[əˈhed]",
+        "pos": "a.",
+        "meaning": "领先的, 预先的, 向前的",
+        "app_sentences": [
+          {
+            "en": "Look ahead on the road when you are riding your bicycle.",
+            "cn": "骑自行车时要看前方路面。"
+          }
+        ]
+      },
+      {
+        "text": "spirit",
+        "phonetic": "[ˈspɪrɪt]",
+        "pos": "n.",
+        "meaning": "精神, 心灵, 灵魂, 态度, 志气, 人格, 情绪, 心情, 烈酒",
+        "app_sentences": [
+          {
+            "en": "Our school spirit is very strong during the sports competition.",
+            "cn": "体育比赛期间，我们的学校精神非常高昂。"
+          },
+          {
+            "en": "Team spirit is very important in group activities.",
+            "cn": "团队精神在团队活动中非常重要。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Unit 3",
+    "data": [
+      {
+        "text": "delicious",
+        "phonetic": "[d!'l!12s]",
+        "pos": "a.",
+        "meaning": "美味的",
+        "app_sentences": [
+          {
+            "en": "My grandmother makes the most delicious cookies in the world.",
+            "cn": "我祖母做的饼干是世界上最美味。"
+          }
+        ]
+      },
+      {
+        "text": "certain",
+        "phonetic": "[ˈsɜːtn]",
+        "pos": "a.",
+        "meaning": "确定的, 某一个的, 必然的",
+        "app_sentences": [
+          {
+            "en": "I am certain that I locked the door when I left the house.",
+            "cn": "我确定我离开家时锁了门。"
+          },
+          {
+            "en": "I am certain that I put my keys on the table this morning.",
+            "cn": "我确信我今天早上把钥匙放在桌子上了。"
+          }
+        ]
+      },
+      {
+        "text": "mine",
+        "phonetic": "[maɪn]",
+        "pos": "n.",
+        "meaning": "矿, 矿藏, 地雷",
+        "app_sentences": [
+          {
+            "en": "That blue pencil case on the desk is mine, not yours.",
+            "cn": "桌上那个蓝色铅笔盒是我的，不是你的。"
+          }
+        ]
+      },
+      {
+        "text": "beef",
+        "phonetic": "[biːf]",
+        "pos": "n.",
+        "meaning": "牛肉, 肌肉",
+        "app_sentences": [
+          {
+            "en": "For dinner, we often have rice with beef and vegetables.",
+            "cn": "晚餐我们经常吃米饭配牛肉和蔬菜。"
+          }
+        ]
+      },
+      {
+        "text": "carrot",
+        "phonetic": "['k*r2t]",
+        "pos": "n.",
+        "meaning": "胡萝卜",
+        "app_sentences": [
+          {
+            "en": "Rabbits love to eat fresh carrots from the garden.",
+            "cn": "兔子喜欢吃花园里的新鲜胡萝卜。"
+          }
+        ]
+      },
+      {
+        "text": "mutton",
+        "phonetic": "[ˈmʌtn]",
+        "pos": "n.",
+        "meaning": "羊肉",
+        "app_sentences": [
+          {
+            "en": "Some people prefer to eat mutton instead of pork or beef.",
+            "cn": "有些人喜欢吃羊肉而不是猪肉或牛肉。"
+          }
+        ]
+      },
+      {
+        "text": "fat",
+        "phonetic": "[f*t]",
+        "pos": "n.",
+        "meaning": "脂肪, 脂油, 肥肉",
+        "app_sentences": [
+          {
+            "en": "Eating too much food with a lot of fat is not healthy.",
+            "cn": "吃太多富含脂肪的食物不健康。"
+          }
+        ]
+      },
+      {
+        "text": "hen",
+        "phonetic": "[hen]",
+        "pos": "n.",
+        "meaning": "母鸡, 雌禽",
+        "app_sentences": [
+          {
+            "en": "The brown hen lays an egg almost every morning.",
+            "cn": "那只褐色的母鸡几乎每天早上都下一个蛋。"
+          }
+        ]
+      },
+      {
+        "text": "pot",
+        "phonetic": "[pɒt]",
+        "pos": "n.",
+        "meaning": "盆, 罐, 壶, 坩埚, 奖杯",
+        "app_sentences": [
+          {
+            "en": "My mother uses a big pot to cook soup for our family.",
+            "cn": "我妈妈用一个大锅给我们家煮汤。"
+          }
+        ]
+      },
+      {
+        "text": "onion",
+        "phonetic": "[ˈʌnjən]",
+        "pos": "n.",
+        "meaning": "洋葱",
+        "app_sentences": [
+          {
+            "en": "We need to chop one onion to put into the meat sauce.",
+            "cn": "我们需要切一个洋葱放进肉酱里。"
+          }
+        ]
+      },
+      {
+        "text": "pancake",
+        "phonetic": "['pæn;ke!k]",
+        "pos": "n.",
+        "meaning": "薄烤饼, 薄煎饼, 烙饼",
+        "app_sentences": [
+          {
+            "en": "I like to eat pancakes with honey for breakfast on Sundays.",
+            "cn": "我喜欢在星期天早餐吃煎饼配蜂蜜。"
+          },
+          {
+            "en": "My mother makes delicious pancakes for us on Sunday mornings.",
+            "cn": "我妈妈在星期天早上为我们做好吃的薄煎饼。"
+          }
+        ]
+      },
+      {
+        "text": "porridge",
+        "phonetic": "[ˈpɒrɪdʒ]",
+        "pos": "n.",
+        "meaning": "粥, 糊",
+        "app_sentences": [
+          {
+            "en": "On cold mornings, a bowl of warm porridge is very nice.",
+            "cn": "在寒冷的早晨，一碗热粥非常棒。"
+          }
+        ]
+      },
+      {
+        "text": "sweet",
+        "phonetic": "[swiːt]",
+        "pos": "n.",
+        "meaning": "甜蜜, 糖果, 情人",
+        "app_sentences": [
+          {
+            "en": "This orange is very sweet and tastes like summer sunshine.",
+            "cn": "这个橙子很甜，尝起来像夏日的阳光。"
+          }
+        ]
+      },
+      {
+        "text": "plain",
+        "phonetic": "[pleɪn]",
+        "pos": "n.",
+        "meaning": "平原, 草原, 朴实无华的东西, 无格式",
+        "app_sentences": [
+          {
+            "en": "I prefer to eat plain rice instead of fried rice sometimes.",
+            "cn": "我有时更喜欢吃白米饭而不是炒饭。"
+          }
+        ]
+      },
+      {
+        "text": "menu",
+        "phonetic": "[ˈmenjuː]",
+        "pos": "n.",
+        "meaning": "菜单, (功能)选择单",
+        "app_sentences": [
+          {
+            "en": "Let's look at the menu to decide what to order for lunch.",
+            "cn": "我们看看菜单来决定午餐点什么。"
+          },
+          {
+            "en": "Let's look at the menu and decide what to order.",
+            "cn": "让我们看看菜单，决定点什么。"
+          }
+        ]
+      },
+      {
+        "text": "medicine",
+        "phonetic": "[ˈmedsən]",
+        "pos": "n.",
+        "meaning": "药, 医学, 内科",
+        "app_sentences": [
+          {
+            "en": "If you have a fever, you should take some medicine and rest.",
+            "cn": "如果你发烧了，你应该吃点药并休息。"
+          }
+        ]
+      },
+      {
+        "text": "than",
+        "phonetic": "[ðən]",
+        "pos": "conj.",
+        "meaning": "比, 除...外",
+        "app_sentences": [
+          {
+            "en": "My sister is two years younger than me.",
+            "cn": "我妹妹比我小两岁。"
+          }
+        ]
+      },
+      {
+        "text": "pill",
+        "phonetic": "[pɪl]",
+        "pos": "n.",
+        "meaning": "药丸, 弹丸, 屈辱, 胡说",
+        "app_sentences": [
+          {
+            "en": "You need to take one small pill with water after meals.",
+            "cn": "你需要饭后用温水服用一粒小药片。"
+          }
+        ]
+      },
+      {
+        "text": "remain",
+        "phonetic": "[rɪˈmeɪn]",
+        "pos": "vi.",
+        "meaning": "保持, 逗留, 剩余",
+        "app_sentences": [
+          {
+            "en": "Only ten minutes remain before the end of the school day.",
+            "cn": "离放学只剩下十分钟了。"
+          },
+          {
+            "en": "Please remain seated until the bus comes to a complete stop.",
+            "cn": "请留在座位上，直到公交车完全停稳。"
+          }
+        ]
+      },
+      {
+        "text": "another",
+        "phonetic": "[əˈnʌðə]",
+        "pos": "a.",
+        "meaning": "另外的, 再一的, 不同的",
+        "app_sentences": [
+          {
+            "en": "I finished my first book, so I started to read another one.",
+            "cn": "我读完了第一本书，所以开始读另一本。"
+          }
+        ]
+      },
+      {
+        "text": "connection",
+        "phonetic": "[kəˈnekʃən]",
+        "pos": "n.",
+        "meaning": "连接, 关系, 前后关系",
+        "app_sentences": [
+          {
+            "en": "There is a strong connection between eating well and good health.",
+            "cn": "健康饮食和身体健康之间有密切的联系。"
+          },
+          {
+            "en": "There is a close connection between exercise and health.",
+            "cn": "锻炼和健康之间有密切的联系。"
+          }
+        ]
+      },
+      {
+        "text": "prove",
+        "phonetic": "[pruːv]",
+        "pos": "vt.",
+        "meaning": "证明, 查验, 检验, 勘探, 显示",
+        "app_sentences": [
+          {
+            "en": "Your high test scores prove that you studied very hard.",
+            "cn": "你考试的高分证明了你学习非常努力。"
+          }
+        ]
+      },
+      {
+        "text": "similar",
+        "phonetic": "['s!m!l2]",
+        "pos": "a.",
+        "meaning": "相似的, 类似的",
+        "app_sentences": [
+          {
+            "en": "The two houses look very similar because they were built together.",
+            "cn": "这两栋房子看起来非常相似，因为它们是一起建的。"
+          },
+          {
+            "en": "Your new bicycle is similar to mine, but mine is blue.",
+            "cn": "你的新自行车和我的相似，但我的那辆是蓝色的。"
+          }
+        ]
+      },
+      {
+        "text": "special",
+        "phonetic": "['spe1l]",
+        "pos": "n.",
+        "meaning": "专辑, 专车, 号外, 特别的东西, 负有特别任务的人员",
+        "app_sentences": [
+          {
+            "en": "My birthday is a special day for me and my family.",
+            "cn": "我的生日对我和我的家人来说是一个特殊的日子。"
+          }
+        ]
+      },
+      {
+        "text": "order",
+        "phonetic": "[ˈɔːdə]",
+        "pos": "n.",
+        "meaning": "次序, 规则, 命令",
+        "app_sentences": [
+          {
+            "en": "Please put these history books in order by their year.",
+            "cn": "请把这些历史书按年份顺序排列。"
+          },
+          {
+            "en": "The teacher asked us to keep the classroom in good order.",
+            "cn": "老师要求我们保持教室整洁有序。"
+          }
+        ]
+      },
+      {
+        "text": "pie",
+        "phonetic": "[paɪ]",
+        "pos": "n.",
+        "meaning": "馅饼, 财富, 总额, 贪污受贿, 杂乱, 喜鹊",
+        "app_sentences": [
+          {
+            "en": "My favourite dessert is apple pie with a little ice cream.",
+            "cn": "我最喜欢的甜点是配一点冰淇淋的苹果派。"
+          },
+          {
+            "en": "My grandma makes the best apple pie in the world.",
+            "cn": "我奶奶做的苹果派是世界上最好的。"
+          }
+        ]
+      },
+      {
+        "text": "sandwich",
+        "phonetic": "[ˈsænwɪdʒ]",
+        "pos": "n.",
+        "meaning": "三明治, 夹心面包, 夹层板",
+        "app_sentences": [
+          {
+            "en": "I make a cheese sandwich to take to school for lunch.",
+            "cn": "我做了一个奶酪三明治带到学校当午餐。"
+          }
+        ]
+      },
+      {
+        "text": "circle",
+        "phonetic": "[ˈsɜːkəl]",
+        "pos": "n.",
+        "meaning": "圆周, 社交圈, 循环, 范围",
+        "app_sentences": [
+          {
+            "en": "We sat in a circle on the floor to play the game.",
+            "cn": "我们在地板上坐成一圈玩游戏。"
+          },
+          {
+            "en": "The children sat in a circle and played a game.",
+            "cn": "孩子们围坐成一个圆圈玩游戏。"
+          }
+        ]
+      },
+      {
+        "text": "scramble",
+        "phonetic": "[ˈskræmbəl]",
+        "pos": "n.",
+        "meaning": "攀缘, 爬行, 抢夺, 混乱, 紧急起飞",
+        "app_sentences": [
+          {
+            "en": "I like to scramble eggs with tomatoes for a quick breakfast.",
+            "cn": "我喜欢把鸡蛋和西红柿炒在一起作为快捷早餐。"
+          }
+        ]
+      },
+      {
+        "text": "slice",
+        "phonetic": "[slaɪs]",
+        "pos": "n.",
+        "meaning": "薄的切片, 一部分, 菜刀",
+        "app_sentences": [
+          {
+            "en": "Can you slice the bread for our sandwiches, please?",
+            "cn": "请你把面包切成片做我们的三明治好吗？"
+          }
+        ]
+      },
+      {
+        "text": "beat",
+        "phonetic": "[biːt]",
+        "pos": "n.",
+        "meaning": "心跳(声), 打, 敲打声, 拍子",
+        "app_sentences": [
+          {
+            "en": "You need to beat the eggs well before you make the cake.",
+            "cn": "做蛋糕前你需要把鸡蛋打好。"
+          },
+          {
+            "en": "Our school basketball team beat their team in the final game.",
+            "cn": "我们学校的篮球队在决赛中打败了他们队。"
+          }
+        ]
+      },
+      {
+        "text": "add",
+        "phonetic": "[æd]",
+        "pos": "vt.",
+        "meaning": "增加, 添加, 附带说明, 计算...总和",
+        "app_sentences": [
+          {
+            "en": "Add a little salt to the soup to make it taste better.",
+            "cn": "在汤里加一点盐使它味道更好。"
+          },
+          {
+            "en": "Please add some sugar to the tea if you like it sweet.",
+            "cn": "如果你喜欢甜，请给茶加些糖。"
+          }
+        ]
+      },
+      {
+        "text": "salt",
+        "phonetic": "[sɔːlt]",
+        "pos": "n.",
+        "meaning": "盐, 风趣, 刺激",
+        "app_sentences": [
+          {
+            "en": "Too much salt in your food is not good for your health.",
+            "cn": "食物中盐太多对你的健康不好。"
+          },
+          {
+            "en": "Please pass me the salt; I need some for my eggs.",
+            "cn": "请把盐递给我，我的鸡蛋需要加一点。"
+          }
+        ]
+      },
+      {
+        "text": "pepper",
+        "phonetic": "[ˈpepə]",
+        "pos": "n.",
+        "meaning": "胡椒粉, 胡椒, 辣椒",
+        "app_sentences": [
+          {
+            "en": "Some people like to put black pepper on their noodles.",
+            "cn": "有些人喜欢在他们的面条上放黑胡椒。"
+          }
+        ]
+      },
+      {
+        "text": "oil",
+        "phonetic": "[ɔɪl]",
+        "pos": "n.",
+        "meaning": "油, 石油, 油画颜料",
+        "app_sentences": [
+          {
+            "en": "We use vegetable oil to cook food in our home.",
+            "cn": "我们家用植物油烹饪食物。"
+          },
+          {
+            "en": "We use cooking oil to fry food in the kitchen.",
+            "cn": "我们在厨房用食用油煎炸食物。"
+          }
+        ]
+      },
+      {
+        "text": "pan",
+        "phonetic": "[pæn]",
+        "pos": "n.",
+        "meaning": "平锅, 浅盘, 盆地, 硬土层, 拍摄全景",
+        "app_sentences": [
+          {
+            "en": "Heat the oil in the pan before you put the vegetables in.",
+            "cn": "在把蔬菜放进锅里之前，先把油在锅里加热。"
+          }
+        ]
+      },
+      {
+        "text": "mixture",
+        "phonetic": "[ˈmɪkstʃə]",
+        "pos": "n.",
+        "meaning": "混合, 混淆, 混合物",
+        "app_sentences": [
+          {
+            "en": "Stir the mixture of flour and eggs until it is smooth.",
+            "cn": "搅拌面粉和鸡蛋的混合物直到它变得顺滑。"
+          }
+        ]
+      },
+      {
+        "text": "stir",
+        "phonetic": "[stɜː]",
+        "pos": "n.",
+        "meaning": "骚动, 轰动, 搅动, 监狱",
+        "app_sentences": [
+          {
+            "en": "You need to stir the soup slowly so it does not burn.",
+            "cn": "你需要慢慢搅拌汤，这样它就不会烧糊。"
+          }
+        ]
+      },
+      {
+        "text": "until",
+        "phonetic": "[ʌnˈtɪl]",
+        "pos": "prep.",
+        "meaning": "直到, 在...以前",
+        "app_sentences": [
+          {
+            "en": "Cook the rice until all the water is gone.",
+            "cn": "煮米饭直到所有水都消失。"
+          },
+          {
+            "en": "I will wait here until you come back.",
+            "cn": "我会在这里等到你回来。"
+          }
+        ]
+      },
+      {
+        "text": "golden",
+        "phonetic": "[ˈɡəʊldən]",
+        "pos": "a.",
+        "meaning": "金的, 含金的, 金色的, 贵重的, 繁盛的",
+        "app_sentences": [
+          {
+            "en": "Bake the cake until the top is golden brown.",
+            "cn": "烘烤蛋糕直到顶部变成金棕色。"
+          }
+        ]
+      },
+      {
+        "text": "plate",
+        "phonetic": "[pleɪt]",
+        "pos": "n.",
+        "meaning": "碟, 盘子, 盆中物, 金属板, 图版, 金银餐具, 印版, 金属牌(照)",
+        "app_sentences": [
+          {
+            "en": "Put the hot food on a plate and let it cool for a minute.",
+            "cn": "把热的食物放在盘子上，让它冷却一分钟。"
+          }
+        ]
+      },
+      {
+        "text": "loud",
+        "phonetic": "[laʊd]",
+        "pos": "a.",
+        "meaning": "大声的, 不断的, 喧吵的",
+        "app_sentences": [
+          {
+            "en": "The music at the school party was too loud for me.",
+            "cn": "学校聚会的音乐对我来说太吵了。"
+          },
+          {
+            "en": "Please don't speak so loud in the library.",
+            "cn": "请在图书馆里不要这么大声说话。"
+          }
+        ]
+      },
+      {
+        "text": "heat",
+        "phonetic": "[hiːt]",
+        "pos": "n.",
+        "meaning": "热, 热度, 体温, 高潮",
+        "app_sentences": [
+          {
+            "en": "The heat from the sun made the sand very warm.",
+            "cn": "太阳的热量使沙子变得很温暖。"
+          },
+          {
+            "en": "The heat from the sun makes us feel warm in summer.",
+            "cn": "夏天，太阳的热量让我们感到温暖。"
+          }
+        ]
+      },
+      {
+        "text": "recipe",
+        "phonetic": "[ˈresəpi]",
+        "pos": "n.",
+        "meaning": "食谱, 处方, 秘诀",
+        "app_sentences": [
+          {
+            "en": "I followed a simple recipe to make chocolate cookies.",
+            "cn": "我按照一个简单的食谱做巧克力饼干。"
+          }
+        ]
+      },
+      {
+        "text": "ingredient",
+        "phonetic": "[ɪnˈɡriːdiənt]",
+        "pos": "n.",
+        "meaning": "成分, 因素",
+        "app_sentences": [
+          {
+            "en": "Flour is the main ingredient for making bread.",
+            "cn": "面粉是做面包的主要原料。"
+          }
+        ]
+      },
+      {
+        "text": "step",
+        "phonetic": "[step]",
+        "pos": "n.",
+        "meaning": "步骤, 步, 步幅, 脚步声, 踏级, 步伐, 短距离, 步态, 手段, 等级",
+        "app_sentences": [
+          {
+            "en": "The first step in washing your hands is to use soap and water.",
+            "cn": "洗手的第一步是使用肥皂和水。"
+          },
+          {
+            "en": "The first step to learning English well is to be interested in it.",
+            "cn": "学好英语的第一步是对它感兴趣。"
+          }
+        ]
+      },
+      {
+        "text": "diet",
+        "phonetic": "[ˈdaɪət]",
+        "pos": "n.",
+        "meaning": "日常饮食, 议会",
+        "app_sentences": [
+          {
+            "en": "A healthy diet includes lots of fruit and vegetables.",
+            "cn": "健康的饮食包括大量的水果和蔬菜。"
+          }
+        ]
+      },
+      {
+        "text": "restaurant",
+        "phonetic": "['rest2r=nt]",
+        "pos": "n.",
+        "meaning": "餐馆, 饭店",
+        "app_sentences": [
+          {
+            "en": "My family sometimes goes to a restaurant for dinner on Friday.",
+            "cn": "我家有时周五去餐馆吃晚饭。"
+          }
+        ]
+      },
+      {
+        "text": "salad",
+        "phonetic": "[ˈsæləd]",
+        "pos": "n.",
+        "meaning": "色拉",
+        "app_sentences": [
+          {
+            "en": "I eat a green salad with my lunch almost every day.",
+            "cn": "我几乎每天午餐都吃一份绿色沙拉。"
+          },
+          {
+            "en": "A vegetable salad is healthy and good for you.",
+            "cn": "蔬菜沙拉很健康，对你有益。"
+          }
+        ]
+      },
+      {
+        "text": "hamburger",
+        "phonetic": "['h*m;b^ːg2]",
+        "pos": "n.",
+        "meaning": "汉堡(德国港口), 肉饼, 汉堡包, 纯精牛肉, 汉堡牛排",
+        "app_sentences": [
+          {
+            "en": "A hamburger with cheese and tomato is my favourite fast food.",
+            "cn": "一个带奶酪和番茄的汉堡是我最喜欢的快餐。"
+          }
+        ]
+      },
+      {
+        "text": "snack",
+        "phonetic": "[snæk]",
+        "pos": "n.",
+        "meaning": "小吃, 点心, 快餐",
+        "app_sentences": [
+          {
+            "en": "I usually have a small snack, like an apple, after school.",
+            "cn": "我放学后通常吃一小份零食，比如一个苹果。"
+          },
+          {
+            "en": "I often eat some fruit as a snack between meals.",
+            "cn": "我经常在两餐之间吃点水果作为零食。"
+          }
+        ]
+      },
+      {
+        "text": "chip",
+        "phonetic": "[tʃɪp]",
+        "pos": "n.",
+        "meaning": "屑片, 薄片, 碎片",
+        "app_sentences": [
+          {
+            "en": "We sometimes eat fish and chips for dinner on Saturdays.",
+            "cn": "我们有时星期六晚餐吃炸鱼和薯条。"
+          }
+        ]
+      },
+      {
+        "text": "dangerous",
+        "phonetic": "['de!nd32r2s]",
+        "pos": "a.",
+        "meaning": "危险的",
+        "app_sentences": [
+          {
+            "en": "It is dangerous to play with fire in the house.",
+            "cn": "在房子里玩火很危险。"
+          }
+        ]
+      },
+      {
+        "text": "border",
+        "phonetic": "[ˈbɔːdə]",
+        "pos": "n.",
+        "meaning": "边缘, 边境, 边界, 花坛",
+        "app_sentences": [
+          {
+            "en": "The river forms a natural border between the two towns.",
+            "cn": "这条河构成了两个城镇之间的天然边界。"
+          }
+        ]
+      },
+      {
+        "text": "Western",
+        "phonetic": "[ˈwestən]",
+        "pos": "n.",
+        "meaning": "西方人, 西部片, 西部小说",
+        "app_sentences": [
+          {
+            "en": "My friend likes to eat Western food like pizza and pasta.",
+            "cn": "我的朋友喜欢吃披萨和意大利面这样的西餐。"
+          }
+        ]
+      },
+      {
+        "text": "dessert",
+        "phonetic": "[dɪˈzɜːt]",
+        "pos": "n.",
+        "meaning": "餐后甜点",
+        "app_sentences": [
+          {
+            "en": "We often have fruit or ice cream for dessert after dinner.",
+            "cn": "晚饭后我们经常吃水果或冰淇淋作为甜点。"
+          }
+        ]
+      },
+      {
+        "text": "actually",
+        "phonetic": "[ˈæktʃuəli]",
+        "pos": "adv.",
+        "meaning": "事实上, 竟然, 如今, 现在",
+        "app_sentences": [
+          {
+            "en": "I thought the test was today, but actually it is tomorrow.",
+            "cn": "我以为今天考试，但实际上是在明天。"
+          },
+          {
+            "en": "Actually, I've never been to Beijing before.",
+            "cn": "实际上，我以前从没去过北京。"
+          }
+        ]
+      },
+      {
+        "text": "dynasty",
+        "phonetic": "[ˈdɪnəsti]",
+        "pos": "n.",
+        "meaning": "朝代, 王朝",
+        "app_sentences": [
+          {
+            "en": "We learned about the Tang Dynasty in our history class.",
+            "cn": "我们在历史课上学习了唐朝。"
+          }
+        ]
+      },
+      {
+        "text": "store",
+        "phonetic": "[stɔː]",
+        "pos": "n.",
+        "meaning": "商店, 贮藏, 仓库, 备用品, 存储器",
+        "app_sentences": [
+          {
+            "en": "There is a big book store near my school that I often visit.",
+            "cn": "我学校附近有一家大书店，我经常去。"
+          },
+          {
+            "en": "We need to store the winter clothes in the boxes.",
+            "cn": "我们需要把冬衣存放在箱子里。"
+          }
+        ]
+      },
+      {
+        "text": "mean",
+        "phonetic": "[miːn]",
+        "pos": "a.",
+        "meaning": "低劣的, 卑贱的, 简陋的, 吝啬的, 惭愧的, 平均的, 中间的, 普通的",
+        "app_sentences": [
+          {
+            "en": "What does this new English word mean in Chinese?",
+            "cn": "这个新英文单词的中文意思是什么？"
+          }
+        ]
+      },
+      {
+        "text": "modern",
+        "phonetic": "[ˈmɒdn]",
+        "pos": "n.",
+        "meaning": "现代人, 有思想的人",
+        "app_sentences": [
+          {
+            "en": "The city has many modern buildings and shopping centres.",
+            "cn": "这座城市有许多现代建筑和购物中心。"
+          }
+        ]
+      },
+      {
+        "text": "folk",
+        "phonetic": "[fəʊk]",
+        "pos": "n.",
+        "meaning": "人们, 家人, 亲属, 民族",
+        "app_sentences": [
+          {
+            "en": "My grandmother knows many old folk songs from her village.",
+            "cn": "我祖母知道很多她们村里的古老民歌。"
+          }
+        ]
+      },
+      {
+        "text": "tale",
+        "phonetic": "[teɪl]",
+        "pos": "n.",
+        "meaning": "故事, 谎言, 谣言, 陈述, 叙述",
+        "app_sentences": [
+          {
+            "en": "My grandfather tells us a funny tale about his childhood.",
+            "cn": "我爷爷给我们讲了一个关于他童年的有趣故事。"
+          }
+        ]
+      },
+      {
+        "text": "emperor",
+        "phonetic": "[ˈempərə]",
+        "pos": "n.",
+        "meaning": "皇帝, 君主",
+        "app_sentences": [
+          {
+            "en": "The emperor in the story was very wise and kind to his people.",
+            "cn": "故事中的皇帝非常英明，对他的人民很仁慈。"
+          }
+        ]
+      },
+      {
+        "text": "suffer",
+        "phonetic": "[ˈsʌfə]",
+        "pos": "vt.",
+        "meaning": "遭受, 经历, 忍受",
+        "app_sentences": [
+          {
+            "en": "People can suffer from headaches if they do not sleep enough.",
+            "cn": "如果睡眠不足，人们可能会头痛。"
+          },
+          {
+            "en": "Many people suffer from colds in winter.",
+            "cn": "许多人在冬天患感冒。"
+          }
+        ]
+      },
+      {
+        "text": "stomach",
+        "phonetic": "[ˈstʌmək]",
+        "pos": "n.",
+        "meaning": "胃, 食欲, 欲望, 肚子",
+        "app_sentences": [
+          {
+            "en": "My stomach feels full after eating that big bowl of noodles.",
+            "cn": "吃了那大碗面条后，我的胃感觉很饱。"
+          },
+          {
+            "en": "Eating too much ice cream sometimes gives me a stomach ache.",
+            "cn": "吃太多冰淇淋有时会让我肚子疼。"
+          }
+        ]
+      },
+      {
+        "text": "totally",
+        "phonetic": "[ˈtəʊtl-i]",
+        "pos": "adv.",
+        "meaning": "完全地",
+        "app_sentences": [
+          {
+            "en": "I totally agree with your plan for the class picnic.",
+            "cn": "我完全同意你关于班级野餐的计划。"
+          }
+        ]
+      },
+      {
+        "text": "Iranian",
+        "phonetic": "[ɪˈreɪniən]",
+        "pos": "a.",
+        "meaning": "伊朗的, 伊朗语系的",
+        "app_sentences": [
+          {
+            "en": "My new classmate is Iranian and he speaks Farsi and English.",
+            "cn": "我的新同学是伊朗人，他会说法尔西语和英语。"
+          }
+        ]
+      },
+      {
+        "text": "flat",
+        "phonetic": "[flæt]",
+        "pos": "a.",
+        "meaning": "平坦的, 单调的, 无力的, 浅的, 萧条的, 干脆的, 无聊的",
+        "app_sentences": [
+          {
+            "en": "The land near the river is very flat and good for farming.",
+            "cn": "河边的土地非常平坦，适合耕作。"
+          }
+        ]
+      },
+      {
+        "text": "stone",
+        "phonetic": "[st2%n]",
+        "pos": "n.",
+        "meaning": "石头, 宝石, 果核, 纪念碑, 结石",
+        "app_sentences": [
+          {
+            "en": "We skipped flat stones across the surface of the lake.",
+            "cn": "我们在湖面上打水漂。"
+          },
+          {
+            "en": "There is a small stone bridge over the river near our village.",
+            "cn": "我们村附近的河上有一座小石桥。"
+          }
+        ]
+      },
+      {
+        "text": "symbol",
+        "phonetic": "[ˈsɪmbəl]",
+        "pos": "n.",
+        "meaning": "符号, 象征, 代号, 信条",
+        "app_sentences": [
+          {
+            "en": "The heart is often a symbol of love and friendship.",
+            "cn": "心通常是爱和友谊的象征。"
+          }
+        ]
+      },
+      {
+        "text": "American",
+        "phonetic": "[2'mer!k2n]",
+        "pos": "n.",
+        "meaning": "美国人",
+        "app_sentences": [
+          {
+            "en": "Basketball is a very popular American sport around the world.",
+            "cn": "篮球是世界范围内非常受欢迎的美国运动。"
+          }
+        ]
+      },
+      {
+        "text": "twin",
+        "phonetic": "[twɪn]",
+        "pos": "n.",
+        "meaning": "双胞胎中一人, 一对非常相像的人(或物)中的一个",
+        "app_sentences": [
+          {
+            "en": "The twin brothers in my class look exactly the same.",
+            "cn": "我班上的那对双胞胎兄弟看起来一模一样。"
+          }
+        ]
+      },
+      {
+        "text": "bridge",
+        "phonetic": "[brɪdʒ]",
+        "pos": "n.",
+        "meaning": "桥, 舰桥, 桥梁, 桥牌",
+        "app_sentences": [
+          {
+            "en": "We walked across the old stone bridge to get to the park.",
+            "cn": "我们走过古老的石桥到达公园。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Unit 4",
+    "data": [
+      {
+        "text": "dull",
+        "phonetic": "[dʌl]",
+        "pos": "a.",
+        "meaning": "钝的, 无趣的, 呆滞的, 阴暗的",
+        "app_sentences": [
+          {
+            "en": "The movie was so dull that I almost fell asleep.",
+            "cn": "那部电影太乏味了，我差点睡着了。"
+          }
+        ]
+      },
+      {
+        "text": "imagine",
+        "phonetic": "[ɪˈmædʒɪn]",
+        "pos": "vt.",
+        "meaning": "想像, 设想, 猜测",
+        "app_sentences": [
+          {
+            "en": "Can you imagine what life will be like in fifty years?",
+            "cn": "你能想象五十年后的生活会是什么样子吗？"
+          }
+        ]
+      },
+      {
+        "text": "alone",
+        "phonetic": "[2'l2%n]",
+        "pos": "a.",
+        "meaning": "孤独的, 单独的, 独自的",
+        "app_sentences": [
+          {
+            "en": "Sometimes I like to be alone and read a good book.",
+            "cn": "有时我喜欢独自一人读一本好书。"
+          }
+        ]
+      },
+      {
+        "text": "might",
+        "phonetic": "[maɪt]",
+        "pos": "n.",
+        "meaning": "力量, 权力",
+        "app_sentences": [
+          {
+            "en": "It might rain later, so take an umbrella with you.",
+            "cn": "稍后可能会下雨，所以带把伞吧。"
+          }
+        ]
+      },
+      {
+        "text": "tool",
+        "phonetic": "[tuːl]",
+        "pos": "n.",
+        "meaning": "工具, 机床, 傀儡",
+        "app_sentences": [
+          {
+            "en": "A dictionary is a useful tool for learning a new language.",
+            "cn": "词典是学习一门新语言的有用工具。"
+          },
+          {
+            "en": "A hammer is a useful tool for fixing things.",
+            "cn": "锤子是修理东西的有用工具。"
+          }
+        ]
+      },
+      {
+        "text": "list",
+        "phonetic": "[lɪst]",
+        "pos": "n.",
+        "meaning": "目录, 名单, 明细表, 布条, 条纹, 列表, 序列, 数据清单",
+        "app_sentences": [
+          {
+            "en": "I made a list of all the things I need for school tomorrow.",
+            "cn": "我列了一份明天上学所需所有物品的清单。"
+          },
+          {
+            "en": "My mother made a shopping list before going to the supermarket.",
+            "cn": "我妈妈去超市前列了一张购物清单。"
+          }
+        ]
+      },
+      {
+        "text": "something",
+        "phonetic": "[ˈsʌmθɪŋ]",
+        "pos": "pron.",
+        "meaning": "某事, 某物",
+        "app_sentences": [
+          {
+            "en": "I want to tell you something interesting about my new friend.",
+            "cn": "我想告诉你一些关于我新朋友的有趣的事。"
+          },
+          {
+            "en": "I think I forgot something important at home this morning.",
+            "cn": "我想我今天早上把什么重要的东西忘在家里了。"
+          }
+        ]
+      },
+      {
+        "text": "novel",
+        "phonetic": "[ˈnɒvəl]",
+        "pos": "n.",
+        "meaning": "小说, 长篇故事",
+        "app_sentences": [
+          {
+            "en": "I am reading an interesting novel about a young detective.",
+            "cn": "我正在读一本关于一位年轻侦探的有趣小说。"
+          }
+        ]
+      },
+      {
+        "text": "magazine",
+        "phonetic": "[;m*g2'ziːn]",
+        "pos": "n.",
+        "meaning": "杂志, 仓库, 弹盒, 胶卷盒",
+        "app_sentences": [
+          {
+            "en": "There is a sports magazine on the table in the living room.",
+            "cn": "客厅的桌子上有一本体育杂志。"
+          }
+        ]
+      },
+      {
+        "text": "solar",
+        "phonetic": "[ˈsəʊlə]",
+        "pos": "a.",
+        "meaning": "太阳的, 日光的, 源自太阳的",
+        "app_sentences": [
+          {
+            "en": "Solar power comes from the energy of the sun.",
+            "cn": "太阳能来自太阳的能量。"
+          },
+          {
+            "en": "We learned about solar energy in our science lesson.",
+            "cn": "我们在科学课上学到了太阳能。"
+          }
+        ]
+      },
+      {
+        "text": "media",
+        "phonetic": "[ˈmiːdiə]",
+        "pos": "n.",
+        "meaning": "媒体",
+        "app_sentences": [
+          {
+            "en": "We can learn news from different media like TV and the internet.",
+            "cn": "我们可以从电视和互联网等不同媒体上了解新闻。"
+          }
+        ]
+      },
+      {
+        "text": "bored",
+        "phonetic": "[bɔːd]",
+        "pos": "a.",
+        "meaning": "无聊的；烦人的；无趣的",
+        "app_sentences": [
+          {
+            "en": "I feel bored when I have nothing interesting to do.",
+            "cn": "当我没有什么有趣的事情可做时，我感到无聊。"
+          }
+        ]
+      },
+      {
+        "text": "feeling",
+        "phonetic": "[ˈfiːlɪŋ]",
+        "pos": "n.",
+        "meaning": "摸, 触觉, 知觉, 感觉, 情绪, 同情",
+        "app_sentences": [
+          {
+            "en": "Talking to a friend can help when you have a sad feeling.",
+            "cn": "当你感到悲伤时，与朋友交谈会有所帮助。"
+          },
+          {
+            "en": "I have a good feeling about our team's chance to win.",
+            "cn": "我对我们队获胜的机会有很好的感觉。"
+          }
+        ]
+      },
+      {
+        "text": "lift sb",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "",
+        "app_sentences": [
+          {
+            "en": "A funny joke can lift your spirits when you feel down.",
+            "cn": "一个有趣的笑话可以在你情绪低落时振奋你的精神。"
+          }
+        ]
+      },
+      {
+        "text": "funny",
+        "phonetic": "['f7ni]",
+        "pos": "a.",
+        "meaning": "好笑的, 有趣的, 滑稽的",
+        "app_sentences": [
+          {
+            "en": "The comedian told many funny stories and made us laugh.",
+            "cn": "那位喜剧演员讲了许多有趣的故事，逗得我们大笑。"
+          }
+        ]
+      },
+      {
+        "text": "youthful",
+        "phonetic": "[ˈjuːθfəl]",
+        "pos": "a.",
+        "meaning": "年轻的, 青年的",
+        "app_sentences": [
+          {
+            "en": "My grandmother has a very youthful attitude towards life.",
+            "cn": "我祖母对生活有着非常年轻的态度。"
+          }
+        ]
+      },
+      {
+        "text": "invite",
+        "phonetic": "[!n'va!t]",
+        "pos": "vt.",
+        "meaning": "邀请, 请求, 引起, 招致",
+        "app_sentences": [
+          {
+            "en": "I will invite all my classmates to my birthday party.",
+            "cn": "我会邀请我所有的同学来参加我的生日派对。"
+          },
+          {
+            "en": "My best friend invited me to her house for dinner last Sunday.",
+            "cn": "上周日，我最好的朋友邀请我去她家吃晚饭。"
+          }
+        ]
+      },
+      {
+        "text": "number",
+        "phonetic": "[ˈnʌmbə]",
+        "pos": "n.",
+        "meaning": "数, 数字, 数目, 号码",
+        "app_sentences": [
+          {
+            "en": "The number of students in our school is about five hundred.",
+            "cn": "我们学校的学生人数大约是五百。"
+          }
+        ]
+      },
+      {
+        "text": "a number of",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "许多的",
+        "app_sentences": [
+          {
+            "en": "A number of students joined the school chess club this term.",
+            "cn": "本学期许多学生加入了学校国际象棋俱乐部。"
+          }
+        ]
+      },
+      {
+        "text": "able",
+        "phonetic": "[ˈeɪbəl]",
+        "pos": "a.",
+        "meaning": "能干的, 能够的",
+        "app_sentences": [
+          {
+            "en": "With enough practice, you will be able to speak English well.",
+            "cn": "通过足够的练习，你将能够说好英语。"
+          }
+        ]
+      },
+      {
+        "text": "importance",
+        "phonetic": "[ɪmˈpɔːtəns]",
+        "pos": "n.",
+        "meaning": "重要, 重要性, 重要地位, 自大",
+        "app_sentences": [
+          {
+            "en": "We learned about the importance of eating a healthy breakfast.",
+            "cn": "我们学习了吃健康早餐的重要性。"
+          }
+        ]
+      },
+      {
+        "text": "detail",
+        "phonetic": "[ˈdiːteɪl]",
+        "pos": "n.",
+        "meaning": "细节, 详情",
+        "app_sentences": [
+          {
+            "en": "Please describe the picture in detail for your homework.",
+            "cn": "请详细描述这幅图作为你的作业。"
+          }
+        ]
+      },
+      {
+        "text": "conclusion",
+        "phonetic": "[kənˈkluːʒən]",
+        "pos": "n.",
+        "meaning": "结论, 结尾, 推论",
+        "app_sentences": [
+          {
+            "en": "In conclusion, I think reading is both fun and useful.",
+            "cn": "总之，我认为阅读既有趣又有用。"
+          }
+        ]
+      },
+      {
+        "text": "open-minded",
+        "phonetic": "[ˌəʊpən ˈmaɪndɪd]",
+        "pos": "a.",
+        "meaning": "思想开阔的, 无偏见的",
+        "app_sentences": [
+          {
+            "en": "We should be open-minded and listen to different ideas.",
+            "cn": "我们应该思想开明，听取不同的想法。"
+          }
+        ]
+      },
+      {
+        "text": "ourselves",
+        "phonetic": "[aʊəˈselvz]",
+        "pos": "pron.",
+        "meaning": "我们自己",
+        "app_sentences": [
+          {
+            "en": "We can teach ourselves how to cook using a recipe book.",
+            "cn": "我们可以用食谱书自学如何烹饪。"
+          },
+          {
+            "en": "We built the model airplane by ourselves.",
+            "cn": "我们自己制作了这个飞机模型。"
+          }
+        ]
+      },
+      {
+        "text": "else",
+        "phonetic": "[els]",
+        "pos": "a.",
+        "meaning": "别的, 其他的",
+        "app_sentences": [
+          {
+            "en": "Is there anything else you want to ask about the school trip?",
+            "cn": "关于学校旅行，你还有其他想问的吗？"
+          }
+        ]
+      },
+      {
+        "text": "differently",
+        "phonetic": "['dɪfrəntlɪ]",
+        "pos": "adv.",
+        "meaning": "差异, 不同, 各别, 各种",
+        "app_sentences": [
+          {
+            "en": "People from other countries may do things differently.",
+            "cn": "来自其他国家的人做事方式可能不同。"
+          }
+        ]
+      },
+      {
+        "text": "instruction",
+        "phonetic": "[ɪnˈstrʌkʃən]",
+        "pos": "n.",
+        "meaning": "指令, 教导, 命令",
+        "app_sentences": [
+          {
+            "en": "Read the instruction carefully before you start the experiment.",
+            "cn": "开始实验前请仔细阅读说明。"
+          }
+        ]
+      },
+      {
+        "text": "daily",
+        "phonetic": "[ˈdeɪli]",
+        "pos": "a.",
+        "meaning": "每日的, 日常的",
+        "app_sentences": [
+          {
+            "en": "Doing some daily exercise is good for your health.",
+            "cn": "每天做一些运动对你的健康有好处。"
+          },
+          {
+            "en": "Drinking milk daily helps children grow strong and healthy.",
+            "cn": "每天喝牛奶有助于孩子们长得强壮健康。"
+          }
+        ]
+      },
+      {
+        "text": "daily life",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "日常生活; 起居",
+        "app_sentences": [
+          {
+            "en": "We use English in our daily life when we travel or use computers.",
+            "cn": "当我们旅行或使用电脑时，我们在日常生活中使用英语。"
+          },
+          {
+            "en": "Mobile phones are important in our daily life now.",
+            "cn": "手机现在在我们的日常生活中很重要。"
+          }
+        ]
+      },
+      {
+        "text": "while",
+        "phonetic": "[waɪl]",
+        "pos": "n.",
+        "meaning": "一会儿, (一段)时间",
+        "app_sentences": [
+          {
+            "en": "I listen to music while I am doing my homework.",
+            "cn": "我做作业时听音乐。"
+          }
+        ]
+      },
+      {
+        "text": "housework",
+        "phonetic": "[ˈhaʊswɜːk]",
+        "pos": "n.",
+        "meaning": "家事, 家务",
+        "app_sentences": [
+          {
+            "en": "My brother and I help with the housework every weekend.",
+            "cn": "我哥哥和我每个周末都帮忙做家务。"
+          }
+        ]
+      },
+      {
+        "text": "explore",
+        "phonetic": "[ɪkˈsplɔː]",
+        "pos": "v.",
+        "meaning": "探险, 探测, 探究",
+        "app_sentences": [
+          {
+            "en": "We will explore the history museum next week for a school trip.",
+            "cn": "下周学校旅行我们将去探索历史博物馆。"
+          },
+          {
+            "en": "We like to explore the small paths in the forest near our home.",
+            "cn": "我们喜欢探索家附近森林里的小路。"
+          }
+        ]
+      },
+      {
+        "text": "discussion",
+        "phonetic": "[dɪˈskʌʃən]",
+        "pos": "n.",
+        "meaning": "讨论",
+        "app_sentences": [
+          {
+            "en": "We had a class discussion about how to save water.",
+            "cn": "我们进行了一场关于如何节约用水的班级讨论。"
+          },
+          {
+            "en": "We had a long discussion about the school trip in class today.",
+            "cn": "我们今天在课上关于学校旅行进行了长时间的讨论。"
+          }
+        ]
+      },
+      {
+        "text": "unforgettable",
+        "phonetic": "[ˌʌnfəˈɡetəbəl]",
+        "pos": "a.",
+        "meaning": "忘不了的, 令人难忘的",
+        "app_sentences": [
+          {
+            "en": "My first airplane trip was an unforgettable experience.",
+            "cn": "我的第一次飞机旅行是一次难忘的经历。"
+          }
+        ]
+      },
+      {
+        "text": "discover",
+        "phonetic": "[dɪˈskʌvə]",
+        "pos": "vt.",
+        "meaning": "发现, 找到, 暴露",
+        "app_sentences": [
+          {
+            "en": "Scientists discover new things about our world every day.",
+            "cn": "科学家们每天都在发现关于我们世界的新事物。"
+          },
+          {
+            "en": "Scientists hope to discover new planets in the future.",
+            "cn": "科学家们希望在未来发现新的行星。"
+          }
+        ]
+      },
+      {
+        "text": "large",
+        "phonetic": "[l4ːd3]",
+        "pos": "a.",
+        "meaning": "大的, 大量的, 宽大的, 广博的",
+        "app_sentences": [
+          {
+            "en": "There is a large playground behind our school building.",
+            "cn": "我们学校大楼后面有一个大操场。"
+          }
+        ]
+      },
+      {
+        "text": "mosquito",
+        "phonetic": "[məˈskiːtəʊ]",
+        "pos": "n.",
+        "meaning": "蚊子",
+        "app_sentences": [
+          {
+            "en": "We use a mosquito net at night to avoid insect bites.",
+            "cn": "我们晚上使用蚊帐以避免蚊虫叮咬。"
+          }
+        ]
+      },
+      {
+        "text": "insect",
+        "phonetic": "[ˈɪnsekt]",
+        "pos": "n.",
+        "meaning": "昆虫, 卑鄙的人",
+        "app_sentences": [
+          {
+            "en": "The small insect climbed slowly up the green leaf.",
+            "cn": "那只小昆虫慢慢地爬上了绿叶。"
+          }
+        ]
+      },
+      {
+        "text": "set",
+        "phonetic": "[set]",
+        "pos": "n.",
+        "meaning": "日落, 同伙, 组合, 集合, 装置",
+        "app_sentences": [
+          {
+            "en": "The sun will set in the west in about one hour.",
+            "cn": "太阳大约一小时后将在西方落下。"
+          }
+        ]
+      },
+      {
+        "text": "butterfly",
+        "phonetic": "[ˈbʌtəflaɪ]",
+        "pos": "n.",
+        "meaning": "蝴蝶",
+        "app_sentences": [
+          {
+            "en": "A beautiful yellow butterfly landed on the red flower.",
+            "cn": "一只美丽的黄蝴蝶落在了红色的花朵上。"
+          }
+        ]
+      },
+      {
+        "text": "prince",
+        "phonetic": "[prɪns]",
+        "pos": "n.",
+        "meaning": "王子, 亲王, 国君, 贵族, 诸侯, 有权势的大人物",
+        "app_sentences": [
+          {
+            "en": "The brave prince in the story saved the kingdom from danger.",
+            "cn": "故事中勇敢的王子将王国从危险中拯救出来。"
+          }
+        ]
+      },
+      {
+        "text": "monster",
+        "phonetic": "[ˈmɒnstə]",
+        "pos": "n.",
+        "meaning": "怪物, 恶人, 巨物",
+        "app_sentences": [
+          {
+            "en": "The friendly monster in the cartoon helps the children.",
+            "cn": "卡通片里那只友善的怪物帮助孩子们。"
+          }
+        ]
+      },
+      {
+        "text": "ever",
+        "phonetic": "[ˈevə]",
+        "pos": "adv.",
+        "meaning": "曾经, 究竟, 永远",
+        "app_sentences": [
+          {
+            "en": "Have you ever visited the Great Wall of China?",
+            "cn": "你曾经参观过中国的长城吗？"
+          },
+          {
+            "en": "Have you ever visited the Science Museum in our city?",
+            "cn": "你曾经参观过我们市的科学博物馆吗？"
+          }
+        ]
+      },
+      {
+        "text": "notice",
+        "phonetic": "[ˈnəʊtɪs]",
+        "pos": "n.",
+        "meaning": "注意, 布告, 通知, 预告, 短评",
+        "app_sentences": [
+          {
+            "en": "Did you notice the new painting on the classroom wall?",
+            "cn": "你注意到教室墙上的新画了吗？"
+          }
+        ]
+      },
+      {
+        "text": "social",
+        "phonetic": "[ˈsəʊʃəl]",
+        "pos": "a.",
+        "meaning": "社会的, 群居的, 社交的",
+        "app_sentences": [
+          {
+            "en": "Social studies is my favourite subject at school this year.",
+            "cn": "社会研究是我今年在学校最喜欢的科目。"
+          }
+        ]
+      },
+      {
+        "text": "screen",
+        "phonetic": "[skriːn]",
+        "pos": "n.",
+        "meaning": "幕, 银幕, 屏风, 掩蔽物, 屏蔽, 筛子",
+        "app_sentences": [
+          {
+            "en": "Do not sit too close to the computer screen when you work.",
+            "cn": "工作时不要坐得离电脑屏幕太近。"
+          }
+        ]
+      },
+      {
+        "text": "couch",
+        "phonetic": "[kaʊtʃ]",
+        "pos": "n.",
+        "meaning": "长沙发, 睡椅, 卧榻",
+        "app_sentences": [
+          {
+            "en": "My family sits on the couch to watch TV together in the evening.",
+            "cn": "晚上，我们一家人坐在沙发上看电视。"
+          }
+        ]
+      },
+      {
+        "text": "couch potato",
+        "phonetic": "",
+        "pos": "n.",
+        "meaning": "花大量时间看电视的人, 电视迷; 美国人说整天看电视的人是“沙发土豆”",
+        "app_sentences": [
+          {
+            "en": "Do not be a couch potato; go outside and play with your friends.",
+            "cn": "别总窝在沙发上看电视；到外面去和朋友们玩吧。"
+          }
+        ]
+      },
+      {
+        "text": "sore",
+        "phonetic": "[sɔː]",
+        "pos": "a.",
+        "meaning": "悲伤的, 痛的, 引起痛苦的",
+        "app_sentences": [
+          {
+            "en": "I have a sore throat, so I cannot speak loudly today.",
+            "cn": "我喉咙痛，所以今天不能大声说话。"
+          }
+        ]
+      },
+      {
+        "text": "neck",
+        "phonetic": "[nek]",
+        "pos": "n.",
+        "meaning": "脖子, 衣领, 颈",
+        "app_sentences": [
+          {
+            "en": "My school bag is heavy and it sometimes hurts my neck.",
+            "cn": "我的书包很重，有时会弄疼我的脖子。"
+          }
+        ]
+      },
+      {
+        "text": "deaf",
+        "phonetic": "[def]",
+        "pos": "a.",
+        "meaning": "聋的",
+        "app_sentences": [
+          {
+            "en": "Some deaf people use sign language to communicate with others.",
+            "cn": "一些失聪的人使用手语与他人交流。"
+          },
+          {
+            "en": "The kind teacher uses sign language to teach the deaf students.",
+            "cn": "那位善良的老师用手语来教失聪的学生。"
+          }
+        ]
+      },
+      {
+        "text": "real",
+        "phonetic": "[rɪəl]",
+        "pos": "a.",
+        "meaning": "真的, 真实的, 实际的, 实在的, 不动(产)的, 实数的",
+        "app_sentences": [
+          {
+            "en": "Is that a real diamond in the museum or just a copy?",
+            "cn": "博物馆里那颗是真钻石还是仿制品？"
+          }
+        ]
+      },
+      {
+        "text": "balanced",
+        "phonetic": "[ˈbælənst]",
+        "pos": "a.",
+        "meaning": "公平的, 平衡的",
+        "app_sentences": [
+          {
+            "en": "A balanced meal has vegetables, meat, and some rice or bread.",
+            "cn": "均衡的一餐包含蔬菜、肉和一些米饭或面包。"
+          }
+        ]
+      },
+      {
+        "text": "outside",
+        "phonetic": "[aʊtˈsaɪd]",
+        "pos": "n.",
+        "meaning": "外面, 外表, 外界",
+        "app_sentences": [
+          {
+            "en": "It is sunny outside, so let's play football in the park.",
+            "cn": "外面阳光明媚，我们去公园踢足球吧。"
+          }
+        ]
+      },
+      {
+        "text": "jog",
+        "phonetic": "[dʒɒɡ]",
+        "pos": "n.",
+        "meaning": "轻推, 轻撞, 慢跑",
+        "app_sentences": [
+          {
+            "en": "My father likes to jog around the lake every morning.",
+            "cn": "我父亲喜欢每天早晨绕着湖慢跑。"
+          }
+        ]
+      },
+      {
+        "text": "fresh",
+        "phonetic": "[freʃ]",
+        "pos": "a.",
+        "meaning": "新鲜的, 新奇的, 另外的, 淡的, 精神饱满的, 冒失的",
+        "app_sentences": [
+          {
+            "en": "We buy fresh fruit and vegetables from the market every week.",
+            "cn": "我们每周都从市场购买新鲜的水果和蔬菜。"
+          }
+        ]
+      },
+      {
+        "text": "tennis",
+        "phonetic": "[ˈtenɪs]",
+        "pos": "n.",
+        "meaning": "网球",
+        "app_sentences": [
+          {
+            "en": "I play tennis with my friend at the sports centre on Saturdays.",
+            "cn": "我星期六在体育中心和我的朋友打网球。"
+          }
+        ]
+      },
+      {
+        "text": "hike",
+        "phonetic": "[haɪk]",
+        "pos": "n.",
+        "meaning": "徒步旅行, 远足, 涨价, 提高",
+        "app_sentences": [
+          {
+            "en": "We plan to hike up the small mountain next weekend.",
+            "cn": "我们计划下周末徒步登上那座小山。"
+          }
+        ]
+      },
+      {
+        "text": "ours",
+        "phonetic": "[a%2z]",
+        "pos": "pron.",
+        "meaning": "我们的",
+        "app_sentences": [
+          {
+            "en": "Their house is big, but ours is closer to the school.",
+            "cn": "他们的房子很大，但我们的离学校更近。"
+          },
+          {
+            "en": "This blue bike is ours, and that red one belongs to Tom.",
+            "cn": "这辆蓝色的自行车是我们的，那辆红色的是汤姆的。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Unit 5",
+    "data": [
+      {
+        "text": "plateau",
+        "phonetic": "[ˈplætəʊ]",
+        "pos": "n.",
+        "meaning": "高地, 高原, (上升后的)稳定水平",
+        "app_sentences": [
+          {
+            "en": "The Tibetan Plateau is a very high and large area in China.",
+            "cn": "青藏高原是中国一个非常高、非常大的地区。"
+          }
+        ]
+      },
+      {
+        "text": "cloud",
+        "phonetic": "[klaʊd]",
+        "pos": "n.",
+        "meaning": "云, 阴暗, 烟雾, 疑团",
+        "app_sentences": [
+          {
+            "en": "A white cloud shaped like a rabbit moved slowly across the sky.",
+            "cn": "一朵形状像兔子的白云缓缓飘过天空。"
+          }
+        ]
+      },
+      {
+        "text": "soft",
+        "phonetic": "[s=ft]",
+        "pos": "a.",
+        "meaning": "软的, 温和的, 柔和的, 柔滑的, 温柔的, 软弱的, 坡度小的, 笨的, 纸币的",
+        "app_sentences": [
+          {
+            "en": "My new pillow is very soft and comfortable to sleep on.",
+            "cn": "我的新枕头非常柔软，睡在上面很舒服。"
+          },
+          {
+            "en": "The new pillow is very soft and comfortable to sleep on.",
+            "cn": "新枕头非常柔软，睡在上面很舒服。"
+          }
+        ]
+      },
+      {
+        "text": "brightly",
+        "phonetic": "[ˈbraɪtli]",
+        "pos": "adv.",
+        "meaning": "生辉地, 明亮地, 鲜明地",
+        "app_sentences": [
+          {
+            "en": "The sun shines brightly on a clear summer day.",
+            "cn": "晴朗的夏日，阳光明媚地照耀着。"
+          }
+        ]
+      },
+      {
+        "text": "lotus",
+        "phonetic": "[ˈləʊtəs]",
+        "pos": "n.",
+        "meaning": "莲, 莲花, 荷花, 荷",
+        "app_sentences": [
+          {
+            "en": "The pink lotus flowers look beautiful on the lake in summer.",
+            "cn": "夏天，粉色的荷花在湖面上看起来很美丽。"
+          }
+        ]
+      },
+      {
+        "text": "sky",
+        "phonetic": "[skaɪ]",
+        "pos": "n.",
+        "meaning": "天空, 天色, 天堂",
+        "app_sentences": [
+          {
+            "en": "At night, we can see many stars in the dark sky.",
+            "cn": "夜晚，我们能在黑暗的天空中看到许多星星。"
+          },
+          {
+            "en": "The sky is clear and blue without any clouds today.",
+            "cn": "今天天空晴朗湛蓝，万里无云。"
+          },
+          {
+            "en": "I like to look at the blue sky and white clouds.",
+            "cn": "我喜欢看蓝天和白云。"
+          }
+        ]
+      },
+      {
+        "text": "calm",
+        "phonetic": "[kɑːm]",
+        "pos": "n.",
+        "meaning": "平稳, 风平浪静",
+        "app_sentences": [
+          {
+            "en": "The sea is very calm and peaceful early in the morning.",
+            "cn": "清晨的大海非常平静祥和。"
+          }
+        ]
+      },
+      {
+        "text": "above",
+        "phonetic": "[əˈbʌv]",
+        "pos": "prep.",
+        "meaning": "在上方, 超出",
+        "app_sentences": [
+          {
+            "en": "An airplane flew high above the clouds in the blue sky.",
+            "cn": "一架飞机在蓝天中云层上方高高飞翔。"
+          }
+        ]
+      },
+      {
+        "text": "express",
+        "phonetic": "[ɪkˈspres]",
+        "pos": "n.",
+        "meaning": "快车, 快递, 专使",
+        "app_sentences": [
+          {
+            "en": "We can express our feelings through writing, art, or music.",
+            "cn": "我们可以通过写作、艺术或音乐来表达我们的感受。"
+          }
+        ]
+      },
+      {
+        "text": "grassland",
+        "phonetic": "[ˈɡrɑːslænd]",
+        "pos": "n.",
+        "meaning": "牧草地, 草原",
+        "app_sentences": [
+          {
+            "en": "Horses run freely on the wide grassland under the blue sky.",
+            "cn": "马匹在蓝天下的广阔草原上自由奔跑。"
+          }
+        ]
+      },
+      {
+        "text": "field",
+        "phonetic": "[fiːld]",
+        "pos": "n.",
+        "meaning": "领域, 田地, 场地, 战场, 场, 域",
+        "app_sentences": [
+          {
+            "en": "Farmers work in the rice field from morning until evening.",
+            "cn": "农民们从早到晚在稻田里劳作。"
+          }
+        ]
+      },
+      {
+        "text": "few",
+        "phonetic": "[fjuː]",
+        "pos": "a.",
+        "meaning": "很少的, 不多的, 少数的",
+        "app_sentences": [
+          {
+            "en": "There are only a few students in the classroom after school.",
+            "cn": "放学后教室里只有几个学生。"
+          }
+        ]
+      },
+      {
+        "text": "present",
+        "phonetic": "['preznt]",
+        "pos": "n.",
+        "meaning": "现在, 礼品, 瞄准",
+        "app_sentences": [
+          {
+            "en": "All the students must be present for the school meeting.",
+            "cn": "所有学生都必须出席学校会议。"
+          },
+          {
+            "en": "My parents gave me a new watch as a birthday present.",
+            "cn": "我父母给了我一块新表作为生日礼物。"
+          }
+        ]
+      },
+      {
+        "text": "likely",
+        "phonetic": "[ˈlaɪkli]",
+        "pos": "a.",
+        "meaning": "有可能的, 合适的, 前途有望的",
+        "app_sentences": [
+          {
+            "en": "It is likely to rain this afternoon, so take your umbrella.",
+            "cn": "今天下午很可能下雨，所以带上你的伞。"
+          }
+        ]
+      },
+      {
+        "text": "local",
+        "phonetic": "[ˈləʊkəl]",
+        "pos": "a.",
+        "meaning": "地方性的, 当地的, 局部的, 乡土的, 本地的",
+        "app_sentences": [
+          {
+            "en": "We buy fresh bread from the local bakery every morning.",
+            "cn": "我们每天早上都从当地的面包店购买新鲜面包。"
+          }
+        ]
+      },
+      {
+        "text": "designer",
+        "phonetic": "[dɪˈzaɪnə]",
+        "pos": "n.",
+        "meaning": "设计者, 谋划者, 制图者",
+        "app_sentences": [
+          {
+            "en": "The fashion designer created a beautiful dress for the show.",
+            "cn": "那位时装设计师为演出设计了一件漂亮的连衣裙。"
+          }
+        ]
+      },
+      {
+        "text": "guide",
+        "phonetic": "[ga!d]",
+        "pos": "n.",
+        "meaning": "引导者, 导游, 指南, 路标",
+        "app_sentences": [
+          {
+            "en": "The tour guide explained the history of the old castle to us.",
+            "cn": "导游向我们讲解了那座古老城堡的历史。"
+          }
+        ]
+      },
+      {
+        "text": "describe",
+        "phonetic": "[dɪˈskraɪb]",
+        "pos": "vt.",
+        "meaning": "描述, 描绘, 画",
+        "app_sentences": [
+          {
+            "en": "Can you describe your best friend's appearance and personality?",
+            "cn": "你能描述一下你最好朋友的外貌和性格吗？"
+          }
+        ]
+      },
+      {
+        "text": "landscape",
+        "phonetic": "[ˈlændskeɪp]",
+        "pos": "n.",
+        "meaning": "风景, 山水, 风景画",
+        "app_sentences": [
+          {
+            "en": "The landscape of mountains and rivers was very beautiful.",
+            "cn": "山川的景色非常美丽。"
+          }
+        ]
+      },
+      {
+        "text": "common",
+        "phonetic": "[ˈkɒmən]",
+        "pos": "a.",
+        "meaning": "通常的, 共同的, 通俗的, 公共的",
+        "app_sentences": [
+          {
+            "en": "It is common for students to feel a little nervous before a test.",
+            "cn": "学生在考试前感到有点紧张是很常见的。"
+          }
+        ]
+      },
+      {
+        "text": "Mount",
+        "phonetic": "[maʊnt]",
+        "pos": "n.",
+        "meaning": "乘骑用马, 框, 衬纸, 山",
+        "app_sentences": [
+          {
+            "en": "Mount Tai is a famous mountain in Shandong Province, China.",
+            "cn": "泰山是中国山东省的一座名山。"
+          }
+        ]
+      },
+      {
+        "text": "tide",
+        "phonetic": "[taɪd]",
+        "pos": "n.",
+        "meaning": "潮, 潮汐, 趋势, 潮流, 涨潮, 高潮",
+        "app_sentences": [
+          {
+            "en": "We went to the beach to see the high tide in the afternoon.",
+            "cn": "我们下午去海滩看涨潮。"
+          }
+        ]
+      },
+      {
+        "text": "exhibition",
+        "phonetic": "[ˌeksəˈbɪʃən]",
+        "pos": "n.",
+        "meaning": "表现, 展览会, 展览品",
+        "app_sentences": [
+          {
+            "en": "There is a science exhibition at the museum this month.",
+            "cn": "这个月博物馆有一个科学展览。"
+          },
+          {
+            "en": "We visited a science exhibition at the museum last Sunday.",
+            "cn": "我们上周日参观了博物馆的一个科学展览。"
+          }
+        ]
+      },
+      {
+        "text": "tour",
+        "phonetic": "[tʊə]",
+        "pos": "n.",
+        "meaning": "旅游, 观光旅行, 任期",
+        "app_sentences": [
+          {
+            "en": "We went on a tour of the old city with our history teacher.",
+            "cn": "我们和历史老师一起参观了这座古城。"
+          }
+        ]
+      },
+      {
+        "text": "pound",
+        "phonetic": "[paʊnd]",
+        "pos": "n.",
+        "meaning": "磅, 英镑, 重击, 鱼塘, 拘留所, 兽栏",
+        "app_sentences": [
+          {
+            "en": "I need to buy one pound of apples from the supermarket.",
+            "cn": "我需要从超市买一磅苹果。"
+          },
+          {
+            "en": "This book costs five pounds at the bookstore.",
+            "cn": "这本书在书店卖五英镑。"
+          }
+        ]
+      },
+      {
+        "text": "lung",
+        "phonetic": "[lʌŋ]",
+        "pos": "n.",
+        "meaning": "肺, 肺脏, 空地",
+        "app_sentences": [
+          {
+            "en": "Smoking is very bad for your lungs and your health.",
+            "cn": "吸烟对你的肺和健康非常有害。"
+          }
+        ]
+      },
+      {
+        "text": "scientist",
+        "phonetic": "[ˈsaɪəntɪst]",
+        "pos": "n.",
+        "meaning": "科学家",
+        "app_sentences": [
+          {
+            "en": "The scientist works in a laboratory to find new medicines.",
+            "cn": "那位科学家在实验室工作，寻找新药物。"
+          }
+        ]
+      },
+      {
+        "text": "behaviour",
+        "phonetic": "[bɪˈheɪvjə]",
+        "pos": "n.",
+        "meaning": "行为, 举止",
+        "app_sentences": [
+          {
+            "en": "Good behaviour in class is important for all students.",
+            "cn": "课堂上良好的行为对所有学生都很重要。"
+          }
+        ]
+      },
+      {
+        "text": "develop",
+        "phonetic": "[dɪˈveləp]",
+        "pos": "vt.",
+        "meaning": "发展, 使发达, 进步, 洗印, 显影",
+        "app_sentences": [
+          {
+            "en": "Children develop new skills quickly when they are young.",
+            "cn": "孩子们在小时候能很快发展新技能。"
+          }
+        ]
+      },
+      {
+        "text": "land",
+        "phonetic": "[lænd]",
+        "pos": "n.",
+        "meaning": "陆地, 地面, 地界, 地产, 国土, 土地",
+        "app_sentences": [
+          {
+            "en": "The airplane will land at the airport in about thirty minutes.",
+            "cn": "飞机大约三十分钟后将在机场降落。"
+          }
+        ]
+      },
+      {
+        "text": "aloud",
+        "phonetic": "[əˈlaʊd]",
+        "pos": "adv.",
+        "meaning": "出声地, 大声地",
+        "app_sentences": [
+          {
+            "en": "Please read the story aloud so everyone can hear it.",
+            "cn": "请大声朗读故事，以便每个人都能听到。"
+          }
+        ]
+      },
+      {
+        "text": "salty",
+        "phonetic": "[ˈsɔːlti]",
+        "pos": "a.",
+        "meaning": "有盐分的, 咸味浓的, 海洋的, 辛辣的, 有经验的",
+        "app_sentences": [
+          {
+            "en": "The sea water tastes very salty when you swim in it.",
+            "cn": "你在海里游泳时，海水尝起来非常咸。"
+          }
+        ]
+      },
+      {
+        "text": "lie",
+        "phonetic": "[la!]",
+        "pos": "n.",
+        "meaning": "谎言, 假象, 位置",
+        "app_sentences": [
+          {
+            "en": "I like to lie on the grass and look at the clouds in the sky.",
+            "cn": "我喜欢躺在草地上看天空中的云。"
+          }
+        ]
+      },
+      {
+        "text": "surface",
+        "phonetic": "[ˈsɜːfɪs]",
+        "pos": "n.",
+        "meaning": "面, 表面, 水面, 外表, 平面",
+        "app_sentences": [
+          {
+            "en": "The surface of the table is smooth and clean.",
+            "cn": "桌子的表面光滑而干净。"
+          }
+        ]
+      },
+      {
+        "text": "level",
+        "phonetic": "[ˈlevəl]",
+        "pos": "n.",
+        "meaning": "水平, 水准, 平地",
+        "app_sentences": [
+          {
+            "en": "My English level is improving because I practice every day.",
+            "cn": "我的英语水平正在提高，因为我每天都在练习。"
+          }
+        ]
+      },
+      {
+        "text": "less",
+        "phonetic": "[les]",
+        "pos": "n.",
+        "meaning": "较少, 较小",
+        "app_sentences": [
+          {
+            "en": "I eat less candy now because I want to have healthy teeth.",
+            "cn": "我现在吃更少的糖，因为我想拥有健康的牙齿。"
+          },
+          {
+            "en": "Eating less junk food is better for your health.",
+            "cn": "少吃垃圾食品对你的健康更好。"
+          }
+        ]
+      },
+      {
+        "text": "suggest",
+        "phonetic": "[səˈdʒest]",
+        "pos": "vt.",
+        "meaning": "提议, 建议, 促成, 暗示, 启发, 使人想起",
+        "app_sentences": [
+          {
+            "en": "I suggest that we meet at the school gate at nine o'clock.",
+            "cn": "我建议我们九点在学校门口集合。"
+          }
+        ]
+      },
+      {
+        "text": "such as",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "例如..., 像这种的",
+        "app_sentences": [
+          {
+            "en": "I enjoy outdoor activities such as hiking and cycling.",
+            "cn": "我喜欢户外活动，比如徒步和骑自行车。"
+          }
+        ]
+      },
+      {
+        "text": "snake",
+        "phonetic": "[sneɪk]",
+        "pos": "n.",
+        "meaning": "蛇, 阴险的人",
+        "app_sentences": [
+          {
+            "en": "Some snakes are dangerous, but many are not harmful.",
+            "cn": "有些蛇是危险的，但许多蛇没有害处。"
+          }
+        ]
+      },
+      {
+        "text": "wood",
+        "phonetic": "[w%d]",
+        "pos": "n.",
+        "meaning": "木材, 木制品",
+        "app_sentences": [
+          {
+            "en": "The small house is made of wood and looks very old.",
+            "cn": "那座小房子是木制的，看起来非常古老。"
+          },
+          {
+            "en": "This old table is made of strong and beautiful wood.",
+            "cn": "这张旧桌子是用坚固而美丽的木头制成的。"
+          }
+        ]
+      },
+      {
+        "text": "disappear",
+        "phonetic": "[ˌdɪsəˈpɪə]",
+        "pos": "vi.",
+        "meaning": "消失, 不见",
+        "app_sentences": [
+          {
+            "en": "The sun will disappear behind the mountains in the evening.",
+            "cn": "傍晚时分，太阳将消失在山后。"
+          }
+        ]
+      },
+      {
+        "text": "glacier",
+        "phonetic": "[ˈɡlæsiə]",
+        "pos": "n.",
+        "meaning": "冰川",
+        "app_sentences": [
+          {
+            "en": "A glacier is a very large piece of ice that moves slowly.",
+            "cn": "冰川是移动缓慢的非常大的冰块。"
+          }
+        ]
+      },
+      {
+        "text": "national",
+        "phonetic": "[ˈnæʃənəl]",
+        "pos": "a.",
+        "meaning": "国家的, 国立的, 全国性的, 民族的",
+        "app_sentences": [
+          {
+            "en": "The Great Wall is a famous national treasure of China.",
+            "cn": "长城是中国的著名国宝。"
+          },
+          {
+            "en": "The National Day holiday is a happy time for our family.",
+            "cn": "国庆节假期对我们家来说是一段快乐的时光。"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "grade": 7,
+    "semester": 2,
+    "unit": "Unit 6",
+    "data": [
+      {
+        "text": "airport",
+        "phonetic": "[ˈeəpɔːt]",
+        "pos": "n.",
+        "meaning": "飞机场",
+        "app_sentences": [
+          {
+            "en": "We arrived at the airport two hours before our flight.",
+            "cn": "我们在航班起飞前两小时到达了机场。"
+          }
+        ]
+      },
+      {
+        "text": "burn",
+        "phonetic": "[bɜːn]",
+        "pos": "vt.",
+        "meaning": "烧, 烧毁, 烧伤",
+        "app_sentences": [
+          {
+            "en": "Do not touch the stove because you might burn your hand.",
+            "cn": "别碰炉子，因为可能会烫伤你的手。"
+          },
+          {
+            "en": "Be careful not to burn your hand on the hot stove.",
+            "cn": "小心别在热炉子上烫到手。"
+          }
+        ]
+      },
+      {
+        "text": "expect",
+        "phonetic": "[!k'spekt]",
+        "pos": "vt.",
+        "meaning": "预期, 盼望, 期待",
+        "app_sentences": [
+          {
+            "en": "I expect to receive a good grade on my English test.",
+            "cn": "我期待英语考试能取得好成绩。"
+          },
+          {
+            "en": "I expect to receive a birthday gift from my parents this year.",
+            "cn": "我期待今年能收到父母的一份生日礼物。"
+          },
+          {
+            "en": "I expect to get a letter from my pen pal next week.",
+            "cn": "我期待下周能收到笔友的来信。"
+          }
+        ]
+      },
+      {
+        "text": "deep",
+        "phonetic": "[diːp]",
+        "pos": "a.",
+        "meaning": "深的",
+        "app_sentences": [
+          {
+            "en": "The swimming pool has a deep end and a shallow end.",
+            "cn": "游泳池有一个深水区和一个浅水区。"
+          }
+        ]
+      },
+      {
+        "text": "lemon",
+        "phonetic": "[ˈlemən]",
+        "pos": "n.",
+        "meaning": "柠檬, 柠檬树, 柠檬色",
+        "app_sentences": [
+          {
+            "en": "I like to drink cold water with a slice of lemon in it.",
+            "cn": "我喜欢喝加了一片柠檬的冷水。"
+          }
+        ]
+      },
+      {
+        "text": "reply",
+        "phonetic": "[rɪˈplaɪ]",
+        "pos": "n.",
+        "meaning": "答复, 回答, 答辩",
+        "app_sentences": [
+          {
+            "en": "Please reply to my email when you have time this weekend.",
+            "cn": "这个周末你有时间时，请回复我的电子邮件。"
+          },
+          {
+            "en": "I sent him a message, but he didn't reply.",
+            "cn": "我给他发了条信息，但他没有回复。"
+          }
+        ]
+      },
+      {
+        "text": "mouthful",
+        "phonetic": "[ˈmaʊθfʊl]",
+        "pos": "n.",
+        "meaning": "一口, 满口",
+        "app_sentences": [
+          {
+            "en": "I took a big mouthful of the delicious soup and smiled.",
+            "cn": "我喝了一大口美味的汤，笑了。"
+          }
+        ]
+      },
+      {
+        "text": "surprisingly",
+        "phonetic": "[səˈpraɪzɪŋli]",
+        "pos": "adv.",
+        "meaning": "使人惊奇, 出人意外, 惊人, 令人惊讶",
+        "app_sentences": [
+          {
+            "en": "The maths test was surprisingly easy for most students.",
+            "cn": "对大多数学生来说，数学考试出人意料地简单。"
+          }
+        ]
+      },
+      {
+        "text": "mask",
+        "phonetic": "[mɑːsk]",
+        "pos": "n.",
+        "meaning": "面具, 假面具, 掩饰, 石膏面模",
+        "app_sentences": [
+          {
+            "en": "People sometimes wear a mask when they have a cold.",
+            "cn": "人们感冒时有时会戴口罩。"
+          }
+        ]
+      },
+      {
+        "text": "normal",
+        "phonetic": "[ˈnɔːməl]",
+        "pos": "n.",
+        "meaning": "常态, 标准, 正常, 普通",
+        "app_sentences": [
+          {
+            "en": "It is normal to feel tired after a long day at school.",
+            "cn": "在学校度过漫长的一天后感到疲倦是正常的。"
+          }
+        ]
+      },
+      {
+        "text": "ancient",
+        "phonetic": "[ˈeɪnʃənt]",
+        "pos": "a.",
+        "meaning": "古代的, 古老的, 年老的, 旧的",
+        "app_sentences": [
+          {
+            "en": "We saw many ancient buildings on our trip to Xi'an.",
+            "cn": "我们去西安旅行时看到了许多古建筑。"
+          },
+          {
+            "en": "We saw many ancient buildings during our trip to Beijing.",
+            "cn": "在我们去北京的旅行中，我们看到了许多古建筑。"
+          }
+        ]
+      },
+      {
+        "text": "further",
+        "phonetic": "[ˈfɜːðə]",
+        "pos": "a.",
+        "meaning": "更远的, 此外的, 更多的",
+        "app_sentences": [
+          {
+            "en": "For further information, please read the notice on the wall.",
+            "cn": "更多信息，请阅读墙上的通知。"
+          }
+        ]
+      },
+      {
+        "text": "look forward to",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "期望, 盼望; 瞩望; 属望; 企",
+        "app_sentences": [
+          {
+            "en": "I look forward to seeing my grandparents during the holiday.",
+            "cn": "我期待着假期里见到我的祖父母。"
+          }
+        ]
+      },
+      {
+        "text": "general",
+        "phonetic": "[ˈdʒenərəl]",
+        "pos": "n.",
+        "meaning": "一般, 将军, 大体",
+        "app_sentences": [
+          {
+            "en": "In general, students in our school like sports and music.",
+            "cn": "总的来说，我们学校的学生喜欢运动和音乐。"
+          },
+          {
+            "en": "In general, students in our school wear uniforms.",
+            "cn": "一般来说，我们学校的学生穿校服。"
+          }
+        ]
+      },
+      {
+        "text": "in general",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "大多数",
+        "app_sentences": [
+          {
+            "en": "In general, it is warmer in the south than in the north.",
+            "cn": "一般来说，南方比北方暖和。"
+          }
+        ]
+      },
+      {
+        "text": "curious",
+        "phonetic": "[ˈkjʊəriəs]",
+        "pos": "a.",
+        "meaning": "好奇的, 求知的, 古怪的",
+        "app_sentences": [
+          {
+            "en": "Young children are often curious about how things work.",
+            "cn": "小孩子常常对事物如何运作感到好奇。"
+          }
+        ]
+      },
+      {
+        "text": "cultural",
+        "phonetic": "[ˈkʌltʃərəl]",
+        "pos": "a.",
+        "meaning": "文化的, 教养的, 修养的",
+        "app_sentences": [
+          {
+            "en": "We learned about different cultural festivals around the world.",
+            "cn": "我们了解了世界各地不同的文化节日。"
+          }
+        ]
+      },
+      {
+        "text": "main",
+        "phonetic": "[meɪn]",
+        "pos": "n.",
+        "meaning": "主要部分, 干线, 体力, 力量, 主群组",
+        "app_sentences": [
+          {
+            "en": "The main reason I like summer is because of the long holiday.",
+            "cn": "我喜欢夏天的主要原因是长假。"
+          }
+        ]
+      },
+      {
+        "text": "prefer",
+        "phonetic": "[prɪˈfɜː]",
+        "pos": "vt.",
+        "meaning": "宁可, 较喜欢, 提出",
+        "app_sentences": [
+          {
+            "en": "I prefer tea to coffee because tea is more healthy.",
+            "cn": "比起咖啡，我更喜欢茶，因为茶更健康。"
+          },
+          {
+            "en": "I prefer to ride my bicycle to school rather than take the bus.",
+            "cn": "我更喜欢骑自行车上学而不是乘公共汽车。"
+          },
+          {
+            "en": "I prefer reading books to playing computer games.",
+            "cn": "与玩电脑游戏相比，我更喜欢看书。"
+          }
+        ]
+      },
+      {
+        "text": "interest",
+        "phonetic": "[ˈɪntrɪst]",
+        "pos": "n.",
+        "meaning": "兴趣, 嗜好, 利息, 利益, 爱好, 趣味, 势力",
+        "app_sentences": [
+          {
+            "en": "My main interest is collecting stamps from different countries.",
+            "cn": "我的主要兴趣是收集来自不同国家的邮票。"
+          },
+          {
+            "en": "My main interest is playing the piano after school.",
+            "cn": "我的主要兴趣是放学后弹钢琴。"
+          }
+        ]
+      },
+      {
+        "text": "places of interest",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "名胜古迹",
+        "app_sentences": [
+          {
+            "en": "We visited many places of interest during our trip to Beijing.",
+            "cn": "我们在北京旅行期间参观了许多名胜古迹。"
+          }
+        ]
+      },
+      {
+        "text": "hotel",
+        "phonetic": "[h2%'tel]",
+        "pos": "n.",
+        "meaning": "旅馆, 客栈",
+        "app_sentences": [
+          {
+            "en": "We stayed at a comfortable hotel near the beach last summer.",
+            "cn": "去年夏天我们住在海滩附近一家舒适的酒店。"
+          }
+        ]
+      },
+      {
+        "text": "comfortable",
+        "phonetic": "[ˈkʌmftəbəl]",
+        "pos": "a.",
+        "meaning": "舒服的, 轻松的",
+        "app_sentences": [
+          {
+            "en": "These new shoes are very comfortable for walking long distances.",
+            "cn": "这双新鞋走长路非常舒适。"
+          }
+        ]
+      },
+      {
+        "text": "postcard",
+        "phonetic": "['p2%st;k4ːd]",
+        "pos": "n.",
+        "meaning": "明信片",
+        "app_sentences": [
+          {
+            "en": "I sent a postcard with a picture of the sea to my friend.",
+            "cn": "我寄了一张有大海图片的明信片给我的朋友。"
+          }
+        ]
+      },
+      {
+        "text": "waterfall",
+        "phonetic": "[ˈwɔːtəfɔːl]",
+        "pos": "n.",
+        "meaning": "瀑布",
+        "app_sentences": [
+          {
+            "en": "The sound of the waterfall was very loud and powerful.",
+            "cn": "瀑布的声音非常响亮，充满力量。"
+          }
+        ]
+      },
+      {
+        "text": "south",
+        "phonetic": "[saʊθ]",
+        "pos": "n.",
+        "meaning": "南方, 南",
+        "app_sentences": [
+          {
+            "en": "My aunt lives in a small city in the south of China.",
+            "cn": "我阿姨住在中国南方的一个小城市。"
+          }
+        ]
+      },
+      {
+        "text": "powerful",
+        "phonetic": "[ˈpaʊəfəl]",
+        "pos": "a.",
+        "meaning": "有力的, 有权力的, 强大的",
+        "app_sentences": [
+          {
+            "en": "The lion is a powerful animal that lives in the wild.",
+            "cn": "狮子是一种生活在野外的强大动物。"
+          },
+          {
+            "en": "A computer is a powerful tool for learning and working.",
+            "cn": "电脑是学习和工作的强大工具。"
+          }
+        ]
+      },
+      {
+        "text": "thunder",
+        "phonetic": "[ˈθʌndə]",
+        "pos": "n.",
+        "meaning": "雷, 雷声",
+        "app_sentences": [
+          {
+            "en": "The sound of thunder during the storm was very scary.",
+            "cn": "暴风雨期间的雷声非常吓人。"
+          }
+        ]
+      },
+      {
+        "text": "painting",
+        "phonetic": "[ˈpeɪntɪŋ]",
+        "pos": "n.",
+        "meaning": "画, 绘画, 油漆",
+        "app_sentences": [
+          {
+            "en": "There is a beautiful painting of mountains in our living room.",
+            "cn": "我们家客厅里有一幅美丽的山景画。"
+          }
+        ]
+      },
+      {
+        "text": "roller coaster",
+        "phonetic": "",
+        "pos": "",
+        "meaning": "过山车",
+        "app_sentences": [
+          {
+            "en": "The roller coaster at the theme park was fast and exciting.",
+            "cn": "主题公园里的过山车又快又刺激。"
+          }
+        ]
+      },
+      {
+        "text": "huge",
+        "phonetic": "[hjuːdʒ]",
+        "pos": "a.",
+        "meaning": "极大的, 巨大的, 无限的",
+        "app_sentences": [
+          {
+            "en": "We saw a huge elephant at the zoo last weekend.",
+            "cn": "上周末我们在动物园看到了一头巨大的大象。"
+          }
+        ]
+      },
+      {
+        "text": "ant",
+        "phonetic": "[ænt]",
+        "pos": "n.",
+        "meaning": "蚂蚁",
+        "app_sentences": [
+          {
+            "en": "A line of small ants carried food back to their nest.",
+            "cn": "一队小蚂蚁把食物搬回它们的巢穴。"
+          },
+          {
+            "en": "We watched a line of ants carrying food to their nest.",
+            "cn": "我们观察了一排蚂蚁把食物搬回它们的巢穴。"
+          }
+        ]
+      },
+      {
+        "text": "beauty",
+        "phonetic": "[ˈbjuːti]",
+        "pos": "n.",
+        "meaning": "美, 美人",
+        "app_sentences": [
+          {
+            "en": "The natural beauty of the mountains attracts many visitors.",
+            "cn": "山川的自然美景吸引了许多游客。"
+          }
+        ]
+      },
+      {
+        "text": "discuss",
+        "phonetic": "[dɪˈskʌs]",
+        "pos": "vt.",
+        "meaning": "讨论, 论述",
+        "app_sentences": [
+          {
+            "en": "We will discuss our project plan in the next class.",
+            "cn": "我们将在下节课讨论我们的项目计划。"
+          },
+          {
+            "en": "Let's discuss the plan for the class trip together.",
+            "cn": "让我们一起讨论班级旅行的计划。"
+          }
+        ]
+      },
+      {
+        "text": "accept",
+        "phonetic": "[əkˈsept]",
+        "pos": "vt.",
+        "meaning": "接受, 承认, 同意, 相信, 赞成, 承担, 承兑, 采纳, 接纳, 容忍",
+        "app_sentences": [
+          {
+            "en": "I gladly accept your invitation to your birthday party.",
+            "cn": "我很高兴接受你生日派对的邀请。"
+          }
+        ]
+      },
+      {
+        "text": "award",
+        "phonetic": "[əˈwɔːd]",
+        "pos": "n.",
+        "meaning": "奖品, 裁定, 判决",
+        "app_sentences": [
+          {
+            "en": "She received an award for her excellent science project.",
+            "cn": "她因其出色的科学项目而获得了一个奖项。"
+          }
+        ]
+      },
+      {
+        "text": "traffic",
+        "phonetic": "[ˈtræfɪk]",
+        "pos": "n.",
+        "meaning": "交通, 通行, 运输, 交通量, 贸易, 交易, 交往, 通信量",
+        "app_sentences": [
+          {
+            "en": "The traffic in the city centre is very heavy during rush hour.",
+            "cn": "高峰时段市中心的交通非常拥堵。"
+          }
+        ]
+      },
+      {
+        "text": "unexplored",
+        "phonetic": "[ˌʌnɪkˈsplɔːd]",
+        "pos": "a.",
+        "meaning": "未勘查过的",
+        "app_sentences": [
+          {
+            "en": "There are still many unexplored places deep in the rainforest.",
+            "cn": "雨林深处仍有许多未被探索的地方。"
+          }
+        ]
+      },
+      {
+        "text": "seriously",
+        "phonetic": "[ˈsɪəriəsli]",
+        "pos": "adv.",
+        "meaning": "严肃地, 认真地, 严重地",
+        "app_sentences": [
+          {
+            "en": "You should take your studies seriously to get good results.",
+            "cn": "你应该认真对待你的学习以取得好成绩。"
+          }
+        ]
+      },
+      {
+        "text": "achieve",
+        "phonetic": "[2't1iːv]",
+        "pos": "vt.",
+        "meaning": "完成, 达到",
+        "app_sentences": [
+          {
+            "en": "With hard work, you can achieve your goals in life.",
+            "cn": "通过努力，你可以实现你的人生目标。"
+          },
+          {
+            "en": "With enough practice, you can achieve your goal of swimming well.",
+            "cn": "通过足够的练习，你可以达到游好泳的目标。"
+          }
+        ]
+      },
+      {
+        "text": "geographical",
+        "phonetic": "[ˌdʒiːəˈɡræfɪkəl]",
+        "pos": "a.",
+        "meaning": "地理学的, 地理的",
+        "app_sentences": [
+          {
+            "en": "We learned about the geographical features of Asia in class.",
+            "cn": "我们在课堂上学习了亚洲的地理特征。"
+          }
+        ]
+      },
+      {
+        "text": "discovery",
+        "phonetic": "[dɪsˈkʌvəri]",
+        "pos": "n.",
+        "meaning": "发现, 被发现的事物",
+        "app_sentences": [
+          {
+            "en": "The discovery of penicillin was very important for medicine.",
+            "cn": "青霉素的发现对医学非常重要。"
+          }
+        ]
+      },
+      {
+        "text": "peak",
+        "phonetic": "[piːk]",
+        "pos": "n.",
+        "meaning": "山峰, 巅, 山顶, 顶点, 尖峰, 帽舌",
+        "app_sentences": [
+          {
+            "en": "We reached the mountain peak after a long and difficult climb.",
+            "cn": "经过漫长而艰难的攀登，我们到达了山顶。"
+          }
+        ]
+      },
+      {
+        "text": "truth",
+        "phonetic": "[truːθ]",
+        "pos": "n.",
+        "meaning": "事实, 实情",
+        "app_sentences": [
+          {
+            "en": "Always tell the truth, even when it is difficult to do so.",
+            "cn": "永远要说实话，即使这样做很困难。"
+          },
+          {
+            "en": "You should always tell the truth to your parents and teachers.",
+            "cn": "你应该永远对父母和老师说真话。"
+          }
+        ]
+      },
+      {
+        "text": "climb",
+        "phonetic": "[klaɪm]",
+        "pos": "v.",
+        "meaning": "攀登, 上升, 爬",
+        "app_sentences": [
+          {
+            "en": "It took us two hours to climb to the top of the hill.",
+            "cn": "我们花了两个小时爬到了小山顶。"
+          }
+        ]
+      }
+    ]
+  }
+]

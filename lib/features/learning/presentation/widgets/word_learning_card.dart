@@ -107,7 +107,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
                            borderRadius: BorderRadius.circular(12)
                          ),
                          child: Text(
-                           widget.word.phonetic, 
+                           widget.word.displayPhonetic, 
                            style: GoogleFonts.notoSans(
                              fontSize: 18, 
                              fontWeight: FontWeight.w500, 
