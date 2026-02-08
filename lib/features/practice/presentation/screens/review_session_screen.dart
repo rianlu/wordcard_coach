@@ -1,23 +1,26 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
-import '../../../../core/database/daos/user_stats_dao.dart'; // For saving session result
+import '../../../../core/database/daos/user_stats_dao.dart'; 
 import '../../../../core/database/daos/stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
+
 import '../../../../core/widgets/bubbly_button.dart';
-import '../../../learning/presentation/widgets/word_learning_card.dart'; // Maybe reuse card style
-// Practice Views
+import '../../../../core/widgets/mesh_gradient_background.dart';
 import '../widgets/speaking_practice_view.dart';
 import '../widgets/spelling_practice_view.dart';
 import '../widgets/word_selection_view.dart';
+import '../../../../core/widgets/app_dialog.dart';
 
 enum ReviewMode {
   speaking,
   spelling,
-  selection, // Meaning selection
+  selection, 
 }
 
 class ReviewSessionScreen extends StatefulWidget {
@@ -31,11 +34,16 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
   
+  // State Data
   List<Word> _reviewWords = [];
-  List<Word> _distractorPool = []; // For selection mode
+  List<Word> _distractorPool = []; 
   List<ReviewMode> _modes = []; 
   bool _isLoading = true;
   int _currentIndex = 0;
+  
+  // Animation State
+  bool _isCardFlyingOut = false;
+  Offset _slideOffset = Offset.zero;
 
   @override
   void initState() {
@@ -44,13 +52,10 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   }
 
   Future<void> _loadWords() async {
-    // Determine current book context
     final userStats = await _userStatsDao.getUserStats();
     String bookId = userStats.currentBookId;
     
-    // Fetch up to 20 words for review
-    // Fallback logic if filtering by book returns 0 but we want to review *anything*? 
-    // Usually strictly review what's due.
+    // Get 20 words for review
     final words = await _wordDao.getWordsDueForReview(
       20, 
       bookId: bookId, 
@@ -59,24 +64,16 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     );
 
     if (words.isEmpty) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _reviewWords = [];
-        });
-      }
+      if (mounted) setState(() { _isLoading = false; _reviewWords = []; });
       return;
     }
 
-    // Randomize modes
     final random = Random();
     final modes = List.generate(words.length, (index) {
-      // Uniform distribution: 0, 1, 2
       final r = random.nextInt(3); 
       return ReviewMode.values[r];
     });
 
-    // Load distractor pool (e.g. 20 random words)
     final distractors = await _wordDao.getRandomWords(20);
 
     if (mounted) {
@@ -89,23 +86,39 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     }
   }
 
-  Future<void> _handleSuccess(int quality) async {
+  // Logic Processing
+  Future<void> _handleAnswer(int quality) async {
     final word = _reviewWords[_currentIndex];
-    
-    // Quality passed directly from views:
-    // 5 = Perfect
-    // 3 = Passable (Hint used or Retry)
-    // 0 = Fail (Skip or Give up)
-    
     await _wordDao.updateReviewStats(word.id, quality);
-    
-    _next();
+
+    if (quality >= 1) { // Acceptable answer
+      _triggerNextAnimation();
+    } else {
+      // Wrong answer - might just shake or show feedback within the widget
+      // But eventually we move on or retry. Assuming retry happens inside widget.
+      // If widget calls strictly onCompleted, we assume it's done.
+      _triggerNextAnimation();
+    }
   }
-  
+
+  void _triggerNextAnimation() {
+    setState(() {
+      _isCardFlyingOut = true;
+      // Fly out to top-right or random direction? Top-Right feels like "Done".
+      _slideOffset = const Offset(500, -200); 
+    });
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _next();
+    });
+  }
+
   void _next() {
     if (_currentIndex < _reviewWords.length - 1) {
       setState(() {
         _currentIndex++;
+        _isCardFlyingOut = false;
+        _slideOffset = Offset.zero;
       });
     } else {
       _finishSession();
@@ -113,140 +126,37 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   }
 
   void _finishSession() async {
-    // 1. Record Stats
     try {
        await StatsDao().recordDailyActivity(
          newWords: 0,
          reviewWords: _reviewWords.length,
-         correct: _reviewWords.length, // Simplified: Assume all practiced
+         correct: _reviewWords.length, 
          wrong: 0, 
-         minutes: 5 // Mock duration
+         minutes: 5 
        );
     } catch (e) {
       debugPrint("Error saving review stats: $e");
     }
 
-    // 2. Show summary
     if (!mounted) return;
-    // 2. Show summary
-    if (!mounted) return;
+    _showSummaryDialog();
+  }
+
+
+
+  void _showSummaryDialog() {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(24),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: const [
-                  BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 10), blurRadius: 40)
-                ]
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Success/Review Icon
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEFF6FF), // Blue 50
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(color: const Color(0xFFDBEAFE).withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
-                      ]
-                    ),
-                    child: const Icon(Icons.verified_rounded, size: 64, color: AppColors.primary), // Blue
-                  ),
-                  const SizedBox(height: 32),
-                  
-                  Text(
-                    "复习完成!", 
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "温故而知新，你今天巩固了 ${_reviewWords.length} 个单词。",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis, height: 1.5)
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Stats Row
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.grey.shade100)
-                          ),
-                          child: Column(
-                            children: [
-                              Text("${_reviewWords.length}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary)),
-                              Text("复习单词", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.grey.shade100)
-                          ),
-                          child: Column(
-                            children: [
-                              Text("+${_reviewWords.length * 5}", style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.secondary)),
-                              Text("获得经验", style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMediumEmphasis)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 32),
-                  
-                  // Action Button
-                  BubblyButton(
-                    onPressed: () {
-                       Navigator.pop(context); // Close dialog
-                       Navigator.pop(context); // Exit session
-                    },
-                    color: AppColors.primary,
-                    shadowColor: const Color(0xFF1565C0),
-                    borderRadius: 20,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "完成",
-                          style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.check_rounded, color: Colors.white, size: 20)
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+        return AppDialog.success(
+          title: "复习完成！",
+          subtitle: "你复习了 ${_reviewWords.length} 个单词，继续保持！",
+          primaryButtonText: "完成",
+          onPrimaryPressed: () {
+            Navigator.pop(context); // Close dialog
+            Navigator.pop(context); // Exit screen
+          },
         );
       },
     );
@@ -255,174 +165,389 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (_reviewWords.isEmpty) {
-      return Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.close_rounded, color: AppColors.textMediumEmphasis),
-            onPressed: () => Navigator.pop(context),
+      return _buildEmptyState();
+    }
+    
+    // Main Adaptive Layout
+    return Scaffold(
+      body: Stack(
+        children: [
+          // 1. Fluid Background
+          const Positioned.fill(child: MeshGradientBackground()),
+          
+          // 2. Content
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final isWide = constraints.maxWidth > 700;
+                
+                if (isWide) {
+                  return _buildTabletLayout();
+                } else {
+                  return _buildMobileLayout();
+                }
+              },
+            ),
+          ),
+          
+          // 3. Close Button (Persistent)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            left: 16,
+            child: CircleAvatar(
+              backgroundColor: Colors.white.withValues(alpha: 0.8),
+              child: IconButton(
+                icon: const Icon(Icons.close_rounded, color: Colors.black54),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildMobileLayout() {
+    return Column(
+      children: [
+        // Header
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildCircularProgress(),
+            ],
           ),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
+        
+        // Title
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Align(
+            alignment: Alignment.centerLeft,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Illustration / Icon
-                Container(
-                  padding: const EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF0FDF4), // Green 50
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: const Color(0xFFDCFCE7).withOpacity(0.5), blurRadius: 30, spreadRadius: 10)
-                    ]
-                  ),
-                  child: const Icon(Icons.check_circle_rounded, size: 80, color: Color(0xFF22C55E)), // Green 500
-                ),
-                
-                const SizedBox(height: 32),
-                
                 Text(
-                  "暂无待复习单词",
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 24, 
-                    fontWeight: FontWeight.w900, 
-                    color: AppColors.textHighEmphasis
-                  ),
+                  "每日复习",
+                  style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.textHighEmphasis),
                 ),
-                const SizedBox(height: 12),
                 Text(
-                  "完美！你已经完成了所有的复习任务。\n快去探索更多新内容吧。",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 16, 
-                    color: AppColors.textMediumEmphasis,
-                    height: 1.6
-                  ),
+                  "清理今日单词卡片堆！",
+                  style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textMediumEmphasis),
                 ),
-                
-                const SizedBox(height: 48),
-                
-                // Button
-                SizedBox(
-                  width: 220, // Premium fixed width
-                  child: BubblyButton(
-                    onPressed: () => Navigator.pop(context),
-                    color: AppColors.primary,
-                    shadowColor: const Color(0xFF1565C0),
-                    borderRadius: 20,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Center(
-                      child: Text(
-                        "返回主页",
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 18, 
-                          fontWeight: FontWeight.bold, 
-                          color: Colors.white
-                        ),
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           ),
         ),
-      );
-    }
-
-    final currentWord = _reviewWords[_currentIndex];
-    final currentMode = _modes[_currentIndex];
-    final progress = (_currentIndex + 1) / _reviewWords.length;
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text("Boss 对战 (${_currentIndex + 1}/${_reviewWords.length})"),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(6),
-          child: LinearProgressIndicator(
-            value: progress,
-            backgroundColor: Colors.grey.shade200,
-            valueColor: const AlwaysStoppedAnimation(AppColors.primary),
-            minHeight: 6,
+        
+        const SizedBox(height: 20),
+        
+        // Stacked Card Area
+        Expanded(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: _buildFocusStack(),
+            ),
           ),
         ),
+        
+        const SizedBox(height: 48), // Bottom spacing
+      ],
+    );
+  }
+  
+  Widget _buildTabletLayout() {
+    return Row(
+      children: [
+        // Left Panel (Info & Progress) - 40%
+        Expanded(
+          flex: 4,
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Spacer(),
+                 Text(
+                  "每日复习",
+                  style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "通过清理卡片堆来保持记忆清晰。",
+                  style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis),
+                ),
+                const SizedBox(height: 48),
+                
+                // Big Progress Indicator
+                Center(child: _buildCircularProgress(size: 100, fontSize: 24)),
+                
+                const Spacer(),
+              ],
+            ),
+          ),
+        ),
+        
+        // Right Panel (Interaction) - 60%
+        Expanded(
+          flex: 6,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500), // Prevent too wide on huge screens
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: _buildFocusStack(),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildCircularProgress({double size = 60, double fontSize = 14}) {
+    final remaining = _reviewWords.length - _currentIndex;
+    final progress = (_currentIndex) / _reviewWords.length;
+    
+    return Container(
+      width: size, height: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: size, height: size,
+            child: CircularProgressIndicator(
+              value: 1.0,
+              strokeWidth: 6,
+              color: Colors.grey.withValues(alpha: 0.1),
+            ),
+          ),
+          SizedBox(
+            width: size, height: size,
+            child: CircularProgressIndicator(
+              value: 1.0 - progress, // Count down visually
+              strokeWidth: 6,
+              color: AppColors.primary,
+              strokeCap: StrokeCap.round,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "$remaining",
+                style: GoogleFonts.plusJakartaSans(fontSize: fontSize, fontWeight: FontWeight.w800, color: AppColors.primary),
+              ),
+              Text(
+                "剩余",
+                style: GoogleFonts.plusJakartaSans(fontSize: fontSize * 0.4, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis),
+              ),
+            ],
+          )
+        ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-             children: [
-               Expanded(
-                 child: _buildPracticeView(currentWord, currentMode),
-               ),
-             ],
+    );
+  }
+
+  Widget _buildFocusStack() {
+    final remaining = _reviewWords.length - _currentIndex;
+    
+    return Stack(
+      children: [
+        // 1. Fake Cards (Background)
+        if (remaining > 2) _buildFakeCard(scale: 0.9, yOffset: 30, opacity: 0.3),
+        if (remaining > 1) _buildFakeCard(scale: 0.95, yOffset: 15, opacity: 0.6),
+        
+        // 2. Active Card
+        AnimatedSlide(
+          offset: _isCardFlyingOut ? _slideOffset : Offset.zero,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInBack,
+          child: AnimatedOpacity(
+            opacity: _isCardFlyingOut ? 0.0 : 1.0,
+            duration: const Duration(milliseconds: 200),
+            child: _buildActiveCard(),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildFakeCard({double scale = 1.0, double yOffset = 0.0, double opacity = 1.0}) {
+    return Transform.scale(
+      scale: scale,
+      child: Transform.translate(
+        offset: Offset(0, yOffset),
+        child: Container(
+          width: double.infinity,
+          height: 600, // Safe height, will be constrained by parent
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: opacity),
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              )
+            ],
+            // Add a subtle border to distinguish layers
+            border: Border.all(color: Colors.white.withValues(alpha: 0.5 * opacity), width: 1),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildPracticeView(Word word, ReviewMode mode) {
-    // We need to verify the signatures of these Views.
-    // Assuming they take `word` and `onComplete`.
+  Widget _buildActiveCard() {
+    final currentWord = _reviewWords[_currentIndex];
+    final currentMode = _modes[_currentIndex];
     
+    return Container(
+      width: double.infinity,
+      // Aspect ratio or fixed height? Let's use flexible height with constraints
+      constraints: const BoxConstraints(minHeight: 400), 
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: const [
+          BoxShadow(
+            color: AppColors.shadowWhite,
+            blurRadius: 30,
+            offset: Offset(0, 15)
+          )
+        ]
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(32),
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: _buildPracticeView(currentWord, currentMode),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPracticeView(Word word, ReviewMode mode) {
     switch (mode) {
       case ReviewMode.speaking:
         return SpeakingPracticeView(
-          key: ValueKey(word.id),
+          key: ValueKey("speak_${word.id}"),
           word: word,
-          onCompleted: _handleSuccess, 
+          onCompleted: _handleAnswer, 
         );
       case ReviewMode.spelling:
         return SpellingPracticeView(
-          key: ValueKey(word.id),
+          key: ValueKey("spell_${word.id}"),
           word: word,
-          onCompleted: _handleSuccess,
+          onCompleted: _handleAnswer,
         );
       case ReviewMode.selection:
-        // Generate options: Correct + 3 Distractors
-        final options = _generateOptions(word);
         return WordSelectionView(
-          key: ValueKey(word.id),
+          key: ValueKey("select_${word.id}"),
           word: word,
-          options: options,
-          onCompleted: _handleSuccess,
+          options: _generateOptions(word),
+          onCompleted: _handleAnswer,
         );
     }
   }
 
   List<Word> _generateOptions(Word correctWord) {
     if (_distractorPool.isEmpty) return [correctWord]; 
-    
     final random = Random();
     final Set<Word> optionsSet = {correctWord};
-    
     int attempts = 0;
     while (optionsSet.length < 4 && attempts < 50) {
       final w = _distractorPool[random.nextInt(_distractorPool.length)];
-      if (w.id != correctWord.id) {
-        optionsSet.add(w);
-      }
+      if (w.id != correctWord.id) optionsSet.add(w);
       attempts++;
     }
-    
     final list = optionsSet.toList();
     list.shuffle();
     return list;
+  }
+  
+  Widget _buildEmptyState() {
+     return Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            const Positioned.fill(child: MeshGradientBackground()),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   Container(
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                         BoxShadow(
+                           color: AppColors.primary.withValues(alpha: 0.15),
+                           blurRadius: 40,
+                           offset: const Offset(0, 10)
+                         )
+                      ]
+                    ),
+                    child: const Icon(Icons.check_circle_rounded, size: 80, color: AppColors.primary),
+                  ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+                  
+                  const SizedBox(height: 32),
+                  
+                  Text(
+                    "暂无复习任务", 
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 24, 
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textHighEmphasis
+                    )
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    "休息一下，或者去学习新单词吧！",
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 14,
+                      color: AppColors.textMediumEmphasis
+                    ),
+                  ),
+
+                  const SizedBox(height: 48),
+
+                  BubblyButton(
+                    onPressed: () => Navigator.pop(context), 
+                    color: Colors.white,
+                    shadowColor: Colors.grey.shade200,
+                    borderRadius: 20,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.arrow_back_rounded, color: AppColors.textHighEmphasis, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          "返回首页",
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold, // Use w700 or bold
+                            color: AppColors.textHighEmphasis
+                          )
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+     );
   }
 }

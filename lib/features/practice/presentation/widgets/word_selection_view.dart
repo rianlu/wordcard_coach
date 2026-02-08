@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/widgets/bubbly_button.dart';
+
 import '../../../../core/widgets/animated_speaker_button.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/services/audio_service.dart';
@@ -26,7 +26,7 @@ class WordSelectionView extends StatefulWidget {
 class _WordSelectionViewState extends State<WordSelectionView> {
   String? _selectedOptionId;
   int _wrongAttempts = 0;
-  bool _showSuccess = false;
+
   bool _isPlaying = false;
 
   @override
@@ -36,7 +36,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
        setState(() {
          _selectedOptionId = null;
          _wrongAttempts = 0;
-         _showSuccess = false;
+
          _isPlaying = false;
        });
     }
@@ -134,93 +134,131 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   }
 
   Widget _buildMainContent() {
-    return SizedBox.expand(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Fix: Tablet Portrait should NOT be wide. Require Landscape.
-          final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
+        final isTall = constraints.maxHeight > 600;
 
-          if (isWide) {
-            return Row(
-              children: [
-                // Left: Word Card
-                Expanded(
-                  flex: 4,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24),
-                    child: _buildWordCard(),
-                  ),
+        if (isWide) {
+          return Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Center(child: _buildWordCard()),
                 ),
-                // Right: Options
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: const BoxDecoration(
-                      border: Border(left: BorderSide(color: Colors.black12)),
-                      color: Colors.white54,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft, 
-                          child: Text('SELECT THE CORRECT MEANING', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
-                        ),
-                        const SizedBox(height: 16),
-                        ...widget.options.map((optionWord) => 
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: _buildOption(context, optionWord),
-                          )
-                        ),
-                      ],
-                    ),
-                  ),
+              ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: _buildOptionsGrid(),
                 ),
-              ],
-            );
-          }
-
-          // Portrait Layout
-          return LayoutBuilder(
-            builder: (context, viewportConstraints) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(24.0),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight - 48,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.center, // Removed centering
-                      children: [
-                        // Word Card
-                        _buildWordCard(),
-                        
-                        const Spacer(), // Push options to bottom
-  
-                        Align(
-                          alignment: Alignment.centerLeft, 
-                          child: Text('SELECT THE CORRECT MEANING', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
-                        ),
-                        const SizedBox(height: 16),
-                        
-                        ...widget.options.map((optionWord) => 
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: _buildOption(context, optionWord),
-                          )
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
+              ),
+            ],
           );
-        },
-      ),
+        }
+
+        if (!isTall) {
+           // Small Screen / Landscape Phone Optimization: Scrollable List
+           return SingleChildScrollView(
+             padding: const EdgeInsets.all(24),
+             child: Column(
+               children: [
+                 _buildWordCard(),
+                 const SizedBox(height: 24),
+                 // Give Grid a fixed height or let it shrinkwrap? 
+                 // We can use a shrinkwrapped grid inside column.
+                 _buildOptionsGrid(shrinkWrap: true, scrollable: false),
+               ],
+             ),
+           );
+        }
+
+        // Standard Portrait Layout
+        return Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: _buildWordCard()
+                  )
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                child: _buildOptionsGrid(),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildOptionsGrid({bool shrinkWrap = false, bool scrollable = true}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '选择正确释义',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+              color: AppColors.textMediumEmphasis,
+              letterSpacing: 1.0,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        shrinkWrap 
+        ? GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1.3,
+            ),
+            itemCount: widget.options.length,
+            itemBuilder: (context, index) {
+              return _buildOptionTile(context, widget.options[index]);
+            },
+          )
+        : Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Calculate gap based on available space, min 12 max 20
+                final gap = (constraints.maxWidth * 0.04).clamp(12.0, 20.0);
+                return GridView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: const BouncingScrollPhysics(), 
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: gap,
+                    mainAxisSpacing: gap,
+                    childAspectRatio: 1.3, 
+                  ),
+                  itemCount: widget.options.length,
+                  itemBuilder: (context, index) {
+                    return _buildOptionTile(context, widget.options[index]);
+                  },
+                );
+              },
+            ),
+          ),
+      ],
     );
   }
 
@@ -255,76 +293,79 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     );
   }
 
-  Widget _buildOption(BuildContext context, Word optionWord) {
-    // Check if this option is selected
+  Widget _buildOptionTile(BuildContext context, Word optionWord) {
     final isSelected = _selectedOptionId == optionWord.id;
-    // Check if this option is correct (only if an option has been selected)
-    final isCorrect = optionWord.id == widget.word.id;
-    
-    // Determine color state
-    Color buttonColor = Colors.white;
-    Color textColor = AppColors.textHighEmphasis;
+
+
+    // Pop Style Colors
+    Color bgColor = Colors.white;
     Color borderColor = Colors.transparent;
-    Widget? icon;
+    Color shadowColor = AppColors.shadowWhite;
+    double yOffset = 4;
+    Color textColor = AppColors.textHighEmphasis;
 
     if (_selectedOptionId != null) {
-      if (optionWord.id == widget.word.id) {
-         // Only show correct if user actually picked it
-         if (isSelected) {
-            buttonColor = const Color(0xFFF0FDF4); // Green 50
-            textColor = const Color(0xFF166534); // Green 800
-            borderColor = const Color(0xFF86EFAC); // Green 300
-            icon = const Icon(Icons.check_circle_rounded, size: 24, color: Color(0xFF166534));
-         }
-      } else if (isSelected) {
-         // This is a wrong selection
-         buttonColor = const Color(0xFFFEF2F2); // Red 50
-         textColor = const Color(0xFF991B1B); // Red 800
-         borderColor = const Color(0xFFFCA5A5); // Red 300
-         icon = const Icon(Icons.cancel_rounded, size: 24, color: Color(0xFF991B1B));
-      } else {
-        // Other wrong options fade out slightly
-         textColor = AppColors.textMediumEmphasis.withOpacity(0.5);
-      }
-    }
+      final isCorrect = optionWord.id == widget.word.id;
+      final isSelectedAndCorrect = isCorrect && _selectedOptionId == widget.word.id;
 
-    // Display meaning if available, otherwise word text (since meaning is placeholder)
-    final displayText = optionWord.meaning;
+      if (isSelectedAndCorrect) {
+         // Correct and Selected
+         bgColor = const Color(0xFF4ADE80); // Green 400
+         borderColor = const Color(0xFF22C55E); // Green 500 (Border/Shadow)
+         shadowColor = const Color(0xFF15803D); // Green 700
+         textColor = Colors.white;
+      } else if (isSelected) {
+         // Wrong
+         bgColor = const Color(0xFFF87171); // Red 400
+         borderColor = const Color(0xFFEF4444); // Red 500
+         shadowColor = const Color(0xFFB91C1C); // Red 700
+         textColor = Colors.white;
+      } else {
+         // Others
+         bgColor = Colors.grey.shade100;
+         textColor = Colors.grey.shade400;
+         yOffset = 0; // Pressed down effect
+         shadowColor = Colors.transparent;
+      }
+    } else {
+      // Normal State - colorful border hint?
+      // Let's keep it clean white but with big pop shadow
+      bgColor = Colors.white;
+      borderColor = Colors.grey.shade200;
+      shadowColor = Colors.grey.shade300;
+    }
 
     return GestureDetector(
       onTap: () => _handleOptionSelected(optionWord.id),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: buttonColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: _selectedOptionId != null 
-              ? borderColor 
-              : Colors.transparent, // No border intially
-             width: 2
-          ),
+          color: bgColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: borderColor, width: 2),
           boxShadow: [
-             if (_selectedOptionId == null)
-               const BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 12),
+             BoxShadow(
+               color: shadowColor,
+               offset: Offset(0, yOffset),
+               blurRadius: 0, // Solid shadow for Pop feel
+             )
           ]
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: Text(displayText, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 16, color: textColor))),
-             if (icon != null)
-               Padding(padding: const EdgeInsets.only(left: 12), child: icon)
-             else 
-               Container(
-                 width: 24, height: 24,
-                 decoration: BoxDecoration(
-                   shape: BoxShape.circle,
-                   border: Border.all(color: Colors.grey.shade200, width: 2),
-                 ),
-               )
-          ],
+        child: Center(
+          child: Text(
+            optionWord.meaning,
+            style: GoogleFonts.plusJakartaSans(
+              fontWeight: FontWeight.w800,
+              fontSize: 16,
+              color: textColor,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );

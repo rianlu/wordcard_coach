@@ -451,11 +451,12 @@ class StatsDao {
     required int correct,
     required int wrong,
     required int minutes,
+    DateTime? date, // Optional date for historical data
   }) async {
     final db = await _dbHelper.database;
-    final now = DateTime.now();
+    final targetDate = date ?? DateTime.now();
     // Format: YYYY-MM-DD
-    final dateStr = "${now.year}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')}";
+    final dateStr = "${targetDate.year}-${targetDate.month.toString().padLeft(2,'0')}-${targetDate.day.toString().padLeft(2,'0')}";
     
     // Check if record exists
     final List<Map<String, dynamic>> existing = await db.query(
@@ -488,7 +489,7 @@ class StatsDao {
         'correct_count': correct,
         'wrong_count': wrong,
         'study_minutes': minutes,
-        'created_at': now.millisecondsSinceEpoch,
+        'created_at': targetDate.millisecondsSinceEpoch,
       });
     }
     

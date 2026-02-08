@@ -7,8 +7,9 @@ import '../../../../core/services/audio_service.dart';
 import '../../../../core/services/speech_service.dart';
 import '../../../../core/utils/phonetic_utils.dart';
 import '../../../../core/widgets/animated_speaker_button.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../core/widgets/bubbly_button.dart';
+
 import 'practice_success_overlay.dart';
 
 /// Speaking practice state machine
@@ -42,7 +43,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   SpeakingState _state = SpeakingState.idle;
   String _lastHeard = '';
   int _retryCount = 0;
-  int _stars = 0;
+
   
   // Timers
   Timer? _skipTimer;
@@ -66,9 +67,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     // Subscribe to mic state for UI feedback
     _listeningSubscription = SpeechService().listeningState.listen((isActive) {
       if (mounted && _state == SpeakingState.listening) {
-        // Visual feedback when mic actually activates
         if (isActive) {
+          // Visual feedback when mic actually activates
           AudioService().playAsset('mic_start.mp3');
+        } else {
+          // Mic stopped actively listening
+          // If we are still in 'listening' state, it means we didn't get a success result yet.
+          // Check if we heard anything to give immediate feedback instead of waiting for timeout.
+          if (_lastHeard.isNotEmpty) {
+             debugPrint("Speech session ended with input: $_lastHeard");
+             _handleSpeechSessionEnded();
+          }
         }
       }
     });
@@ -82,7 +91,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   void didUpdateWidget(SpeakingPracticeView oldWidget) {
-    super.didUpdateWidget(oldWidget);;
+    super.didUpdateWidget(oldWidget);
     if (widget.word.id != oldWidget.word.id) {
       _resetAndRestart();
     }
@@ -96,7 +105,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       _state = SpeakingState.idle;
       _lastHeard = '';
       _retryCount = 0;
-      _stars = 0;
+
     });
     
     _pulseController.reset();
@@ -249,6 +258,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       // Some speech was detected but didn't match - prompt retry
       _showRetryPrompt(_lastHeard);
     }
+  }
+
+  void _handleSpeechSessionEnded() {
+    _listenTimeoutTimer?.cancel(); // Cancel timeout since session ended naturally
+    
+    // We already have _lastHeard populated from onResult
+    // Since we are still here, it means it wasn't a Success (3 stars) or Good (2 stars)
+    // It must be a 0 or 1 star match.
+    
+    // Trigger retry prompt with error feedback
+    _showRetryPrompt(_lastHeard);
   }
 
   void _handleSpeechResult(String text) {
@@ -409,22 +429,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     
     setState(() {
       _state = SpeakingState.success;
-      _stars = stars;
+
       _lastHeard = recognized;
     });
     
     _showSuccessOverlay(stars);
   }
 
-  /// Allow user to manually retry after failed state
-  void _retryFromFailed() {
-    if (_state == SpeakingState.playingAudio || _state == SpeakingState.success) return;
-    
-    // Reset retry count for manual retry
-    _retryCount = 0;
-    _lastHeard = '';
-    _beginListening();
-  }
+
 
   void _skip() {
     _cancelAllTimers();
@@ -462,7 +474,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       barrierLabel: "Success",
       barrierColor: Colors.transparent,
       transitionDuration: Duration.zero,
-      pageBuilder: (_, __, ___) {
+      pageBuilder: (context, a1, a2) {
         return PracticeSuccessOverlay(
           word: widget.word,
           title: _getStarTitle(stars),
@@ -505,7 +517,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     List<int> v0 = List<int>.filled(t.length + 1, 0);
     List<int> v1 = List<int>.filled(t.length + 1, 0);
 
-    for (int i = 0; i < t.length + 1; i++) v0[i] = i;
+    for (int i = 0; i < t.length + 1; i++) {
+      v0[i] = i;
+    }
 
     for (int i = 0; i < s.length; i++) {
       v1[0] = i + 1;
@@ -513,7 +527,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         int cost = (s[i] == t[j]) ? 0 : 1;
         v1[j + 1] = [v1[j] + 1, v0[j + 1] + 1, v0[j] + cost].reduce((min, e) => e < min ? e : min);
       }
-      for (int j = 0; j < t.length + 1; j++) v0[j] = v1[j];
+      for (int j = 0; j < t.length + 1; j++) {
+        v0[j] = v1[j];
+      }
     }
     return v1[t.length];
   }
@@ -533,48 +549,44 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox.expand(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Fix: Tablet Portrait should NOT be wide. Require Landscape.
           final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
 
           if (isWide) {
             return Row(
               children: [
-                // Left: Content
                 Expanded(
                   flex: 4,
-                  child: SingleChildScrollView(
+                  child: Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildWordCard(),
-                        const SizedBox(height: 24),
-                        _buildExampleCard(),
+                        _buildTargetWord(),
+                        const SizedBox(height: 32),
+                        _buildStatusHUD(),
                       ],
                     ),
                   ),
                 ),
-                // Right: Interaction
                 Expanded(
                   flex: 5,
                   child: Container(
-                    padding: const EdgeInsets.all(24),
                     decoration: const BoxDecoration(
-                      border: Border(left: BorderSide(color: Colors.black12)),
                       color: Colors.white54,
+                      border: Border(left: BorderSide(color: Colors.black12)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildStatusText(),
-                        const SizedBox(height: 32),
-                        _buildMicButton(),
-                        if (_shouldShowSkipButton()) ...[
-                          const SizedBox(height: 32),
-                          _buildSkipButton(),
-                        ],
+                        const Spacer(),
+                        _buildVoiceWave(),
+                        const Spacer(),
+                        _buildVoiceControls(),
+                        const Spacer(),
                       ],
                     ),
                   ),
@@ -587,47 +599,43 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
           return Column(
             children: [
               Expanded(
-                child: LayoutBuilder(
-                  builder: (context, viewportConstraints) {
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.all(24),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight - 48, // 24 vertical padding * 2
-                        ),
-                        child: IntrinsicHeight(
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.center, // Removed centering
-                            children: [
-                              // Word Card
-                              _buildWordCard(),
-                              
-                              const SizedBox(height: 16),
-                              
-                              // Example Sentence
-                              _buildExampleCard(),
-  
-                              const Spacer(), // Push controls to bottom
-                              
-                              // Status Text
-                              _buildStatusText(),
-                              
-                              const SizedBox(height: 24),
-                              
-                              // Mic Button
-                              _buildMicButton(),
-                              
-                              // Skip Button - show after timeout or when max retries reached
-                              if (_shouldShowSkipButton()) ...[
-                                const SizedBox(height: 32),
-                                _buildSkipButton(),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      _buildTargetWord(),
+                      const SizedBox(height: 32),
+                      _buildStatusHUD(),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ),
+              
+              // Bottom Controls Area
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 48),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
+                  ),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, -5))
+                  ]
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildVoiceWave(),
+                    const SizedBox(height: 32),
+                    _buildVoiceControls(),
+                  ],
                 ),
               ),
             ],
@@ -637,301 +645,204 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     );
   }
 
-  Widget _buildWordCard() {
+  Widget _buildVoiceWave() {
+     // Placeholder for audio visualizer or just some spacing
+     return SizedBox(
+       height: 60,
+       child: Center(
+         child: _state == SpeakingState.listening 
+           ? Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: List.generate(5, (index) => 
+                 Container(
+                   width: 6,
+                   height: 20 + 20 * (index % 2 == 0 ? 1.0 : 0.6), // Fake wave
+                   margin: const EdgeInsets.symmetric(horizontal: 4),
+                   decoration: BoxDecoration(
+                     color: AppColors.primary.withValues(alpha: 0.6),
+                     borderRadius: BorderRadius.circular(10)
+                   ),
+                 ).animate(onPlay: (c) => c.repeat(reverse: true))
+                  .scaleY(begin: 0.5, end: 1.5, duration: Duration(milliseconds: 300 + index * 100))
+               ),
+             )
+           : const SizedBox.shrink()
+       ),
+     );
+  }
+
+  Widget _buildVoiceControls() {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey.shade100),
-        boxShadow: const [
-          BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
-        ],
-      ),
-      child: Column(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(height: 16),
-          Text(
-            widget.word.text, 
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 32, 
-              fontWeight: FontWeight.w900, 
-              color: AppColors.primary
-            ),
+          // Left: Skip button or Placeholder
+          SizedBox(
+            width: 80,
+            child: _shouldShowSkipButton() 
+              ? TextButton(
+                  onPressed: _skip,
+                  child: Text("跳过", style: TextStyle(color: Colors.grey.shade400)),
+                )
+              : const SizedBox(),
           ),
-          const SizedBox(height: 8),
-          Text(
-            widget.word.meaning, 
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 20, 
-              fontWeight: FontWeight.bold, 
-              color: AppColors.textHighEmphasis
+
+          // Center: Mic Button
+          _buildVoiceMicButton(),
+
+          // Right: Replay Button
+          SizedBox(
+            width: 80,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: AnimatedSpeakerButton(
+                onPressed: _replayStandardAudio,
+                isPlaying: _state == SpeakingState.playingAudio,
+                size: 24,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            widget.word.phonetic, 
-            style: const TextStyle(
-              fontSize: 18, 
-              color: AppColors.textMediumEmphasis, 
-              fontWeight: FontWeight.w500
-            ),
-          ),
-          const SizedBox(height: 24),
-          
-          // TTS Button with animation
-          AnimatedSpeakerButton(
-            onPressed: _replayStandardAudio,
-            isPlaying: _state == SpeakingState.playingAudio,
-            size: 32,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildExampleCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: const Border(left: BorderSide(color: AppColors.primary, width: 4)),
-        boxShadow: const [
-          BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 2), blurRadius: 0)
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'EXAMPLE SENTENCE', 
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 10, 
-              fontWeight: FontWeight.w900, 
-              color: AppColors.textMediumEmphasis, 
-              letterSpacing: 1.0
-            ),
-          ),
-          const SizedBox(height: 8),
-          if (widget.word.examples.isNotEmpty) ...[
-            GestureDetector(
-              onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
-              child: Text(
-                widget.word.examples.first['en']!,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 18, 
-                  color: AppColors.textHighEmphasis, 
-                  height: 1.5, 
-                  fontWeight: FontWeight.w500
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              widget.word.examples.first['cn']!,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 14, 
-                color: AppColors.textMediumEmphasis, 
-                height: 1.5
-              ),
-            ),
-          ] else ...[
-            Text(
-              'No example sentence available.',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 18, 
-                color: AppColors.textHighEmphasis, 
-                height: 1.5, 
-                fontWeight: FontWeight.w500
-              ),
-            ),
-          ],
-        ],
+  Widget _buildVoiceMicButton() {
+    final isListening = _state == SpeakingState.listening;
+    
+    return GestureDetector(
+      onTap: () {
+        if (_state == SpeakingState.idle || _state == SpeakingState.failed) {
+          _startPractice();
+        } 
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: 80, height: 80, // Much smaller
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: isListening ? const Color(0xFFFF5252) : AppColors.primary,
+          boxShadow: [
+            BoxShadow(
+              color: (isListening ? const Color(0xFFFF5252) : AppColors.primary).withValues(alpha: 0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            )
+          ]
+        ),
+        child: Icon(
+          isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
+          color: Colors.white,
+          size: 32,
+        ),
       ),
     );
   }
 
-  Widget _buildStatusText() {
+  Widget _buildTargetWord() {
+    return Column(
+      children: [
+        Text(
+          "READ ALOUD",
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 12, fontWeight: FontWeight.w900, 
+            color: AppColors.textMediumEmphasis, letterSpacing: 1.0
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          widget.word.text,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 48, // Much larger
+            fontWeight: FontWeight.w900,
+            color: AppColors.primary,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          widget.word.phonetic,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textMediumEmphasis,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          widget.word.meaning,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textHighEmphasis.withValues(alpha: 0.6),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusHUD() {
     String text;
     Color color;
-    
+    IconData? icon;
+
     switch (_state) {
       case SpeakingState.idle:
       case SpeakingState.playingAudio:
-        text = '正在播放...';
+        text = '请听发音...';
         color = AppColors.textMediumEmphasis;
+        icon = Icons.volume_up_rounded;
         break;
       case SpeakingState.listening:
         if (_lastHeard.isNotEmpty) {
-          text = '听到: $_lastHeard';
+          text = '听到: "$_lastHeard"';
           color = AppColors.primary;
-        } else if (SpeechService().isListening) {
-          text = '请大声朗读';
-          color = AppColors.secondary;
+          icon = Icons.hearing_rounded;
         } else {
-          text = '准备中...';
-          color = AppColors.secondary.withOpacity(0.5);
+          text = '请大声读出来...';
+          color = AppColors.secondary;
+          icon = Icons.mic_rounded;
         }
         break;
       case SpeakingState.processing:
-        text = '识别中...';
+        text = '正在识别...';
         color = AppColors.primary;
+        icon = Icons.sync_rounded;
         break;
       case SpeakingState.success:
-        text = _lastHeard.isNotEmpty ? '听到: $_lastHeard' : '';
-        color = AppColors.primary;
+        text = '完美!';
+        color = Colors.green;
+        icon = Icons.check_circle_rounded;
         break;
       case SpeakingState.failed:
-        text = '再试一次！请说: ${widget.word.text}';
+        text = '再试一次!';
         color = Colors.orange;
+        icon = Icons.refresh_rounded;
         break;
     }
-    
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: GoogleFonts.plusJakartaSans(
-        fontSize: 14,
-        fontWeight: FontWeight.w900,
-        color: color,
-        letterSpacing: 1.0,
-      ),
-    );
-  }
 
-  Widget _buildMicButton() {
-    final isActive = _state == SpeakingState.listening && SpeechService().isListening;
-    final isListening = _state == SpeakingState.listening;
-    final isFailed = _state == SpeakingState.failed;
-    final canTap = !isListening && _state != SpeakingState.playingAudio && _state != SpeakingState.success;
-    
-    return GestureDetector(
-      onTap: canTap ? _retryFromFailed : null,
-      child: SizedBox(
-        width: 100,
-        height: 100,
-        child: Stack(
-          alignment: Alignment.center,
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: Container(
+        key: ValueKey(_state),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Outer breathing glow when idle (inviting user to tap)
-            if (!isListening && !isFailed)
-              TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.8, end: 1.0),
-                duration: const Duration(milliseconds: 1200),
-                curve: Curves.easeInOut,
-                builder: (context, value, child) {
-                  return Container(
-                    width: 100 + (value * 20),
-                    height: 100 + (value * 20),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.secondary.withOpacity(0.15 * value),
-                    ),
-                  );
-                },
-                onEnd: () {
-                  // This creates a continuous breathing effect
-                },
-              ),
-            
-            // Ripple Effects when listening
-            if (isListening) ...[
-              AnimatedBuilder(
-                animation: _pulseController,
-                builder: (context, child) {
-                  return Container(
-                    width: 90 + (_pulseController.value * 80),
-                    height: 90 + (_pulseController.value * 80),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.secondary.withOpacity(0.3 * (1 - _pulseController.value)),
-                      border: Border.all(
-                        color: AppColors.secondary.withOpacity(0.4 * (1 - _pulseController.value)),
-                        width: 2,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              if (isActive)
-                AnimatedBuilder(
-                  animation: _pulseController,
-                  builder: (context, child) {
-                    final double staggeredValue = (_pulseController.value + 0.5) % 1.0;
-                    return Container(
-                      width: 90 + (staggeredValue * 80),
-                      height: 90 + (staggeredValue * 80),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.secondary.withOpacity(0.2 * (1 - staggeredValue)),
-                      ),
-                    );
-                  },
-                ),
-              // Third ripple for more dynamic effect
-              if (isActive)
-                AnimatedBuilder(
-                  animation: _pulseController,
-                  builder: (context, child) {
-                    final double staggeredValue = (_pulseController.value + 0.25) % 1.0;
-                    return Container(
-                      width: 90 + (staggeredValue * 80),
-                      height: 90 + (staggeredValue * 80),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.secondary.withOpacity(0.3 * (1 - staggeredValue)),
-                          width: 1.5,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-            ],
-            
-            // Main Button with scale animation
-            AnimatedScale(
-              scale: isListening ? 1.0 : (isFailed ? 1.05 : 0.95),
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOut,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: isListening ? 100 : 90,
-                height: isListening ? 100 : 90,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: isFailed 
-                      ? [Colors.orange.shade400, Colors.orange.shade600]
-                      : isListening
-                        ? [AppColors.secondary, AppColors.secondary.withRed(220)]
-                        : [AppColors.secondary.withOpacity(0.9), AppColors.secondary],
-                  ),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (isFailed ? Colors.orange : AppColors.secondary).withOpacity(isListening ? 0.6 : 0.4),
-                      blurRadius: isListening ? 35 : 20,
-                      spreadRadius: isListening ? 6 : 0,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(
-                    isFailed ? Icons.refresh_rounded : (isListening ? Icons.graphic_eq_rounded : Icons.mic_rounded),
-                    key: ValueKey(isFailed ? 'refresh' : (isListening ? 'eq' : 'mic')),
-                    color: const Color(0xFF101418),
-                    size: 42,
-                  ),
-                ),
+            Icon(icon, color: color, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              text,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: color,
               ),
             ),
           ],
@@ -940,35 +851,5 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     );
   }
 
-  Color _getButtonColor(bool isActive, bool isListening, bool isFailed) {
-    if (isFailed) return Colors.orange;
-    if (isActive) return AppColors.secondary;
-    if (isListening) return Colors.grey;
-    return AppColors.secondary;
-  }
 
-  Widget _buildSkipButton() {
-    return BubblyButton(
-      onPressed: _skip,
-      color: const Color(0xFFFFF3E0),
-      shadowColor: const Color(0xFFFFB74D),
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-      borderRadius: 30,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.fast_forward_rounded, color: Colors.orange.shade800, size: 24),
-          const SizedBox(width: 8),
-          Text(
-            "跳过此词", 
-            style: GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.w800, 
-              fontSize: 16, 
-              color: Colors.orange.shade800
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

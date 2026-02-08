@@ -348,7 +348,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                           shrinkWrap: true,
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           itemCount: _books.length + 1,
-                          separatorBuilder: (_, __) => const SizedBox(height: 4),
+                          separatorBuilder: (context, index) => const SizedBox(height: 4),
                           itemBuilder: (ctx, i) {
                             final isAllBooks = i == 0;
                             final book = isAllBooks ? null : _books[i - 1];
@@ -432,7 +432,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: Colors.grey.shade200),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))
                 ]
             ),
             child: Row(
@@ -518,7 +518,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                                         shrinkWrap: true,
                                         padding: const EdgeInsets.symmetric(vertical: 8),
                                         itemCount: _units.length + 1,
-                                        separatorBuilder: (_, __) => const SizedBox(height: 4),
+                                        separatorBuilder: (context, index) => const SizedBox(height: 4),
                                         itemBuilder: (ctx, i) {
                                           final isAllUnits = i == 0;
                                           final unit = isAllUnits ? null : _units[i - 1];
@@ -626,7 +626,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
            color: isSelected ? AppColors.primary : Colors.white,
            borderRadius: BorderRadius.circular(20),
            border: isSelected ? null : Border.all(color: Colors.grey.shade200),
-           boxShadow: isSelected ? [BoxShadow(color: AppColors.primary.withOpacity(0.3), blurRadius: 8, offset: const Offset(0, 4))] : null
+           boxShadow: isSelected ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 4))] : null
         ),
         child: Text(label, style: TextStyle(
           color: isSelected ? Colors.white : AppColors.textMediumEmphasis,
@@ -745,22 +745,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     );
   }
 
-  String _formatNextReview(int? timestamp) {
-    if (timestamp == null || timestamp == 0) return "-";
-    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    final now = DateTime.now();
-    final diff = date.difference(now);
-    
-    if (diff.isNegative) {
-      return "待复习";
-    } else if (diff.inHours < 24 && date.day == now.day) {
-      return "今天";
-    } else if (date.day == now.add(const Duration(days: 1)).day) {
-      return "明天";
-    } else {
-      return "${date.year}/${date.month}/${date.day}";
-    }
-  }
+
 }
 
 class _WordDetailDialog extends StatefulWidget {
@@ -791,6 +776,23 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
           setState(() => _isPlaying = false);
         }
       }
+    }
+  }
+
+  String _formatNextReview(int? timestamp) {
+    if (timestamp == null || timestamp == 0) return "-";
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    final now = DateTime.now();
+    final diff = date.difference(now);
+    
+    if (diff.isNegative) {
+      return "待复习";
+    } else if (diff.inHours < 24 && date.day == now.day) {
+      return "今天";
+    } else if (date.day == now.add(const Duration(days: 1)).day) {
+      return "明天";
+    } else {
+      return "${date.year}/${date.month}/${date.day}";
     }
   }
 
@@ -907,7 +909,7 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                     Text(memoryLabel, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: memoryColor)),
-                                    Text("下次复习: ${context.findAncestorStateOfType<_DictionaryScreenState>()!._formatNextReview(nextReviewTs)}", style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                    Text("下次复习: ${_formatNextReview(nextReviewTs)}", style: const TextStyle(fontSize: 12, color: Colors.grey)),
                                 ],
                             ),
                             const SizedBox(height: 24),
@@ -935,7 +937,7 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
                                             Text(ex['cn'] ?? '', style: const TextStyle(fontSize: 12, color: AppColors.textMediumEmphasis)),
                                         ],
                                     ),
-                                )).toList(),
+                                )),
                                 const SizedBox(height: 24),
                             ],
                         ),

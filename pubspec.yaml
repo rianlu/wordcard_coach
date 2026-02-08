@@ -49,6 +49,7 @@ dependencies:
   uuid: ^4.5.1
   shared_preferences: ^2.2.2
   http: ^1.2.0
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,7 @@ flutter:
   assets:
     - assets/data/
     - assets/sounds/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

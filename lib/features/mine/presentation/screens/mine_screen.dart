@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
+import 'dart:math' as dart;
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:wordcard_coach/features/mine/presentation/screens/settings_screen.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/daos/stats_dao.dart';
+import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/models/user_stats.dart';
-import '../../../../core/database/database_helper.dart';
 import '../../../../core/services/global_stats_notifier.dart';
+import '../../../../core/database/database_helper.dart';
 
 class MineScreen extends StatefulWidget {
   const MineScreen({super.key});
@@ -22,6 +25,7 @@ class MineScreen extends StatefulWidget {
 class _MineScreenState extends State<MineScreen> {
   final UserStatsDao _userStatsDao = UserStatsDao();
   final StatsDao _statsDao = StatsDao();
+  final WordDao _wordDao = WordDao(); // Add WordDao
   UserStats? _stats;
   BookProgress? _bookProgress;
   bool _isLoading = true;
@@ -32,6 +36,78 @@ class _MineScreenState extends State<MineScreen> {
     super.initState();
     _loadStats();
     GlobalStatsNotifier.instance.addListener(_loadStats);
+  }
+
+  Future<void> _generateMockData() async {
+    setState(() => _isLoading = true);
+    
+    final r =  dart.Random();
+    final now = DateTime.now();
+
+    // Generate data for past 14 days
+    for (int i = 1; i <= 14; i++) {
+       final date = now.subtract(Duration(days: i));
+       
+       // Randomize activity
+       if (r.nextDouble() > 0.2) { // 80% active
+          int newWords = r.nextInt(15);
+          int reviewWords = r.nextInt(30) + 10;
+          int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4)).round(); // 60-100% accuracy
+          int wrong = reviewWords - correct;
+          int minutes = r.nextInt(30) + 10;
+          
+          await _statsDao.recordDailyActivity(
+            newWords: newWords, 
+            reviewWords: reviewWords, 
+            correct: correct, 
+            wrong: wrong, 
+            minutes: minutes,
+            date: date
+          );
+       }
+    }
+
+    // 2. Generate "Due" words for today's review
+    // Fetch 20 new words (words without progress)
+    final newWords = await _wordDao.getNewWords(20, grade: _stats?.currentGrade, semester: _stats?.currentSemester);
+    if (newWords.isNotEmpty) {
+       // Access DB directly via helper instance used by DAOs
+       final db = await DatabaseHelper().database;
+       
+       final batch = db.batch();
+       final yesterday = now.subtract(const Duration(days: 1)).millisecondsSinceEpoch;
+       
+       for (var word in newWords) {
+          batch.insert('word_progress', {
+            'id': 'progress_${word.id}',
+            'word_id': word.id,
+            'created_at': yesterday,
+            'updated_at': yesterday,
+            'easiness_factor': 2.5,
+            'interval': 1,
+            'repetition': 1,
+            'next_review_date': yesterday, // Due immediately
+            'last_review_date': yesterday,
+            'review_count': 1,
+            'mastery_level': 1,
+            'correct_count': 1,
+            'wrong_count': 0,
+            'speak_mode_count': 0,
+            'spell_mode_count': 0,
+            'select_mode_count': 1,
+          }, conflictAlgorithm: ConflictAlgorithm.replace);
+       }
+       await batch.commit(noResult: true);
+    }
+    
+    // Also record today if empty? No, let's just refresh.
+    await _loadStats();
+    if (mounted) {
+       setState(() => _isLoading = false);
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text('已生成过去数据 & ${newWords.length} 个待复习单词'))
+       );
+    }
   }
 
   @override
@@ -134,7 +210,7 @@ class _MineScreenState extends State<MineScreen> {
                decoration: BoxDecoration(
                  shape: BoxShape.circle,
                  border: Border.all(color: AppColors.primary, width: 3),
-                 color: AppColors.primary.withOpacity(0.1),
+                 color: AppColors.primary.withValues(alpha: 0.1),
                ),
                child: const Icon(Icons.person, size: 60, color: AppColors.primary),
              ),
@@ -170,7 +246,7 @@ class _MineScreenState extends State<MineScreen> {
              Container(
                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                decoration: BoxDecoration(
-                 color: AppColors.primary.withOpacity(0.1),
+                 color: AppColors.primary.withValues(alpha: 0.1),
                  borderRadius: BorderRadius.circular(20),
                ),
                child: Text(
@@ -200,6 +276,12 @@ class _MineScreenState extends State<MineScreen> {
                onTap: () {
                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
                },
+             ),
+             const SizedBox(height: 16),
+             _buildMenuItem(
+               icon: Icons.auto_graph_rounded,
+               title: '生成模拟数据 (测试用)',
+               onTap: _generateMockData,
              ),
              const SizedBox(height: 40),
              Center(
@@ -425,7 +507,7 @@ class _MineScreenState extends State<MineScreen> {
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: books.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 4),
+                  separatorBuilder: (context, index) => const SizedBox(height: 4),
                   itemBuilder: (context, index) {
                     final book = books[index];
                     final id = book['id'];
@@ -509,7 +591,7 @@ class _MineScreenState extends State<MineScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: AppColors.primary, size: 24),
@@ -532,7 +614,7 @@ class _MineScreenState extends State<MineScreen> {
   }
 
   Future<void> _showEditNicknameDialog() async {
-    final TextEditingController _controller = TextEditingController(text: _stats?.nickname ?? '');
+    final TextEditingController controller = TextEditingController(text: _stats?.nickname ?? '');
     
     final newNickname = await showDialog<String>(
       context: context,
@@ -574,7 +656,7 @@ class _MineScreenState extends State<MineScreen> {
                   ),
                   const SizedBox(height: 20),
                   TextField(
-                    controller: _controller,
+                    controller: controller,
                     maxLength: 12,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 16,
@@ -626,7 +708,7 @@ class _MineScreenState extends State<MineScreen> {
                       Expanded(
                         child: BubblyButton(
                           onPressed: () {
-                            final text = _controller.text.trim();
+                            final text = controller.text.trim();
                             if (text.isNotEmpty) {
                               Navigator.pop(context, text);
                             }
