@@ -1,16 +1,15 @@
-import 'package:fl_chart/fl_chart.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/services/global_stats_notifier.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/database/daos/stats_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
-import '../../../../core/database/models/user_stats.dart';
-import '../../../../core/services/global_stats_notifier.dart';
 
 import '../widgets/mastery_pie_chart.dart';
-import '../widgets/weekly_bar_chart.dart';
-import '../widgets/highlight_card.dart';
 import '../widgets/study_heatmap.dart';
+import '../widgets/weekly_bar_chart.dart';
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
@@ -27,10 +26,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   
   bool _isLoading = true;
   MasteryDistribution? _masteryDistribution;
-  List<VocabGrowthPoint> _vocabGrowth = [];
   List<DailyActivity> _monthlyActivity = [];
-  List<PerformanceHighlight> _highlights = [];
-  double _retentionRate = 0.85; // Default fallback
 
   @override
   void initState() {
@@ -54,18 +50,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
        String bookId = userStats.currentBookId.isNotEmpty ? userStats.currentBookId : 'waiyan_3_1';
       
       final mastery = await _statsDao.getMasteryDistribution(bookId);
-      final growth = await _statsDao.getVocabularyGrowth();
       final activity = await _statsDao.getMonthlyActivity();
-      final highlights = await _statsDao.getPerformanceHighlights();
-      final accuracy = await _statsDao.getOverallAccuracy();
       
       if (mounted) {
         setState(() {
           _masteryDistribution = mastery;
-          _vocabGrowth = growth;
           _monthlyActivity = activity;
-          _highlights = highlights;
-          _retentionRate = accuracy.rate > 0 ? accuracy.rate : 0.85;
           _isLoading = false;
         });
       }
@@ -92,31 +82,97 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       ),
       body: _isLoading 
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // 1. Mastery Distribution (Replaces Radar)
-                  if (_masteryDistribution != null)
-                     MasteryPieChart(distribution: _masteryDistribution!),
-                  
-                  const SizedBox(height: 20),
-                  
-                  // 2. Weekly Activity (Replaces Retention Line)
-                  WeeklyBarChart(weeklyActivity: _monthlyActivity),
-                  
-                  const SizedBox(height: 20),
-                  
-                  const SizedBox(height: 20),
-                  
-                  // 4. Heatmap
-                  StudyHeatMap(activity: _monthlyActivity),
-                  
-                  const SizedBox(height: 40),
-                ],
-              ),
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return _buildTabletLayout();
+                }
+                return _buildMobileLayout();
+              },
             ),
+    );
+  }
+
+  Widget _buildMobileLayout() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 1. Mastery Distribution
+          if (_masteryDistribution != null)
+             MasteryPieChart(distribution: _masteryDistribution!)
+                .animate()
+                .fadeIn(duration: 500.ms)
+                .scale(delay: 100.ms),
+          
+          const SizedBox(height: 20),
+          
+          // 2. Weekly Activity
+          WeeklyBarChart(weeklyActivity: _monthlyActivity)
+              .animate()
+              .fadeIn(duration: 500.ms, delay: 200.ms)
+              .slideX(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
+          
+          const SizedBox(height: 20),
+          
+          // 4. Heatmap
+          StudyHeatMap(activity: _monthlyActivity)
+              .animate()
+              .fadeIn(duration: 500.ms, delay: 400.ms)
+              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
+          
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabletLayout() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(32),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left Column (40%) - Mastery
+          Expanded(
+            flex: 4,
+            child: Column(
+              children: [
+                if (_masteryDistribution != null)
+                   MasteryPieChart(distribution: _masteryDistribution!)
+                      .animate()
+                      .fadeIn(duration: 500.ms)
+                      .scale(delay: 100.ms),
+              ],
+            ),
+          ),
+          
+          const SizedBox(width: 32),
+          
+          // Right Column (60%) - Activity & Heatmap
+          Expanded(
+            flex: 6,
+            child: Column(
+              children: [
+                WeeklyBarChart(weeklyActivity: _monthlyActivity)
+                    .animate()
+                    .fadeIn(duration: 500.ms, delay: 200.ms)
+                    .slideX(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
+                
+                const SizedBox(height: 24),
+                
+                StudyHeatMap(activity: _monthlyActivity)
+                    .animate()
+                    .fadeIn(duration: 500.ms, delay: 400.ms)
+                    .slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
+                
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

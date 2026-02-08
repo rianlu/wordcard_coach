@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:math' as dart;
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:wordcard_coach/features/mine/presentation/screens/settings_screen.dart';
@@ -213,7 +214,9 @@ class _MineScreenState extends State<MineScreen> {
                  color: AppColors.primary.withValues(alpha: 0.1),
                ),
                child: const Icon(Icons.person, size: 60, color: AppColors.primary),
-             ),
+             )
+             .animate()
+             .scale(duration: 500.ms, curve: Curves.easeOutBack),
              const SizedBox(height: 16),
              Row(
                mainAxisAlignment: MainAxisAlignment.center,
@@ -257,18 +260,27 @@ class _MineScreenState extends State<MineScreen> {
                    fontSize: 14,
                  ),
                ),
-             ),
+             )
+             .animate()
+             .fadeIn(duration: 400.ms, delay: 200.ms)
+             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
 
              const SizedBox(height: 40),
 
              // Textbook Card with Progress
-             _buildCurrentBookCard(),
+             _buildCurrentBookCard()
+                 .animate()
+                 .fadeIn(duration: 500.ms, delay: 300.ms)
+                 .slideX(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
              const SizedBox(height: 16),
              _buildMenuItem(
                icon: Icons.rocket_launch_rounded,
                title: '参与内测 & 获取更新',
                onTap: _openXhsProfile,
-             ),
+             )
+             .animate()
+             .fadeIn(duration: 500.ms, delay: 400.ms)
+             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
              const SizedBox(height: 16),
              _buildMenuItem(
                icon: Icons.settings_rounded,
@@ -276,13 +288,19 @@ class _MineScreenState extends State<MineScreen> {
                onTap: () {
                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
                },
-             ),
+             )
+             .animate()
+             .fadeIn(duration: 500.ms, delay: 500.ms)
+             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
              const SizedBox(height: 16),
              _buildMenuItem(
                icon: Icons.auto_graph_rounded,
                title: '生成模拟数据 (测试用)',
                onTap: _generateMockData,
-             ),
+             )
+             .animate()
+             .fadeIn(duration: 500.ms, delay: 600.ms)
+             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
              const SizedBox(height: 40),
              Center(
                child: Text(

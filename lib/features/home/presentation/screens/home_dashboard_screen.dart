@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/widgets/animated_speaker_button.dart';
-import 'package:flutter/services.dart';
-import 'dart:ui' as ui;
-import 'dart:convert';
+
+import 'package:flutter_animate/flutter_animate.dart';
+
 import '../../../../core/database/daos/user_stats_dao.dart';
-import '../../../../core/database/daos/stats_dao.dart';
+
 import '../../../../core/database/models/user_stats.dart';
 import '../../../../core/services/iciba_daily_service.dart';
 import '../../../../core/services/audio_service.dart';
@@ -25,12 +25,10 @@ class HomeDashboardScreen extends StatefulWidget {
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   final UserStatsDao _userStatsDao = UserStatsDao();
-  final StatsDao _statsDao = StatsDao();
+
   
   UserStats? _stats;
-  BookProgress? _bookProgress;
   bool _isLoading = true;
-  List<dynamic> _booksManifest = [];
   DailySentence? _dailySentence;
   bool _isPlayingAudio = false;
 
@@ -59,29 +57,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   Future<void> _loadStats() async {
     final stats = await _userStatsDao.getUserStats();
     
-    // Determine bookId (Fallback logic similar to StatisticsScreen)
-    String bookId = stats.currentBookId;
-    if (bookId.isEmpty) {
-      bookId = 'waiyan_${stats.currentGrade}_${stats.currentSemester}';
-    }
 
-    // Fetch progress
-    final bookProg = await _statsDao.getBookProgress(bookId);
-
-    // Load manifest if needed
-    if (_booksManifest.isEmpty) {
-      try {
-        final jsonStr = await rootBundle.loadString('assets/data/books_manifest.json');
-        _booksManifest = jsonDecode(jsonStr);
-      } catch (e) {
-        // quiet error
-      }
-    }
 
     if (mounted) {
       setState(() {
         _stats = stats;
-        _bookProgress = bookProg;
         _isLoading = false;
       });
     }
@@ -103,10 +83,19 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       SizedBox(height: MediaQuery.of(context).padding.top),
-                      _buildHeader(),
+                      _buildHeader()
+                          .animate()
+                          .fadeIn(duration: 600.ms)
+                          .slideY(begin: -0.2, end: 0, curve: Curves.easeOutQuad),
                       const SizedBox(height: 20),
-                      if (_dailySentence != null) _buildDailySentenceCard(),
+                      if (_dailySentence != null) 
+                        _buildDailySentenceCard()
+                            .animate()
+                            .fadeIn(duration: 600.ms, delay: 200.ms)
+                            .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
+                      
                       if (_dailySentence != null) const SizedBox(height: 20),
+                      
                       _buildDailyQuestSection(context),
                     ],
                   ),
@@ -143,7 +132,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
         elevation: 6,
-        shadowColor: AppColors.primary.withOpacity(0.15), 
+        shadowColor: AppColors.primary.withValues(alpha: 0.15), 
         child: SizedBox(
           height: 180, // Fixed height for ticket look
           child: Stack(
@@ -290,7 +279,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.primary, width: 2),
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
               ),
               child: const Icon(Icons.person, color: AppColors.primary),
             ),
@@ -310,141 +299,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 
 
-  Widget _buildCurrentBookCard() {
-    final percentage = _bookProgress?.percentage ?? 0.0;
-    final learned = _bookProgress?.learned ?? 0;
-    final total = _bookProgress?.total ?? 0;
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey.shade100),
-        boxShadow: const [
-           BoxShadow(
-              color: AppColors.shadowWhite,
-              offset: Offset(0, 8),
-              blurRadius: 20,
-            )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(Icons.menu_book_rounded, color: AppColors.primary, size: 24),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '当前教材',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textMediumEmphasis,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _getCurrentBookName(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textHighEmphasis,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '总体进度',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-              Text(
-                '${(percentage * 100).toStringAsFixed(1)}%',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: percentage,
-              minHeight: 12,
-              backgroundColor: AppColors.primary.withOpacity(0.1),
-              valueColor: const AlwaysStoppedAnimation(AppColors.primary),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            '已掌握 $learned / $total 词',
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textMediumEmphasis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  String _getCurrentBookName() {
-    if (_stats == null) return '加载中...';
-    
-    // 1. Try to find by ID
-    final bookId = _stats!.currentBookId;
-    if (bookId.isNotEmpty && _booksManifest.isNotEmpty) {
-      final book = _booksManifest.firstWhere(
-        (b) => b['id'] == bookId, 
-        orElse: () => null
-      );
-      if (book != null) {
-        return book['name'] as String;
-      }
-    }
-    
-    // 2. Try to find by grade/semester (legacy fallback)
-    if (_booksManifest.isNotEmpty) {
-       final book = _booksManifest.firstWhere(
-        (b) => b['grade'] == _stats!.currentGrade && b['semester'] == _stats!.currentSemester,
-        orElse: () => null
-      );
-      if (book != null) {
-        return book['name'] as String;
-      }
-    }
-    
-    // 3. Fallback
-    return '${_stats!.currentGrade}年级 ${_stats!.currentSemester == 1 ? "上" : "下"}册';
-  }
+
 
   Widget _buildDailyQuestSection(BuildContext context) {
     return Column(
@@ -464,18 +321,30 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             if (constraints.maxWidth > 500) {
               return Row(
                 children: [
-                  Expanded(child: _buildLearningButton(context)),
+                  Expanded(child: _buildLearningButton(context)
+                      .animate()
+                      .fadeIn(duration: 600.ms, delay: 400.ms)
+                      .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildReviewButton(context)),
+                  Expanded(child: _buildReviewButton(context)
+                      .animate()
+                      .fadeIn(duration: 600.ms, delay: 600.ms)
+                      .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad)),
                 ],
               );
             }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildLearningButton(context),
+                _buildLearningButton(context)
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 400.ms)
+                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
                 const SizedBox(height: 16),
-                _buildReviewButton(context),
+                _buildReviewButton(context)
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 600.ms)
+                    .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
               ],
             );
           },
@@ -504,7 +373,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           Container(
              padding: const EdgeInsets.all(12),
              decoration: BoxDecoration(
-               color: Colors.white.withOpacity(0.2),
+               color: Colors.white.withValues(alpha: 0.2),
                shape: BoxShape.circle,
              ),
              child: const Icon(Icons.menu_book, color: Colors.white, size: 32),
@@ -551,7 +420,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           Container(
              padding: const EdgeInsets.all(12),
              decoration: BoxDecoration(
-               color: Colors.black.withOpacity(0.1),
+               color: Colors.black.withValues(alpha: 0.1),
                shape: BoxShape.circle,
              ),
              child: const Icon(Icons.style, color: Color(0xFF664400), size: 32),

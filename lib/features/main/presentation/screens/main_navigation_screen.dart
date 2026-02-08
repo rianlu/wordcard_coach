@@ -4,6 +4,7 @@ import '../../../../features/home/presentation/screens/home_dashboard_screen.dar
 import '../../../../features/dictionary/presentation/screens/dictionary_screen.dart';
 import 'package:wordcard_coach/features/statistics/presentation/screens/statistics_screen.dart';
 import '../../../../features/mine/presentation/screens/mine_screen.dart';
+import '../../../../core/widgets/animated_indexed_stack.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -81,7 +82,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             const VerticalDivider(thickness: 1, width: 1),
           
           Expanded(
-            child: IndexedStack(
+            child: AnimatedIndexedStack(
               index: _currentIndex,
               children: _screens,
             ),

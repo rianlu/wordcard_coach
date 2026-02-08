@@ -10,6 +10,7 @@ import '../../../../core/widgets/bubbly_button.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/services/global_stats_notifier.dart';
 import '../../../../core/widgets/animated_speaker_button.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class DictionaryScreen extends StatefulWidget {
   const DictionaryScreen({super.key});
@@ -213,32 +214,50 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
-            _buildFilters(),
+            _buildHeader()
+                .animate()
+                .fadeIn(duration: 400.ms)
+                .slideY(begin: -0.2, end: 0, curve: Curves.easeOutQuad),
+            
             Expanded(
-              child: _words.isEmpty && !_isLoading
-                  ? _buildEmptyState()
-                  : NotificationListener<ScrollNotification>(
-                      onNotification: (ScrollNotification scrollInfo) {
-                        if (!_isLoading && _hasMore &&
-                            scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200) {
-                          _loadMore(); 
-                          return true; 
-                        }
-                        return false;
-                      },
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: _words.length + (_hasMore ? 1 : 0),
-                        separatorBuilder: (c, i) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          if (index == _words.length) {
-                             return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
-                          }
-                          return _buildWordItem(_words[index]);
-                        },
-                      ),
-                    ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildFilters(), 
+                  ),
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: _isLoading && _words.isEmpty
+                        ? const Center(child: CircularProgressIndicator())
+                        : NotificationListener<ScrollNotification>(
+                            onNotification: (ScrollNotification scrollInfo) {
+                              if (!_isLoading && _hasMore && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                                _loadMore();
+                              }
+                              return false;
+                            },
+                            child: ListView.separated(
+                              padding: const EdgeInsets.all(16),
+                              itemCount: _words.length + (_hasMore ? 1 : 0),
+                              separatorBuilder: (c, i) => const SizedBox(height: 12),
+                              itemBuilder: (context, index) {
+                                if (index == _words.length) {
+                                   return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
+                                }
+                                return _buildWordItem(_words[index])
+                                    .animate(delay: (50 * index).clamp(0, 500).ms) // Staggered list
+                                    .fadeIn(duration: 300.ms)
+                                    .slideX(begin: 0.1, end: 0);
+                              },
+                            ),
+                          ),
+                  ),
+                ],
+              )
+              .animate()
+              .fadeIn(duration: 500.ms, delay: 200.ms)
+              .slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
             ),
           ],
         ),
