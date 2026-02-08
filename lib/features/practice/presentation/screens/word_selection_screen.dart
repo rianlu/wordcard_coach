@@ -117,71 +117,122 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            // Word Card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.grey.shade100),
-                  boxShadow: const [
-                    BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
-                  ]
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 16),
-                  Text(_currentWord!.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
-                  const SizedBox(height: 8),
-                  Text(_currentWord!.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
-                  const SizedBox(height: 8),
-                  Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 24),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Enhanced wide detection: >600 (Tablet) OR (>480 && Landscape)
+          final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
-                  // TTS Button
-                  Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.primary,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withOpacity(0.4),
-                            blurRadius: 24,
-                            offset: const Offset(0, 8),
-                          ),
-                        ]
-                    ),
-                    child: IconButton(
-                      padding: const EdgeInsets.all(14),
-                      onPressed: () {},
-                      icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
-                    ),
+          if (isWide) {
+            return Row(
+              children: [
+                // Left Panel: Word Card
+                Expanded(
+                  flex: 4,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24.0),
+                    child: _buildWordCard(),
                   ),
-                ],
-              ),
+                ),
+                // Right Panel: Options
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                     padding: const EdgeInsets.all(24.0),
+                     decoration: const BoxDecoration(
+                        border: Border(left: BorderSide(color: Colors.black12)),
+                        color: Colors.white54,
+                     ),
+                     child: Column(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: [
+                         const Align(
+                            alignment: Alignment.centerLeft, 
+                            child: Text('SELECT THE CORRECT MEANING', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
+                          ),
+                          const SizedBox(height: 16),
+                          ..._options.map((optionWord) => 
+                             Padding(
+                               padding: const EdgeInsets.only(bottom: 12),
+                               child: _buildOption(context, optionWord),
+                             )
+                           ),
+                       ],
+                     ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // Portrait
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                _buildWordCard(),
+                const SizedBox(height: 32),
+                const Align(
+                  alignment: Alignment.centerLeft, 
+                  child: Text('SELECT THE CORRECT MEANING', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
+                ),
+                 const SizedBox(height: 16),
+                 
+                 ..._options.map((optionWord) => 
+                   Padding(
+                     padding: const EdgeInsets.only(bottom: 12),
+                     child: _buildOption(context, optionWord),
+                   )
+                 ),
+              ],
             ),
-            
-            const SizedBox(height: 32),
-            const Align(
-              alignment: Alignment.centerLeft, 
-              child: Text('SELECT THE CORRECT MEANING', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWordCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.grey.shade100),
+          boxShadow: const [
+            BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
+          ]
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+          Text(_currentWord!.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+          const SizedBox(height: 8),
+          Text(_currentWord!.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
+          const SizedBox(height: 8),
+          Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 24),
+
+          // TTS Button
+          Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primary,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.4),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ]
             ),
-             const SizedBox(height: 16),
-             
-             ..._options.map((optionWord) => 
-               Padding(
-                 padding: const EdgeInsets.only(bottom: 12),
-                 child: _buildOption(context, optionWord),
-               )
-             ),
-            
-          ],
-        ),
+            child: IconButton(
+              padding: const EdgeInsets.all(14),
+              onPressed: () {},
+              icon: const Icon(Icons.volume_up_rounded, color: AppColors.shadowWhite, size: 32),
+            ),
+          ),
+        ],
       ),
     );
   }

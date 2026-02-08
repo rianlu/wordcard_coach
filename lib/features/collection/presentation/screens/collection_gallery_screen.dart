@@ -148,10 +148,10 @@ class CollectionGalleryScreen extends StatelessWidget {
   }
 
   Widget _buildEpicGrid() {
-    return GridView.count(
+    return GridView.extent(
+      maxCrossAxisExtent: 240, // Allows 2 cols on mobile (~180px), more on tablet
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
       childAspectRatio: 0.8,
@@ -258,10 +258,10 @@ class CollectionGalleryScreen extends StatelessWidget {
   }
 
   Widget _buildDailyGrid() {
-    return GridView.count(
+    return GridView.extent(
+       maxCrossAxisExtent: 130, // Allows 3 cols on mobile (~110px), more on tablet
        shrinkWrap: true,
        physics: const NeverScrollableScrollPhysics(),
-       crossAxisCount: 3,
        mainAxisSpacing: 12,
        crossAxisSpacing: 12,
        children: [

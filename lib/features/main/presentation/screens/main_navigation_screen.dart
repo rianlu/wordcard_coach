@@ -14,79 +14,129 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
-  // Key _statsKey = UniqueKey(); // Removed to preserve scroll state
 
   List<Widget> get _screens => [
     const HomeDashboardScreen(),
     const DictionaryScreen(),
-    const StatisticsScreen(), // Removed key
+    const StatisticsScreen(),
     const MineScreen(),
+  ];
+
+  final List<_NavigationItem> _navItems = [
+    const _NavigationItem(
+      icon: Icons.auto_stories,
+      label: '学习',
+    ),
+    const _NavigationItem(
+      icon: Icons.menu_book,
+      label: '词典',
+    ),
+    const _NavigationItem(
+      icon: Icons.bar_chart,
+      label: '分析',
+    ),
+    const _NavigationItem(
+      icon: Icons.person,
+      label: '我的',
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
+    // Use Rail if Desktop/Large (>=840) OR (Tablet (>=600) AND Landscape)
+    final isWideScreen = width >= 840 || (width >= 600 && width >= height);
+
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Colors.grey, width: 0.2)),
-          boxShadow: [
-             BoxShadow(
-               color: Colors.black12,
-               offset: Offset(0, -4),
-               blurRadius: 16,
-             )
-          ]
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            // if (index == 2) {
-            //    // _statsKey = UniqueKey(); 
-            // }
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.textMediumEmphasis,
-          selectedLabelStyle: const TextStyle(
-             fontWeight: FontWeight.w900, 
-             fontSize: 10, 
-             letterSpacing: 0.5
+      body: Row(
+        children: [
+          if (isWideScreen)
+            NavigationRail(
+              selectedIndex: _currentIndex,
+              onDestinationSelected: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              labelType: NavigationRailLabelType.all,
+              selectedLabelTextStyle: const TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 12,
+                letterSpacing: 0.5,
+                color: AppColors.primary,
+              ),
+              unselectedLabelTextStyle: const TextStyle(
+                 fontWeight: FontWeight.w900,
+                 fontSize: 12,
+                 letterSpacing: 0.5,
+                 color: AppColors.textMediumEmphasis,
+              ),
+              destinations: _navItems.map((item) => NavigationRailDestination(
+                icon: Icon(item.icon),
+                label: Text(item.label),
+              )).toList(),
+            ),
+          if (isWideScreen)
+            const VerticalDivider(thickness: 1, width: 1),
+          
+          Expanded(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: _screens,
+            ),
           ),
-          unselectedLabelStyle: const TextStyle(
-             fontWeight: FontWeight.w900, 
-             fontSize: 10, 
-             letterSpacing: 0.5
-          ),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.auto_stories),
-              label: '学习',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book), // Dictionary icon
-              label: '词典',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: '分析',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '我的',
-            ),
-          ],
-        ),
+        ],
       ),
+      bottomNavigationBar: isWideScreen
+          ? null
+          : Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Colors.grey, width: 0.2)),
+                boxShadow: [
+                   BoxShadow(
+                     color: Colors.black12,
+                     offset: Offset(0, -4),
+                     blurRadius: 16,
+                   )
+                ]
+              ),
+              child: BottomNavigationBar(
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                selectedItemColor: AppColors.primary,
+                unselectedItemColor: AppColors.textMediumEmphasis,
+                selectedLabelStyle: const TextStyle(
+                   fontWeight: FontWeight.w900, 
+                   fontSize: 10, 
+                   letterSpacing: 0.5
+                ),
+                unselectedLabelStyle: const TextStyle(
+                   fontWeight: FontWeight.w900, 
+                   fontSize: 10, 
+                   letterSpacing: 0.5
+                ),
+                items: _navItems.map((item) => BottomNavigationBarItem(
+                  icon: Icon(item.icon),
+                  label: item.label,
+                )).toList(),
+              ),
+            ),
     );
   }
+}
+
+class _NavigationItem {
+  final IconData icon;
+  final String label;
+
+  const _NavigationItem({required this.icon, required this.label});
 }

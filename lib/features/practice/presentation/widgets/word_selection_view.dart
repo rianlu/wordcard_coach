@@ -134,54 +134,122 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   }
 
   Widget _buildMainContent() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          // Word Card
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.grey.shade100),
-                boxShadow: const [
-                  BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
-                ]
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                Text(widget.word.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
-                const SizedBox(height: 8),
-                Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
-                const SizedBox(height: 24),
+    return SizedBox.expand(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Fix: Tablet Portrait should NOT be wide. Require Landscape.
+          final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
 
-                // TTS Button with animation
-                AnimatedSpeakerButton(
-                  onPressed: _playAudio,
-                  isPlaying: _isPlaying,
-                  size: 32,
+          if (isWide) {
+            return Row(
+              children: [
+                // Left: Word Card
+                Expanded(
+                  flex: 4,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24),
+                    child: _buildWordCard(),
+                  ),
+                ),
+                // Right: Options
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: const BoxDecoration(
+                      border: Border(left: BorderSide(color: Colors.black12)),
+                      color: Colors.white54,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft, 
+                          child: Text('SELECT THE CORRECT MEANING', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
+                        ),
+                        const SizedBox(height: 16),
+                        ...widget.options.map((optionWord) => 
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: _buildOption(context, optionWord),
+                          )
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
-            ),
+            );
+          }
+
+          // Portrait Layout
+          return LayoutBuilder(
+            builder: (context, viewportConstraints) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: viewportConstraints.maxHeight - 48,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center, // Removed centering
+                      children: [
+                        // Word Card
+                        _buildWordCard(),
+                        
+                        const Spacer(), // Push options to bottom
+  
+                        Align(
+                          alignment: Alignment.centerLeft, 
+                          child: Text('SELECT THE CORRECT MEANING', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        ...widget.options.map((optionWord) => 
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: _buildOption(context, optionWord),
+                          )
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWordCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.grey.shade100),
+          boxShadow: const [
+            BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
+          ]
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+          Text(widget.word.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+          const SizedBox(height: 8),
+          Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 24),
+
+          // TTS Button with animation
+          AnimatedSpeakerButton(
+            onPressed: _playAudio,
+            isPlaying: _isPlaying,
+            size: 32,
           ),
-          
-          const SizedBox(height: 32),
-          Align(
-            alignment: Alignment.centerLeft, 
-            child: Text('SELECT THE CORRECT MEANING', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0))
-          ),
-           const SizedBox(height: 16),
-           
-           ...widget.options.map((optionWord) => 
-             Padding(
-               padding: const EdgeInsets.only(bottom: 12),
-               child: _buildOption(context, optionWord),
-             )
-           ),
-          
         ],
       ),
     );

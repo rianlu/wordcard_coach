@@ -228,184 +228,258 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  // Word Card
-                  Container(
-                    width: double.infinity,
+    return SizedBox.expand(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Fix: Tablet Portrait should NOT be wide. Require Landscape.
+          final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
+
+          if (isWide) {
+            return Row(
+              children: [
+                // Left: Reference
+                Expanded(
+                  flex: 4,
+                  child: SingleChildScrollView(
                     padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.grey.shade100),
-                      boxShadow: const [
-                        BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
-                      ]
-                    ),
                     child: Column(
                       children: [
-                        const SizedBox(height: 16),
-                        Text(widget.word.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
-                        const SizedBox(height: 16),
-                        Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+                        _buildWordCard(),
+                        const SizedBox(height: 20),
+                        _buildHintButton(), // Added hint button
+                        const SizedBox(height: 20),
+                        _buildSentenceCard(),
                       ],
                     ),
                   ),
-                  
-                  const SizedBox(height: 16),
+                ),
+                
+                // Right: Interaction
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: const BoxDecoration(
+                      border: Border(left: BorderSide(color: Colors.black12)),
+                      color: Colors.white54,
+                    ),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        _buildPuzzleArea(),
+                        const SizedBox(height: 40),
+                        _buildLetterButtons(),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // Portrait Layout
+          return Column(
+            children: [
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, viewportConstraints) {
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(24),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: viewportConstraints.maxHeight - 48,
+                        ),
+                        child: IntrinsicHeight(
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center, // Removed centering
+                            children: [
+                              _buildWordCard(),
+                              const SizedBox(height: 16),
+                              // Hint Button
+                              _buildHintButton(),
+                              
+                              _buildSentenceCard(),
+                              
+                              const Spacer(), // Push controls to bottom
   
-                  // Hint Button (Always takes space)
-                  Padding(
-                     padding: const EdgeInsets.only(bottom: 16),
-                     child: Visibility(
-                       visible: _userInputs.contains("") && !_revealFullWord,
-                       maintainSize: true,
-                       maintainAnimation: true,
-                       maintainState: true,
-                       child: TextButton.icon(
-                         onPressed: _canUseHint ? _useHint : null,
-                         icon: Icon(
-                           Icons.lightbulb_outline, 
-                           color: _canUseHint ? Colors.orange : Colors.grey,
-                         ),
-                         label: Text(
-                           "提示 ($_hintsUsed/$_maxHints)", 
-                           style: TextStyle(
-                             color: _canUseHint ? Colors.orange : Colors.grey, 
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
+                              _buildPuzzleArea(),
+                              
+                              const SizedBox(height: 24),
+                              Text('TAP LETTERS TO FILL', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: Colors.grey.shade400, letterSpacing: 1.0)),
+                              const SizedBox(height: 16),
+  
+                              _buildLetterButtons(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWordCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.grey.shade100),
+        boxShadow: const [
+          BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
+        ]
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+          Text(widget.word.meaning, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
+          const SizedBox(height: 16),
+          Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHintButton() {
+    return Padding(
+       padding: const EdgeInsets.only(bottom: 16),
+       child: Visibility(
+         visible: _userInputs.contains("") && !_revealFullWord,
+         maintainSize: true,
+         maintainAnimation: true,
+         maintainState: true,
+         child: TextButton.icon(
+           onPressed: _canUseHint ? _useHint : null,
+           icon: Icon(
+             Icons.lightbulb_outline, 
+             color: _canUseHint ? Colors.orange : Colors.grey,
+           ),
+           label: Text(
+             "提示 ($_hintsUsed/$_maxHints)", 
+             style: TextStyle(
+               color: _canUseHint ? Colors.orange : Colors.grey, 
+               fontWeight: FontWeight.bold,
+             ),
+           ),
+         ),
+       ),
+     );
+  }
+
+  Widget _buildSentenceCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+         borderRadius: BorderRadius.circular(12),
+         border: const Border(left: BorderSide(color: AppColors.primary, width: 4)),
+         boxShadow: const [
+            BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 2), blurRadius: 0)
+         ]
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
+           const SizedBox(height: 8),
+           if (widget.word.examples.isNotEmpty)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   Expanded(
+                     child: GestureDetector(
+                       onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
+                       child: Text(
+                          widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
+                          style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
                        ),
                      ),
                    ),
-                  
-                  // Example Sentence with styling
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                       borderRadius: BorderRadius.circular(12),
-                       border: const Border(left: BorderSide(color: AppColors.primary, width: 4)),
-                       boxShadow: const [
-                          BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 2), blurRadius: 0)
-                       ]
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
-                         const SizedBox(height: 8),
-                         if (widget.word.examples.isNotEmpty)
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 Expanded(
-                                   child: GestureDetector(
-                                     onTap: () => AudioService().playSentence(widget.word.examples.first['en']!),
-                                     child: Text(
-                                        widget.word.examples.first['en']!.replaceAll(RegExp(widget.word.text, caseSensitive: false), "____"),
-                                        style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
-                                     ),
-                                   ),
-                                 ),
-                              ],
-                            )
-                         else
-                            Text(
-                               'No example sentence available.',
-                               style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
-                            ),
-                      ],
-                    ),
-                  ),
-  
-                  const SizedBox(height: 32),
-  
-                  // Missing Letter Puzzle
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                    decoration: BoxDecoration(
-                       color: Colors.white,
-                       borderRadius: BorderRadius.circular(20),
-                       border: Border.all(color: Colors.grey.shade200),
-                    ),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 8,
-                      runSpacing: 16,
-                      children: List.generate(_targetWord.length, (index) {
-                         bool isMissing = _missingIndices.contains(index);
-                         String char = _targetWord[index];
-                         
-                         String displayChar = char;
-                         Color textColor = AppColors.textHighEmphasis;
-                         bool showUnderscore = false;
-  
-                         if (isMissing) {
-                           int slotIndex = _missingIndices.indexOf(index);
-                           if (_userInputs[slotIndex].isNotEmpty) {
-                             displayChar = _userInputs[slotIndex];
-                             textColor = AppColors.primary; 
-                           } else {
-                             displayChar = "";
-                             showUnderscore = true;
-                           }
-                         }
-  
-                         return Column(
-                           children: [
-                             Text(
-                               displayChar.toUpperCase(), 
-                               style: TextStyle(
-                                 fontSize: 28, 
-                                 fontWeight: FontWeight.w900, 
-                                 color: textColor
-                               )
-                             ),
-                             if (showUnderscore || isMissing)
-                               Container(
-                                 width: 24, 
-                                 height: 4, 
-                                 margin: const EdgeInsets.only(top: 4),
-                                 color: showUnderscore ? Colors.grey.shade300 : Colors.transparent
-                               ),
-                           ],
-                         );
-                      }),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  Text('TAP LETTERS TO FILL', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w900, color: Colors.grey.shade400, letterSpacing: 1.0)),
-                  const SizedBox(height: 16),
-                  
-                  // Letter Buttons
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      ..._keyboardLetters.map((char) => _buildLetterButton(char)),
-                      _buildBackspaceButton(),
-                    ],
-                  ),
                 ],
+              )
+           else
+              Text(
+                  'No example sentence available.',
+                  style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
               ),
-            ),
-          ),
         ],
       ),
-      
+    );
+  }
+
+  Widget _buildPuzzleArea() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      decoration: BoxDecoration(
+         color: Colors.white,
+         borderRadius: BorderRadius.circular(20),
+         border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 8,
+        runSpacing: 16,
+        children: List.generate(_targetWord.length, (index) {
+           bool isMissing = _missingIndices.contains(index);
+           String char = _targetWord[index];
+           
+           String displayChar = char;
+           Color textColor = AppColors.textHighEmphasis;
+           bool showUnderscore = false;
+
+           if (isMissing) {
+             int slotIndex = _missingIndices.indexOf(index);
+             if (_userInputs[slotIndex].isNotEmpty) {
+               displayChar = _userInputs[slotIndex];
+               textColor = AppColors.primary; 
+             } else {
+               displayChar = "";
+               showUnderscore = true;
+             }
+           }
+
+           return Column(
+             children: [
+               Text(
+                 displayChar.toUpperCase(), 
+                 style: TextStyle(
+                   fontSize: 28, 
+                   fontWeight: FontWeight.w900, 
+                   color: textColor
+                 )
+               ),
+               if (showUnderscore || isMissing)
+                 Container(
+                   width: 24, 
+                   height: 4, 
+                   margin: const EdgeInsets.only(top: 4),
+                   color: showUnderscore ? Colors.grey.shade300 : Colors.transparent
+                 ),
+             ],
+           );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildLetterButtons() {
+    return Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      alignment: WrapAlignment.center,
+      children: [
+        ..._keyboardLetters.map((char) => _buildLetterButton(char)),
+        _buildBackspaceButton(),
       ],
     );
   }

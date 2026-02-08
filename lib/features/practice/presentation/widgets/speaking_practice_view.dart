@@ -533,41 +533,107 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                // Word Card
-                _buildWordCard(),
-                
-                const SizedBox(height: 16),
-                
-                // Example Sentence
-                _buildExampleCard(),
+    return SizedBox.expand(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Fix: Tablet Portrait should NOT be wide. Require Landscape.
+          final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
 
-                const SizedBox(height: 48),
-                
-                // Status Text
-                _buildStatusText(),
-                
-                const SizedBox(height: 24),
-                
-                // Mic Button
-                _buildMicButton(),
-                
-                // Skip Button - show after timeout or when max retries reached
-                if (_shouldShowSkipButton()) ...[
-                  const SizedBox(height: 32),
-                  _buildSkipButton(),
-                ],
+          if (isWide) {
+            return Row(
+              children: [
+                // Left: Content
+                Expanded(
+                  flex: 4,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      children: [
+                        _buildWordCard(),
+                        const SizedBox(height: 24),
+                        _buildExampleCard(),
+                      ],
+                    ),
+                  ),
+                ),
+                // Right: Interaction
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: const BoxDecoration(
+                      border: Border(left: BorderSide(color: Colors.black12)),
+                      color: Colors.white54,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildStatusText(),
+                        const SizedBox(height: 32),
+                        _buildMicButton(),
+                        if (_shouldShowSkipButton()) ...[
+                          const SizedBox(height: 32),
+                          _buildSkipButton(),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
               ],
-            ),
-          ),
-        ),
-      ],
+            );
+          }
+
+          // Portrait Layout
+          return Column(
+            children: [
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, viewportConstraints) {
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(24),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: viewportConstraints.maxHeight - 48, // 24 vertical padding * 2
+                        ),
+                        child: IntrinsicHeight(
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center, // Removed centering
+                            children: [
+                              // Word Card
+                              _buildWordCard(),
+                              
+                              const SizedBox(height: 16),
+                              
+                              // Example Sentence
+                              _buildExampleCard(),
+  
+                              const Spacer(), // Push controls to bottom
+                              
+                              // Status Text
+                              _buildStatusText(),
+                              
+                              const SizedBox(height: 24),
+                              
+                              // Mic Button
+                              _buildMicButton(),
+                              
+                              // Skip Button - show after timeout or when max retries reached
+                              if (_shouldShowSkipButton()) ...[
+                                const SizedBox(height: 32),
+                                _buildSkipButton(),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 

@@ -93,18 +93,24 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
       backgroundColor: AppColors.background,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).padding.top),
-                  _buildHeader(),
-                  const SizedBox(height: 20),
-                  if (_dailySentence != null) _buildDailySentenceCard(),
-                  if (_dailySentence != null) const SizedBox(height: 20),
-                  _buildDailyQuestSection(context),
-                ],
+          : Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).padding.top),
+                      _buildHeader(),
+                      const SizedBox(height: 20),
+                      if (_dailySentence != null) _buildDailySentenceCard(),
+                      if (_dailySentence != null) const SizedBox(height: 20),
+                      _buildDailyQuestSection(context),
+                    ],
+                  ),
+                ),
               ),
             ),
     );
@@ -144,95 +150,127 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             children: [
                // 1. Dashed Line (Vertical) at 72%
                Positioned(
-                 left: MediaQuery.of(context).size.width * 0.65, // Approximate visual adjust
+                 left: 550, // Simplified for fixed-ish width or use LayoutBuilder if needed
                  top: 10, 
                  bottom: 10,
-                 child: CustomPaint(
-                   size: const Size(1, double.infinity),
-                   painter: DashedLinePainter(
-                     color: const Color(0xFFE5E7EB), // Grey-200
-                     dashHeight: 8,
-                     dashSpace: 6,
-                   ),
+                 child: LayoutBuilder(
+                   builder: (context, constraints) {
+                     // Calculate exact position based on parent width
+                     // We need parent width. But here we are in a Stack.
+                     // Better approach: Use FractionallySizedBox or align based on percentage.
+                     // Reverting to custom Painter that handles width.
+                     return CustomPaint(
+                       size: const Size(1, double.infinity),
+                       painter: DashedLinePainter(
+                         color: const Color(0xFFE5E7EB),
+                         dashHeight: 8,
+                         dashSpace: 6,
+                       ),
+                     );
+                   }
                  ),
                ),
-
-               Row(
-                 children: [
-                   // --- LEFT SECTION (Content) ---
-                   Expanded(
-                     flex: 72,
-                     child: Padding(
-                       padding: const EdgeInsets.fromLTRB(24, 20, 12, 20),
-                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
+                // Re-implementing the Positioned with LayoutBuilder logic properly inside the Stack 
+                // is tricky without context. Let's use `FractionallySizedBox` or similar if possible.
+                // Or simplified: Just use the LayoutBuilder around the whole Stack content.
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final splitX = constraints.maxWidth * 0.72;
+                    return Stack(
+                      children: [
+                        Positioned(
+                          left: splitX,
+                          top: 10,
+                          bottom: 10,
+                          child: CustomPaint(
+                             size: const Size(1, double.infinity),
+                             painter: DashedLinePainter(
+                               color: const Color(0xFFE5E7EB),
+                               dashHeight: 8,
+                               dashSpace: 6,
+                             ),
+                           ),
+                        ),
+                        Row(
                          children: [
-                           // Badge
-                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: AppColors.secondary,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                               'DAILY QUOTE',
-                               style: GoogleFonts.plusJakartaSans(
-                                 fontSize: 10,
-                                 fontWeight: FontWeight.w900,
-                                 color: Colors.white,
-                                 letterSpacing: 0.5,
+                           // --- LEFT SECTION (Content) ---
+                           Expanded(
+                             flex: 72,
+                             child: Padding(
+                               padding: const EdgeInsets.fromLTRB(24, 20, 12, 20),
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   // Badge
+                                   Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.secondary,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                       'DAILY QUOTE',
+                                       style: GoogleFonts.plusJakartaSans(
+                                         fontSize: 10,
+                                         fontWeight: FontWeight.w900,
+                                         color: Colors.white,
+                                         letterSpacing: 0.5,
+                                       ),
+                                    ),
+                                   ),
+                                   
+                                   const Spacer(),
+
+                                   // English
+                                   Text(
+                                    _dailySentence!.englishContent,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 16, 
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.textHighEmphasis,
+                                      height: 1.3,
+                                    ),
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                   ),
+                                   
+                                   const SizedBox(height: 8),
+
+                                   // Chinese
+                                   Text(
+                                      _dailySentence!.chineseNote,
+                                      style: GoogleFonts.notoSans(
+                                        fontSize: 12,
+                                        color: AppColors.textMediumEmphasis,
+                                        height: 1.4,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                 ],
                                ),
-                            ),
+                             ),
                            ),
-                           
-                           const Spacer(),
 
-                           // English
-                           Text(
-                            _dailySentence!.englishContent,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 16, 
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textHighEmphasis,
-                              height: 1.3,
-                            ),
-                            maxLines: 4,
-                            overflow: TextOverflow.ellipsis,
+                           // --- RIGHT SECTION (Action) ---
+                           Expanded(
+                             flex: 28,
+                             child: Center(
+                               child: AnimatedSpeakerButton(
+                                  onPressed: _playDailyAudio,
+                                  isPlaying: _isPlayingAudio,
+                                  size: 32, // Slightly larger since it's solo
+                                  primaryColor: AppColors.secondary, 
+                                  playingColor: AppColors.primary,
+                               ),
+                             ),
                            ),
-                           
-                           const SizedBox(height: 8),
-
-                           // Chinese
-                           Text(
-                              _dailySentence!.chineseNote,
-                              style: GoogleFonts.notoSans(
-                                fontSize: 12,
-                                color: AppColors.textMediumEmphasis,
-                                height: 1.4,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
                          ],
                        ),
-                     ),
-                   ),
-
-                   // --- RIGHT SECTION (Action) ---
-                   Expanded(
-                     flex: 28,
-                     child: Center(
-                       child: AnimatedSpeakerButton(
-                          onPressed: _playDailyAudio,
-                          isPlaying: _isPlayingAudio,
-                          size: 32, // Slightly larger since it's solo
-                          primaryColor: AppColors.secondary, 
-                          playingColor: AppColors.primary,
-                       ),
-                     ),
-                   ),
-                 ],
-               ),
+                      ],
+                    );
+                  }
+                ),
             ],
           ),
         ),
@@ -421,98 +459,124 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
            ),
         ),
         const SizedBox(height: 16),
-        BubblyButton(
-          onPressed: () async {
-             // Navigate to Daily Learning Session
-             await Navigator.push(
-               context,
-               MaterialPageRoute(builder: (context) => const DailyLearningSessionScreen()),
-             );
-             
-             // Refresh stats when returning
-             if (mounted) _loadStats();
+        LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 500) {
+              return Row(
+                children: [
+                  Expanded(child: _buildLearningButton(context)),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildReviewButton(context)),
+                ],
+              );
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildLearningButton(context),
+                const SizedBox(height: 16),
+                _buildReviewButton(context),
+              ],
+            );
           },
-          color: AppColors.primary,
-          shadowColor: AppColors.shadowBlue,
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-          child: Column(
-            children: [
-              Container(
-                 padding: const EdgeInsets.all(12),
-                 decoration: BoxDecoration(
-                   color: Colors.white.withOpacity(0.2),
-                   shape: BoxShape.circle,
-                 ),
-                 child: const Icon(Icons.menu_book, color: Colors.white, size: 32),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                '学习新单词',
-                style: GoogleFonts.plusJakartaSans( 
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '今天探索 10 个新单词！',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        BubblyButton(
-          onPressed: () async {
-             await Navigator.push(
-               context,
-               MaterialPageRoute(builder: (context) => const ReviewSessionScreen()),
-             );
-             // Refresh stats when returning
-             if (mounted) _loadStats();
-          },
-          color: AppColors.secondary,
-          shadowColor: AppColors.shadowYellow,
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-          child: Column(
-            children: [
-              Container(
-                 padding: const EdgeInsets.all(12),
-                 decoration: BoxDecoration(
-                   color: Colors.black.withOpacity(0.1),
-                   shape: BoxShape.circle,
-                 ),
-                 child: const Icon(Icons.style, color: Color(0xFF664400), size: 32),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                '复习',
-                style: GoogleFonts.plusJakartaSans(
-                  color: const Color(0xFF664400),
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '保持记忆清晰！',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
-                  color: const Color(0xAA664400),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildLearningButton(BuildContext context) {
+    return BubblyButton(
+      onPressed: () async {
+         // Navigate to Daily Learning Session
+         await Navigator.push(
+           context,
+           MaterialPageRoute(builder: (context) => const DailyLearningSessionScreen()),
+         );
+         
+         // Refresh stats when returning
+         if (mounted) _loadStats();
+      },
+      color: AppColors.primary,
+      shadowColor: AppColors.shadowBlue,
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      child: Column(
+        children: [
+          Container(
+             padding: const EdgeInsets.all(12),
+             decoration: BoxDecoration(
+               color: Colors.white.withOpacity(0.2),
+               shape: BoxShape.circle,
+             ),
+             child: const Icon(Icons.menu_book, color: Colors.white, size: 32),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '学习新单词',
+            style: GoogleFonts.plusJakartaSans( 
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '今天探索 10 个新单词！',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.plusJakartaSans(
+              color: Colors.white70,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReviewButton(BuildContext context) {
+    return BubblyButton(
+      onPressed: () async {
+         await Navigator.push(
+           context,
+           MaterialPageRoute(builder: (context) => const ReviewSessionScreen()),
+         );
+         // Refresh stats when returning
+         if (mounted) _loadStats();
+      },
+      color: AppColors.secondary,
+      shadowColor: AppColors.shadowYellow,
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      child: Column(
+        children: [
+          Container(
+             padding: const EdgeInsets.all(12),
+             decoration: BoxDecoration(
+               color: Colors.black.withOpacity(0.1),
+               shape: BoxShape.circle,
+             ),
+             child: const Icon(Icons.style, color: Color(0xFF664400), size: 32),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '复习',
+            style: GoogleFonts.plusJakartaSans(
+              color: const Color(0xFF664400),
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '保持记忆清晰！',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.plusJakartaSans(
+              color: const Color(0xAA664400),
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
