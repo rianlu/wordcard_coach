@@ -11,13 +11,13 @@ abstract class PhoneticUtils {
       return _mapChar(char);
     }).join();
     
-    // Remove zeros
+    // 说明：逻辑说明
     mapped = mapped.replaceAll('0', '');
     
-    // Remove duplicates (not exactly standard Soundex but simplified for this context)
-    // Standard Soundex collapses adjacent identical numbers *before* removing zeros if they came from same code...
-    // Let's implement a simpler "Match Rating Approach" or standard Soundex.
-    // Standard Soundex Implementation:
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     
     StringBuffer result = StringBuffer();
     result.write(firstChar);
@@ -29,7 +29,7 @@ abstract class PhoneticUtils {
       if (currentCode != '0' && currentCode != previousCode) {
         result.write(currentCode);
       }
-      previousCode = currentCode; // Update even if '0' to handle 'H' and 'W' correctly in full logic, but here simple.
+      previousCode = currentCode; // 说明：逻辑说明
     }
     
     String finalStr = result.toString();
@@ -46,6 +46,6 @@ abstract class PhoneticUtils {
     if ("L".contains(c)) return "4";
     if ("MN".contains(c)) return "5";
     if ("R".contains(c)) return "6";
-    return "0"; // A, E, I, O, U, H, W, Y
+    return "0"; // 说明：逻辑说明
   }
 }

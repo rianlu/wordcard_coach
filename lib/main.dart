@@ -4,14 +4,9 @@ import 'package:flutter/services.dart';
 import 'core/theme/app_theme.dart';
 import 'core/services/backup_service.dart';
 import 'features/main/presentation/screens/main_navigation_screen.dart';
-import 'features/home/presentation/screens/home_dashboard_screen.dart';
 import 'features/practice/presentation/screens/word_selection_screen.dart';
 import 'features/practice/presentation/screens/speaking_practice_screen.dart';
 import 'features/practice/presentation/screens/spelling_practice_screen.dart';
-import 'features/battle/presentation/screens/boss_battle_matching_screen.dart';
-import 'features/battle/presentation/screens/boss_battle_speaking_screen.dart';
-import 'features/battle/presentation/screens/boss_battle_spelling_screen.dart';
-import 'features/collection/presentation/screens/collection_gallery_screen.dart';
 import 'features/statistics/presentation/screens/statistics_screen.dart';
 
 import 'core/database/database_helper.dart';
@@ -42,18 +37,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _initFileHandler() async {
-    // Listen for file shares while app is running
+    // 监听应用运行中的文件分享
     _eventChannel.receiveBroadcastStream().listen((dynamic filePath) {
       if (filePath != null && filePath is String && filePath.isNotEmpty) {
         _handleSharedFile(filePath);
       }
     });
 
-    // Check for initial shared file (app opened via file share)
+    // 检查是否通过文件分享启动应用
     try {
       final String? initialFile = await _channel.invokeMethod('getInitialSharedFile');
       if (initialFile != null && initialFile.isNotEmpty) {
-        // Delay to ensure UI is ready
+        // 延迟以确保界面就绪
         await Future.delayed(const Duration(milliseconds: 800));
         _handleSharedFile(initialFile);
       }
@@ -65,13 +60,13 @@ class _MyAppState extends State<MyApp> {
   void _handleSharedFile(String filePath) {
     debugPrint('Received shared file: $filePath');
     
-    // Validate file extension
+    // 校验文件扩展名
     if (!filePath.endsWith('.wcc') && !filePath.endsWith('.json')) {
       debugPrint('Invalid file type: $filePath');
       return;
     }
 
-    // Get current context and import
+    // 获取当前上下文并导入
     final context = _navigatorKey.currentState?.overlay?.context;
     if (context != null) {
       BackupService().importDataFromFile(File(filePath), context);
@@ -90,10 +85,6 @@ class _MyAppState extends State<MyApp> {
         '/practice/selection': (context) => const WordSelectionScreen(),
         '/practice/speaking': (context) => const SpeakingPracticeScreen(),
         '/practice/spelling': (context) => const SpellingPracticeScreen(),
-        '/battle/matching': (context) => const BossBattleMatchingScreen(),
-        '/battle/speaking': (context) => const BossBattleSpeakingScreen(),
-        '/battle/spelling': (context) => const BossBattleSpellingScreen(),
-        '/collection': (context) => const CollectionGalleryScreen(),
         '/statistics': (context) => const StatisticsScreen(),
       },
       debugShowCheckedModeBanner: false,

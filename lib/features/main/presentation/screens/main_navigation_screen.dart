@@ -46,7 +46,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    // Use Rail if Desktop/Large (>=840) OR (Tablet (>=600) AND Landscape)
+    // 桌面或大屏使用侧边导航栏
     final isWideScreen = width >= 840 || (width >= 600 && width >= height);
 
     return Scaffold(

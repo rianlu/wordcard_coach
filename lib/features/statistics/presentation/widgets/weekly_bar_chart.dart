@@ -14,7 +14,7 @@ class WeeklyBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // We expect 7 days. If more, take last 7.
+    // 说明：逻辑说明
     final displayData = weeklyActivity.length > 7 
         ? weeklyActivity.sublist(weeklyActivity.length - 7) 
         : weeklyActivity;
@@ -23,7 +23,7 @@ class WeeklyBarChart extends StatelessWidget {
     for (var d in displayData) {
       if (d.count > maxCount) maxCount = d.count;
     }
-    // minimal height
+    // 说明：逻辑说明
     if (maxCount < 10) maxCount = 10;
     final double maxY = (maxCount * 1.2).toDouble(); 
 
@@ -51,14 +51,14 @@ class WeeklyBarChart extends StatelessWidget {
                    Container(
                      padding: const EdgeInsets.all(8),
                      decoration: const BoxDecoration(
-                       color: AppColors.primary, // Using primary blue
+                       color: AppColors.primary, // 说明：逻辑说明
                        shape: BoxShape.circle,
                      ),
                      child: const Icon(Icons.bar_chart_rounded, color: Colors.white, size: 20),
                    ),
                    const SizedBox(width: 12),
                      Text(
-                       "本周学习", // Weekly Learning
+                       "本周学习", // 说明：逻辑说明
                        style: GoogleFonts.notoSans(
                          fontSize: 20, 
                          fontWeight: FontWeight.w900, 
@@ -67,7 +67,7 @@ class WeeklyBarChart extends StatelessWidget {
                      ),
                 ],
               ),
-              // Legend
+              // 说明：逻辑说明
               Row(
                 children: [
                    _buildLegendDot(AppColors.primary, "新词"),
@@ -92,9 +92,9 @@ class WeeklyBarChart extends StatelessWidget {
                     tooltipRoundedRadius: 8,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                        final activity = displayData[groupIndex];
-                       // rodIndex 0 is bottom (new), 1 is top (reviews) ? 
-                       // Actually we only have 1 rod per group for stacked? 
-                       // No, Stacked is 1 rod with multiple rodStackItems.
+                       // 说明：逻辑说明
+                       // 说明：逻辑说明
+                       // 说明：逻辑说明
                        
                          return BarTooltipItem(
                            "${activity.date.split('-').last}日\n",
@@ -127,7 +127,7 @@ class WeeklyBarChart extends StatelessWidget {
                          final index = value.toInt();
                          if (index >= 0 && index < displayData.length) {
                             final dateParts = displayData[index].date.split('-');
-                            // Assuming YYYY-MM-DD
+                            // 说明：逻辑说明
                             if (dateParts.length >= 3) {
                                return Padding(
                                  padding: const EdgeInsets.only(top: 8.0),
@@ -161,7 +161,7 @@ class WeeklyBarChart extends StatelessWidget {
                      barRods: [
                        BarChartRodData(
                          toY: data.count.toDouble(),
-                         color: Colors.transparent, // Background of whole rod
+                         color: Colors.transparent, // 说明：逻辑说明
                          width: 16,
                          borderRadius: BorderRadius.circular(6),
                          rodStackItems: [

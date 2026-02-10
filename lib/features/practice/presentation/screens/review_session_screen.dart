@@ -34,14 +34,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
   
-  // State Data
+  // 说明：逻辑说明
   List<Word> _reviewWords = [];
   List<Word> _distractorPool = []; 
   List<ReviewMode> _modes = []; 
   bool _isLoading = true;
   int _currentIndex = 0;
   
-  // Animation State
+  // 说明：逻辑说明
   bool _isCardFlyingOut = false;
   Offset _slideOffset = Offset.zero;
 
@@ -55,7 +55,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     final userStats = await _userStatsDao.getUserStats();
     String bookId = userStats.currentBookId;
     
-    // Get 20 words for review
+    // 说明：逻辑说明
     final words = await _wordDao.getWordsDueForReview(
       20, 
       bookId: bookId, 
@@ -86,17 +86,17 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     }
   }
 
-  // Logic Processing
+  // 说明：逻辑说明
   Future<void> _handleAnswer(int quality) async {
     final word = _reviewWords[_currentIndex];
     await _wordDao.updateReviewStats(word.id, quality);
 
-    if (quality >= 1) { // Acceptable answer
+    if (quality >= 1) { // 说明：逻辑说明
       _triggerNextAnimation();
     } else {
-      // Wrong answer - might just shake or show feedback within the widget
-      // But eventually we move on or retry. Assuming retry happens inside widget.
-      // If widget calls strictly onCompleted, we assume it's done.
+      // 错误 答案 - 编号
+      // 说明：逻辑说明
+      // 说明：逻辑说明
       _triggerNextAnimation();
     }
   }
@@ -104,7 +104,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   void _triggerNextAnimation() {
     setState(() {
       _isCardFlyingOut = true;
-      // Fly out to top-right or random direction? Top-Right feels like "Done".
+      // 说明：逻辑说明
       _slideOffset = const Offset(500, -200); 
     });
 
@@ -154,8 +154,8 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           subtitle: "你复习了 ${_reviewWords.length} 个单词，继续保持！",
           primaryButtonText: "完成",
           onPrimaryPressed: () {
-            Navigator.pop(context); // Close dialog
-            Navigator.pop(context); // Exit screen
+            Navigator.pop(context); // 说明：逻辑说明
+            Navigator.pop(context); // 说明：逻辑说明
           },
         );
       },
@@ -172,14 +172,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
       return _buildEmptyState();
     }
     
-    // Main Adaptive Layout
+    // 说明：逻辑说明
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Fluid Background
+          // 说明：逻辑说明
           const Positioned.fill(child: MeshGradientBackground()),
           
-          // 2. Content
+          // 说明：逻辑说明
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -194,7 +194,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
             ),
           ),
           
-          // 3. Close Button (Persistent)
+          // 说明：逻辑说明
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             left: 16,
@@ -214,7 +214,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   Widget _buildMobileLayout() {
     return Column(
       children: [
-        // Header
+        // 说明：逻辑说明
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
           child: Row(
@@ -225,7 +225,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           ),
         ),
         
-        // Title
+        // 说明：逻辑说明
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Align(
@@ -248,7 +248,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         
         const SizedBox(height: 20),
         
-        // Stacked Card Area
+        // 说明：逻辑说明
         Expanded(
           child: Center(
             child: Padding(
@@ -258,7 +258,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           ),
         ),
         
-        const SizedBox(height: 48), // Bottom spacing
+        const SizedBox(height: 48), // 说明：逻辑说明
       ],
     );
   }
@@ -266,7 +266,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   Widget _buildTabletLayout() {
     return Row(
       children: [
-        // Left Panel (Info & Progress) - 40%
+        // 说明：逻辑说明
         Expanded(
           flex: 4,
           child: Padding(
@@ -286,7 +286,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                 ),
                 const SizedBox(height: 48),
                 
-                // Big Progress Indicator
+                // 说明：逻辑说明
                 Center(child: _buildCircularProgress(size: 100, fontSize: 24)),
                 
                 const Spacer(),
@@ -295,12 +295,12 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           ),
         ),
         
-        // Right Panel (Interaction) - 60%
+        // 说明：逻辑说明
         Expanded(
           flex: 6,
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500), // Prevent too wide on huge screens
+              constraints: const BoxConstraints(maxWidth: 500), // 说明：逻辑说明
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: _buildFocusStack(),
@@ -332,7 +332,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           SizedBox(
             width: size, height: size,
             child: CircularProgressIndicator(
-              value: 1.0 - progress, // Count down visually
+              value: 1.0 - progress, // 说明：逻辑说明
               strokeWidth: 6,
               color: AppColors.primary,
               strokeCap: StrokeCap.round,
@@ -361,11 +361,11 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     
     return Stack(
       children: [
-        // 1. Fake Cards (Background)
+        // 说明：逻辑说明
         if (remaining > 2) _buildFakeCard(scale: 0.9, yOffset: 30, opacity: 0.3),
         if (remaining > 1) _buildFakeCard(scale: 0.95, yOffset: 15, opacity: 0.6),
         
-        // 2. Active Card
+        // 说明：逻辑说明
         AnimatedSlide(
           offset: _isCardFlyingOut ? _slideOffset : Offset.zero,
           duration: const Duration(milliseconds: 300),
@@ -387,7 +387,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         offset: Offset(0, yOffset),
         child: Container(
           width: double.infinity,
-          height: 600, // Safe height, will be constrained by parent
+          height: 600, // 说明：逻辑说明
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: opacity),
             borderRadius: BorderRadius.circular(32),
@@ -398,7 +398,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                 offset: const Offset(0, 10),
               )
             ],
-            // Add a subtle border to distinguish layers
+            // 说明：逻辑说明
             border: Border.all(color: Colors.white.withValues(alpha: 0.5 * opacity), width: 1),
           ),
         ),
@@ -412,7 +412,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     
     return Container(
       width: double.infinity,
-      // Aspect ratio or fixed height? Let's use flexible height with constraints
+      // 说明：逻辑说明
       constraints: const BoxConstraints(minHeight: 400), 
       decoration: BoxDecoration(
         color: Colors.white,
@@ -536,7 +536,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                           "返回首页",
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold, // Use w700 or bold
+                            fontWeight: FontWeight.bold, // 说明：逻辑说明
                             color: AppColors.textHighEmphasis
                           )
                         ),

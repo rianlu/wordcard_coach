@@ -37,7 +37,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     super.initState();
     _loadStats();
     _loadQuote();
-    // Subscribe to global stats updates (e.g. nickname change, learning progress)
+    // 说明：逻辑说明
     GlobalStatsNotifier.instance.addListener(_loadStats);
   }
 
@@ -106,13 +106,13 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 
   Future<void> _playDailyAudio() async {
-    // Allow playing if we have a URL OR fallback text
+    // 说明：逻辑说明
     if (_isPlayingAudio || (_dailySentence?.audioUrl == null && _dailySentence?.englishContent == null)) return;
     
     setState(() => _isPlayingAudio = true);
     try {
       await AudioService().playUrl(
-        _dailySentence!.audioUrl ?? "", // Pass empty string if null
+        _dailySentence!.audioUrl ?? "", // 说明：逻辑说明
         fallbackText: _dailySentence!.englishContent,
       );
     } finally {
@@ -123,31 +123,31 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     }
   }
 
-  /// Ticket style daily sentence card
+  /// 说明：逻辑说明
   Widget _buildDailySentenceCard() {
     return GestureDetector(
       onTap: _playDailyAudio,
       child: PhysicalShape(
-        clipper: const TicketClipper(holeRadius: 20, holePositionRatio: 0.72), // 72% split
+        clipper: const TicketClipper(holeRadius: 20, holePositionRatio: 0.72), // 说明：逻辑说明
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
         elevation: 6,
         shadowColor: AppColors.primary.withValues(alpha: 0.15), 
         child: SizedBox(
-          height: 180, // Fixed height for ticket look
+          height: 180, // 说明：逻辑说明
           child: Stack(
             children: [
-               // 1. Dashed Line (Vertical) at 72%
+               // 说明：逻辑说明
                Positioned(
-                 left: 550, // Simplified for fixed-ish width or use LayoutBuilder if needed
+                 left: 550, // 说明：逻辑说明
                  top: 10, 
                  bottom: 10,
                  child: LayoutBuilder(
                    builder: (context, constraints) {
-                     // Calculate exact position based on parent width
-                     // We need parent width. But here we are in a Stack.
-                     // Better approach: Use FractionallySizedBox or align based on percentage.
-                     // Reverting to custom Painter that handles width.
+                     // 说明：逻辑说明
+                     // 说明：逻辑说明
+                     // 说明：逻辑说明
+                     // 说明：逻辑说明
                      return CustomPaint(
                        size: const Size(1, double.infinity),
                        painter: DashedLinePainter(
@@ -159,9 +159,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                    }
                  ),
                ),
-                // Re-implementing the Positioned with LayoutBuilder logic properly inside the Stack 
-                // is tricky without context. Let's use `FractionallySizedBox` or similar if possible.
-                // Or simplified: Just use the LayoutBuilder around the whole Stack content.
+                // 说明：逻辑说明
+                // 说明：逻辑说明
+                // 说明：逻辑说明
                 LayoutBuilder(
                   builder: (context, constraints) {
                     final splitX = constraints.maxWidth * 0.72;
@@ -182,7 +182,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                         ),
                         Row(
                          children: [
-                           // --- LEFT SECTION (Content) ---
+                           // 说明：逻辑说明
                            Expanded(
                              flex: 72,
                              child: Padding(
@@ -190,7 +190,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                                child: Column(
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   // Badge
+                                   // 说明：逻辑说明
                                    Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
@@ -210,7 +210,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                                    
                                    const Spacer(),
 
-                                   // English
+                                   // 说明：逻辑说明
                                    Text(
                                     _dailySentence!.englishContent,
                                     style: GoogleFonts.plusJakartaSans(
@@ -225,7 +225,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                                    
                                    const SizedBox(height: 8),
 
-                                   // Chinese
+                                   // 说明：逻辑说明
                                    Text(
                                       _dailySentence!.chineseNote,
                                       style: GoogleFonts.notoSans(
@@ -241,14 +241,14 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                              ),
                            ),
 
-                           // --- RIGHT SECTION (Action) ---
+                           // 说明：逻辑说明
                            Expanded(
                              flex: 28,
                              child: Center(
                                child: AnimatedSpeakerButton(
                                   onPressed: _playDailyAudio,
                                   isPlaying: _isPlayingAudio,
-                                  size: 32, // Slightly larger since it's solo
+                                  size: 32, // 说明：逻辑说明
                                   primaryColor: AppColors.secondary, 
                                   playingColor: AppColors.primary,
                                ),
@@ -356,13 +356,13 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   Widget _buildLearningButton(BuildContext context) {
     return BubblyButton(
       onPressed: () async {
-         // Navigate to Daily Learning Session
+         // 说明：逻辑说明
          await Navigator.push(
            context,
            MaterialPageRoute(builder: (context) => const DailyLearningSessionScreen()),
          );
          
-         // Refresh stats when returning
+         // 说明：逻辑说明
          if (mounted) _loadStats();
       },
       color: AppColors.primary,
@@ -409,7 +409,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
            context,
            MaterialPageRoute(builder: (context) => const ReviewSessionScreen()),
          );
-         // Refresh stats when returning
+         // 说明：逻辑说明
          if (mounted) _loadStats();
       },
       color: AppColors.secondary,
@@ -456,13 +456,13 @@ class WavyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
-    // Enhanced wave effect
-    double waveHeight = 6.0; // Increased fro 4.0
-    double frequency = 20.0; // Increased from 18.0
+    // 说明：逻辑说明
+    double waveHeight = 6.0; // 说明：逻辑说明
+    double frequency = 20.0; // 说明：逻辑说明
 
     path.moveTo(0, 0);
 
-    // Top Edge
+    // 说明：逻辑说明
     for (double i = 0; i < size.width; i += frequency) {
       path.quadraticBezierTo(
         i + frequency / 2, waveHeight, 
@@ -470,7 +470,7 @@ class WavyClipper extends CustomClipper<Path> {
       );
     }
     
-    // Right Edge
+    // 说明：逻辑说明
     for (double i = 0; i < size.height; i += frequency) {
        path.quadraticBezierTo(
         size.width - waveHeight, i + frequency / 2, 
@@ -478,7 +478,7 @@ class WavyClipper extends CustomClipper<Path> {
       );
     }
 
-    // Bottom Edge
+    // 说明：逻辑说明
     for (double i = size.width; i > 0; i -= frequency) {
         path.quadraticBezierTo(
         i - frequency / 2, size.height - waveHeight, 
@@ -486,7 +486,7 @@ class WavyClipper extends CustomClipper<Path> {
       );
     }
 
-    // Left Edge
+    // 说明：逻辑说明
     for (double i = size.height; i > 0; i -= frequency) {
       path.quadraticBezierTo(
         waveHeight, i - frequency / 2, 
@@ -504,7 +504,7 @@ class WavyClipper extends CustomClipper<Path> {
 
 class TicketClipper extends CustomClipper<Path> {
   final double holeRadius;
-  final double holePositionRatio; // 0.0 to 1.0
+  final double holePositionRatio; // 说明：逻辑说明
 
   const TicketClipper({this.holeRadius = 16, this.holePositionRatio = 0.7});
 
@@ -515,7 +515,7 @@ class TicketClipper extends CustomClipper<Path> {
 
     path.moveTo(0, 0);
     
-    // Top Edge with Cutout
+    // 说明：逻辑说明
     path.lineTo(holeX - holeRadius, 0);
     path.arcToPoint(
       Offset(holeX + holeRadius, 0),
@@ -524,10 +524,10 @@ class TicketClipper extends CustomClipper<Path> {
     );
     path.lineTo(size.width, 0);
 
-    // Right Edge
+    // 说明：逻辑说明
     path.lineTo(size.width, size.height);
 
-    // Bottom Edge with Cutout
+    // 说明：逻辑说明
     path.lineTo(holeX + holeRadius, size.height);
     path.arcToPoint(
       Offset(holeX - holeRadius, size.height),
@@ -536,7 +536,7 @@ class TicketClipper extends CustomClipper<Path> {
     );
     path.lineTo(0, size.height);
 
-    // Left Edge
+    // 说明：逻辑说明
     path.close();
 
     return path;

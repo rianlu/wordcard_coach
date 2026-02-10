@@ -7,7 +7,7 @@ class Word {
   final String phonetic;
   final String pos;
 
-  /// Returns the US phonetic if found, otherwise returns the phonetic string as-is.
+  /// 优先返回美式音标，找不到则返回原字符串
   String get displayPhonetic {
     if (phonetic.contains('US:')) {
       final match = RegExp(r'US:\s*(\[[^\]]+\]|[^\]\s]+)').firstMatch(phonetic);
@@ -22,7 +22,7 @@ class Word {
   final int difficulty;
   final String category;
   final String bookId;
-  final int orderIndex; // Textbook sorting order
+  final int orderIndex; // 教材排序顺序
   final List<String> syllables;
   final List<Map<String, String>> examples; 
 

@@ -9,14 +9,14 @@ class PracticeSuccessOverlay extends StatelessWidget {
   final Word word;
   final String title;
   final String? subtitle;
-  final int stars; // 1-3 stars for speaking practice
+  final int stars; // 口语练习的星级（1-3 星）
 
   const PracticeSuccessOverlay({
     super.key,
     required this.word,
     this.title = 'CORRECT!',
     this.subtitle,
-    this.stars = 0, // 0 = don't show stars (for spelling practice)
+    this.stars = 0, // 0 表示不显示星级（拼写练习）
   });
 
 
@@ -25,12 +25,12 @@ class PracticeSuccessOverlay extends StatelessWidget {
     return BackdropFilter(
       filter: ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
       child: Container(
-        color: Colors.black.withOpacity(0.05), // Very light dim - kept for consistency
+        color: Colors.black.withOpacity(0.05), // 轻微遮罩（保持一致）
         child: Center(
           child: TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 400),
-            curve: Curves.easeOutBack, // Slight bounce for the pop
+            curve: Curves.easeOutBack, // 轻微弹跳效果
             builder: (context, value, child) {
               return Transform.scale(
                 scale: 0.8 + (0.2 * value),
@@ -46,12 +46,12 @@ class PracticeSuccessOverlay extends StatelessWidget {
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
                 children: [
-                   // Subtle Sparkles behind
+                   // 背景轻微闪光
                    const Positioned.fill(
                      child: SparkleBackground(),
                    ),
                    
-                   // Main Card
+                   // 主卡片
                    Container(
                      margin: const EdgeInsets.symmetric(horizontal: 24),
                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -74,28 +74,28 @@ class PracticeSuccessOverlay extends StatelessWidget {
                      child: Row(
                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Left Checkmark
+                          // 左侧勾选图标
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFDCFCE7), // Light Green 100
+                              color: const Color(0xFFDCFCE7), // 浅绿 100
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
                               Icons.check_rounded, 
-                              color: Color(0xFF22C55E), // Green 500 
+                              color: Color(0xFF22C55E), // 绿色 500
                               size: 28,
                             ),
                           ),
                           const SizedBox(width: 20),
                           
-                          // Right Content
+                          // 右侧内容
                           Flexible(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Title with optional stars
+                                // 标题与可选星级
                                 Row(
                                   children: [
                                     Text(
@@ -107,7 +107,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
                                         letterSpacing: 1.0,
                                       ),
                                     ),
-                                    // Show stars for speaking practice
+                                    // 口语练习显示星级
                                     if (stars > 0) ...[
                                       const SizedBox(width: 8),
                                       ...List.generate(3, (i) => Icon(
@@ -136,7 +136,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
                      ),
                    ),
                    
-                   // Little Floating Sparkle Icon for extra flair
+                   // 漂浮小闪光图标
                    Positioned(
                      top: -10,
                      right: 15,

@@ -4,7 +4,6 @@ import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/models/word.dart';
 import '../../../../core/theme/app_colors.dart';
-import 'dart:ui';
 
 class SpeakingPracticeScreen extends StatefulWidget {
   const SpeakingPracticeScreen({super.key});
@@ -19,7 +18,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
   late AnimationController _controller;
   bool _isListening = false;
   
-  // Data
+  // 说明：逻辑说明
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
   Word? _currentWord;
@@ -73,11 +72,11 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       _isListening = !_isListening;
       if (_isListening) {
         _controller.repeat();
-        // Simulate successful speaking after 2 seconds
+        // 说明：逻辑说明
         Future.delayed(const Duration(seconds: 2), () {
            if (mounted && _isListening) {
              _toggleListening();
-             // Load next word
+             // 说明：逻辑说明
              _loadNewWord();
              ScaffoldMessenger.of(context).showSnackBar(
                const SnackBar(content: Text('Great job! Correct pronunciation.'), backgroundColor: Colors.green)
@@ -143,14 +142,14 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Enhanced wide detection: >600 (Tablet) OR (>480 && Landscape)
+          // 说明：逻辑说明
           final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
           if (isWide) {
-            // LANDSCAPE / WIDE LAYOUT
+            // 说明：逻辑说明
             return Row(
               children: [
-                // Left Panel: Content
+                // 说明：逻辑说明
                 Expanded(
                   flex: 3,
                   child: SingleChildScrollView(
@@ -164,7 +163,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                     ),
                   ),
                 ),
-                // Right Panel: Interaction
+                // 说明：逻辑说明
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -187,7 +186,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             );
           }
           
-          // PORTRAIT / NARROW LAYOUT
+          // 说明：逻辑说明
           return Column(
             children: [
               Expanded(
@@ -234,7 +233,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
           Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
           const SizedBox(height: 24),
           
-          // TTS Button
+          // 说明：逻辑说明
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -302,7 +301,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             )
         ),
         const SizedBox(height: 24),
-        // Mic Interaction
+        // 说明：逻辑说明
         GestureDetector(
           // 长按开始
           onTapDown: (_) => _toggleListening(),
@@ -315,7 +314,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Ripple Effect
+                // 说明：逻辑说明
                 if (_isListening)
                   AnimatedBuilder(
                     animation: _controller,
@@ -336,7 +335,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                       );
                     },
                   ),
-                // Main Button
+                // 说明：逻辑说明
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 150),
                   // 按住时稍微放大一点 (90 -> 100)，增加交互反馈

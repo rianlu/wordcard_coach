@@ -56,7 +56,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   }
 
   void _handleOptionSelected(String wordId) {
-    if (_selectedOptionId != null) return; // Already selected
+    if (_selectedOptionId != null) return; // 已选择则忽略
 
     setState(() {
       _selectedOptionId = wordId;
@@ -64,16 +64,16 @@ class _WordSelectionViewState extends State<WordSelectionView> {
 
     final isCorrect = wordId == widget.word.id;
 
-    // Simple delay to show result then complete
+    // 稍作延迟以展示结果
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) {
           if (isCorrect) {
-            // Show Success Overlay Dialog
+            // 展示成功提示层
              if (mounted) {
                _showSuccessOverlay();
              }
           } else {
-            // If wrong - play sound and reset
+            // 错误时播放提示并重置
             AudioService().playAsset('wrong.mp3');
             _showErrorToast();
             setState(() {
@@ -106,7 +106,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   }
 
   void _showSuccessOverlay() {
-    // Play Audio
+    // 播放音频
     AudioService().playWord(widget.word);
     AudioService().playAsset('correct.mp3');
 
@@ -124,10 +124,10 @@ class _WordSelectionViewState extends State<WordSelectionView> {
       },
     );
 
-    // Auto-advance Timer
+    // 自动进入下一题
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (mounted) {
-        Navigator.of(context).pop(); // Close overlay
+        Navigator.of(context).pop(); // 关闭提示层
         widget.onCompleted(_wrongAttempts == 0 ? 5 : 3);
       }
     });
@@ -161,22 +161,22 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         }
 
         if (!isTall) {
-           // Small Screen / Landscape Phone Optimization: Scrollable List
+           // 说明：逻辑说明
            return SingleChildScrollView(
              padding: const EdgeInsets.all(24),
              child: Column(
                children: [
                  _buildWordCard(),
                  const SizedBox(height: 24),
-                 // Give Grid a fixed height or let it shrinkwrap? 
-                 // We can use a shrinkwrapped grid inside column.
+                 // 说明：逻辑说明
+                 // 说明：逻辑说明
                  _buildOptionsGrid(shrinkWrap: true, scrollable: false),
                ],
              ),
            );
         }
 
-        // Standard Portrait Layout
+        // 标准 竖屏布局
         return Column(
           children: [
             Expanded(
@@ -239,7 +239,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         : Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                // Calculate gap based on available space, min 12 max 20
+                // 说明：逻辑说明
                 final gap = (constraints.maxWidth * 0.04).clamp(12.0, 20.0);
                 return GridView.builder(
                   padding: EdgeInsets.zero,
@@ -282,7 +282,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
           Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
           const SizedBox(height: 24),
 
-          // TTS Button with animation
+          // 带动画的发音按钮
           AnimatedSpeakerButton(
             onPressed: _playAudio,
             isPlaying: _isPlaying,
@@ -297,7 +297,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     final isSelected = _selectedOptionId == optionWord.id;
 
 
-    // Pop Style Colors
+    // 弹跳风格配色
     Color bgColor = Colors.white;
     Color borderColor = Colors.transparent;
     Color shadowColor = AppColors.shadowWhite;
@@ -309,27 +309,27 @@ class _WordSelectionViewState extends State<WordSelectionView> {
       final isSelectedAndCorrect = isCorrect && _selectedOptionId == widget.word.id;
 
       if (isSelectedAndCorrect) {
-         // Correct and Selected
-         bgColor = const Color(0xFF4ADE80); // Green 400
-         borderColor = const Color(0xFF22C55E); // Green 500 (Border/Shadow)
-         shadowColor = const Color(0xFF15803D); // Green 700
+         // 正确且被选中
+         bgColor = const Color(0xFF4ADE80); // 绿色 400
+         borderColor = const Color(0xFF22C55E); // 绿色 500（边框/阴影）
+         shadowColor = const Color(0xFF15803D); // 绿色 700
          textColor = Colors.white;
       } else if (isSelected) {
-         // Wrong
-         bgColor = const Color(0xFFF87171); // Red 400
-         borderColor = const Color(0xFFEF4444); // Red 500
-         shadowColor = const Color(0xFFB91C1C); // Red 700
+         // 错误
+         bgColor = const Color(0xFFF87171); // 红色 400
+         borderColor = const Color(0xFFEF4444); // 红色 500
+         shadowColor = const Color(0xFFB91C1C); // 红色 700
          textColor = Colors.white;
       } else {
-         // Others
+         // 其他选项
          bgColor = Colors.grey.shade100;
          textColor = Colors.grey.shade400;
-         yOffset = 0; // Pressed down effect
+         yOffset = 0; // 按下效果
          shadowColor = Colors.transparent;
       }
     } else {
-      // Normal State - colorful border hint?
-      // Let's keep it clean white but with big pop shadow
+      // 正常状态
+      // 说明：逻辑说明
       bgColor = Colors.white;
       borderColor = Colors.grey.shade200;
       shadowColor = Colors.grey.shade300;
@@ -349,7 +349,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
              BoxShadow(
                color: shadowColor,
                offset: Offset(0, yOffset),
-               blurRadius: 0, // Solid shadow for Pop feel
+               blurRadius: 0, // 实体阴影效果
              )
           ]
         ),

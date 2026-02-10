@@ -34,7 +34,7 @@ class DatabaseHelper {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 3) {
-      // Legacy: Drop all for very old versions (dev only)
+      // 旧版本兼容：极老版本直接清表（仅开发）
       await db.execute('DROP TABLE IF EXISTS words');
       await db.execute('DROP TABLE IF EXISTS sentences');
       await db.execute('DROP TABLE IF EXISTS word_sentence_map');
@@ -46,27 +46,27 @@ class DatabaseHelper {
     }
 
     if (oldVersion < 4) {
-      // Safe Migration v3 -> v4 (add sync columns)
+      // 安全迁移 3 -> 4（新增同步字段）
       print("Migrating DB to version 4 (Cloud Sync Prep)...");
       
-      // 1. word_progress
+      // 说明：逻辑说明
       await _safeAddColumn(db, 'word_progress', 'account_id', 'TEXT');
       await _safeAddColumn(db, 'word_progress', 'device_id', 'TEXT');
       await _safeAddColumn(db, 'word_progress', 'last_updated_at', 'INTEGER DEFAULT 0');
       await _safeAddColumn(db, 'word_progress', 'is_deleted', 'INTEGER DEFAULT 0');
 
-      // 2. user_stats
+      // 说明：逻辑说明
       await _safeAddColumn(db, 'user_stats', 'account_id', 'TEXT');
       await _safeAddColumn(db, 'user_stats', 'device_id', 'TEXT');
       await _safeAddColumn(db, 'user_stats', 'last_updated_at', 'INTEGER DEFAULT 0');
 
-      // 3. daily_records
+      // 说明：逻辑说明
       await _safeAddColumn(db, 'daily_records', 'account_id', 'TEXT');
       await _safeAddColumn(db, 'daily_records', 'device_id', 'TEXT');
       await _safeAddColumn(db, 'daily_records', 'last_updated_at', 'INTEGER DEFAULT 0');
       await _safeAddColumn(db, 'daily_records', 'is_deleted', 'INTEGER DEFAULT 0');
 
-      // 4. sync_state table
+      // 说明：逻辑说明
       await db.execute('''
         CREATE TABLE IF NOT EXISTS sync_state (
           table_name TEXT PRIMARY KEY NOT NULL,
@@ -76,30 +76,30 @@ class DatabaseHelper {
     }
 
     if (oldVersion < 5) {
-      // Migration v4 -> v5 (add pos column to words table)
+      // 迁移 4 -> 5（ 表新增 字段）
       print("Migrating DB to version 5 (Adding pos column)...");
       await _safeAddColumn(db, 'words', 'pos', "TEXT NOT NULL DEFAULT ''");
     }
 
     if (oldVersion < 6) {
-      // Migration v5 -> v6 (add order_index column to words table)
+      // 迁移 5 -> 6（ 表新增 _序号 字段）
       print("Migrating DB to version 6 (Adding order_index column)...");
       await _safeAddColumn(db, 'words', 'order_index', "INTEGER NOT NULL DEFAULT 0");
     }
   }
 
-  // Helper for safe column addition
+  // 安全添加字段的辅助方法
   Future<void> _safeAddColumn(Database db, String table, String column, String type) async {
     try {
       await db.execute('ALTER TABLE $table ADD COLUMN $column $type');
     } catch (e) {
-      // Ignore if column exists
+      // 字段已存在则忽略
       print("Column $column already exists in $table");
     }
   }
 
   Future<void> _createDB(Database db, int version) async {
-    // 1. Words table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE words (
         id TEXT PRIMARY KEY NOT NULL,
@@ -123,7 +123,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_words_category ON words(category)');
     await db.execute('CREATE INDEX idx_words_text ON words(text)');
 
-    // 2. Sentences table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE sentences (
         id TEXT PRIMARY KEY NOT NULL,
@@ -135,7 +135,7 @@ class DatabaseHelper {
     ''');
     await db.execute('CREATE INDEX idx_sentences_category ON sentences(category)');
 
-    // 3. WordSentenceMap table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE word_sentence_map (
         word_id TEXT NOT NULL,
@@ -151,7 +151,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_wsm_sentence ON word_sentence_map(sentence_id)');
     await db.execute('CREATE INDEX idx_wsm_primary ON word_sentence_map(word_id, is_primary)');
 
-    // 4. WordProgress table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE word_progress (
         id TEXT PRIMARY KEY NOT NULL,
@@ -181,7 +181,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_progress_review_date ON word_progress(next_review_date)');
     await db.execute('CREATE INDEX idx_progress_mastery ON word_progress(mastery_level)');
 
-    // 5. UserStats table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE user_stats (
         id INTEGER PRIMARY KEY NOT NULL DEFAULT 1,
@@ -204,14 +204,14 @@ class DatabaseHelper {
         updated_at INTEGER NOT NULL
       )
     ''');
-    // Initialize default user stats
+    // 初始化默认用户统计
     await db.insert('user_stats', {
       'id': 1,
       'updated_at': DateTime.now().millisecondsSinceEpoch,
       'current_book_id': ''
     });
 
-    // 6. DailyRecords table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE daily_records (
         date TEXT PRIMARY KEY NOT NULL,
@@ -229,7 +229,7 @@ class DatabaseHelper {
     ''');
     await db.execute('CREATE INDEX idx_daily_records_date ON daily_records(date)');
 
-    // 7. Sync State Table
+    // 说明：逻辑说明
     await db.execute('''
       CREATE TABLE sync_state (
         table_name TEXT PRIMARY KEY NOT NULL,
@@ -237,12 +237,12 @@ class DatabaseHelper {
       )
     ''');
     
-    // Seed data immediately after creation
+    // 建库后立即初始化数据
     await _seedData(db);
   }
 
   Future<void> _onOpen(Database db) async {
-    // Check if data exists, if not seed (useful if DB created but seeding failed or logic changed)
+    // 检查数据是否存在，不存在则初始化
     final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM words'));
     if (count == 0) {
       await _seedData(db);
@@ -259,7 +259,7 @@ class DatabaseHelper {
       print('Loaded manifest with ${manifest.length} books.');
     } catch(e) {
       print('Manifest load failed: $e. Falling back to legacy list.');
-      // Fallback or empty - currently empty fallback
+      // 兜底或空列表处理
     }
     
     if (manifest.isEmpty) {
@@ -276,7 +276,7 @@ class DatabaseHelper {
         final grade = book['grade'] as int;
         final semester = book['semester'] as int;
         
-        // Try JSON
+        // 尝试加载 数据文件
         try {
           final jsonContent = await rootBundle.loadString('assets/data/$filename');
           print("Importing $filename for book $bookId...");
@@ -289,7 +289,7 @@ class DatabaseHelper {
       await batch.commit(noResult: true);
       print('Data seeding completed.');
       
-      // Auto-select the first book if available
+      // 如果有教材则自动选择第一本
       if (manifest.isNotEmpty) {
         final firstBook = manifest.first;
         final bookId = firstBook['id'] as String;
@@ -310,22 +310,22 @@ class DatabaseHelper {
   }
 
   Future<void> _seedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId) async {
-    // Expected JSON structure:
+    // 期望的 数据文件 结构：
     // {
-    //   "grade": 7,     <-- Optional coverage override
-    //   "semester": 1,  <-- Optional coverage override
-    //   "unit": "Module 1", <-- If file is per-module (or handled inside array)
-    //   "data": [ ... ]
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     // }
     
-    // We should be robust. Let's decode dynamically.
+    // 需要更健壮的解析，这里动态解码
     final dynamic decoded = jsonDecode(jsonString);
     
     List<dynamic> items = [];
     String defaultUnit = "Module 1";
     
     if (decoded is List) {
-      // List of modules or words? 
+      // 列表可能是模块或单词
       items = decoded;
     } else if (decoded is Map<String, dynamic>) {
        if (decoded.containsKey('data')) {
@@ -336,25 +336,25 @@ class DatabaseHelper {
        }
     }
 
-    // Checking if items are Words or Modules
-    // If the agreed structure is { unit:..., data: [words] }, then items is [words].
-    // But if input is [ {unit:..., data:[words]}, ... ], then items is [modules].
+    // 判断条目是单词还是模块
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     
-    // Let's handle the simple case agreed: Single Module File or Single List of Word Objects
-    // Code below handles "List of Words" where context is passed in arguments or root object.
+    // 优先处理简单约定的结构
+    // 下方处理单词列表结构
     
     int wordIndex = 0;
     
     for (var item in items) {
       if (item is Map<String, dynamic>) {
-         // Determine if this is a WORD or a MODULE wrapper
+         // 判断是单词还是模块包装
          if (item.containsKey('data') || item.containsKey('words')) {
-           // It's a module wrapper (recursive)
+           // 这是模块包装（递归）
            final moduleUnit = item['unit'] ?? defaultUnit;
            final moduleData = item['data'] ?? item['words'] ?? [];
            await _seedWordList(batch, moduleData, grade, semester, moduleUnit, bookId);
          } else {
-           // It's a word object directly
+           // 这是直接的单词对象
            wordIndex++;
            _insertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId);
          }
@@ -362,7 +362,7 @@ class DatabaseHelper {
     }
   }
   
-  // Helper for recursive module list processing
+  // 递归处理模块列表的辅助方法
   Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId) async {
     int wordIndex = 0;
     for (var w in words) {
@@ -402,7 +402,7 @@ class DatabaseHelper {
      
      batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
      
-     // Handle Sentences
+     // 处理例句
      if (data.containsKey('app_sentences')) {
        final sentences = data['app_sentences'] as List;
        int sIndex = 0;
@@ -414,7 +414,7 @@ class DatabaseHelper {
            if (en.isNotEmpty) {
              final sId = 'sentence_${id}_$sIndex';
              
-             // Insert Sentence
+             // 插入例句
              batch.insert('sentences', {
                'id': sId,
                'text': en,
@@ -423,12 +423,12 @@ class DatabaseHelper {
                'difficulty': 1
              }, conflictAlgorithm: ConflictAlgorithm.replace);
              
-             // Insert Map
+             // 插入映射关系
              batch.insert('word_sentence_map', {
                'word_id': id,
                'sentence_id': sId,
-               'is_primary': sIndex == 1 ? 1 : 0, // First one is primary
-               'word_position': -1 // Not calculating position for now
+               'is_primary': sIndex == 1 ? 1 : 0, // 第一条标记为主例句
+               'word_position': -1 // 暂不计算词位
              }, conflictAlgorithm: ConflictAlgorithm.replace);
            }
          }
@@ -436,44 +436,7 @@ class DatabaseHelper {
      }
   }
 
-  Future<void> _seedFromTxt(Batch batch, String content, int grade, int semester) async {
-        final lines = content.split('\n');
-        String currentUnit = 'Module 1';
-        int unitIndex = 1;
-        int wordIndex = 0;
-
-        for (var line in lines) {
-          line = line.trim();
-          if (line.isEmpty) continue;
-
-          if (line.startsWith('#')) {
-            currentUnit = line.substring(1).trim(); 
-            if (currentUnit.isEmpty) currentUnit = 'Module 1';
-            unitIndex++; 
-            wordIndex = 0; 
-            continue;
-          }
-
-          wordIndex++;
-          final wordId = 'word_${grade}_${semester}_${unitIndex}_$wordIndex';
-          
-          final word = Word(
-            id: wordId,
-            text: line,
-            meaning: '[释义]', 
-            phonetic: '/phonetic/', 
-            grade: grade,
-            semester: semester,
-            unit: currentUnit,
-            difficulty: 1,
-            category: 'general',
-          );
-
-          batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
-        }
-  }
-
-  /// Safe Update: Updates words from JSON without deleting progress
+  /// 安全更新：从 数据文件 更新单词且保留进度
   Future<void> updateLibraryFromAssets() async {
     final db = await database;
     print('Starting SAFE library update from MANIFEST...');
@@ -563,23 +526,23 @@ class DatabaseHelper {
      
      final id = 'word_${bookId}_${unit.hashCode}_$index';
      
-     // IMPORTANT: Use INSERT OR UPDATE logic to preserve ID and Foreign Keys
-     // SQLite 'INSERT OR REPLACE' deletes the old row, triggering Cascade Delete on foreign keys.
-     // We must use explicit UPSERT syntax.
+     // 重要：使用 插入或更新 保持 编号 与外键
+     // 数据库 的 插入或替换 会删除旧行并触发级联删除
+     // 必须使用明确的 插入或更新 语法
      
      final meaning = data['meaning'] ?? '[释义]';
      final phonetic = data['phonetic'] ?? '';
-     // Syllables and others
+     // 音节等字段处理
      String syllablesJson = '[]';
      if (data['syllables'] != null && data['syllables'] is List) {
-       syllablesJson = jsonEncode(data['syllables']); // Store as simple string if needed or just comma sep
-       // Actually 'words' table defines syllables as TEXT, but logic above used List -> which might be error in _insertWord? 
-       // Checked _insertWord: it initializes List but ignores it for DB insert unless Word.toJson() handles it.
-       // Word.toJson stores it as JSON string usually. Let's assume Word model handles serialization.
+       syllablesJson = jsonEncode(data['syllables']); // 必要时存成字符串或逗号分隔
+       // 表的 是 文本，上面使用 列表 可能不一致
+       // 检查 _单词：若模型未处理序列化会被忽略
+       // 通常 单词. 会存成 数据文件 字符串
      }
      
-     // Construct the SQL with rawInsert for Upsert support
-     // ON CONFLICT(id) DO UPDATE SET ...
+     // 使用 原始插入 构造 插入或更新 语句
+     // 冲突时执行更新
      final pos = data['pos'] ?? '';
      batch.rawInsert('''
        INSERT INTO words (id, text, meaning, phonetic, pos, grade, semester, unit, difficulty, category, book_id, order_index, syllables)
@@ -596,10 +559,10 @@ class DatabaseHelper {
        id, text, meaning, phonetic, pos, grade, semester, unit, 1, 'general', bookId, index, syllablesJson
      ]);
 
-      // Sentences: These are less critical to preserve progress since they don't hold progress directly (usually).
-      // But WordSentenceMap does. 
-      // For sentences, we can just replace them if their IDs are deterministic.
-      // IDs are 'sentence_${wordId}_$index'.
+      // 例句不直接承载进度，保留优先级较低
+      // 但 词句映射表 会受影响
+      // 若例句 编号 可复现，可直接替换
+      // 例句 编号 形如 _{单词编号}_{序号}
       
       if (data.containsKey('app_sentences')) {
        final sentences = data['app_sentences'] as List;
@@ -612,7 +575,7 @@ class DatabaseHelper {
            if (en.isNotEmpty) {
              final sId = 'sentence_${id}_$sIndex';
              
-             // Upsert Sentence
+             // 插入或更新 例句
              batch.rawInsert('''
                INSERT INTO sentences (id, text, translation, category, difficulty)
                VALUES (?, ?, ?, ?, ?)
@@ -621,20 +584,20 @@ class DatabaseHelper {
                  translation = excluded.translation
              ''', [sId, en, cn, 'example', 1]);
              
-             // Ensure Map exists (safe to replace strictly speaking as it's just a link)
+             // 确保映射存在（只是关联关系）
              batch.insert('word_sentence_map', {
                'word_id': id,
                'sentence_id': sId,
                'is_primary': sIndex == 1 ? 1 : 0, 
                'word_position': -1
-             }, conflictAlgorithm: ConflictAlgorithm.ignore); // Ignore if exists
+             }, conflictAlgorithm: ConflictAlgorithm.ignore); // 已存在则忽略
            }
          }
        }
      }
   }
 
-  // Helper method to reset DB (for debugging)
+  // 重置数据库的辅助方法（调试用）
   Future<void> resetDB() async {
      final dbPath = await getDatabasesPath();
      final path = join(dbPath, 'wordcard_coach.db');

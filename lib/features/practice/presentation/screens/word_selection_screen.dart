@@ -37,7 +37,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
 
     try {
       final stats = await _userStatsDao.getUserStats();
-      // Get 4 words: 1 correct + 3 distractors
+      // 说明：逻辑说明
       final words = await _wordDao.getNewWords(
         4, 
         grade: stats.currentGrade, 
@@ -59,13 +59,13 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
   }
 
   void _handleOptionSelected(String wordId) {
-    if (_selectedOptionId != null) return; // Already selected
+    if (_selectedOptionId != null) return; // 已选择则忽略
 
     setState(() {
       _selectedOptionId = wordId;
     });
 
-    // Simple delay to show result then load next word
+    // 稍作延迟以展示结果
     Future.delayed(const Duration(seconds: 1), () {
       if (mounted) {
         _loadNewWord();
@@ -119,13 +119,13 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Enhanced wide detection: >600 (Tablet) OR (>480 && Landscape)
+          // 说明：逻辑说明
           final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
           if (isWide) {
             return Row(
               children: [
-                // Left Panel: Word Card
+                // 说明：逻辑说明
                 Expanded(
                   flex: 4,
                   child: SingleChildScrollView(
@@ -133,7 +133,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
                     child: _buildWordCard(),
                   ),
                 ),
-                // Right Panel: Options
+                // 说明：逻辑说明
                 Expanded(
                   flex: 5,
                   child: Container(
@@ -164,7 +164,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
             );
           }
 
-          // Portrait
+          // 说明：逻辑说明
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -213,7 +213,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
           Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
           const SizedBox(height: 24),
 
-          // TTS Button
+          // 说明：逻辑说明
           Container(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -238,12 +238,12 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
   }
 
   Widget _buildOption(BuildContext context, Word optionWord) {
-    // Check if this option is selected
+    // 说明：逻辑说明
     final isSelected = _selectedOptionId == optionWord.id;
-    // Check if this option is correct (only if an option has been selected)
+    // 说明：逻辑说明
     final isCorrect = optionWord.id == _currentWord!.id;
     
-    // Determine color state
+    // 说明：逻辑说明
     Color? buttonColor = Colors.white;
     Color? textColor = AppColors.textHighEmphasis;
     Widget? icon;
@@ -260,10 +260,10 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
       }
     }
 
-    // Display meaning if available, otherwise word text (since meaning is placeholder)
-    // Actually our placeholder is '[释义]', maybe append word text to distinguish?
-    // Let's just show text for now since meaning is not real.
-    // User requested "connect pages...". I'll show "meaning (text)" or just "text" if meaning is broken.
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     final displayText = "${optionWord.meaning} (${optionWord.text})";
 
     return BubblyButton(

@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 import '../database_helper.dart';
 import '../models/user_stats.dart';
 
@@ -16,7 +15,7 @@ class UserStatsDao {
     if (maps.isNotEmpty) {
       return UserStats.fromJson(maps.first);
     } else {
-      // Should have been initialized by DatabaseHelper, but just in case
+      // 理论上已初始化，这里兜底
       final defaultStats = UserStats(updatedAt: DateTime.now().millisecondsSinceEpoch);
       await db.insert('user_stats', defaultStats.toJson());
       return defaultStats;
@@ -34,8 +33,8 @@ class UserStatsDao {
   }
 
   Future<void> updateGrade(int grade, int semester) async {
-    // Deprecated? Or update bookId too if known?
-    // For now, only update grade/semester, but we should eventually migrate calls to updateCurrentBook
+    // 可能已废弃？或同时更新 教材编号
+    // 暂仅更新年级/学期，后续迁移到统一入口
     final db = await _dbHelper.database;
     await db.update(
       'user_stats',

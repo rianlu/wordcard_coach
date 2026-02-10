@@ -24,14 +24,14 @@ class SpellingPracticeView extends StatefulWidget {
 
 class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
-  bool _showSuccess = false; // Add success state
+  bool _showSuccess = false; // 加入成功状态
   int _hintsUsed = 0;
-  bool _revealFullWord = false; // Show full word when hints exhausted + wrong
+  bool _revealFullWord = false; // 提示用尽且错误时显示完整单词
   
-  // Configuration
-  static const int _maxHints = 2; // Maximum hints allowed
+  // 配置
+  static const int _maxHints = 2; // 最大提示次数
 
-  // Game State
+  // 游戏状态
   String _targetWord = "";
   List<int> _missingIndices = [];
   List<String> _userInputs = [];
@@ -60,19 +60,19 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     
     final random = Random();
     int len = _targetWord.length;
-    // Determine how many letters to hide (e.g., 30-50%)
-    // Ensure upper bound is at least 1 (for 1-letter words)
+    // 计算隐藏字母数量
+    // 保证至少隐藏 1 个字母
     int upperLimit = max(1, len - 1);
     int missingCount = (len * 0.4).ceil().clamp(1, upperLimit);
     
-    // Select random unique indices
+    // 随机选择唯一索引
     Set<int> indices = {};
-    // Retry limit to prevent infinite loop for all-space strings (unlikely)
+    // 重试次数限制
     int attempts = 0;
     while (indices.length < missingCount && attempts < 100) {
       attempts++;
       int randIndex = random.nextInt(len);
-      // Don't hide spaces or non-alphanumeric chars if desired, but user specifically asked about spaces.
+      // 不隐藏空格或特殊字符
       if (_targetWord[randIndex].trim().isEmpty) continue;
       
       indices.add(randIndex);
@@ -80,15 +80,15 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     _missingIndices = indices.toList()..sort();
     _userInputs = List.filled(missingCount, "");
 
-    // Prepare keyboard
-    // Include all missing chars
+    // 准备键盘
+    // 包含所有缺失字母
     Set<String> letters = {};
     for (int idx in _missingIndices) {
       letters.add(_targetWord[idx].toUpperCase());
     }
-    // Add some random distractors
+    // 加入随机干扰字母
     const allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    while (letters.length < 8) { // Target 8 keys + backspace
+    while (letters.length < 8) { // 目标 8 个按键 + 退格
        letters.add(allChars[random.nextInt(allChars.length)]);
     }
     _keyboardLetters = letters.toList()..shuffle();
@@ -96,8 +96,8 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   }
 
   void _handleLetterInput(String char) {
-    if (_showSuccess) return; // Block input if already won
-    // Find first empty slot
+    if (_showSuccess) return; // 已完成时禁止输入
+    // 找到第一个空位
     int emptyIndex = _userInputs.indexOf("");
     if (emptyIndex != -1) {
       setState(() {
@@ -109,7 +109,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
   void _handleBackspace() {
     if (_showSuccess) return;
-    // Find last filled slot
+    // 找到最后一个已填位置
     int lastFilledIndex = _userInputs.lastIndexWhere((element) => element.isNotEmpty);
     if (lastFilledIndex != -1) {
       setState(() {
@@ -120,9 +120,9 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
   void _useHint() {
     if (_showSuccess || _revealFullWord) return;
-    if (_hintsUsed >= _maxHints) return; // Limit reached
+    if (_hintsUsed >= _maxHints) return; // 达到提示上限
     
-    // Find empty slots
+    // 查找空位
     List<int> emptyIndices = [];
     for (int i = 0; i < _userInputs.length; i++) {
       if (_userInputs[i].isEmpty) emptyIndices.add(i);
@@ -130,12 +130,12 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
     if (emptyIndices.isNotEmpty) {
       setState(() {
-         // Pick random empty slot
+         // 随机选择空位
          final random = Random();
          int slotIndex = emptyIndices[random.nextInt(emptyIndices.length)];
          
-         // Find actual char from target word
-         // _missingIndices maps slot index -> word index
+         // 从目标单词取出实际字母
+         // 缺失索引映射：输入槽位 -> 单词索引
          int wordIndex = _missingIndices[slotIndex];
          String char = _targetWord[wordIndex].toUpperCase();
          
@@ -150,7 +150,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
   void _checkCompletion() {
     if (!_userInputs.contains("")) {
-      // Reconstruct word
+      // 重建单词
       String constructed = "";
       int inputIndex = 0;
       for (int i = 0; i < _targetWord.length; i++) {
@@ -163,46 +163,46 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
       }
 
       if (constructed.toUpperCase() == _targetWord.toUpperCase()) {
-         // Correct!
-         // 1. Show Success UI Immediately
+         // 正确
+         // 1. 立即显示成功状态
          setState(() {
            _showSuccess = true;
          });
 
-         // 2. Play Audio Concurrently
+         // 2. 播放音频 同时
          AudioService().playWord(widget.word);
          
-         // 3. Show Success Overlay
+         // 3. 显示成功提示层
          if (mounted) {
             _showSuccessOverlay();
          }
       } else {
-        // Wrong
+        // 错误
          AudioService().playAsset('wrong.mp3');
          
-         // Check if hints are exhausted
+         // 检查是否用尽提示
          if (_hintsUsed >= _maxHints) {
-           // Hints exhausted + wrong answer -> reveal full word
+           // 提示用尽时展示完整单词
            setState(() {
              _revealFullWord = true;
-             // Fill in all missing letters
+             // 填充所有缺失字母
              for (int i = 0; i < _missingIndices.length; i++) {
                int wordIndex = _missingIndices[i];
                _userInputs[i] = _targetWord[wordIndex].toUpperCase();
              }
            });
            
-           // Play word pronunciation
+           // 播放单词读音
            AudioService().playWord(widget.word);
            
-           // Auto-advance after showing full word
+           // 展示完整单词后自动进入下一题
            Future.delayed(const Duration(milliseconds: 2000), () {
              if (mounted) {
-               widget.onCompleted(0); // 0 score for revealed word
+               widget.onCompleted(0); // 显示答案时记 0 分
              }
            });
          } else {
-           // Still have hints, let user retry
+           // 还有提示次数，允许重试
            Future.delayed(const Duration(milliseconds: 500), () {
               if (mounted) {
                  _showErrorToast();
@@ -275,10 +275,10 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
             );
           }
 
-          // Portrait Layout
+          // 竖屏布局
           return Column(
             children: [
-              // Top Section: Puzzle & Meaning
+              // 上部：拼图与释义
               Expanded(
                 flex: 4,
                 child: Padding(
@@ -297,7 +297,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
                 ),
               ),
               
-              // Bottom Section: Interaction
+              // 下部：交互区
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
@@ -357,8 +357,8 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   }
   
   Widget _buildPuzzleArea() {
-    // Dynamic sizing based on word length
-    // If word is long (>8 chars), reduce box size.
+    // 根据单词长度动态调整大小
+    // 单词较长时缩小尺寸
     double boxSize = _targetWord.length > 8 ? 32 : 44;
     double fontSize = _targetWord.length > 8 ? 18 : 24;
     double spacing = _targetWord.length > 8 ? 6 : 8;
@@ -369,7 +369,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
       runSpacing: spacing,
       children: List.generate(_targetWord.length, (index) {
          bool isMissing = _missingIndices.contains(index);
-         // ... (rest of logic remains the same, just use dynamic sizes)
+         // 其余逻辑保持不变，仅调整尺寸
          String char = _targetWord[index];
          
          String displayChar = char;
@@ -380,25 +380,25 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
          if (isMissing) {
            int slotIndex = _missingIndices.indexOf(index);
            if (_userInputs[slotIndex].isNotEmpty) {
-             // Filled
+             // 已填
              displayChar = _userInputs[slotIndex];
              bgColor = AppColors.primary.withValues(alpha: 0.1);
              borderColor = AppColors.primary;
              textColor = AppColors.primary;
            } else {
-             // Empty slot
+             // 空位
              displayChar = "";
              bgColor = Colors.white;
              borderColor = Colors.grey.shade300;
            }
          } else {
-            // Fixed letter
+            // 固定字母
             bgColor = Colors.grey.shade200;
             textColor = Colors.grey.shade500;
          }
 
          return Container(
-           width: boxSize, height: boxSize * 1.2, // Maintain aspect ratio
+           width: boxSize, height: boxSize * 1.2, // 保持宽高比
            alignment: Alignment.center,
            decoration: BoxDecoration(
              color: bgColor,
@@ -494,10 +494,10 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
       },
     );
 
-    // Delay then Advance
+    // 延迟后进入下一题
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (mounted) {
-         Navigator.of(context).pop(); // Close overlay
+         Navigator.of(context).pop(); // 关闭提示层
          int score = _hintsUsed > 0 ? 3 : 5;
          widget.onCompleted(score);
       }
@@ -525,7 +525,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
       width: 56, height: 56,
       child: BubblyButton(
         onPressed: _handleBackspace,
-        color: const Color(0xFFFEE2E2), // Red 100
+        color: const Color(0xFFFEE2E2), // 红色 100
         shadowColor: const Color(0xFFFECaca),
         padding: EdgeInsets.zero,
         borderRadius: 16,

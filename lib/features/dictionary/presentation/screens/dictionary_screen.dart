@@ -30,12 +30,12 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   int _offset = 0;
   final int _limit = 20;
 
-  // Filters
-  int? _masteryFilter; // null=全部, 0=未学, 1=学习中, 2=已掌握
-  String? _currentBookId; // null = All Books
+  // 说明：逻辑说明
+  int? _masteryFilter; // 说明：逻辑说明
+  String? _currentBookId; // 说明：逻辑说明
   String? _currentUnit;
   
-  // Metadata
+  // 说明：逻辑说明
   List<dynamic> _books = [];
   Map<int, int> _counts = {0: 0, 1: 0, 2: 0};
   List<String> _units = [];
@@ -56,27 +56,27 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   }
 
   void _onSearchChanged() {
-    // Debounce can be added if needed
+    // 说明：逻辑说明
     _reload();
   }
 
   Future<void> _loadMetadata() async {
     try {
-        // Load books
+        // 说明：逻辑说明
         final String jsonString = await rootBundle.loadString('assets/data/books_manifest.json');
         _books = jsonDecode(jsonString);
         
-        // Load user stats for default book
+        // 说明：逻辑说明
         final stats = await _userStatsDao.getUserStats();
         
-        // Default to user's book, or first book, but allowing null for "All"
+        // 说明：逻辑说明
         if (stats.currentBookId.isNotEmpty) {
            _currentBookId = stats.currentBookId;
         } else if (_books.isNotEmpty) {
            _currentBookId = _books[0]['id'];
         }
             
-        // Load units for this book
+        // 说明：逻辑说明
         await _loadUnits();
         
         _reload();
@@ -93,7 +93,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
         return;
     }
     _units = await _wordDao.getUnitsForBook(_currentBookId!);
-    _units.sort(_naturalCompare); // Apply natural sort
+    _units.sort(_naturalCompare); // 说明：逻辑说明
     _currentUnit = null; 
     setState(() {});
   }
@@ -117,7 +117,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
         final int compare = aInt.compareTo(bInt);
         if (compare != 0) return compare;
       } else if (aInt != null) {
-        return -1; // Numbers come before text
+        return -1; // 说明：逻辑说明
       } else if (bInt != null) {
         return 1;
       } else {
@@ -132,11 +132,11 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     return 0;
   }
 
-  /// Full reload - called when data is restored from backup
-  /// This reloads book context AND word data
+  /// 说明：逻辑说明
+  /// 说明：逻辑说明
   Future<void> _fullReload() async {
     try {
-      // Re-read user's current book from database
+      // 说明：逻辑说明
       final stats = await _userStatsDao.getUserStats();
       if (stats.currentBookId.isNotEmpty) {
         _currentBookId = stats.currentBookId;
@@ -148,7 +148,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     await _reload();
   }
 
-  /// Regular reload - just refreshes word list with current filters
+  /// 说明：逻辑说明
   Future<void> _reload() async {
     setState(() {
       _words = [];
@@ -156,7 +156,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       _hasMore = true;
       _isLoading = true;
     });
-    // Update counts whenever filter context changes (book, unit, search)
+    // 说明：逻辑说明
     _updateCounts();
     await _loadMore();
   }
@@ -246,7 +246,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                                    return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
                                 }
                                 return _buildWordItem(_words[index])
-                                    .animate(delay: (50 * index).clamp(0, 500).ms) // Staggered list
+                                    .animate(delay: (50 * index).clamp(0, 500).ms) // 说明：逻辑说明
                                     .fadeIn(duration: 300.ms)
                                     .slideX(begin: 0.1, end: 0);
                               },
@@ -284,7 +284,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          // Search Bar
+          // 说明：逻辑说明
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             decoration: BoxDecoration(
@@ -332,7 +332,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Handle
+                      // 说明：逻辑说明
                       Container(
                         margin: const EdgeInsets.only(top: 12),
                         width: 40,
@@ -342,7 +342,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                      // Title
+                      // 说明：逻辑说明
                       Padding(
                         padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
                         child: Row(
@@ -359,9 +359,9 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                           ],
                         ),
                       ),
-                      // Divider
+                      // 说明：逻辑说明
                       Divider(height: 1, color: Colors.grey.shade100),
-                      // Items
+                      // 说明：逻辑说明
                       Flexible(
                         child: ListView.separated(
                           shrinkWrap: true,
@@ -436,7 +436,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                           },
                         ),
                       ),
-                      // Safe area padding
+                      // 说明：逻辑说明
                       SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
                     ],
                   ),
@@ -482,7 +482,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-           // Unit Selector
+           // 说明：逻辑说明
             if (_units.isNotEmpty)
               Padding(
                   padding: const EdgeInsets.only(right: 8),
@@ -503,7 +503,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Handle
+                                    // 说明：逻辑说明
                                     Container(
                                       margin: const EdgeInsets.only(top: 12),
                                       width: 40,
@@ -513,7 +513,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                     ),
-                                    // Title
+                                    // 说明：逻辑说明
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
                                       child: Row(
@@ -529,9 +529,9 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                                         ],
                                       ),
                                     ),
-                                    // Divider
+                                    // 说明：逻辑说明
                                     Divider(height: 1, color: Colors.grey.shade100),
-                                    // Items
+                                    // 说明：逻辑说明
                                     Flexible(
                                       child: ListView.separated(
                                         shrinkWrap: true,
@@ -591,7 +591,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                                         },
                                       ),
                                     ),
-                                    // Safe area padding
+                                    // 说明：逻辑说明
                                     SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
                                   ],
                                 ),
@@ -657,10 +657,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   }
 
   Widget _buildWordItem(Map<String, dynamic> item) {
-    // item contains word fields + status fields
+    // 说明：逻辑说明
     final text = item['text'] as String;
     final meaning = item['meaning'] as String;
-    final mastery = item['mastery_level'] as int? ?? 0; // null if not learned (left join)
+    final mastery = item['mastery_level'] as int? ?? 0; // 说明：逻辑说明
     final isLearned = (item['is_learned'] as int? ?? 0) == 1;
     final interval = item['interval'] as int? ?? 1;
 
@@ -674,20 +674,20 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
         badgeText = "已掌握";
         badgeIcon = Icons.check_circle;
       } else {
-        // Learning - differentiate by interval
-        // interval 1-2: just started (light orange)
-        // interval 3-7: progressing (orange)
-        // interval 8+: almost there (yellow-green)
+        // 说明：逻辑说明
+        // 说明：逻辑说明
+        // 说明：逻辑说明
+        // 说明：逻辑说明
         if (interval >= 8) {
-          badgeColor = const Color(0xFF8BC34A); // Light green - almost mastered
+          badgeColor = const Color(0xFF8BC34A); // 说明：逻辑说明
           badgeText = "熟练中";
           badgeIcon = Icons.trending_up;
         } else if (interval >= 3) {
-          badgeColor = const Color(0xFFFF9800); // Orange - progressing
+          badgeColor = const Color(0xFFFF9800); // 说明：逻辑说明
           badgeText = "学习中";
           badgeIcon = Icons.schedule;
         } else {
-          badgeColor = const Color(0xFFFFB74D); // Light orange - just started
+          badgeColor = const Color(0xFFFFB74D); // 说明：逻辑说明
           badgeText = "初学";
           badgeIcon = Icons.flag;
         }
@@ -732,24 +732,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
         ),
     );
   }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.search_off_rounded, size: 80, color: Colors.grey.shade200),
-          const SizedBox(height: 16),
-          const Text("没有找到单词", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-
   void _showWordDetail(Map<String, dynamic> item) async {
     final wordId = item['id'] as String;
     
-    // Fetch full detail including examples
+    // 说明：逻辑说明
     final Word? fullWord = await _wordDao.getWordDetails(wordId);
     if (fullWord == null) return;
     
@@ -817,7 +803,7 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // Progress Info
+    // 说明：逻辑说明
     final isLearned = (widget.item['is_learned'] as int? ?? 0) == 1;
     final nextReviewTs = widget.item['next_review_date'] as int?;
     final interval = widget.item['interval'] as int?;
@@ -830,7 +816,7 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
     if (isLearned) {
         final int currentInterval = interval ?? 1;
         if (mastery == 2) {
-             double ratio = currentInterval / 30.0; // cap at 30 days
+             double ratio = currentInterval / 30.0; // 说明：逻辑说明
              if (ratio > 1.0) ratio = 1.0;
              memoryStrength = 0.8 + (ratio * 0.2); // 0.8 - 1.0
              memoryColor = Colors.green;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// A replacement for [IndexedStack] that animates transitions between children
-/// while preserving their state.
+/// 说明：逻辑说明
+/// 说明：逻辑说明
 class AnimatedIndexedStack extends StatefulWidget {
   final int index;
   final List<Widget> children;
@@ -60,12 +60,12 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
           animation: _controllers[i],
           builder: (context, child) {
             final value = _controllers[i].value;
-            // Use Offstage to hide completely invisible widgets for performance
+            // 说明：逻辑说明
             return Offstage(
               offstage: value == 0,
               child: Opacity(
                 opacity: value,
-                // Use IgnorePointer to prevent interaction with fading-out widgets
+                // 说明：逻辑说明
                 child: IgnorePointer(
                   ignoring: i != widget.index,
                   child: child,

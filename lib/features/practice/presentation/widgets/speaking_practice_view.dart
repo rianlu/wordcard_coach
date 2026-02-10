@@ -12,14 +12,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import 'practice_success_overlay.dart';
 
-/// Speaking practice state machine
+/// 说明：逻辑说明
 enum SpeakingState { 
-  idle,          // Initial state
-  playingAudio,  // Playing standard pronunciation
-  listening,     // Actively listening for user speech
-  processing,    // Processing recognition result
-  success,       // Successfully matched
-  failed         // Failed to match (will retry or skip)
+  idle,          // 说明：逻辑说明
+  playingAudio,  // 说明：逻辑说明
+  listening,     // 说明：逻辑说明
+  processing,    // 说明：逻辑说明
+  success,       // 说明：逻辑说明
+  failed         // 说明：逻辑说明
 }
 
 class SpeakingPracticeView extends StatefulWidget {
@@ -39,19 +39,19 @@ class SpeakingPracticeView extends StatefulWidget {
 class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin {
   late AnimationController _pulseController;
   
-  // Simplified state management
+  // 说明：逻辑说明
   SpeakingState _state = SpeakingState.idle;
   String _lastHeard = '';
   int _retryCount = 0;
 
   
-  // Timers
+  // 说明：逻辑说明
   Timer? _skipTimer;
   Timer? _listenTimeoutTimer;
   Timer? _successTimer;
   StreamSubscription<bool>? _listeningSubscription;
   
-  // Configuration
+  // 配置
   static const int _maxRetries = 3;
   static const int _skipButtonDelaySeconds = 3;
   static const int _listenTimeoutSeconds = 8;
@@ -64,16 +64,16 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       duration: const Duration(seconds: 2),
     );
     
-    // Subscribe to mic state for UI feedback
+    // 说明：逻辑说明
     _listeningSubscription = SpeechService().listeningState.listen((isActive) {
       if (mounted && _state == SpeakingState.listening) {
         if (isActive) {
-          // Visual feedback when mic actually activates
+          // 说明：逻辑说明
           AudioService().playAsset('mic_start.mp3');
         } else {
-          // Mic stopped actively listening
-          // If we are still in 'listening' state, it means we didn't get a success result yet.
-          // Check if we heard anything to give immediate feedback instead of waiting for timeout.
+          // 说明：逻辑说明
+          // 说明：逻辑说明
+          // 说明：逻辑说明
           if (_lastHeard.isNotEmpty) {
              debugPrint("Speech session ended with input: $_lastHeard");
              _handleSpeechSessionEnded();
@@ -82,10 +82,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       }
     });
     
-    // Pre-warm speech engine
+    // 说明：逻辑说明
     SpeechService().init();
     
-    // Start practice sequence
+    // 说明：逻辑说明
     _startPractice();
   }
 
@@ -127,31 +127,31 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     super.dispose();
   }
 
-  /// Main practice flow
+  /// 说明：逻辑说明
   Future<void> _startPractice() async {
     if (!mounted) return;
     
-    // Small delay for widget transition
+    // 说明：逻辑说明
     await Future.delayed(const Duration(milliseconds: 200));
     if (!mounted) return;
     
-    // Play standard pronunciation
+    // 说明：逻辑说明
     setState(() => _state = SpeakingState.playingAudio);
     
     await AudioService().playWord(widget.word);
     
-    // Allow audio focus to release
+    // 说明：逻辑说明
     await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
     
-    // Start listening
+    // 说明：逻辑说明
     _beginListening();
   }
 
   void _beginListening() {
     if (!mounted || _state == SpeakingState.success) return;
     
-    // Cancel any existing timers before starting new session
+    // 说明：逻辑说明
     _skipTimer?.cancel();
     _listenTimeoutTimer?.cancel();
     
@@ -162,17 +162,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     
     _pulseController.repeat();
     
-    // Start skip button timer (reduced from 5s to 3s)
+    // 说明：逻辑说明
     _skipTimer = Timer(const Duration(seconds: _skipButtonDelaySeconds), () {
-      if (mounted) setState(() {});  // Trigger rebuild to show skip button
+      if (mounted) setState(() {});  // 说明：逻辑说明
     });
     
-    // Start listen timeout timer
+    // 说明：逻辑说明
     _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
       _handleListenTimeout();
     });
     
-    // Actually start listening
+    // 说明：逻辑说明
     _startSpeechRecognition();
   }
 
@@ -195,13 +195,13 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   void _scheduleRetry() {
     if (_retryCount >= _maxRetries) {
-      // Max retries reached - show skip button, set state to failed
+      // 说明：逻辑说明
       debugPrint('Max retries reached, showing skip prompt');
       _pulseController.stop();
       _pulseController.reset();
       setState(() {
         _state = SpeakingState.failed;
-        _lastHeard = ''; // Clear any partial text
+        _lastHeard = ''; // 说明：逻辑说明
       });
       return;
     }
@@ -209,14 +209,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     _retryCount++;
     debugPrint('Retry attempt $_retryCount/$_maxRetries');
     
-    // Update UI to show retry is happening
+    // 说明：逻辑说明
     if (mounted) {
       setState(() {
-        _lastHeard = ''; // Clear previous heard text
+        _lastHeard = ''; // 说明：逻辑说明
       });
     }
     
-    // Delay before retry
+    // 说明：逻辑说明
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted && _state == SpeakingState.listening) {
         _startSpeechRecognition();
@@ -231,22 +231,22 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     SpeechService().stopListening();
     
     if (_lastHeard.isEmpty) {
-      // No speech detected at all
+      // 说明：逻辑说明
       if (_retryCount < _maxRetries) {
         _retryCount++;
         debugPrint('Timeout retry attempt $_retryCount/$_maxRetries');
-        // Restart listening after a short delay
+        // 说明：逻辑说明
         Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted && _state == SpeakingState.listening) {
             _startSpeechRecognition();
-            // Reset timeout timer
+            // 说明：逻辑说明
             _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
               _handleListenTimeout();
             });
           }
         });
       } else {
-        // Max retries - set to failed state and show skip
+        // 说明：逻辑说明
         debugPrint('Max retries reached after timeout');
         _pulseController.stop();
         _pulseController.reset();
@@ -255,19 +255,19 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         });
       }
     } else {
-      // Some speech was detected but didn't match - prompt retry
+      // 说明：逻辑说明
       _showRetryPrompt(_lastHeard);
     }
   }
 
   void _handleSpeechSessionEnded() {
-    _listenTimeoutTimer?.cancel(); // Cancel timeout since session ended naturally
+    _listenTimeoutTimer?.cancel(); // 说明：逻辑说明
     
-    // We already have _lastHeard populated from onResult
-    // Since we are still here, it means it wasn't a Success (3 stars) or Good (2 stars)
-    // It must be a 0 or 1 star match.
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     
-    // Trigger retry prompt with error feedback
+    // 触发重试提示并显示错误反馈
     _showRetryPrompt(_lastHeard);
   }
 
@@ -281,24 +281,24 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     
     final target = widget.word.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
     
-    // Calculate match quality and stars
+    // 计算匹配质量与星级
     final stars = _calculateStars(recognized, target);
     
-    // Only auto-pass with 2+ stars
+    // 2 星以上才自动通过
     if (stars >= 2) {
       _handleResult(stars, recognized);
     } else if (stars == 1) {
-      // Partial match - prompt to try again
+      // 部分匹配时提示重试
       debugPrint('Partial match only (1 star), prompting retry');
-      _listenTimeoutTimer?.cancel(); // Cancel timeout, we have input
+      _listenTimeoutTimer?.cancel(); // 已有输入，取消超时
       _showRetryPrompt(recognized);
     }
-    // If stars == 0, continue listening for more input
+    // 0 星时继续监听更多输入
   }
 
-  /// Calculate stars based on match quality
-  /// Normalize common abbreviations in educational content
-  /// Maps abbreviations to their spoken forms for better matching
+  /// 根据匹配质量计算星级
+  /// 规范教育场景常见缩写
+  /// 将缩写映射为发音形式以提高匹配
   String _normalizeAbbreviations(String text) {
     final abbreviations = {
       'sb.': 'somebody',
@@ -322,80 +322,80 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       result = result.replaceAll(abbr.toLowerCase(), full);
     });
     
-    // Also remove punctuation for cleaner matching
+    // 移除标点以便匹配
     result = result.replaceAll(RegExp(r'[^\w\s]'), ' ').replaceAll(RegExp(r'\s+'), ' ').trim();
     
     return result;
   }
 
-  /// Calculate stars based on speech recognition match quality
+  /// 根据识别匹配度计算星级
   int _calculateStars(String recognized, String target) {
-    // Normalize both strings for comparison
+    // 规范化字符串以便比较
     String normalizedRecognized = _normalizeAbbreviations(recognized);
     String normalizedTarget = _normalizeAbbreviations(target);
     
-    // Check for exact match or contains
+    // 检查完全匹配或包含关系
     if (normalizedRecognized == normalizedTarget || normalizedRecognized.contains(normalizedTarget)) {
-      return 3; // Perfect!
+      return 3; // 完全匹配
     }
     
-    // Check Levenshtein distance for close matches
+    // 使用编辑距离判断近似
     int distance = _levenshtein(normalizedRecognized, normalizedTarget);
     
     if (distance <= 1) {
-      return 3; // Very close, treat as perfect
+      return 3; // 非常接近，视为完美匹配
     }
     
     if (distance <= 3) {
-      return 2; // Good match
+      return 2; // 匹配良好
     }
     
-    // Check Soundex (phonetic match)
+    // 使用 音标算法 做语音相似匹配
     String targetSoundex = PhoneticUtils.soundex(normalizedTarget);
     for (String word in normalizedRecognized.split(' ')) {
       if (PhoneticUtils.soundex(word) == targetSoundex) {
-        return 2; // Phonetically similar
+        return 2; // 发音相似
       }
     }
     
-    // Check if target words appear in recognized
+    // 检查目标词是否出现在识别结果中
     List<String> targetWords = normalizedTarget.split(' ');
     List<String> recognizedWords = normalizedRecognized.split(' ');
     
     int matchedWords = 0;
     for (String tw in targetWords) {
-      if (tw.length < 2) continue; // Skip short words
+      if (tw.length < 2) continue; // 跳过过短的词
       if (recognizedWords.any((rw) => rw == tw || _levenshtein(rw, tw) <= 1)) {
         matchedWords++;
       }
     }
     
-    // If most words match, it's a good match
+    // 大部分匹配则判定为较好
     if (targetWords.isNotEmpty && matchedWords >= targetWords.length * 0.7) {
       return 2;
     }
     
-    // Check if target word appears in any form
+    // 检查目标词是否以其他形式出现
     if (recognizedWords.any((w) => _levenshtein(w, normalizedTarget) <= 2)) {
-      return 1; // Partial match - will trigger retry
+      return 1; // 部分匹配时提示重试
     }
     
-    // If we detected speech but couldn't match at all, return 1 (will trigger retry)
+    // 检测到语音但未匹配时返回 1
     if (recognized.isNotEmpty) {
       return 1;
     }
     
-    return 0; // No match at all
+    return 0; // 完全未匹配
   }
 
-  /// Show retry prompt when speech was detected but not matched well
+  /// 检测到语音但匹配差时提示重试
   void _showRetryPrompt(String recognized) {
     if (!mounted) return;
     
-    // Play wrong sound effect
+    // 播放错误音效
     AudioService().playAsset('wrong.mp3');
     
-    // Cancel timers and stop current listening
+    // 取消计时并停止当前监听
     _skipTimer?.cancel();
     _listenTimeoutTimer?.cancel();
     SpeechService().stopListening();
@@ -405,14 +405,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       _state = SpeakingState.failed;
     });
     
-    // Auto-restart after showing feedback
+    // 展示反馈后自动重试
     Future.delayed(const Duration(milliseconds: 1500), () {
       if (mounted && _state == SpeakingState.failed) {
         _retryCount++;
         if (_retryCount < _maxRetries) {
           _beginListening();
         } else {
-          // Max retries - show skip
+          // 达到最大重试次数，显示跳过
           setState(() {});
         }
       }
@@ -443,13 +443,13 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     SpeechService().cancel();
     _pulseController.stop();
     _pulseController.reset();
-    widget.onCompleted(0); // 0 score for skip
+    widget.onCompleted(0); // 跳过记 0 分
   }
 
   void _replayStandardAudio() async {
     if (_state != SpeakingState.listening) return;
     
-    // Pause listening while playing
+    // 播放时暂停监听
     await SpeechService().stopListening();
     _listenTimeoutTimer?.cancel();
     _pulseController.stop();
@@ -465,7 +465,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   void _showSuccessOverlay(int stars) {
-    // Sound effect
+    // 音效
     AudioService().playAsset('correct.mp3');
     
     showGeneralDialog(
@@ -483,17 +483,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       },
     );
 
-    // Play word pronunciation after a short delay
+    // 播放单词读音 稍作延迟后
     Future.delayed(const Duration(milliseconds: 600), () {
       if (mounted) {
         AudioService().playWord(widget.word);
       }
     });
 
-    // Auto-advance
+    // 自动进入下一题
     _successTimer = Timer(const Duration(milliseconds: 2500), () {
       if (mounted) {
-        Navigator.of(context).pop(); // Close overlay
+        Navigator.of(context).pop(); // 关闭提示层
         widget.onCompleted(stars);
       }
     });
@@ -508,7 +508,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     }
   }
 
-  // Levenshtein distance algorithm
+  // 编辑距离算法
   int _levenshtein(String s, String t) {
     if (s == t) return 0;
     if (s.isEmpty) return t.length;
@@ -534,13 +534,13 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     return v1[t.length];
   }
 
-  /// Determine if skip button should be visible
+  /// 判断是否显示跳过按钮
   bool _shouldShowSkipButton() {
-    // Show skip after timeout in listening state
+    // 监听超时后显示跳过
     if (_state == SpeakingState.listening && _skipTimer?.isActive == false) {
       return true;
     }
-    // Show skip when failed and max retries reached
+    // 失败且达到上限时显示跳过
     if (_state == SpeakingState.failed && _retryCount >= _maxRetries) {
       return true;
     }
@@ -595,7 +595,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
             );
           }
 
-          // Portrait Layout
+          // 竖屏布局
           return Column(
             children: [
               Expanded(
@@ -615,7 +615,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                 ),
               ),
               
-              // Bottom Controls Area
+              // 底部控制区
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(24, 32, 24, 48),
@@ -646,7 +646,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   Widget _buildVoiceWave() {
-     // Placeholder for audio visualizer or just some spacing
+     // 音频可视化占位
      return SizedBox(
        height: 60,
        child: Center(
@@ -656,7 +656,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                children: List.generate(5, (index) => 
                  Container(
                    width: 6,
-                   height: 20 + 20 * (index % 2 == 0 ? 1.0 : 0.6), // Fake wave
+                   height: 20 + 20 * (index % 2 == 0 ? 1.0 : 0.6), // 模拟波形
                    margin: const EdgeInsets.symmetric(horizontal: 4),
                    decoration: BoxDecoration(
                      color: AppColors.primary.withValues(alpha: 0.6),
@@ -677,7 +677,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Left: Skip button or Placeholder
+          // 左侧：跳过按钮/占位
           SizedBox(
             width: 80,
             child: _shouldShowSkipButton() 
@@ -688,10 +688,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
               : const SizedBox(),
           ),
 
-          // Center: Mic Button
+          // 中间：麦克风按钮
           _buildVoiceMicButton(),
 
-          // Right: Replay Button
+          // 右侧：重播按钮
           SizedBox(
             width: 80,
             child: Align(
@@ -719,7 +719,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 80, height: 80, // Much smaller
+        width: 80, height: 80, // 更小尺寸
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isListening ? const Color(0xFFFF5252) : AppColors.primary,
@@ -754,7 +754,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         Text(
           widget.word.text,
           style: GoogleFonts.plusJakartaSans(
-            fontSize: 48, // Much larger
+            fontSize: 48, // 更大尺寸
             fontWeight: FontWeight.w900,
             color: AppColors.primary,
           ),

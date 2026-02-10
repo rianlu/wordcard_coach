@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Iciba (金山词霸) Daily Sentence API Service
-/// Provides daily English sentences with Chinese translation, audio, and images.
+/// 说明：逻辑说明
+/// 说明：逻辑说明
 class IcibaDailyService {
   static final IcibaDailyService _instance = IcibaDailyService._internal();
   factory IcibaDailyService() => _instance;
@@ -14,22 +14,22 @@ class IcibaDailyService {
   static const String _cacheKey = 'iciba_daily_cache';
   static const String _cacheTimeKey = 'iciba_daily_cache_time';
   
-  /// Cached sentence
+  /// 说明：逻辑说明
   DailySentence? _cachedSentence;
   
-  /// Get today's sentence (cached for the day)
+  /// 说明：逻辑说明
   Future<DailySentence?> getTodaySentence() async {
-    // Check memory cache first
+    // 说明：逻辑说明
     if (_cachedSentence != null) {
       return _cachedSentence;
     }
     
-    // Check persistent cache
+    // 说明：逻辑说明
     final prefs = await SharedPreferences.getInstance();
     final cachedJson = prefs.getString(_cacheKey);
     final cachedTime = prefs.getInt(_cacheTimeKey) ?? 0;
     
-    // Check if cache is from today
+    // 说明：逻辑说明
     final now = DateTime.now();
     final cacheDate = DateTime.fromMillisecondsSinceEpoch(cachedTime);
     final isToday = now.year == cacheDate.year && 
@@ -45,30 +45,30 @@ class IcibaDailyService {
       }
     }
     
-    // Fetch new sentence
+    // 说明：逻辑说明
     return await _fetchNewSentence(prefs);
   }
   
-  /// Force refresh (ignore cache)
+  /// 说明：逻辑说明
   Future<DailySentence?> refreshSentence() async {
     final prefs = await SharedPreferences.getInstance();
     return await _fetchNewSentence(prefs);
   }
   
-  /// Fetch a new sentence from API
+  /// 说明：逻辑说明
   Future<DailySentence?> _fetchNewSentence(SharedPreferences prefs) async {
     try {
       final uri = Uri.parse(_apiUrl);
       final response = await http.get(uri).timeout(const Duration(seconds: 10));
       
       if (response.statusCode == 200) {
-        // Use utf8.decode(response.bodyBytes) instead of response.body 
-        // to bypass errors with malformed Content-Type headers (e.g., trailing semicolons)
+        // 说明：逻辑说明
+        // 说明：逻辑说明
         final String body = utf8.decode(response.bodyBytes);
         final data = jsonDecode(body);
         final sentence = DailySentence.fromJson(data);
         
-        // Cache the sentence
+        // 说明：逻辑说明
         await prefs.setString(_cacheKey, jsonEncode(data));
         await prefs.setInt(_cacheTimeKey, DateTime.now().millisecondsSinceEpoch);
         
@@ -79,11 +79,11 @@ class IcibaDailyService {
       debugPrint('Error fetching iciba daily: $e');
     }
     
-    // Return a fallback sentence if API fails
+    // 说明：逻辑说明
     return _getFallbackSentence();
   }
   
-  /// Fallback sentence for when API fails
+  /// 说明：逻辑说明
   DailySentence _getFallbackSentence() {
     return DailySentence(
       id: '0',
@@ -97,14 +97,14 @@ class IcibaDailyService {
   }
 }
 
-/// Daily sentence model for Iciba API
+/// 说明：逻辑说明
 class DailySentence {
   final String id;
   final String englishContent;
   final String chineseNote;
   final String? audioUrl;
-  final String? imageUrl;         // Clean image without text
-  final String? shareImageUrl;    // Image with text overlay
+  final String? imageUrl;         // 说明：逻辑说明
+  final String? shareImageUrl;    // 说明：逻辑说明
   final String date;
   
   DailySentence({

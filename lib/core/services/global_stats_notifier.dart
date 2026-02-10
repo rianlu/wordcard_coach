@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-/// A simple singleton notifier to broadcast when global statistics 
-/// (like word progress, daily activity) have changed.
+/// 说明：逻辑说明
+/// 说明：逻辑说明
 class GlobalStatsNotifier extends ChangeNotifier {
   static final GlobalStatsNotifier _instance = GlobalStatsNotifier._internal();
   

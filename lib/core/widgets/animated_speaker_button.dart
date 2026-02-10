@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-/// An animated speaker button that shows playing state with color change
-/// and pulsing animation.
+/// 说明：逻辑说明
+/// 说明：逻辑说明
 class AnimatedSpeakerButton extends StatefulWidget {
   final VoidCallback onPressed;
   final bool isPlaying;

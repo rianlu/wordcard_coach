@@ -18,16 +18,16 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
 
   @override
   Widget build(BuildContext context) {
-    // Colors
-    const colorMastered = Color(0xFF22C55E); // Green 500
-    const colorReviewing = Color(0xFFF59E0B); // Amber 500
-    const colorNew = Color(0xFF94A3B8); // Slate 400
+    // 说明：逻辑说明
+    const colorMastered = Color(0xFF22C55E); // 绿色 500
+    const colorReviewing = Color(0xFFF59E0B); // 说明：逻辑说明
+    const colorNew = Color(0xFF94A3B8); // 说明：逻辑说明
 
     final total = widget.distribution.newWords + 
                   widget.distribution.learning + 
                   widget.distribution.mastered;
                   
-    // Prevent div by zero visual
+    // 说明：逻辑说明
     final safeTotal = total == 0 ? 1 : total; 
 
     return Container(
@@ -81,7 +81,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                     centerSpaceRadius: 60,
                     startDegreeOffset: -90,
                     sections: [
-                      // 1. Mastered
+                      // 说明：逻辑说明
                       PieChartSectionData(
                         color: colorMastered,
                         value: widget.distribution.mastered.toDouble(),
@@ -90,7 +90,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                         titleStyle: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                         showTitle: widget.distribution.mastered > 0,
                       ),
-                      // 2. Reviewing
+                      // 说明：逻辑说明
                       PieChartSectionData(
                         color: colorReviewing,
                         value: widget.distribution.learning.toDouble(),
@@ -99,7 +99,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                         titleStyle: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                         showTitle: widget.distribution.learning > 0,
                       ),
-                      // 3. New
+                      // 说明：逻辑说明
                       PieChartSectionData(
                         color: colorNew,
                         value: widget.distribution.newWords.toDouble(),
@@ -112,7 +112,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                   ),
                 ),
                 
-                // Center Text
+                // 说明：逻辑说明
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -140,7 +140,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
           
           const SizedBox(height: 24),
           
-          // Legend
+          // 说明：逻辑说明
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

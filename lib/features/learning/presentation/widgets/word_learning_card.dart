@@ -68,7 +68,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
     return SizedBox.expand(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Fix: Tablet Portrait should NOT be wide. Require Landscape.
+          // 说明：逻辑说明
           final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
 
           if (isWide) {
@@ -76,7 +76,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
               children: [
                 Row(
                   children: [
-                    // Left: Word Card
+                    // 说明：逻辑说明
                     Expanded(
                       flex: 5,
                       child: LayoutBuilder(
@@ -91,7 +91,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
                         }
                       ),
                     ),
-                    // Right: Example & Action
+                    // 说明：逻辑说明
                     Expanded(
                       flex: 4,
                       child: Container(
@@ -126,20 +126,20 @@ class _WordLearningCardState extends State<WordLearningCard> {
             );
           }
 
-          // Portrait Layout
+          // 竖屏布局
           return Stack(
             children: [
               Positioned.fill(
                 child: LayoutBuilder(
                   builder: (context, viewportConstraints) {
                     return SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(24, 64, 24, 120), // More top padding
+                      padding: const EdgeInsets.fromLTRB(24, 64, 24, 120), // 说明：逻辑说明
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight - 184, // Ensure min height for centering
+                          minHeight: viewportConstraints.maxHeight - 184, // 说明：逻辑说明
                         ),
                         child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.center, // Removed centering for top alignment
+                          // 说明：逻辑说明
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                              _buildWordInfoCard(),

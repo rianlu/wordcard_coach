@@ -33,13 +33,13 @@ class WordDao {
     });
   }
 
-  // Fetch sentences for a list of words
+  // 为单词列表加载例句
   Future<List<Word>> _attachSentences(List<Word> words) async {
     final db = await _dbHelper.database;
     List<Word> results = [];
     
     for (var word in words) {
-      // Query sentences linked to this word
+      // 查询该单词关联的例句
       final List<Map<String, dynamic>> sentenceMaps = await db.rawQuery('''
         SELECT s.text, s.translation 
         FROM sentences s
@@ -53,7 +53,7 @@ class WordDao {
         'cn': m['translation'] as String
       }).toList();
       
-      // Reconstitute word with examples
+      // 补全单词的例句信息
       results.add(Word(
         id: word.id,
         text: word.text,
@@ -84,7 +84,7 @@ class WordDao {
       args.add(semester);
     }
 
-    // args for LIMIT
+    // 数量限制 参数
     args.add(limit);
 
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
@@ -104,22 +104,22 @@ class WordDao {
   Future<List<Word>> getWordsDueForReview(int limit, {String? bookId, int? grade, int? semester}) async {
     final db = await _dbHelper.database;
     
-    // Calculate end of today (23:59:59) to include everything scheduled for today
+    // 计算今天结束时间以包含当天复习
     final now = DateTime.now();
     final endOfToday = DateTime(now.year, now.month, now.day, 23, 59, 59).millisecondsSinceEpoch;
     
-    // We join words and word_progress
-    // Filter words that ARE in word_progress AND next_review_date <= endOfToday
+    // 关联单词表与进度表
+    // 筛选已有进度且到期的单词
     
     String whereClause = 'p.next_review_date <= ?';
     List<dynamic> args = [endOfToday];
 
-    // Filter by book if possible
+    // 优先按教材筛选
     if (bookId != null && bookId.isNotEmpty) {
        whereClause += ' AND w.book_id = ?';
        args.add(bookId);
     } else {
-      // Legacy fallback
+      // 旧逻辑兜底
       if (grade != null) {
         whereClause += ' AND w.grade = ?';
         args.add(grade);
@@ -157,14 +157,14 @@ class WordDao {
         'word_id': word.id,
         'created_at': now,
         'updated_at': now,
-        // Defaults:
+        // 说明：逻辑说明
         'easiness_factor': 2.5,
         'interval': 1,
         'repetition': 0,
         'next_review_date': now + 86400000,
         'last_review_date': now,
-        'review_count': 1, // Count as 1 review (the learning session)
-        'mastery_level': 1, // Level 1 = Learned
+        'review_count': 1, // 说明：逻辑说明
+        'mastery_level': 1, // 说明：逻辑说明
       }, conflictAlgorithm: ConflictAlgorithm.ignore);
     }
 
@@ -182,7 +182,7 @@ class WordDao {
      final words = List.generate(maps.length, (i) {
       return Word.fromJson(maps[i]);
     });
-    // We don't necessarily need sentences for distractors
+    // 说明：逻辑说明
     return words;
   }
 
@@ -190,7 +190,7 @@ class WordDao {
     final db = await _dbHelper.database;
     final now = DateTime.now().millisecondsSinceEpoch;
 
-    // 1. Get current progress
+    // 说明：逻辑说明
     final List<Map<String, dynamic>> maps = await db.query(
       'word_progress',
       where: 'word_id = ?',
@@ -201,7 +201,7 @@ class WordDao {
 
     final current = WordProgress.fromJson(maps.first);
 
-    // 2. SM-2 Algorithm Calculation
+    // 说明：逻辑说明
     double oldEf = current.easinessFactor;
     int oldInterval = current.interval;
     int repetition = current.repetition;
@@ -227,10 +227,10 @@ class WordDao {
       newInterval = 1;
     }
 
-    // 3. Determine Mastery Level
+    // 说明：逻辑说明
     int newMastery = (newInterval > 21) ? 2 : 1;
 
-    // 4. Update DB
+    // 说明：逻辑说明
     await db.update(
       'word_progress',
       {
@@ -287,18 +287,18 @@ class WordDao {
     return counts;
   }
 
-  /// Fetch words for Dictionary with filters and pagination
+  /// 说明：逻辑说明
   Future<List<Map<String, dynamic>>> getDictionaryWords({
     int limit = 50,
     int offset = 0,
-    int? masteryFilter, // 0=New, 1=Learning, 2=Mastered. null=All
+    int? masteryFilter, // 说明：逻辑说明
     String? searchQuery,
     String? bookId,
     String? unit,
   }) async {
     final db = await _dbHelper.database;
     
-    // Base query: Join words with left join on progress
+    // 说明：逻辑说明
     String sql = '''
       SELECT w.*, 
              p.mastery_level,
@@ -313,10 +313,10 @@ class WordDao {
     List<String> whereConditions = [];
     List<dynamic> args = [];
 
-    // Filter by mastery
+    // 说明：逻辑说明
     if (masteryFilter != null) {
       if (masteryFilter == 0) {
-        // "New" means no progress record OR mastery_level 0
+        // 说明：逻辑说明
         whereConditions.add('(p.id IS NULL OR p.mastery_level = 0)');
       } else {
         whereConditions.add('p.mastery_level = ?');
@@ -324,10 +324,10 @@ class WordDao {
       }
     }
 
-    // Search
+    // 说明：逻辑说明
     if (searchQuery != null && searchQuery.isNotEmpty) {
       whereConditions.add('w.text LIKE ?');
-      args.add('$searchQuery%'); // Prefix search
+      args.add('$searchQuery%'); // 说明：逻辑说明
     }
     
     if (bookId != null && bookId.isNotEmpty) {
@@ -344,7 +344,7 @@ class WordDao {
       sql += ' WHERE ${whereConditions.join(' AND ')}';
     }
 
-    // Order by logical sequence: Grade -> Semester -> Unit -> orderIndex
+    // 说明：逻辑说明
     sql += ' ORDER BY w.grade ASC, w.semester ASC, w.unit ASC, w.order_index ASC LIMIT ? OFFSET ?';
     args.add(limit);
     args.add(offset);
@@ -354,8 +354,8 @@ class WordDao {
 
   Future<List<String>> getUnitsForBook(String bookId) async {
     final db = await _dbHelper.database;
-    // Sort by insertion order (rowid) to keep original book order (Module 1, 2... 10)
-    // instead of alphabetical (1, 10, 2)
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       'SELECT unit FROM words WHERE book_id = ? GROUP BY unit ORDER BY MIN(rowid) ASC', 
       [bookId]
@@ -363,11 +363,11 @@ class WordDao {
     return maps.map((e) => e['unit'] as String).toList();
   }
 
-  /// Get full word details including sentences/examples
+  /// 说明：逻辑说明
   Future<Word?> getWordDetails(String wordId) async {
     final db = await _dbHelper.database;
     
-    // 1. Get Word Basic Info
+    // 说明：逻辑说明
     final List<Map<String, dynamic>> wordMaps = await db.query(
       'words',
       where: 'id = ?',
@@ -376,7 +376,7 @@ class WordDao {
 
     if (wordMaps.isEmpty) return null;
     
-    // 2. Get Examples (Sentences)
+    // 说明：逻辑说明
     final List<Map<String, dynamic>> sentenceMaps = await db.rawQuery('''
       SELECT s.text as en, s.translation as cn
       FROM sentences s

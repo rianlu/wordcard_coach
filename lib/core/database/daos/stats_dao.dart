@@ -30,7 +30,7 @@ class BookProgress {
 
 class VocabGrowthPoint {
   final String date;
-  final int totalWords; // Cumulative
+  final int totalWords; // 累计值
   
   VocabGrowthPoint(this.date, this.totalWords);
 }
@@ -55,8 +55,8 @@ class PerformanceHighlight {
   final String title;
   final String subtitle;
   final String badgeText;
-  final int colorValue; // Store int for easy passing, reconstruct Color in UI
-  final int iconCode; // Store codePoint
+  final int colorValue; // 存为 便于传递，界面 再还原颜色
+  final int iconCode; // 存储图标代码点
 
   PerformanceHighlight({
     required this.title,
@@ -79,14 +79,14 @@ class AccuracyStats {
 class StatsDao {
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
-  // Get learning count (new + review) for the last 7 days
+  // 获取最近 7 天学习数量（新学+复习）
   Future<List<DailyActivity>> getWeeklyActivity() async {
     final db = await _dbHelper.database;
     final now = DateTime.now();
     List<DailyActivity> activity = [];
 
-    // Pre-fetch last 10 days of records to minimise queries
-    // We map date string -> Map of counts
+    // 预取最近 10 天记录以减少查询
+    // 日期字符串映射到数量统计
     Map<String, Map<String, int>> activityMap = {};
     
     final List<Map<String, dynamic>> rows = await db.query(
@@ -103,15 +103,15 @@ class StatsDao {
       activityMap[date] = {'new': newC, 'review': revC};
     }
 
-    // Build list for Last 7 Days (Today -> 6 days ago) in reverse order for chart usually?
-    // Actually charts usually want Oldest -> Newest.
-    // Let's return Today at index 0 or last? 
-    // Usually lists are [Day 1, Day 2... Today].
-    // But existing code logic in other methods was descending.
-    // Let's provide Chronological Order: 6 days ago -> Today.
-    // But wait, the Heatmap might expect specific order.
-    // The previous mock loop was `for (int i = 6; i >= 0; i--)` which pushes [Day-6, Day-5 ... Today].
-    // So distinct chronological order.
+    // 构建最近 7 天列表（按时间顺序）
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     
     for (int i = 6; i >= 0; i--) {
       final date = now.subtract(Duration(days: i));
@@ -120,7 +120,7 @@ class StatsDao {
       final int newC = activityMap[dateStr]?['new'] ?? 0;
       final int revC = activityMap[dateStr]?['review'] ?? 0;
       
-      // Fallback for legacy keys if any
+      // 兼容旧格式键
       if (newC == 0 && revC == 0) {
          final legacyDateStr = "${date.year}-${date.month}-${date.day}";
          final int lNewC = activityMap[legacyDateStr]?['new'] ?? 0;
@@ -138,16 +138,16 @@ class StatsDao {
   Future<MasteryDistribution> getMasteryDistribution(String bookId) async {
     final db = await _dbHelper.database;
     
-    // 1. Total words in current book
-    // If bookId is empty, we might want to scan all words or just return 0.
-    // Assuming bookId provided correct context.
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     final int totalWords = Sqflite.firstIntValue(await db.rawQuery(
       'SELECT COUNT(*) FROM words WHERE book_id = ?',
       [bookId]
     )) ?? 0;
     
-    // 2. Analyze progress by Interval
-    // We only care about words that have a progress record.
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     final List<Map<String, dynamic>> progressMaps = await db.rawQuery('''
       SELECT wp.interval 
       FROM word_progress wp
@@ -166,13 +166,13 @@ class StatsDao {
       } else if (interval > 0) {
         reviewing++;
       } 
-      // interval == 0 falls into "New" bucket conceptually along with unstudied words
+      // 说明：逻辑说明
     }
     
-    // 3. Calc New (Total - Actively Studied)
-    // "New" includes:
-    //  a) Words strictly not in word_progress
-    //  b) Words in word_progress but interval == 0 (Reset/Failed today)
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     int newWords = totalWords - mastered - reviewing;
     if (newWords < 0) newWords = 0;
 
@@ -182,14 +182,14 @@ class StatsDao {
   Future<BookProgress> getBookProgress(String bookId) async {
     final db = await _dbHelper.database;
     
-    // Total words in this book
+    // 该教材总单词数
     final int total = Sqflite.firstIntValue(await db.rawQuery(
       'SELECT COUNT(*) FROM words WHERE book_id = ?',
       [bookId]
     )) ?? 0;
     
-    // Learned words in this book (exist in word_progress)
-    // We join word_progress with words to filter by book_id
+    // 该教材已学习单词数
+    // 关联单词进度与单词表过滤教材
     final int learned = Sqflite.firstIntValue(await db.rawQuery('''
       SELECT COUNT(*) FROM word_progress wp
       JOIN words w ON wp.word_id = w.id
@@ -217,7 +217,7 @@ class StatsDao {
      final db = await _dbHelper.database;
      List<VocabGrowthPoint> points = [];
      
-     // 1. Get accurate history from daily_records (Last 30 days)
+     // 说明：逻辑说明
      final List<Map<String, dynamic>> history = await db.query(
        'daily_records',
        columns: ['date', 'new_words_count'],
@@ -225,11 +225,11 @@ class StatsDao {
        limit: 30
      );
      
-     // If we have real history, build the curve from it
+     // 说明：逻辑说明
      if (history.isNotEmpty) {
-       // We need a baseline total from BEFORE the first record.
-       // It's hard to know exactly without a "total_at_start_of_day" field.
-       // Workaround: Get current total, then subtract backwards.
+       // 说明：逻辑说明
+       // 说明：逻辑说明
+       // 说明：逻辑说明
        
        int currentTotal = 0;
        final statsMap = await db.query('user_stats', where: 'id = 1');
@@ -237,33 +237,33 @@ class StatsDao {
          currentTotal = statsMap.first['total_words_learned'] as int;
        }
        
-       // Map records by date for easy lookup
+       // 说明：逻辑说明
        Map<String, int> dailyNewWords = {
          for (var item in history) (item['date'] as String): (item['new_words_count'] as int)
        };
        
        final now = DateTime.now();
-       // Generate points for last 7 days for the chart
+       // 说明：逻辑说明
        List<VocabGrowthPoint> reversePoints = [];
        
        int runningTotal = currentTotal;
        
-       // Calculate backwards from Today (i=0) to 6 days ago
+       // 说明：逻辑说明
        for (int i = 0; i < 7; i++) {
          final date = now.subtract(Duration(days: i));
          final dateStr = "${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}";
          
-         // Add point for current running total
+         // 说明：逻辑说明
          reversePoints.add(VocabGrowthPoint(
            "${date.month}/${date.day}", 
            runningTotal
          ));
          
-         // Subtract today's gain to get yesterday's end total
-         // Note: If date string format mismatches, we fallback to 0 subtraction
+         // 说明：逻辑说明
+         // 说明：逻辑说明
          int gainSteps = dailyNewWords[dateStr] ?? 0;
          
-         // Try legacy format if missed
+         // 说明：逻辑说明
          if (gainSteps == 0) {
             String legacyDate = "${date.year}-${date.month}-${date.day}";
             gainSteps = dailyNewWords[legacyDate] ?? 0;
@@ -276,7 +276,7 @@ class StatsDao {
        points = reversePoints.reversed.toList();
        
      } else {
-       // Fallback: Simulation if strictly NO daily records exist yet
+       // 说明：逻辑说明
        final statsMap = await db.query('user_stats', where: 'id = 1');
        int currentTotal = 0;
        if (statsMap.isNotEmpty) {
@@ -296,18 +296,18 @@ class StatsDao {
      return points;
   }
   Future<RadarStats> getRadarStats() async {
-     // Mock logic for now, mixing with real data where possible
+     // 说明：逻辑说明
      final growth = await getVocabularyGrowth();
-     final vocabScore = (growth.isNotEmpty ? growth.last.totalWords : 0) / 1000.0; // Normalize
+     final vocabScore = (growth.isNotEmpty ? growth.last.totalWords : 0) / 1000.0; // 说明：逻辑说明
      
      final accuracy = await getOverallAccuracy();
      
      return RadarStats(
        vocabulary: vocabScore.clamp(0.2, 1.0),
-       spelling: accuracy.rate.clamp(0.4, 0.95), // Use real accuracy
-       memory: 0.85, // Mock: No retention tracking yet
-       reaction: 0.7, // Mock: No time tracking yet
-       pronunciation: 0.75, // Mock: No pronunciation score yet
+       spelling: accuracy.rate.clamp(0.4, 0.95), // 说明：逻辑说明
+       memory: 0.85, // 说明：逻辑说明
+       reaction: 0.7, // 说明：逻辑说明
+       pronunciation: 0.75, // 说明：逻辑说明
      );
   }
 
@@ -316,12 +316,12 @@ class StatsDao {
     List<DailyActivity> activity = [];
     final now = DateTime.now();
     
-    // 1. Get stats for last 30 days
-    // We map date string -> Map of counts
+    // 说明：逻辑说明
+    // 日期字符串映射到数量统计
     Map<String, Map<String, int>> activityMap = {};
     
-    // Query last 35 days to be safe
-    // Since date is TEXT YYYY-MM-DD, we can check string range or just pull recent limits
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     final List<Map<String, dynamic>> rows = await db.query(
       'daily_records',
       columns: ['date', 'new_words_count', 'review_words_count'],
@@ -336,22 +336,22 @@ class StatsDao {
       activityMap[date] = {'new': newC, 'review': revC};
     }
 
-    // 2. Build list for UI (last 30 days)
+    // 说明：逻辑说明
     for (int i = 29; i >= 0; i--) {
       final date = now.subtract(Duration(days: i));
-      // Format must match DB: YYYY-MM-DD
-      // Note: check how daily_record stores date. Assuming YYYY-MM-DD based on other files.
-      // Need pads
+      // 说明：逻辑说明
+      // 说明：逻辑说明
+      // 说明：逻辑说明
       final dateStr = "${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}";
       
-      // Fallback: Code elsewhere might use single digit?
-      // Let's also check strict equality if simple query fails.
-      // But for now, try formatted.
+      // 说明：逻辑说明
+      // 说明：逻辑说明
+      // 说明：逻辑说明
       
       final int newC = activityMap[dateStr]?['new'] ?? 0;
       final int revC = activityMap[dateStr]?['review'] ?? 0;
       
-      // Fallback
+      // 说明：逻辑说明
       if (newC == 0 && revC == 0) {
          final legacyDateStr = "${date.year}-${date.month}-${date.day}";
          final int lNewC = activityMap[legacyDateStr]?['new'] ?? 0;
@@ -368,7 +368,7 @@ class StatsDao {
      final db = await _dbHelper.database;
      List<PerformanceHighlight> highlights = [];
 
-     // 1. Find Weakness (Word with most wrongs)
+     // 说明：逻辑说明
      final List<Map<String, dynamic>> wrongest = await db.rawQuery('''
         SELECT w.text, wp.wrong_count 
         FROM word_progress wp 
@@ -384,22 +384,22 @@ class StatsDao {
            title: "难点单词", 
            subtitle: word, 
            badgeText: "错 $count 次", 
-           colorValue: 0xFFF59E0B, // Amber
-           iconCode: 0xef76, // warning_amber or fitness_center
+           colorValue: 0xFFF59E0B, // 说明：逻辑说明
+           iconCode: 0xef76, // 说明：逻辑说明
         ));
      } else {
-        // Fallback Weakness
+        // 说明：逻辑说明
          highlights.add(PerformanceHighlight(
            title: "暂无难点", 
            subtitle: "继续保持", 
            badgeText: "Perfect", 
-           colorValue: 0xFFF59E0B, // Amber
-           iconCode: 0xe87f, // face
+           colorValue: 0xFFF59E0B, // 说明：逻辑说明
+           iconCode: 0xe87f, // 说明：逻辑说明
         ));
      }
 
-     // 2. Find Strength (Most practiced mode or High Accuracy)
-     // Let's check most practiced mode
+     // 说明：逻辑说明
+     // 说明：逻辑说明
      final modeSums = await db.rawQuery('''
        SELECT 
          SUM(spell_mode_count) as spell, 
@@ -427,38 +427,38 @@ class StatsDao {
            title: title, 
            subtitle: sub, 
            badgeText: "S Rank", 
-           colorValue: 0xFF3B82F6, // Blue
-           iconCode: 0xe9f7, // verified
+           colorValue: 0xFF3B82F6, // 说明：逻辑说明
+           iconCode: 0xe9f7, // 说明：逻辑说明
        ));
      } else {
         highlights.add(PerformanceHighlight(
            title: "学习起步", 
            subtitle: "积累中...", 
            badgeText: "Level 1", 
-           colorValue: 0xFF3B82F6, // Blue
-           iconCode: 0xe88a, // home
+           colorValue: 0xFF3B82F6, // 说明：逻辑说明
+           iconCode: 0xe88a, // 说明：逻辑说明
        ));
      }
      
      return highlights;
   }
 
-  /// Records daily learning activity.
-  /// Upserts (Updates if exists, Inserts if new) into daily_records.
+  /// 记录每日学习活动
+  /// 更新或插入 日统计表
   Future<void> recordDailyActivity({
     required int newWords,
     required int reviewWords,
     required int correct,
     required int wrong,
     required int minutes,
-    DateTime? date, // Optional date for historical data
+    DateTime? date, // 可选日期用于历史数据
   }) async {
     final db = await _dbHelper.database;
     final targetDate = date ?? DateTime.now();
-    // Format: YYYY-MM-DD
+    // 日期格式：年-月-日
     final dateStr = "${targetDate.year}-${targetDate.month.toString().padLeft(2,'0')}-${targetDate.day.toString().padLeft(2,'0')}";
     
-    // Check if record exists
+    // 检查记录是否存在
     final List<Map<String, dynamic>> existing = await db.query(
       'daily_records',
       where: 'date = ?',
@@ -466,7 +466,7 @@ class StatsDao {
     );
 
     if (existing.isNotEmpty) {
-      // Update existing record (Cumulative)
+      // (累计值)
       final row = existing.first;
       await db.update(
         'daily_records',
@@ -481,7 +481,7 @@ class StatsDao {
         whereArgs: [dateStr],
       );
     } else {
-      // Insert new record
+      // 插入新记录
       await db.insert('daily_records', {
         'date': dateStr,
         'new_words_count': newWords,
@@ -493,7 +493,7 @@ class StatsDao {
       });
     }
     
-    // Broadcast update
+    // 广播更新通知
     GlobalStatsNotifier.instance.notify();
   }
 }

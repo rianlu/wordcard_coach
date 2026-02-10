@@ -23,15 +23,15 @@ class BackupService {
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
   
-  // Hardcoded key for "transparent" app-level encryption. 
-  // Ideally this would be more complex, but for this use case it serves to obfuscate the file.
-  // 32 chars for AES-256
+  // 说明：逻辑说明
+  // 说明：逻辑说明
+  // 说明：逻辑说明
   static const _keyString = 'WordCardCoachBackupKey2026Secure'; 
-  // 16 chars for IV
+  // 说明：逻辑说明
   static const _ivString = 'WCC_Backup_IV_16'; 
 
   // ---------------------------------------------------------------------------
-  // ENCRYPTION HELPERS
+  // 说明：逻辑说明
   // ---------------------------------------------------------------------------
   
   String _encryptData(String plainText) {
@@ -53,19 +53,19 @@ class BackupService {
   }
 
   // ---------------------------------------------------------------------------
-  // EXPORT
+  // 说明：逻辑说明
   // ---------------------------------------------------------------------------
   
   Future<void> exportData(BuildContext context) async {
     try {
       final db = await _dbHelper.database;
       
-      // 1. Gather Data
+      // 说明：逻辑说明
       final userStatsList = await db.query('user_stats');
       final wordProgressList = await db.query('word_progress');
       final dailyRecordsList = await db.query('daily_records');
       
-      // 2. Prepare Metadata
+      // 说明：逻辑说明
       final userStatsMap = userStatsList.isNotEmpty ? userStatsList.first : {};
       final accountId = userStatsMap['account_id'] as String? ?? const Uuid().v4();
       final nickname = userStatsMap['nickname'] as String? ?? 'Unknown';
@@ -86,19 +86,19 @@ class BackupService {
         }
       };
 
-      // 3. Serialize and Encrypt
+      // 说明：逻辑说明
       final jsonString = jsonEncode(exportData);
       final encryptedString = _encryptData(jsonString);
       
-      // 4. Write to Temp File with .wcc extension
+      // 说明：逻辑说明
       final tempDir = await getTemporaryDirectory();
       final dateStr = DateFormat('yyyyMMdd_HHmm').format(DateTime.now());
-      // custom extension .wcc
+      // 说明：逻辑说明
       final fileName = 'wordcoach_backup_${dateStr}_v1.wcc';
       final file = File('${tempDir.path}/$fileName');
       await file.writeAsString(encryptedString);
 
-      // 5. Share
+      // 说明：逻辑说明
       if (context.mounted) {
         final box = context.findRenderObject() as RenderBox?;
         await Share.shareXFiles(
@@ -119,12 +119,12 @@ class BackupService {
   }
 
   // ---------------------------------------------------------------------------
-  // IMPORT
+  // 说明：逻辑说明
   // ---------------------------------------------------------------------------
 
   Future<void> importData(BuildContext context) async {
     try {
-      // 1. Pick File - Use FileType.any because Android doesn't recognize custom extensions
+      // 说明：逻辑说明
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
       );
@@ -133,7 +133,7 @@ class BackupService {
       
       final filePath = result.files.single.path!;
       
-      // Validate file extension
+      // 校验文件扩展名
       if (!filePath.endsWith('.wcc') && !filePath.endsWith('.json')) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -165,15 +165,15 @@ class BackupService {
       
       Map<String, dynamic> jsonMap;
       
-      // Attempt to deserialize directly first (legacy json support)
+      // 说明：逻辑说明
       try {
          jsonMap = jsonDecode(content);
          if (!jsonMap.containsKey('metadata')) {
-            // If it's valid JSON but not our format, or if it's encrypted data (which isn't valid JSON usually)
+            // 说明：逻辑说明
             throw const FormatException();
          }
       } catch (_) {
-         // Not plain JSON, try decrypting
+         // 说明：逻辑说明
          try {
            final decrypted = _decryptData(content);
            jsonMap = jsonDecode(decrypted);
@@ -182,7 +182,7 @@ class BackupService {
          }
       }
       
-      // 2. Validate Format
+      // 说明：逻辑说明
       if (!jsonMap.containsKey('metadata') || !jsonMap.containsKey('data')) {
         throw Exception('无效的备份文件格式');
       }
@@ -192,7 +192,7 @@ class BackupService {
       final importedNickname = metadata['nickname'];
       final importedTimestamp = metadata['exported_at'] as int;
       
-      // 3. Check Identity / Conflict
+      // 说明：逻辑说明
       final db = await _dbHelper.database;
       final currentUserList = await db.query('user_stats');
       final currentUser = currentUserList.isNotEmpty ? currentUserList.first : {};
@@ -200,27 +200,27 @@ class BackupService {
       final currentRows = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM word_progress'));
       
       bool isIdentityMismatch = (currentAccountId != null && importedAccountId != currentAccountId);
-      bool hasSignificantData = (currentRows != null && currentRows > 10); // Threshold to consider "active user"
+      bool hasSignificantData = (currentRows != null && currentRows > 10); // 说明：逻辑说明
       
       bool confirmed = false;
 
-      // 4. Confirm Dialog
+      // 说明：逻辑说明
       if (context.mounted) {
          if (isIdentityMismatch && hasSignificantData) {
-            // CRITICAL WARNING: Different Identity + Current Data Exists
+            // 说明：逻辑说明
             confirmed = await _showCriticalWarningDialog(context, importedNickname);
          } else {
-            // Normal Restore Confirm
+            // 说明：逻辑说明
             confirmed = await _showNormalConfirmDialog(context, importedNickname, importedTimestamp);
          }
       }
       
       if (!confirmed) return;
 
-      // 5. Execute Restore
+      // 说明：逻辑说明
       await _executeRestore(jsonMap['data']);
       
-      // 6. Success & Refresh
+      // 说明：逻辑说明
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -242,7 +242,7 @@ class BackupService {
             elevation: 8,
           )
         );
-        // Notify UI to refresh
+        // 说明：逻辑说明
         GlobalStatsNotifier.instance.notify();
       }
 
@@ -260,26 +260,26 @@ class BackupService {
   Future<void> _executeRestore(Map<String, dynamic> data) async {
     final db = await _dbHelper.database;
     await db.transaction((txn) async {
-      // Clear existing data
+      // 说明：逻辑说明
       await txn.delete('word_progress');
       await txn.delete('daily_records');
       await txn.delete('user_stats');
       
-      // Restore User Stats
+      // 说明：逻辑说明
       final userStatsList = List<Map<String, dynamic>>.from(data['user_stats']);
       for (var item in userStatsList) {
         await txn.insert('user_stats', item);
       }
       
-      // Restore Word Progress
+      // 说明：逻辑说明
       final wordProgressList = List<Map<String, dynamic>>.from(data['word_progress']);
-      final batch = txn.batch(); // Batch insert for performance
+      final batch = txn.batch(); // 说明：逻辑说明
       for (var item in wordProgressList) {
         batch.insert('word_progress', item);
       }
       await batch.commit(noResult: true);
       
-      // Restore Daily Records
+      // 说明：逻辑说明
       final dailyRecordsList = List<Map<String, dynamic>>.from(data['daily_records']);
       for (var item in dailyRecordsList) {
         await txn.insert('daily_records', item);
@@ -314,7 +314,7 @@ class BackupService {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFEFF6FF), // Blue 50
+                    color: Color(0xFFEFF6FF), // 说明：逻辑说明
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.restore_rounded, color: AppColors.primary, size: 36),
@@ -414,7 +414,7 @@ class BackupService {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFEF2F2), // Red 50
+                    color: Color(0xFFFEF2F2), // 说明：逻辑说明
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 36),

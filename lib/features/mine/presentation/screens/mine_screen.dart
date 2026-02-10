@@ -26,7 +26,7 @@ class MineScreen extends StatefulWidget {
 class _MineScreenState extends State<MineScreen> {
   final UserStatsDao _userStatsDao = UserStatsDao();
   final StatsDao _statsDao = StatsDao();
-  final WordDao _wordDao = WordDao(); // Add WordDao
+  final WordDao _wordDao = WordDao(); // 说明：逻辑说明
   UserStats? _stats;
   BookProgress? _bookProgress;
   bool _isLoading = true;
@@ -45,15 +45,15 @@ class _MineScreenState extends State<MineScreen> {
     final r =  dart.Random();
     final now = DateTime.now();
 
-    // Generate data for past 14 days
+    // 说明：逻辑说明
     for (int i = 1; i <= 14; i++) {
        final date = now.subtract(Duration(days: i));
        
-       // Randomize activity
-       if (r.nextDouble() > 0.2) { // 80% active
+       // 说明：逻辑说明
+       if (r.nextDouble() > 0.2) { // 说明：逻辑说明
           int newWords = r.nextInt(15);
           int reviewWords = r.nextInt(30) + 10;
-          int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4)).round(); // 60-100% accuracy
+          int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4)).round(); // 说明：逻辑说明
           int wrong = reviewWords - correct;
           int minutes = r.nextInt(30) + 10;
           
@@ -68,11 +68,11 @@ class _MineScreenState extends State<MineScreen> {
        }
     }
 
-    // 2. Generate "Due" words for today's review
-    // Fetch 20 new words (words without progress)
+    // 说明：逻辑说明
+    // 说明：逻辑说明
     final newWords = await _wordDao.getNewWords(20, grade: _stats?.currentGrade, semester: _stats?.currentSemester);
     if (newWords.isNotEmpty) {
-       // Access DB directly via helper instance used by DAOs
+       // 说明：逻辑说明
        final db = await DatabaseHelper().database;
        
        final batch = db.batch();
@@ -87,7 +87,7 @@ class _MineScreenState extends State<MineScreen> {
             'easiness_factor': 2.5,
             'interval': 1,
             'repetition': 1,
-            'next_review_date': yesterday, // Due immediately
+            'next_review_date': yesterday, // 说明：逻辑说明
             'last_review_date': yesterday,
             'review_count': 1,
             'mastery_level': 1,
@@ -101,7 +101,7 @@ class _MineScreenState extends State<MineScreen> {
        await batch.commit(noResult: true);
     }
     
-    // Also record today if empty? No, let's just refresh.
+    // 说明：逻辑说明
     await _loadStats();
     if (mounted) {
        setState(() => _isLoading = false);
@@ -120,22 +120,22 @@ class _MineScreenState extends State<MineScreen> {
   Future<void> _loadStats() async {
     final stats = await _userStatsDao.getUserStats();
     
-    // Determine bookId
+    // 说明：逻辑说明
     String bookId = stats.currentBookId;
     if (bookId.isEmpty) {
       bookId = 'waiyan_${stats.currentGrade}_${stats.currentSemester}';
     }
     
-    // Fetch book progress
+    // 说明：逻辑说明
     final bookProg = await _statsDao.getBookProgress(bookId);
     
-    // Load manifest if not loaded
+    // 说明：逻辑说明
     if (_booksManifest.isEmpty) {
       try {
         final jsonStr = await rootBundle.loadString('assets/data/books_manifest.json');
         _booksManifest = jsonDecode(jsonStr);
       } catch (e) {
-        // Error
+        // 说明：逻辑说明
       }
     }
     
@@ -162,12 +162,12 @@ class _MineScreenState extends State<MineScreen> {
 
     bool launched = false;
 
-    // 1. 尝试直接唤起 App（跳过 canLaunchUrl 检查以进行激进尝试）
+    // 说明：逻辑说明
     for (final uri in appUris) {
       try {
         // 直接尝试唤起。
-        // 注意：在某些 Android 版本上，由于包可见性限制，即便安装了 App，canLaunchUrl 也可能返回 false。
-        // 但如果用户授权，launchUrl 显式调用仍然可能成功。
+        // 说明：逻辑说明
+        // 说明：逻辑说明
         if (await launchUrl(uri, mode: LaunchMode.externalApplication)) {
           launched = true;
           break;
@@ -177,7 +177,7 @@ class _MineScreenState extends State<MineScreen> {
       }
     }
 
-    // 2. 如果唤起 App 失败，打开网页版链接
+    // 说明：逻辑说明
     if (!launched) {
       try {
         await launchUrl(webUri, mode: LaunchMode.externalApplication);
@@ -204,7 +204,7 @@ class _MineScreenState extends State<MineScreen> {
         child: Column(
           children: [
              const SizedBox(height: 20),
-             // Profile Header
+             // 说明：逻辑说明
              Container(
                width: 100,
                height: 100,
@@ -267,7 +267,7 @@ class _MineScreenState extends State<MineScreen> {
 
              const SizedBox(height: 40),
 
-             // Textbook Card with Progress
+             // 说明：逻辑说明
              _buildCurrentBookCard()
                  .animate()
                  .fadeIn(duration: 500.ms, delay: 300.ms)
@@ -379,7 +379,7 @@ class _MineScreenState extends State<MineScreen> {
                     ],
                   ),
                 ),
-                // Chevron to indicate tappable
+                // 说明：逻辑说明
                 const Icon(Icons.chevron_right_rounded, color: AppColors.textMediumEmphasis),
               ],
             ),
@@ -432,7 +432,7 @@ class _MineScreenState extends State<MineScreen> {
   String _getCurrentBookName() {
     if (_stats == null) return '加载中...';
     
-    // 1. Try to find by ID
+    // 说明：逻辑说明
     final bookId = _stats!.currentBookId;
     if (bookId.isNotEmpty && _booksManifest.isNotEmpty) {
       final book = _booksManifest.firstWhere(
@@ -444,7 +444,7 @@ class _MineScreenState extends State<MineScreen> {
       }
     }
     
-    // 2. Try to find by grade/semester (legacy fallback)
+    // 说明：逻辑说明
     if (_booksManifest.isNotEmpty) {
        final book = _booksManifest.firstWhere(
         (b) => b['grade'] == _stats!.currentGrade && b['semester'] == _stats!.currentSemester,
@@ -455,7 +455,7 @@ class _MineScreenState extends State<MineScreen> {
       }
     }
 
-    // 3. Fallback to simple label
+    // 说明：逻辑说明
     return _getGradeLabel(_stats!.currentGrade, _stats!.currentSemester);
   }
 
@@ -472,7 +472,7 @@ class _MineScreenState extends State<MineScreen> {
   }
 
   Future<void> _showBookSelectionDialog() async {
-    // _booksManifest is already loaded in _loadStats
+    // 说明：逻辑说明
     final books = _booksManifest;
 
     if (!mounted) return;
@@ -491,7 +491,7 @@ class _MineScreenState extends State<MineScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Handle
+              // 说明：逻辑说明
               Container(
                 margin: const EdgeInsets.only(top: 12),
                 width: 40,
@@ -501,7 +501,7 @@ class _MineScreenState extends State<MineScreen> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              // Title
+              // 说明：逻辑说明
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
                 child: Row(
@@ -517,9 +517,9 @@ class _MineScreenState extends State<MineScreen> {
                   ],
                 ),
               ),
-              // Divider
+              // 说明：逻辑说明
               Divider(height: 1, color: Colors.grey.shade100),
-              // Items
+              // 说明：逻辑说明
               Expanded(
                 child: ListView.separated(
                   shrinkWrap: true,
@@ -588,7 +588,7 @@ class _MineScreenState extends State<MineScreen> {
                   },
                 ),
               ),
-              // Safe area padding
+              // 说明：逻辑说明
               SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
             ],
           ),
@@ -658,7 +658,7 @@ class _MineScreenState extends State<MineScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFEFF6FF), // Blue 50
+                      color: Color(0xFFEFF6FF), // 说明：逻辑说明
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.mode_edit_outline_rounded, color: AppColors.primary, size: 32),
@@ -761,7 +761,7 @@ class _MineScreenState extends State<MineScreen> {
       final updatedStats = _stats!.copyWith(nickname: newNickname.trim());
       await _userStatsDao.updateUserStats(updatedStats);
       
-      // Notify other screens to update (e.g. Home Dashboard)
+      // 说明：逻辑说明
       GlobalStatsNotifier.instance.notify();
       
       if (mounted) {

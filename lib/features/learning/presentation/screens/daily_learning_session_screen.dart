@@ -38,7 +38,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
   SessionPhase _currentPhase = SessionPhase.learning;
   int _currentIndex = 0;
   
-  // Transition State
+  // 说明：逻辑说明
   bool _isTransitioning = false;
   int _transitionCountdown = 3;
   SessionPhase? _pendingNextPhase;
@@ -59,7 +59,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     setState(() => _isLoading = true);
     try {
       final stats = await _userStatsDao.getUserStats();
-      // Fetch 10 new words for today's session
+      // 说明：逻辑说明
       final words = await _wordDao.getNewWords(
         10, 
         grade: stats.currentGrade,
@@ -84,14 +84,14 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
         _currentIndex++;
       });
     } else {
-      // Phase completed, move to next phase
+      // 说明：逻辑说明
       _triggerPhaseTransition();
     }
   }
 
   void _triggerPhaseTransition() {
-    // Determine next phase first
-    AudioService().stop(); // Stop any playing audio
+    // 说明：逻辑说明
+    AudioService().stop(); // 说明：逻辑说明
     SessionPhase next;
     switch (_currentPhase) {
         case SessionPhase.learning: next = SessionPhase.speaking; break;
@@ -106,7 +106,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
        return;
     }
 
-    // Start Transition Sequence
+    // 说明：逻辑说明
     setState(() {
       _isTransitioning = true;
       _transitionCountdown = 3;
@@ -150,10 +150,10 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
   Future<void> _saveProgress() async {
     try {
-       // 1. Mark words as learned
+       // 说明：逻辑说明
        await _wordDao.batchMarkAsLearned(_sessionWords);
        
-       // 2. Update User Stats
+       // 说明：逻辑说明
        final stats = await _userStatsDao.getUserStats();
        final now = DateTime.now();
        final todayStr = "${now.year}-${now.month}-${now.day}";
@@ -170,15 +170,15 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
        
        await _userStatsDao.updateUserStats(newStats);
        
-       // 3. Record Daily Activity for Heatmap
-       // New Learning Session = All words are treated as "New Words" studied
-       // Review count is 0 here (Review happens in ReviewSession)
+       // 说明：逻辑说明
+       // 说明：逻辑说明
+       // 说明：逻辑说明
        await StatsDao().recordDailyActivity(
          newWords: _sessionWords.length, 
          reviewWords: 0, 
-         correct: _sessionWords.length, // Assume learned = correct eventually
+         correct: _sessionWords.length, // 说明：逻辑说明
          wrong: 0, 
-         minutes: 5 // Mock duration or track real time
+         minutes: 5 // 说明：逻辑说明
        );
        
        debugPrint("Progress Saved: ${_sessionWords.length} words.");
@@ -210,14 +210,14 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Success Icon
+                  // 说明：逻辑说明
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFF0FDF4), // Green 50
+                      color: Color(0xFFF0FDF4), // 说明：逻辑说明
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.emoji_events_rounded, size: 48, color: Color(0xFF22C55E)), // Green 500
+                    child: const Icon(Icons.emoji_events_rounded, size: 48, color: Color(0xFF22C55E)), // 绿色 500
                   ),
                   const SizedBox(height: 20),
                   
@@ -235,7 +235,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
                   const SizedBox(height: 24),
 
-                  // Stats Row
+                  // 说明：逻辑说明
                   Row(
                     children: [
                       Expanded(
@@ -278,13 +278,13 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
                   const SizedBox(height: 24),
                   
-                  // Action Button
+                  // 说明：逻辑说明
                   SizedBox(
                     width: double.infinity,
                     child: BubblyButton(
                       onPressed: () {
-                         Navigator.pop(context); // Close dialog
-                         Navigator.pop(context); // Exit session
+                         Navigator.pop(context); // 说明：逻辑说明
+                         Navigator.pop(context); // 说明：逻辑说明
                       },
                       color: AppColors.primary,
                       shadowColor: AppColors.shadowBlue,
@@ -350,7 +350,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     if (_currentPhase == SessionPhase.completed) {
       return const Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(child: CircularProgressIndicator()), // Waiting for dialog
+        body: Center(child: CircularProgressIndicator()), // 说明：逻辑说明
       );
     }
 
@@ -425,7 +425,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: KeyedSubtree(
-        key: ValueKey("${_currentPhase}_${word.id}"), // Ensure state reset
+        key: ValueKey("${_currentPhase}_${word.id}"), // 说明：逻辑说明
         child: _buildPhaseContent(word),
       )
     );

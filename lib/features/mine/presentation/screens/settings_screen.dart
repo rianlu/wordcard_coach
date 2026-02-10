@@ -147,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _handleUpdateLibrary() async {
-    // Show confirmation dialog locally
+    // 说明：逻辑说明
     final confirm = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -172,7 +172,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFEFF6FF), // Blue 50
+                    color: Color(0xFFEFF6FF), // 说明：逻辑说明
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.cloud_sync_rounded, color: AppColors.primary, size: 36),
@@ -290,16 +290,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
     
-    // Perform Update
+    // 说明：逻辑说明
     try {
        await DatabaseHelper().updateLibraryFromAssets();
        await Future.delayed(const Duration(milliseconds: 800));
     } catch(e) {
-       // ignore error
+       // 说明：逻辑说明
     }
     
     if (!mounted) return;
-    Navigator.pop(context); // Dismiss loading
+    Navigator.pop(context); // 说明：逻辑说明
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

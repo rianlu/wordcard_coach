@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:ui';
 import 'dart:math';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/bubbly_button.dart';
@@ -22,9 +21,8 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
   final UserStatsDao _userStatsDao = UserStatsDao();
   Word? _currentWord;
   bool _isLoading = true;
-  bool _isHintVisible = false;
 
-  // Game State
+  // 游戏状态
   String _targetWord = "";
   List<int> _missingIndices = [];
   List<String> _userInputs = [];
@@ -39,7 +37,6 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
   Future<void> _loadNewWord() async {
     setState(() {
       _isLoading = true;
-      _isHintVisible = false;
       _userInputs = [];
       _missingIndices = [];
       _keyboardLetters = [];
@@ -73,10 +70,10 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
 
     final random = Random();
     int len = _targetWord.length;
-    // Determine how many letters to hide (e.g., 30-50%)
+    // 计算隐藏字母数量
     int missingCount = (len * 0.4).ceil().clamp(1, len - 1);
     
-    // Select random unique indices
+    // 随机选择唯一索引
     Set<int> indices = {};
     while (indices.length < missingCount) {
       indices.add(random.nextInt(len));
@@ -84,22 +81,22 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
     _missingIndices = indices.toList()..sort();
     _userInputs = List.filled(missingCount, "");
 
-    // Prepare keyboard
-    // Include all missing chars
+    // 准备键盘
+    // 包含所有缺失字母
     Set<String> letters = {};
     for (int idx in _missingIndices) {
       letters.add(_targetWord[idx].toUpperCase());
     }
-    // Add some random distractors
+    // 加入随机干扰字母
     const allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    while (letters.length < 8) { // Target 8 keys + backspace
+    while (letters.length < 8) { // 目标 8 个按键 + 退格
        letters.add(allChars[random.nextInt(allChars.length)]);
     }
     _keyboardLetters = letters.toList()..shuffle();
   }
 
   void _handleLetterInput(String char) {
-    // Find first empty slot
+    // 找到第一个空位
     int emptyIndex = _userInputs.indexOf("");
     if (emptyIndex != -1) {
       setState(() {
@@ -110,7 +107,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
   }
 
   void _handleBackspace() {
-    // Find last filled slot
+    // 找到最后一个已填位置
     int lastFilledIndex = _userInputs.lastIndexWhere((element) => element.isNotEmpty);
     if (lastFilledIndex != -1) {
       setState(() {
@@ -121,7 +118,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
 
   void _checkCompletion() {
     if (!_userInputs.contains("")) {
-      // Reconstruct word
+      // 重建单词
       String constructed = "";
       int inputIndex = 0;
       for (int i = 0; i < _targetWord.length; i++) {
@@ -134,7 +131,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
       }
 
       if (constructed.toUpperCase() == _targetWord.toUpperCase()) {
-         // Correct!
+         // 正确
          Future.delayed(const Duration(milliseconds: 500), () {
             if (mounted) {
                ScaffoldMessenger.of(context).showSnackBar(
@@ -144,13 +141,13 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
             }
          });
       } else {
-        // Wrong
+        // 错误
          Future.delayed(const Duration(milliseconds: 500), () {
             if (mounted) {
                ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(content: Text('Try again!'), backgroundColor: Colors.red)
                );
-               // Clear inputs? Or let user backspace
+               // 说明：逻辑说明
                setState(() {
                  _userInputs = List.filled(_userInputs.length, "");
                });
@@ -209,13 +206,13 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Enhanced wide detection: >600 (Tablet) OR (>480 && Landscape)
+          // 说明：逻辑说明
           final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
           if (isWide) {
             return Row(
               children: [
-                // Left Panel: Reference
+                // 说明：逻辑说明
                 Expanded(
                   flex: 4,
                   child: SingleChildScrollView(
@@ -230,7 +227,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                   ),
                 ),
                 
-                // Right Panel: Interaction
+                // 说明：逻辑说明
                 Expanded(
                   flex: 5,
                   child: Container(
@@ -255,7 +252,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
             );
           }
 
-          // Portrait Layout
+          // 竖屏布局
           return Column(
             children: [
               Expanded(
@@ -323,7 +320,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
           Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
            const SizedBox(height: 8),
            Text(
-               // Placeholder logic as per original
+               // 说明：逻辑说明
                'No example sentence available.',
                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
            ),
