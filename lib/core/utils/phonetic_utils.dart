@@ -11,13 +11,13 @@ abstract class PhoneticUtils {
       return _mapChar(char);
     }).join();
     
-    // 说明：逻辑说明
+    // 逻辑处理
     mapped = mapped.replaceAll('0', '');
     
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
     
     StringBuffer result = StringBuffer();
     result.write(firstChar);
@@ -29,7 +29,7 @@ abstract class PhoneticUtils {
       if (currentCode != '0' && currentCode != previousCode) {
         result.write(currentCode);
       }
-      previousCode = currentCode; // 说明：逻辑说明
+      previousCode = currentCode; // 逻辑处理
     }
     
     String finalStr = result.toString();
@@ -46,6 +46,6 @@ abstract class PhoneticUtils {
     if ("L".contains(c)) return "4";
     if ("MN".contains(c)) return "5";
     if ("R".contains(c)) return "6";
-    return "0"; // 说明：逻辑说明
+    return "0"; // 逻辑处理
   }
 }

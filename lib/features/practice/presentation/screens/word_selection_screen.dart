@@ -37,9 +37,10 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
 
     try {
       final stats = await _userStatsDao.getUserStats();
-      // 说明：逻辑说明
+      // 优先使用教材编号获取新词
       final words = await _wordDao.getNewWords(
         4, 
+        bookId: stats.currentBookId.isNotEmpty ? stats.currentBookId : null,
         grade: stats.currentGrade, 
         semester: stats.currentSemester
       );
@@ -119,13 +120,13 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // 说明：逻辑说明
+          // 细节处理
           final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
           if (isWide) {
             return Row(
               children: [
-                // 说明：逻辑说明
+                // 细节处理
                 Expanded(
                   flex: 4,
                   child: SingleChildScrollView(
@@ -133,7 +134,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
                     child: _buildWordCard(),
                   ),
                 ),
-                // 说明：逻辑说明
+                // 细节处理
                 Expanded(
                   flex: 5,
                   child: Container(
@@ -164,7 +165,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
             );
           }
 
-          // 说明：逻辑说明
+          // 细节处理
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -213,7 +214,7 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
           Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
           const SizedBox(height: 24),
 
-          // 说明：逻辑说明
+          // 细节处理
           Container(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -238,12 +239,12 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
   }
 
   Widget _buildOption(BuildContext context, Word optionWord) {
-    // 说明：逻辑说明
+    // 细节处理
     final isSelected = _selectedOptionId == optionWord.id;
-    // 说明：逻辑说明
+    // 细节处理
     final isCorrect = optionWord.id == _currentWord!.id;
     
-    // 说明：逻辑说明
+    // 细节处理
     Color? buttonColor = Colors.white;
     Color? textColor = AppColors.textHighEmphasis;
     Widget? icon;
@@ -260,10 +261,10 @@ class _WordSelectionScreenState extends State<WordSelectionScreen> {
       }
     }
 
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 细节处理
     final displayText = "${optionWord.meaning} (${optionWord.text})";
 
     return BubblyButton(

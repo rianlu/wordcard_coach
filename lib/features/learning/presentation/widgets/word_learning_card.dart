@@ -68,7 +68,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
     return SizedBox.expand(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // 说明：逻辑说明
+          // 逻辑处理
           final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
 
           if (isWide) {
@@ -76,7 +76,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
               children: [
                 Row(
                   children: [
-                    // 说明：逻辑说明
+                    // 逻辑处理
                     Expanded(
                       flex: 5,
                       child: LayoutBuilder(
@@ -91,7 +91,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
                         }
                       ),
                     ),
-                    // 说明：逻辑说明
+                    // 逻辑处理
                     Expanded(
                       flex: 4,
                       child: Container(
@@ -133,13 +133,13 @@ class _WordLearningCardState extends State<WordLearningCard> {
                 child: LayoutBuilder(
                   builder: (context, viewportConstraints) {
                     return SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(24, 64, 24, 120), // 说明：逻辑说明
+                      padding: const EdgeInsets.fromLTRB(24, 64, 24, 120), // 内边距
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight - 184, // 说明：逻辑说明
+                          minHeight: viewportConstraints.maxHeight - 184, // 逻辑处理
                         ),
                         child: Column(
-                          // 说明：逻辑说明
+                          // 逻辑处理
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                              _buildWordInfoCard(),

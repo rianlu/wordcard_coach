@@ -70,18 +70,23 @@ class WordDao {
     return results;
   }
 
-  Future<List<Word>> getNewWords(int limit, {int? grade, int? semester}) async {
+  Future<List<Word>> getNewWords(int limit, {String? bookId, int? grade, int? semester}) async {
     final db = await _dbHelper.database;
     String whereClause = 'id NOT IN (SELECT word_id FROM word_progress)';
     List<dynamic> args = [];
 
-    if (grade != null) {
-      whereClause += ' AND grade = ?';
-      args.add(grade);
-    }
-    if (semester != null) {
-      whereClause += ' AND semester = ?';
-      args.add(semester);
+    if (bookId != null && bookId.isNotEmpty) {
+      whereClause += ' AND book_id = ?';
+      args.add(bookId);
+    } else {
+      if (grade != null) {
+        whereClause += ' AND grade = ?';
+        args.add(grade);
+      }
+      if (semester != null) {
+        whereClause += ' AND semester = ?';
+        args.add(semester);
+      }
     }
 
     // 数量限制 参数
@@ -157,14 +162,14 @@ class WordDao {
         'word_id': word.id,
         'created_at': now,
         'updated_at': now,
-        // 说明：逻辑说明
+        // 细节处理
         'easiness_factor': 2.5,
         'interval': 1,
         'repetition': 0,
         'next_review_date': now + 86400000,
         'last_review_date': now,
-        'review_count': 1, // 说明：逻辑说明
-        'mastery_level': 1, // 说明：逻辑说明
+        'review_count': 1, // 复习流程
+        'mastery_level': 1, // 掌握度处理
       }, conflictAlgorithm: ConflictAlgorithm.ignore);
     }
 
@@ -182,7 +187,7 @@ class WordDao {
      final words = List.generate(maps.length, (i) {
       return Word.fromJson(maps[i]);
     });
-    // 说明：逻辑说明
+    // 细节处理
     return words;
   }
 
@@ -190,7 +195,7 @@ class WordDao {
     final db = await _dbHelper.database;
     final now = DateTime.now().millisecondsSinceEpoch;
 
-    // 说明：逻辑说明
+    // 细节处理
     final List<Map<String, dynamic>> maps = await db.query(
       'word_progress',
       where: 'word_id = ?',
@@ -201,7 +206,7 @@ class WordDao {
 
     final current = WordProgress.fromJson(maps.first);
 
-    // 说明：逻辑说明
+    // 细节处理
     double oldEf = current.easinessFactor;
     int oldInterval = current.interval;
     int repetition = current.repetition;
@@ -227,10 +232,10 @@ class WordDao {
       newInterval = 1;
     }
 
-    // 说明：逻辑说明
+    // 细节处理
     int newMastery = (newInterval > 21) ? 2 : 1;
 
-    // 说明：逻辑说明
+    // 细节处理
     await db.update(
       'word_progress',
       {
@@ -287,18 +292,18 @@ class WordDao {
     return counts;
   }
 
-  /// 说明：逻辑说明
+  /// 细节处理
   Future<List<Map<String, dynamic>>> getDictionaryWords({
     int limit = 50,
     int offset = 0,
-    int? masteryFilter, // 说明：逻辑说明
+    int? masteryFilter, // 掌握度处理
     String? searchQuery,
     String? bookId,
     String? unit,
   }) async {
     final db = await _dbHelper.database;
     
-    // 说明：逻辑说明
+    // 细节处理
     String sql = '''
       SELECT w.*, 
              p.mastery_level,
@@ -313,10 +318,10 @@ class WordDao {
     List<String> whereConditions = [];
     List<dynamic> args = [];
 
-    // 说明：逻辑说明
+    // 细节处理
     if (masteryFilter != null) {
       if (masteryFilter == 0) {
-        // 说明：逻辑说明
+        // 细节处理
         whereConditions.add('(p.id IS NULL OR p.mastery_level = 0)');
       } else {
         whereConditions.add('p.mastery_level = ?');
@@ -324,10 +329,10 @@ class WordDao {
       }
     }
 
-    // 说明：逻辑说明
+    // 细节处理
     if (searchQuery != null && searchQuery.isNotEmpty) {
       whereConditions.add('w.text LIKE ?');
-      args.add('$searchQuery%'); // 说明：逻辑说明
+      args.add('$searchQuery%'); // 细节处理
     }
     
     if (bookId != null && bookId.isNotEmpty) {
@@ -344,7 +349,7 @@ class WordDao {
       sql += ' WHERE ${whereConditions.join(' AND ')}';
     }
 
-    // 说明：逻辑说明
+    // 细节处理
     sql += ' ORDER BY w.grade ASC, w.semester ASC, w.unit ASC, w.order_index ASC LIMIT ? OFFSET ?';
     args.add(limit);
     args.add(offset);
@@ -354,8 +359,8 @@ class WordDao {
 
   Future<List<String>> getUnitsForBook(String bookId) async {
     final db = await _dbHelper.database;
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 细节处理
+    // 细节处理
     final List<Map<String, dynamic>> maps = await db.rawQuery(
       'SELECT unit FROM words WHERE book_id = ? GROUP BY unit ORDER BY MIN(rowid) ASC', 
       [bookId]
@@ -363,11 +368,11 @@ class WordDao {
     return maps.map((e) => e['unit'] as String).toList();
   }
 
-  /// 说明：逻辑说明
+  /// 细节处理
   Future<Word?> getWordDetails(String wordId) async {
     final db = await _dbHelper.database;
     
-    // 说明：逻辑说明
+    // 细节处理
     final List<Map<String, dynamic>> wordMaps = await db.query(
       'words',
       where: 'id = ?',
@@ -376,7 +381,7 @@ class WordDao {
 
     if (wordMaps.isEmpty) return null;
     
-    // 说明：逻辑说明
+    // 细节处理
     final List<Map<String, dynamic>> sentenceMaps = await db.rawQuery('''
       SELECT s.text as en, s.translation as cn
       FROM sentences s

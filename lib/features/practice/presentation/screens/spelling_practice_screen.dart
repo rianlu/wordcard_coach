@@ -46,6 +46,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
       final stats = await _userStatsDao.getUserStats();
       final words = await _wordDao.getNewWords(
         1,
+        bookId: stats.currentBookId.isNotEmpty ? stats.currentBookId : null,
         grade: stats.currentGrade,
         semester: stats.currentSemester
       );
@@ -147,7 +148,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(content: Text('Try again!'), backgroundColor: Colors.red)
                );
-               // 说明：逻辑说明
+               // 细节处理
                setState(() {
                  _userInputs = List.filled(_userInputs.length, "");
                });
@@ -206,13 +207,13 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // 说明：逻辑说明
+          // 细节处理
           final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
           if (isWide) {
             return Row(
               children: [
-                // 说明：逻辑说明
+                // 细节处理
                 Expanded(
                   flex: 4,
                   child: SingleChildScrollView(
@@ -227,7 +228,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
                   ),
                 ),
                 
-                // 说明：逻辑说明
+                // 细节处理
                 Expanded(
                   flex: 5,
                   child: Container(
@@ -320,7 +321,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
           Text('EXAMPLE SENTENCE', style: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.textMediumEmphasis, letterSpacing: 1.0)),
            const SizedBox(height: 8),
            Text(
-               // 说明：逻辑说明
+               // 细节处理
                'No example sentence available.',
                style: GoogleFonts.plusJakartaSans(fontSize: 18, color: AppColors.textHighEmphasis, height: 1.5, fontWeight: FontWeight.w500),
            ),

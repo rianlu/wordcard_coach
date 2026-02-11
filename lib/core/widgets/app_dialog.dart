@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_colors.dart';
 import 'bubbly_button.dart';
 
-/// 说明：逻辑说明
-/// 说明：逻辑说明
+/// 逻辑处理
+/// 逻辑处理
 class AppDialog extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -35,7 +35,7 @@ class AppDialog extends StatelessWidget {
     this.isDestructive = false,
   });
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   factory AppDialog.success({
     Key? key,
     required String title,
@@ -58,7 +58,7 @@ class AppDialog extends StatelessWidget {
     );
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   factory AppDialog.warning({
     Key? key,
     required String title,
@@ -86,7 +86,7 @@ class AppDialog extends StatelessWidget {
     );
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   factory AppDialog.confirm({
     Key? key,
     required String title,
@@ -136,7 +136,7 @@ class AppDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // 说明：逻辑说明
+              // 逻辑处理
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -147,7 +147,7 @@ class AppDialog extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               
-              // 说明：逻辑说明
+              // 逻辑处理
               Text(
                 title,
                 textAlign: TextAlign.center,
@@ -158,7 +158,7 @@ class AppDialog extends StatelessWidget {
                 ),
               ),
               
-              // 说明：逻辑说明
+              // 逻辑处理
               if (subtitle != null) ...[
                 const SizedBox(height: 12),
                 Text(
@@ -172,7 +172,7 @@ class AppDialog extends StatelessWidget {
                 ),
               ],
               
-              // 说明：逻辑说明
+              // 逻辑处理
               if (content != null) ...[
                 const SizedBox(height: 16),
                 content!,
@@ -180,7 +180,7 @@ class AppDialog extends StatelessWidget {
               
               const SizedBox(height: 24),
               
-              // 说明：逻辑说明
+              // 逻辑处理
               _buildButtons(context),
             ],
           ),
@@ -193,7 +193,7 @@ class AppDialog extends StatelessWidget {
     final hasSecondary = secondaryButtonText != null;
     
     if (!hasSecondary && primaryButtonText != null) {
-      // 说明：逻辑说明
+      // 逻辑处理
       return SizedBox(
         width: double.infinity,
         child: BubblyButton(
@@ -217,7 +217,7 @@ class AppDialog extends StatelessWidget {
     }
     
     if (hasSecondary && primaryButtonText != null) {
-      // 说明：逻辑说明
+      // 逻辑处理
       return Row(
         children: [
           Expanded(
@@ -266,7 +266,7 @@ class AppDialog extends StatelessWidget {
   }
 }
 
-/// 说明：逻辑说明
+/// 逻辑处理
 class AppBottomSheet extends StatelessWidget {
   final String title;
   final List<AppBottomSheetItem> items;
@@ -291,7 +291,7 @@ class AppBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // 说明：逻辑说明
+          // 逻辑处理
           Container(
             margin: const EdgeInsets.only(top: 12),
             width: 40,
@@ -301,7 +301,7 @@ class AppBottomSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          // 说明：逻辑说明
+          // 逻辑处理
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
             child: Row(
@@ -317,9 +317,9 @@ class AppBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          // 说明：逻辑说明
+          // 逻辑处理
           Divider(height: 1, color: Colors.grey.shade100),
-          // 说明：逻辑说明
+          // 逻辑处理
           Flexible(
             child: ListView.separated(
               shrinkWrap: true,
@@ -329,7 +329,7 @@ class AppBottomSheet extends StatelessWidget {
               itemBuilder: (context, index) => items[index],
             ),
           ),
-          // 说明：逻辑说明
+          // 逻辑处理
           SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
         ],
       ),
@@ -337,7 +337,7 @@ class AppBottomSheet extends StatelessWidget {
   }
 }
 
-/// 说明：逻辑说明
+/// 逻辑处理
 class AppBottomSheetItem extends StatelessWidget {
   final String title;
   final String? subtitle;
@@ -419,7 +419,7 @@ class AppBottomSheetItem extends StatelessWidget {
   }
 }
 
-/// 说明：逻辑说明
+/// 逻辑处理
 Future<T?> showAppDialog<T>({
   required BuildContext context,
   required AppDialog dialog,
@@ -432,7 +432,7 @@ Future<T?> showAppDialog<T>({
   );
 }
 
-/// 说明：逻辑说明
+/// 逻辑处理
 Future<T?> showAppBottomSheet<T>({
   required BuildContext context,
   required String title,

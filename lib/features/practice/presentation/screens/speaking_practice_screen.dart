@@ -18,7 +18,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
   late AnimationController _controller;
   bool _isListening = false;
   
-  // 说明：逻辑说明
+  // 逻辑处理
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
   Word? _currentWord;
@@ -42,6 +42,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       final stats = await _userStatsDao.getUserStats();
       final words = await _wordDao.getNewWords(
         1,
+        bookId: stats.currentBookId.isNotEmpty ? stats.currentBookId : null,
         grade: stats.currentGrade,
         semester: stats.currentSemester
       );
@@ -72,11 +73,11 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       _isListening = !_isListening;
       if (_isListening) {
         _controller.repeat();
-        // 说明：逻辑说明
+        // 细节处理
         Future.delayed(const Duration(seconds: 2), () {
            if (mounted && _isListening) {
              _toggleListening();
-             // 说明：逻辑说明
+             // 细节处理
              _loadNewWord();
              ScaffoldMessenger.of(context).showSnackBar(
                const SnackBar(content: Text('Great job! Correct pronunciation.'), backgroundColor: Colors.green)
@@ -142,14 +143,14 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // 说明：逻辑说明
+          // 细节处理
           final isWide = constraints.maxWidth > 600 || (constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480);
 
           if (isWide) {
-            // 说明：逻辑说明
+            // 细节处理
             return Row(
               children: [
-                // 说明：逻辑说明
+                // 细节处理
                 Expanded(
                   flex: 3,
                   child: SingleChildScrollView(
@@ -163,7 +164,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                     ),
                   ),
                 ),
-                // 说明：逻辑说明
+                // 细节处理
                 Expanded(
                   flex: 2,
                   child: Container(
@@ -186,7 +187,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             );
           }
           
-          // 说明：逻辑说明
+          // 细节处理
           return Column(
             children: [
               Expanded(
@@ -233,7 +234,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
           Text(_currentWord!.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
           const SizedBox(height: 24),
           
-          // 说明：逻辑说明
+          // 细节处理
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -301,7 +302,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             )
         ),
         const SizedBox(height: 24),
-        // 说明：逻辑说明
+        // 细节处理
         GestureDetector(
           // 长按开始
           onTapDown: (_) => _toggleListening(),
@@ -314,7 +315,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // 说明：逻辑说明
+                // 细节处理
                 if (_isListening)
                   AnimatedBuilder(
                     animation: _controller,
@@ -335,7 +336,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                       );
                     },
                   ),
-                // 说明：逻辑说明
+                // 细节处理
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 150),
                   // 按住时稍微放大一点 (90 -> 100)，增加交互反馈

@@ -11,26 +11,26 @@ class AppTheme {
       primary: AppColors.primary,
       secondary: AppColors.secondary,
       surface: AppColors.surface,
-      // 说明：逻辑说明
+      // 逻辑处理
     ),
     scaffoldBackgroundColor: AppColors.background,
     
-    // 说明：逻辑说明
+    // 逻辑处理
     cardTheme: CardThemeData(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20), // 说明：逻辑说明
+        borderRadius: BorderRadius.circular(20), // 逻辑处理
         side: const BorderSide(color: AppColors.shadowWhite, width: 1),
       ),
       color: Colors.white,
     ),
 
-    // 说明：逻辑说明
+    // 逻辑处理
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        elevation: 0, // 说明：逻辑说明
+        elevation: 0, // 逻辑处理
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -42,7 +42,7 @@ class AppTheme {
       ),
     ),
     
-    // 说明：逻辑说明
+    // 逻辑处理
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.surface,
       foregroundColor: AppColors.textHighEmphasis,
@@ -53,7 +53,7 @@ class AppTheme {
          color: AppColors.textHighEmphasis,
          fontSize: 18,
          fontWeight: FontWeight.w700,
-         fontFamily: 'Plus Jakarta Sans' // 说明：逻辑说明
+         fontFamily: 'Plus Jakarta Sans' // 逻辑处理
       )
     ),
   );

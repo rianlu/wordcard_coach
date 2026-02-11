@@ -20,9 +20,9 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   final StatsDao _statsDao = StatsDao();
-  // 说明：逻辑说明
-  // 说明：逻辑说明
-  // 说明：逻辑说明
+  // 逻辑处理
+  // 逻辑处理
+  // 逻辑处理
   
   bool _isLoading = true;
   MasteryDistribution? _masteryDistribution;
@@ -43,9 +43,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Future<void> _loadData() async {
     try {
-      // 说明：逻辑说明
-      // 说明：逻辑说明
-       // 说明：逻辑说明
+      // 逻辑处理
+      // 逻辑处理
+       // 逻辑处理
        final userStats = await UserStatsDao().getUserStats();
        String bookId = userStats.currentBookId.isNotEmpty ? userStats.currentBookId : 'waiyan_3_1';
       
@@ -63,7 +63,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       debugPrint("Error loading stats: $e");
       if (mounted) {
         setState(() {
-          _isLoading = false; // 说明：逻辑说明
+          _isLoading = false; // 逻辑处理
         });
       }
     }
@@ -72,7 +72,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC), // 说明：逻辑说明
+      backgroundColor: const Color(0xFFF8FAFC), // 配色
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -99,7 +99,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // 说明：逻辑说明
+          // 逻辑处理
           if (_masteryDistribution != null)
              MasteryPieChart(distribution: _masteryDistribution!)
                 .animate()
@@ -108,7 +108,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           
           const SizedBox(height: 20),
           
-          // 说明：逻辑说明
+          // 逻辑处理
           WeeklyBarChart(weeklyActivity: _monthlyActivity)
               .animate()
               .fadeIn(duration: 500.ms, delay: 200.ms)
@@ -116,7 +116,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           
           const SizedBox(height: 20),
           
-          // 说明：逻辑说明
+          // 逻辑处理
           StudyHeatMap(activity: _monthlyActivity)
               .animate()
               .fadeIn(duration: 500.ms, delay: 400.ms)
@@ -134,7 +134,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 说明：逻辑说明
+          // 逻辑处理
           Expanded(
             flex: 4,
             child: Column(
@@ -150,7 +150,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           
           const SizedBox(width: 32),
           
-          // 说明：逻辑说明
+          // 逻辑处理
           Expanded(
             flex: 6,
             child: Column(

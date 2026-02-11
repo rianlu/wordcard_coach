@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// 说明：逻辑说明
-/// 说明：逻辑说明
+/// 逻辑处理
+/// 逻辑处理
 class AnimatedIndexedStack extends StatefulWidget {
   final int index;
   final List<Widget> children;
@@ -60,12 +60,12 @@ class _AnimatedIndexedStackState extends State<AnimatedIndexedStack>
           animation: _controllers[i],
           builder: (context, child) {
             final value = _controllers[i].value;
-            // 说明：逻辑说明
+            // 逻辑处理
             return Offstage(
               offstage: value == 0,
               child: Opacity(
                 opacity: value,
-                // 说明：逻辑说明
+                // 逻辑处理
                 child: IgnorePointer(
                   ignoring: i != widget.index,
                   child: child,

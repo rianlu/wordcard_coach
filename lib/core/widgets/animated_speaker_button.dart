@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-/// 说明：逻辑说明
-/// 说明：逻辑说明
+/// 逻辑处理
+/// 逻辑处理
 class AnimatedSpeakerButton extends StatefulWidget {
   final VoidCallback onPressed;
   final bool isPlaying;

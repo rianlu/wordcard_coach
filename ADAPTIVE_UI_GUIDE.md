@@ -54,22 +54,7 @@ LayoutBuilder(
 )
 ```
 
-### 2.3 收藏馆 (CollectionGalleryScreen)
-**现状**: `EpicGrid` 和 `DailyGrid` 的 `crossAxisCount` 是硬编码的（2 和 3）。
-
-**建议**:
-- **响应式列数**: 使用 `GridView.extent` 配合 `maxCrossAxisExtent`，让系统根据可用空间自动计算列数。
-```dart
-GridView.extent(
-  maxCrossAxisExtent: 200, // 每个卡片最大宽度
-  mainAxisSpacing: 16,
-  crossAxisSpacing: 16,
-  shrinkWrap: true,
-  children: [...],
-)
-```
-
-### 2.4 练习界面 (Speaking/Spelling/Selection Practice)
+### 2.3 练习界面 (Speaking/Spelling/Selection Practice)
 **现状**: 典型的手机垂直流布局。在宽屏或横屏下，内容居中垂直分布，会导致：
 1. **拼写练习 (Spelling)**: 键盘区域在宽屏上会散得很开，或者在横屏上需要滚动才能看到。
 2. **选择练习 (Selection)**: 选项卡片被拉得很长，视觉焦点分散。

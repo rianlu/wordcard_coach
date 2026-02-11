@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// 说明：逻辑说明
-/// 说明：逻辑说明
+/// 逻辑处理
+/// 逻辑处理
 class IcibaDailyService {
   static final IcibaDailyService _instance = IcibaDailyService._internal();
   factory IcibaDailyService() => _instance;
@@ -14,22 +14,22 @@ class IcibaDailyService {
   static const String _cacheKey = 'iciba_daily_cache';
   static const String _cacheTimeKey = 'iciba_daily_cache_time';
   
-  /// 说明：逻辑说明
+  /// 逻辑处理
   DailySentence? _cachedSentence;
   
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<DailySentence?> getTodaySentence() async {
-    // 说明：逻辑说明
+    // 逻辑处理
     if (_cachedSentence != null) {
       return _cachedSentence;
     }
     
-    // 说明：逻辑说明
+    // 逻辑处理
     final prefs = await SharedPreferences.getInstance();
     final cachedJson = prefs.getString(_cacheKey);
     final cachedTime = prefs.getInt(_cacheTimeKey) ?? 0;
     
-    // 说明：逻辑说明
+    // 逻辑处理
     final now = DateTime.now();
     final cacheDate = DateTime.fromMillisecondsSinceEpoch(cachedTime);
     final isToday = now.year == cacheDate.year && 
@@ -45,30 +45,30 @@ class IcibaDailyService {
       }
     }
     
-    // 说明：逻辑说明
+    // 逻辑处理
     return await _fetchNewSentence(prefs);
   }
   
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<DailySentence?> refreshSentence() async {
     final prefs = await SharedPreferences.getInstance();
     return await _fetchNewSentence(prefs);
   }
   
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<DailySentence?> _fetchNewSentence(SharedPreferences prefs) async {
     try {
       final uri = Uri.parse(_apiUrl);
       final response = await http.get(uri).timeout(const Duration(seconds: 10));
       
       if (response.statusCode == 200) {
-        // 说明：逻辑说明
-        // 说明：逻辑说明
+        // 逻辑处理
+        // 逻辑处理
         final String body = utf8.decode(response.bodyBytes);
         final data = jsonDecode(body);
         final sentence = DailySentence.fromJson(data);
         
-        // 说明：逻辑说明
+        // 逻辑处理
         await prefs.setString(_cacheKey, jsonEncode(data));
         await prefs.setInt(_cacheTimeKey, DateTime.now().millisecondsSinceEpoch);
         
@@ -79,11 +79,11 @@ class IcibaDailyService {
       debugPrint('Error fetching iciba daily: $e');
     }
     
-    // 说明：逻辑说明
+    // 逻辑处理
     return _getFallbackSentence();
   }
   
-  /// 说明：逻辑说明
+  /// 逻辑处理
   DailySentence _getFallbackSentence() {
     return DailySentence(
       id: '0',
@@ -97,14 +97,14 @@ class IcibaDailyService {
   }
 }
 
-/// 说明：逻辑说明
+/// 逻辑处理
 class DailySentence {
   final String id;
   final String englishContent;
   final String chineseNote;
   final String? audioUrl;
-  final String? imageUrl;         // 说明：逻辑说明
-  final String? shareImageUrl;    // 说明：逻辑说明
+  final String? imageUrl;         // 逻辑处理
+  final String? shareImageUrl;    // 逻辑处理
   final String date;
   
   DailySentence({

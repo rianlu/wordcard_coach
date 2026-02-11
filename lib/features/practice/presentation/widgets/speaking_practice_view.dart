@@ -12,14 +12,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import 'practice_success_overlay.dart';
 
-/// 说明：逻辑说明
+/// 逻辑处理
 enum SpeakingState { 
-  idle,          // 说明：逻辑说明
-  playingAudio,  // 说明：逻辑说明
-  listening,     // 说明：逻辑说明
-  processing,    // 说明：逻辑说明
-  success,       // 说明：逻辑说明
-  failed         // 说明：逻辑说明
+  idle,          // 逻辑处理
+  playingAudio,  // 逻辑处理
+  listening,     // 逻辑处理
+  processing,    // 逻辑处理
+  success,       // 逻辑处理
+  failed         // 逻辑处理
 }
 
 class SpeakingPracticeView extends StatefulWidget {
@@ -39,13 +39,13 @@ class SpeakingPracticeView extends StatefulWidget {
 class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin {
   late AnimationController _pulseController;
   
-  // 说明：逻辑说明
+  // 逻辑处理
   SpeakingState _state = SpeakingState.idle;
   String _lastHeard = '';
   int _retryCount = 0;
 
   
-  // 说明：逻辑说明
+  // 逻辑处理
   Timer? _skipTimer;
   Timer? _listenTimeoutTimer;
   Timer? _successTimer;
@@ -64,16 +64,16 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       duration: const Duration(seconds: 2),
     );
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _listeningSubscription = SpeechService().listeningState.listen((isActive) {
       if (mounted && _state == SpeakingState.listening) {
         if (isActive) {
-          // 说明：逻辑说明
+          // 逻辑处理
           AudioService().playAsset('mic_start.mp3');
         } else {
-          // 说明：逻辑说明
-          // 说明：逻辑说明
-          // 说明：逻辑说明
+          // 逻辑处理
+          // 逻辑处理
+          // 逻辑处理
           if (_lastHeard.isNotEmpty) {
              debugPrint("Speech session ended with input: $_lastHeard");
              _handleSpeechSessionEnded();
@@ -82,10 +82,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       }
     });
     
-    // 说明：逻辑说明
+    // 逻辑处理
     SpeechService().init();
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _startPractice();
   }
 
@@ -127,31 +127,31 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     super.dispose();
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<void> _startPractice() async {
     if (!mounted) return;
     
-    // 说明：逻辑说明
+    // 逻辑处理
     await Future.delayed(const Duration(milliseconds: 200));
     if (!mounted) return;
     
-    // 说明：逻辑说明
+    // 逻辑处理
     setState(() => _state = SpeakingState.playingAudio);
     
     await AudioService().playWord(widget.word);
     
-    // 说明：逻辑说明
+    // 逻辑处理
     await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _beginListening();
   }
 
   void _beginListening() {
     if (!mounted || _state == SpeakingState.success) return;
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _skipTimer?.cancel();
     _listenTimeoutTimer?.cancel();
     
@@ -162,17 +162,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     
     _pulseController.repeat();
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _skipTimer = Timer(const Duration(seconds: _skipButtonDelaySeconds), () {
-      if (mounted) setState(() {});  // 说明：逻辑说明
+      if (mounted) setState(() {});  // 刷新界面
     });
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
       _handleListenTimeout();
     });
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _startSpeechRecognition();
   }
 
@@ -195,13 +195,13 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   void _scheduleRetry() {
     if (_retryCount >= _maxRetries) {
-      // 说明：逻辑说明
+      // 逻辑处理
       debugPrint('Max retries reached, showing skip prompt');
       _pulseController.stop();
       _pulseController.reset();
       setState(() {
         _state = SpeakingState.failed;
-        _lastHeard = ''; // 说明：逻辑说明
+        _lastHeard = ''; // 逻辑处理
       });
       return;
     }
@@ -209,14 +209,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     _retryCount++;
     debugPrint('Retry attempt $_retryCount/$_maxRetries');
     
-    // 说明：逻辑说明
+    // 逻辑处理
     if (mounted) {
       setState(() {
-        _lastHeard = ''; // 说明：逻辑说明
+        _lastHeard = ''; // 逻辑处理
       });
     }
     
-    // 说明：逻辑说明
+    // 逻辑处理
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted && _state == SpeakingState.listening) {
         _startSpeechRecognition();
@@ -231,22 +231,22 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     SpeechService().stopListening();
     
     if (_lastHeard.isEmpty) {
-      // 说明：逻辑说明
+      // 逻辑处理
       if (_retryCount < _maxRetries) {
         _retryCount++;
         debugPrint('Timeout retry attempt $_retryCount/$_maxRetries');
-        // 说明：逻辑说明
+        // 逻辑处理
         Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted && _state == SpeakingState.listening) {
             _startSpeechRecognition();
-            // 说明：逻辑说明
+            // 逻辑处理
             _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
               _handleListenTimeout();
             });
           }
         });
       } else {
-        // 说明：逻辑说明
+        // 逻辑处理
         debugPrint('Max retries reached after timeout');
         _pulseController.stop();
         _pulseController.reset();
@@ -255,17 +255,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         });
       }
     } else {
-      // 说明：逻辑说明
+      // 逻辑处理
       _showRetryPrompt(_lastHeard);
     }
   }
 
   void _handleSpeechSessionEnded() {
-    _listenTimeoutTimer?.cancel(); // 说明：逻辑说明
+    _listenTimeoutTimer?.cancel(); // 逻辑处理
     
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
     
     // 触发重试提示并显示错误反馈
     _showRetryPrompt(_lastHeard);

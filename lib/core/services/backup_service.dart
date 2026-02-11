@@ -23,15 +23,15 @@ class BackupService {
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
   
-  // 说明：逻辑说明
-  // 说明：逻辑说明
-  // 说明：逻辑说明
+  // 逻辑处理
+  // 逻辑处理
+  // 逻辑处理
   static const _keyString = 'WordCardCoachBackupKey2026Secure'; 
-  // 说明：逻辑说明
+  // 逻辑处理
   static const _ivString = 'WCC_Backup_IV_16'; 
 
   // ---------------------------------------------------------------------------
-  // 说明：逻辑说明
+  // 逻辑处理
   // ---------------------------------------------------------------------------
   
   String _encryptData(String plainText) {
@@ -53,19 +53,19 @@ class BackupService {
   }
 
   // ---------------------------------------------------------------------------
-  // 说明：逻辑说明
+  // 逻辑处理
   // ---------------------------------------------------------------------------
   
   Future<void> exportData(BuildContext context) async {
     try {
       final db = await _dbHelper.database;
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final userStatsList = await db.query('user_stats');
       final wordProgressList = await db.query('word_progress');
       final dailyRecordsList = await db.query('daily_records');
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final userStatsMap = userStatsList.isNotEmpty ? userStatsList.first : {};
       final accountId = userStatsMap['account_id'] as String? ?? const Uuid().v4();
       final nickname = userStatsMap['nickname'] as String? ?? 'Unknown';
@@ -86,19 +86,19 @@ class BackupService {
         }
       };
 
-      // 说明：逻辑说明
+      // 逻辑处理
       final jsonString = jsonEncode(exportData);
       final encryptedString = _encryptData(jsonString);
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final tempDir = await getTemporaryDirectory();
       final dateStr = DateFormat('yyyyMMdd_HHmm').format(DateTime.now());
-      // 说明：逻辑说明
+      // 逻辑处理
       final fileName = 'wordcoach_backup_${dateStr}_v1.wcc';
       final file = File('${tempDir.path}/$fileName');
       await file.writeAsString(encryptedString);
 
-      // 说明：逻辑说明
+      // 逻辑处理
       if (context.mounted) {
         final box = context.findRenderObject() as RenderBox?;
         await Share.shareXFiles(
@@ -119,12 +119,12 @@ class BackupService {
   }
 
   // ---------------------------------------------------------------------------
-  // 说明：逻辑说明
+  // 逻辑处理
   // ---------------------------------------------------------------------------
 
   Future<void> importData(BuildContext context) async {
     try {
-      // 说明：逻辑说明
+      // 逻辑处理
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
       );
@@ -165,15 +165,15 @@ class BackupService {
       
       Map<String, dynamic> jsonMap;
       
-      // 说明：逻辑说明
+      // 逻辑处理
       try {
          jsonMap = jsonDecode(content);
          if (!jsonMap.containsKey('metadata')) {
-            // 说明：逻辑说明
+            // 逻辑处理
             throw const FormatException();
          }
       } catch (_) {
-         // 说明：逻辑说明
+         // 逻辑处理
          try {
            final decrypted = _decryptData(content);
            jsonMap = jsonDecode(decrypted);
@@ -182,7 +182,7 @@ class BackupService {
          }
       }
       
-      // 说明：逻辑说明
+      // 逻辑处理
       if (!jsonMap.containsKey('metadata') || !jsonMap.containsKey('data')) {
         throw Exception('无效的备份文件格式');
       }
@@ -192,7 +192,7 @@ class BackupService {
       final importedNickname = metadata['nickname'];
       final importedTimestamp = metadata['exported_at'] as int;
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final db = await _dbHelper.database;
       final currentUserList = await db.query('user_stats');
       final currentUser = currentUserList.isNotEmpty ? currentUserList.first : {};
@@ -200,27 +200,27 @@ class BackupService {
       final currentRows = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM word_progress'));
       
       bool isIdentityMismatch = (currentAccountId != null && importedAccountId != currentAccountId);
-      bool hasSignificantData = (currentRows != null && currentRows > 10); // 说明：逻辑说明
+      bool hasSignificantData = (currentRows != null && currentRows > 10); // 逻辑处理
       
       bool confirmed = false;
 
-      // 说明：逻辑说明
+      // 逻辑处理
       if (context.mounted) {
          if (isIdentityMismatch && hasSignificantData) {
-            // 说明：逻辑说明
+            // 逻辑处理
             confirmed = await _showCriticalWarningDialog(context, importedNickname);
          } else {
-            // 说明：逻辑说明
+            // 逻辑处理
             confirmed = await _showNormalConfirmDialog(context, importedNickname, importedTimestamp);
          }
       }
       
       if (!confirmed) return;
 
-      // 说明：逻辑说明
+      // 逻辑处理
       await _executeRestore(jsonMap['data']);
       
-      // 说明：逻辑说明
+      // 逻辑处理
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -242,7 +242,7 @@ class BackupService {
             elevation: 8,
           )
         );
-        // 说明：逻辑说明
+        // 逻辑处理
         GlobalStatsNotifier.instance.notify();
       }
 
@@ -260,26 +260,26 @@ class BackupService {
   Future<void> _executeRestore(Map<String, dynamic> data) async {
     final db = await _dbHelper.database;
     await db.transaction((txn) async {
-      // 说明：逻辑说明
+      // 逻辑处理
       await txn.delete('word_progress');
       await txn.delete('daily_records');
       await txn.delete('user_stats');
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final userStatsList = List<Map<String, dynamic>>.from(data['user_stats']);
       for (var item in userStatsList) {
         await txn.insert('user_stats', item);
       }
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final wordProgressList = List<Map<String, dynamic>>.from(data['word_progress']);
-      final batch = txn.batch(); // 说明：逻辑说明
+      final batch = txn.batch(); // 逻辑处理
       for (var item in wordProgressList) {
         batch.insert('word_progress', item);
       }
       await batch.commit(noResult: true);
       
-      // 说明：逻辑说明
+      // 逻辑处理
       final dailyRecordsList = List<Map<String, dynamic>>.from(data['daily_records']);
       for (var item in dailyRecordsList) {
         await txn.insert('daily_records', item);
@@ -314,7 +314,7 @@ class BackupService {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFEFF6FF), // 说明：逻辑说明
+                    color: Color(0xFFEFF6FF), // 配色
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.restore_rounded, color: AppColors.primary, size: 36),
@@ -414,7 +414,7 @@ class BackupService {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFEF2F2), // 说明：逻辑说明
+                    color: Color(0xFFFEF2F2), // 配色
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 36),

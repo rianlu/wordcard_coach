@@ -26,7 +26,7 @@ class MineScreen extends StatefulWidget {
 class _MineScreenState extends State<MineScreen> {
   final UserStatsDao _userStatsDao = UserStatsDao();
   final StatsDao _statsDao = StatsDao();
-  final WordDao _wordDao = WordDao(); // 说明：逻辑说明
+  final WordDao _wordDao = WordDao(); // 逻辑处理
   UserStats? _stats;
   BookProgress? _bookProgress;
   bool _isLoading = true;
@@ -45,15 +45,15 @@ class _MineScreenState extends State<MineScreen> {
     final r =  dart.Random();
     final now = DateTime.now();
 
-    // 说明：逻辑说明
+    // 逻辑处理
     for (int i = 1; i <= 14; i++) {
        final date = now.subtract(Duration(days: i));
        
-       // 说明：逻辑说明
-       if (r.nextDouble() > 0.2) { // 说明：逻辑说明
+       // 逻辑处理
+       if (r.nextDouble() > 0.2) { // 逻辑处理
           int newWords = r.nextInt(15);
           int reviewWords = r.nextInt(30) + 10;
-          int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4)).round(); // 说明：逻辑说明
+          int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4)).round(); // 复习流程
           int wrong = reviewWords - correct;
           int minutes = r.nextInt(30) + 10;
           
@@ -68,11 +68,16 @@ class _MineScreenState extends State<MineScreen> {
        }
     }
 
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    final newWords = await _wordDao.getNewWords(20, grade: _stats?.currentGrade, semester: _stats?.currentSemester);
+    // 逻辑处理
+    // 逻辑处理
+    final newWords = await _wordDao.getNewWords(
+      20,
+      bookId: (_stats?.currentBookId.isNotEmpty ?? false) ? _stats?.currentBookId : null,
+      grade: _stats?.currentGrade,
+      semester: _stats?.currentSemester
+    );
     if (newWords.isNotEmpty) {
-       // 说明：逻辑说明
+       // 细节处理
        final db = await DatabaseHelper().database;
        
        final batch = db.batch();
@@ -87,7 +92,7 @@ class _MineScreenState extends State<MineScreen> {
             'easiness_factor': 2.5,
             'interval': 1,
             'repetition': 1,
-            'next_review_date': yesterday, // 说明：逻辑说明
+            'next_review_date': yesterday, // 复习流程
             'last_review_date': yesterday,
             'review_count': 1,
             'mastery_level': 1,
@@ -101,7 +106,7 @@ class _MineScreenState extends State<MineScreen> {
        await batch.commit(noResult: true);
     }
     
-    // 说明：逻辑说明
+    // 细节处理
     await _loadStats();
     if (mounted) {
        setState(() => _isLoading = false);
@@ -120,22 +125,22 @@ class _MineScreenState extends State<MineScreen> {
   Future<void> _loadStats() async {
     final stats = await _userStatsDao.getUserStats();
     
-    // 说明：逻辑说明
+    // 细节处理
     String bookId = stats.currentBookId;
     if (bookId.isEmpty) {
       bookId = 'waiyan_${stats.currentGrade}_${stats.currentSemester}';
     }
     
-    // 说明：逻辑说明
+    // 细节处理
     final bookProg = await _statsDao.getBookProgress(bookId);
     
-    // 说明：逻辑说明
+    // 细节处理
     if (_booksManifest.isEmpty) {
       try {
         final jsonStr = await rootBundle.loadString('assets/data/books_manifest.json');
         _booksManifest = jsonDecode(jsonStr);
       } catch (e) {
-        // 说明：逻辑说明
+        // 细节处理
       }
     }
     
@@ -162,12 +167,12 @@ class _MineScreenState extends State<MineScreen> {
 
     bool launched = false;
 
-    // 说明：逻辑说明
+    // 逻辑处理
     for (final uri in appUris) {
       try {
         // 直接尝试唤起。
-        // 说明：逻辑说明
-        // 说明：逻辑说明
+        // 细节处理
+        // 细节处理
         if (await launchUrl(uri, mode: LaunchMode.externalApplication)) {
           launched = true;
           break;
@@ -177,7 +182,7 @@ class _MineScreenState extends State<MineScreen> {
       }
     }
 
-    // 说明：逻辑说明
+    // 细节处理
     if (!launched) {
       try {
         await launchUrl(webUri, mode: LaunchMode.externalApplication);
@@ -204,7 +209,7 @@ class _MineScreenState extends State<MineScreen> {
         child: Column(
           children: [
              const SizedBox(height: 20),
-             // 说明：逻辑说明
+             // 细节处理
              Container(
                width: 100,
                height: 100,
@@ -267,7 +272,7 @@ class _MineScreenState extends State<MineScreen> {
 
              const SizedBox(height: 40),
 
-             // 说明：逻辑说明
+             // 细节处理
              _buildCurrentBookCard()
                  .animate()
                  .fadeIn(duration: 500.ms, delay: 300.ms)
@@ -379,7 +384,7 @@ class _MineScreenState extends State<MineScreen> {
                     ],
                   ),
                 ),
-                // 说明：逻辑说明
+                // 细节处理
                 const Icon(Icons.chevron_right_rounded, color: AppColors.textMediumEmphasis),
               ],
             ),
@@ -432,7 +437,7 @@ class _MineScreenState extends State<MineScreen> {
   String _getCurrentBookName() {
     if (_stats == null) return '加载中...';
     
-    // 说明：逻辑说明
+    // 细节处理
     final bookId = _stats!.currentBookId;
     if (bookId.isNotEmpty && _booksManifest.isNotEmpty) {
       final book = _booksManifest.firstWhere(
@@ -444,7 +449,7 @@ class _MineScreenState extends State<MineScreen> {
       }
     }
     
-    // 说明：逻辑说明
+    // 细节处理
     if (_booksManifest.isNotEmpty) {
        final book = _booksManifest.firstWhere(
         (b) => b['grade'] == _stats!.currentGrade && b['semester'] == _stats!.currentSemester,
@@ -455,7 +460,7 @@ class _MineScreenState extends State<MineScreen> {
       }
     }
 
-    // 说明：逻辑说明
+    // 细节处理
     return _getGradeLabel(_stats!.currentGrade, _stats!.currentSemester);
   }
 
@@ -472,7 +477,7 @@ class _MineScreenState extends State<MineScreen> {
   }
 
   Future<void> _showBookSelectionDialog() async {
-    // 说明：逻辑说明
+    // 细节处理
     final books = _booksManifest;
 
     if (!mounted) return;
@@ -491,7 +496,7 @@ class _MineScreenState extends State<MineScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // 说明：逻辑说明
+              // 细节处理
               Container(
                 margin: const EdgeInsets.only(top: 12),
                 width: 40,
@@ -501,7 +506,7 @@ class _MineScreenState extends State<MineScreen> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              // 说明：逻辑说明
+              // 细节处理
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
                 child: Row(
@@ -517,9 +522,9 @@ class _MineScreenState extends State<MineScreen> {
                   ],
                 ),
               ),
-              // 说明：逻辑说明
+              // 细节处理
               Divider(height: 1, color: Colors.grey.shade100),
-              // 说明：逻辑说明
+              // 细节处理
               Expanded(
                 child: ListView.separated(
                   shrinkWrap: true,
@@ -588,7 +593,7 @@ class _MineScreenState extends State<MineScreen> {
                   },
                 ),
               ),
-              // 说明：逻辑说明
+              // 细节处理
               SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
             ],
           ),
@@ -658,7 +663,7 @@ class _MineScreenState extends State<MineScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFEFF6FF), // 说明：逻辑说明
+                      color: Color(0xFFEFF6FF), // 配色
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.mode_edit_outline_rounded, color: AppColors.primary, size: 32),
@@ -761,7 +766,7 @@ class _MineScreenState extends State<MineScreen> {
       final updatedStats = _stats!.copyWith(nickname: newNickname.trim());
       await _userStatsDao.updateUserStats(updatedStats);
       
-      // 说明：逻辑说明
+      // 细节处理
       GlobalStatsNotifier.instance.notify();
       
       if (mounted) {

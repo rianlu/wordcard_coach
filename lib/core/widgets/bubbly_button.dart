@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// "" 3/实体阴影效果
-/// 说明：逻辑说明
+/// 逻辑处理
 class BubblyButton extends StatefulWidget {
   final VoidCallback onPressed;
   final Widget child;
@@ -16,7 +16,7 @@ class BubblyButton extends StatefulWidget {
     required this.onPressed,
     required this.child,
     this.color = Colors.blue,
-    this.shadowColor = Colors.blueAccent, // 说明：逻辑说明
+    this.shadowColor = Colors.blueAccent, // 逻辑处理
     this.borderRadius = 16.0,
     this.padding = const EdgeInsets.all(16),
     this.shadowHeight = 6.0,
@@ -43,7 +43,7 @@ class _BubblyButtonState extends State<BubblyButton> {
           color: widget.color,
           borderRadius: BorderRadius.circular(widget.borderRadius),
           boxShadow: [
-            // 说明：逻辑说明
+            // 逻辑处理
             BoxShadow(
               color: widget.shadowColor,
               offset: Offset(0, _isPressed ? 0 : widget.shadowHeight),

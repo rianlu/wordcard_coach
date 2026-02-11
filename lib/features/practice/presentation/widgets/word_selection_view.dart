@@ -161,15 +161,15 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         }
 
         if (!isTall) {
-           // 说明：逻辑说明
+           // 逻辑处理
            return SingleChildScrollView(
              padding: const EdgeInsets.all(24),
              child: Column(
                children: [
                  _buildWordCard(),
                  const SizedBox(height: 24),
-                 // 说明：逻辑说明
-                 // 说明：逻辑说明
+                 // 逻辑处理
+                 // 逻辑处理
                  _buildOptionsGrid(shrinkWrap: true, scrollable: false),
                ],
              ),
@@ -239,7 +239,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         : Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                // 说明：逻辑说明
+                // 逻辑处理
                 final gap = (constraints.maxWidth * 0.04).clamp(12.0, 20.0);
                 return GridView.builder(
                   padding: EdgeInsets.zero,
@@ -329,7 +329,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
       }
     } else {
       // 正常状态
-      // 说明：逻辑说明
+      // 逻辑处理
       bgColor = Colors.white;
       borderColor = Colors.grey.shade200;
       shadowColor = Colors.grey.shade300;

@@ -34,14 +34,17 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
   
-  // 说明：逻辑说明
+  // 逻辑处理
   List<Word> _reviewWords = [];
   List<Word> _distractorPool = []; 
   List<ReviewMode> _modes = []; 
   bool _isLoading = true;
   int _currentIndex = 0;
+  int _correctCount = 0;
+  int _wrongCount = 0;
+  DateTime? _sessionStart;
   
-  // 说明：逻辑说明
+  // 细节处理
   bool _isCardFlyingOut = false;
   Offset _slideOffset = Offset.zero;
 
@@ -55,7 +58,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     final userStats = await _userStatsDao.getUserStats();
     String bookId = userStats.currentBookId;
     
-    // 说明：逻辑说明
+    // 细节处理
     final words = await _wordDao.getWordsDueForReview(
       20, 
       bookId: bookId, 
@@ -82,21 +85,30 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         _modes = modes;
         _distractorPool = distractors;
         _isLoading = false;
+        _sessionStart = DateTime.now();
       });
     }
   }
 
-  // 说明：逻辑说明
-  Future<void> _handleAnswer(int quality) async {
+  int _mapQualityForMode(ReviewMode mode, int rawScore) {
+    if (mode == ReviewMode.speaking) {
+      if (rawScore >= 3) return 5;
+      if (rawScore == 2) return 3;
+      return 0;
+    }
+    return rawScore;
+  }
+
+  Future<void> _handleAnswer(ReviewMode mode, int rawScore) async {
+    final quality = _mapQualityForMode(mode, rawScore);
     final word = _reviewWords[_currentIndex];
     await _wordDao.updateReviewStats(word.id, quality);
 
-    if (quality >= 1) { // 说明：逻辑说明
+    if (quality >= 3) {
+      _correctCount++;
       _triggerNextAnimation();
     } else {
-      // 错误 答案 - 编号
-      // 说明：逻辑说明
-      // 说明：逻辑说明
+      _wrongCount++;
       _triggerNextAnimation();
     }
   }
@@ -104,7 +116,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   void _triggerNextAnimation() {
     setState(() {
       _isCardFlyingOut = true;
-      // 说明：逻辑说明
+      // 细节处理
       _slideOffset = const Offset(500, -200); 
     });
 
@@ -127,12 +139,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
 
   void _finishSession() async {
     try {
+       final start = _sessionStart ?? DateTime.now();
+       final minutes = ((DateTime.now().difference(start).inSeconds) / 60).ceil();
        await StatsDao().recordDailyActivity(
          newWords: 0,
          reviewWords: _reviewWords.length,
-         correct: _reviewWords.length, 
-         wrong: 0, 
-         minutes: 5 
+         correct: _correctCount, 
+         wrong: _wrongCount, 
+         minutes: minutes == 0 ? 1 : minutes
        );
     } catch (e) {
       debugPrint("Error saving review stats: $e");
@@ -154,8 +168,8 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           subtitle: "你复习了 ${_reviewWords.length} 个单词，继续保持！",
           primaryButtonText: "完成",
           onPrimaryPressed: () {
-            Navigator.pop(context); // 说明：逻辑说明
-            Navigator.pop(context); // 说明：逻辑说明
+            Navigator.pop(context); // 返回上一页
+            Navigator.pop(context); // 返回上一页
           },
         );
       },
@@ -172,14 +186,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
       return _buildEmptyState();
     }
     
-    // 说明：逻辑说明
+    // 细节处理
     return Scaffold(
       body: Stack(
         children: [
-          // 说明：逻辑说明
+          // 细节处理
           const Positioned.fill(child: MeshGradientBackground()),
           
-          // 说明：逻辑说明
+          // 细节处理
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -194,7 +208,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
             ),
           ),
           
-          // 说明：逻辑说明
+          // 细节处理
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             left: 16,
@@ -214,7 +228,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   Widget _buildMobileLayout() {
     return Column(
       children: [
-        // 说明：逻辑说明
+        // 细节处理
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
           child: Row(
@@ -225,7 +239,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           ),
         ),
         
-        // 说明：逻辑说明
+        // 细节处理
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Align(
@@ -248,7 +262,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         
         const SizedBox(height: 20),
         
-        // 说明：逻辑说明
+        // 细节处理
         Expanded(
           child: Center(
             child: Padding(
@@ -258,7 +272,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           ),
         ),
         
-        const SizedBox(height: 48), // 说明：逻辑说明
+        const SizedBox(height: 48), // 布局尺寸
       ],
     );
   }
@@ -266,7 +280,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   Widget _buildTabletLayout() {
     return Row(
       children: [
-        // 说明：逻辑说明
+        // 细节处理
         Expanded(
           flex: 4,
           child: Padding(
@@ -286,7 +300,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                 ),
                 const SizedBox(height: 48),
                 
-                // 说明：逻辑说明
+                // 逻辑处理
                 Center(child: _buildCircularProgress(size: 100, fontSize: 24)),
                 
                 const Spacer(),
@@ -295,12 +309,12 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           ),
         ),
         
-        // 说明：逻辑说明
+        // 细节处理
         Expanded(
           flex: 6,
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500), // 说明：逻辑说明
+              constraints: const BoxConstraints(maxWidth: 500), // 细节处理
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: _buildFocusStack(),
@@ -332,7 +346,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           SizedBox(
             width: size, height: size,
             child: CircularProgressIndicator(
-              value: 1.0 - progress, // 说明：逻辑说明
+              value: 1.0 - progress, // 细节处理
               strokeWidth: 6,
               color: AppColors.primary,
               strokeCap: StrokeCap.round,
@@ -361,11 +375,11 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     
     return Stack(
       children: [
-        // 说明：逻辑说明
+        // 细节处理
         if (remaining > 2) _buildFakeCard(scale: 0.9, yOffset: 30, opacity: 0.3),
         if (remaining > 1) _buildFakeCard(scale: 0.95, yOffset: 15, opacity: 0.6),
         
-        // 说明：逻辑说明
+        // 细节处理
         AnimatedSlide(
           offset: _isCardFlyingOut ? _slideOffset : Offset.zero,
           duration: const Duration(milliseconds: 300),
@@ -387,7 +401,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         offset: Offset(0, yOffset),
         child: Container(
           width: double.infinity,
-          height: 600, // 说明：逻辑说明
+          height: 600, // 布局尺寸
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: opacity),
             borderRadius: BorderRadius.circular(32),
@@ -398,7 +412,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                 offset: const Offset(0, 10),
               )
             ],
-            // 说明：逻辑说明
+            // 逻辑处理
             border: Border.all(color: Colors.white.withValues(alpha: 0.5 * opacity), width: 1),
           ),
         ),
@@ -412,7 +426,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     
     return Container(
       width: double.infinity,
-      // 说明：逻辑说明
+      // 细节处理
       constraints: const BoxConstraints(minHeight: 400), 
       decoration: BoxDecoration(
         color: Colors.white,
@@ -441,20 +455,20 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         return SpeakingPracticeView(
           key: ValueKey("speak_${word.id}"),
           word: word,
-          onCompleted: _handleAnswer, 
+          onCompleted: (score) => _handleAnswer(mode, score), 
         );
       case ReviewMode.spelling:
         return SpellingPracticeView(
           key: ValueKey("spell_${word.id}"),
           word: word,
-          onCompleted: _handleAnswer,
+          onCompleted: (score) => _handleAnswer(mode, score),
         );
       case ReviewMode.selection:
         return WordSelectionView(
           key: ValueKey("select_${word.id}"),
           word: word,
           options: _generateOptions(word),
-          onCompleted: _handleAnswer,
+          onCompleted: (score) => _handleAnswer(mode, score),
         );
     }
   }
@@ -536,7 +550,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                           "返回首页",
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold, // 说明：逻辑说明
+                            fontWeight: FontWeight.bold, // 细节处理
                             color: AppColors.textHighEmphasis
                           )
                         ),

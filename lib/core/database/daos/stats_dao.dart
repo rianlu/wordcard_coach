@@ -104,14 +104,14 @@ class StatsDao {
     }
 
     // 构建最近 7 天列表（按时间顺序）
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
     
     for (int i = 6; i >= 0; i--) {
       final date = now.subtract(Duration(days: i));
@@ -138,16 +138,16 @@ class StatsDao {
   Future<MasteryDistribution> getMasteryDistribution(String bookId) async {
     final db = await _dbHelper.database;
     
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
     final int totalWords = Sqflite.firstIntValue(await db.rawQuery(
       'SELECT COUNT(*) FROM words WHERE book_id = ?',
       [bookId]
     )) ?? 0;
     
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
     final List<Map<String, dynamic>> progressMaps = await db.rawQuery('''
       SELECT wp.interval 
       FROM word_progress wp
@@ -166,13 +166,13 @@ class StatsDao {
       } else if (interval > 0) {
         reviewing++;
       } 
-      // 说明：逻辑说明
+      // 逻辑处理
     }
     
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
+    // 逻辑处理
     int newWords = totalWords - mastered - reviewing;
     if (newWords < 0) newWords = 0;
 
@@ -217,7 +217,7 @@ class StatsDao {
      final db = await _dbHelper.database;
      List<VocabGrowthPoint> points = [];
      
-     // 说明：逻辑说明
+     // 逻辑处理
      final List<Map<String, dynamic>> history = await db.query(
        'daily_records',
        columns: ['date', 'new_words_count'],
@@ -225,11 +225,11 @@ class StatsDao {
        limit: 30
      );
      
-     // 说明：逻辑说明
+     // 逻辑处理
      if (history.isNotEmpty) {
-       // 说明：逻辑说明
-       // 说明：逻辑说明
-       // 说明：逻辑说明
+       // 逻辑处理
+       // 逻辑处理
+       // 逻辑处理
        
        int currentTotal = 0;
        final statsMap = await db.query('user_stats', where: 'id = 1');
@@ -237,33 +237,33 @@ class StatsDao {
          currentTotal = statsMap.first['total_words_learned'] as int;
        }
        
-       // 说明：逻辑说明
+       // 逻辑处理
        Map<String, int> dailyNewWords = {
          for (var item in history) (item['date'] as String): (item['new_words_count'] as int)
        };
        
        final now = DateTime.now();
-       // 说明：逻辑说明
+       // 逻辑处理
        List<VocabGrowthPoint> reversePoints = [];
        
        int runningTotal = currentTotal;
        
-       // 说明：逻辑说明
+       // 逻辑处理
        for (int i = 0; i < 7; i++) {
          final date = now.subtract(Duration(days: i));
          final dateStr = "${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}";
          
-         // 说明：逻辑说明
+         // 逻辑处理
          reversePoints.add(VocabGrowthPoint(
            "${date.month}/${date.day}", 
            runningTotal
          ));
          
-         // 说明：逻辑说明
-         // 说明：逻辑说明
+         // 逻辑处理
+         // 逻辑处理
          int gainSteps = dailyNewWords[dateStr] ?? 0;
          
-         // 说明：逻辑说明
+         // 逻辑处理
          if (gainSteps == 0) {
             String legacyDate = "${date.year}-${date.month}-${date.day}";
             gainSteps = dailyNewWords[legacyDate] ?? 0;
@@ -276,7 +276,7 @@ class StatsDao {
        points = reversePoints.reversed.toList();
        
      } else {
-       // 说明：逻辑说明
+       // 逻辑处理
        final statsMap = await db.query('user_stats', where: 'id = 1');
        int currentTotal = 0;
        if (statsMap.isNotEmpty) {
@@ -296,18 +296,18 @@ class StatsDao {
      return points;
   }
   Future<RadarStats> getRadarStats() async {
-     // 说明：逻辑说明
+     // 逻辑处理
      final growth = await getVocabularyGrowth();
-     final vocabScore = (growth.isNotEmpty ? growth.last.totalWords : 0) / 1000.0; // 说明：逻辑说明
+     final vocabScore = (growth.isNotEmpty ? growth.last.totalWords : 0) / 1000.0; // 逻辑处理
      
      final accuracy = await getOverallAccuracy();
      
      return RadarStats(
        vocabulary: vocabScore.clamp(0.2, 1.0),
-       spelling: accuracy.rate.clamp(0.4, 0.95), // 说明：逻辑说明
-       memory: 0.85, // 说明：逻辑说明
-       reaction: 0.7, // 说明：逻辑说明
-       pronunciation: 0.75, // 说明：逻辑说明
+       spelling: accuracy.rate.clamp(0.4, 0.95), // 逻辑处理
+       memory: 0.85, // 逻辑处理
+       reaction: 0.7, // 逻辑处理
+       pronunciation: 0.75, // 逻辑处理
      );
   }
 
@@ -316,12 +316,12 @@ class StatsDao {
     List<DailyActivity> activity = [];
     final now = DateTime.now();
     
-    // 说明：逻辑说明
+    // 逻辑处理
     // 日期字符串映射到数量统计
     Map<String, Map<String, int>> activityMap = {};
     
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 逻辑处理
+    // 逻辑处理
     final List<Map<String, dynamic>> rows = await db.query(
       'daily_records',
       columns: ['date', 'new_words_count', 'review_words_count'],
@@ -336,22 +336,22 @@ class StatsDao {
       activityMap[date] = {'new': newC, 'review': revC};
     }
 
-    // 说明：逻辑说明
+    // 逻辑处理
     for (int i = 29; i >= 0; i--) {
       final date = now.subtract(Duration(days: i));
-      // 说明：逻辑说明
-      // 说明：逻辑说明
-      // 说明：逻辑说明
+      // 逻辑处理
+      // 逻辑处理
+      // 逻辑处理
       final dateStr = "${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}";
       
-      // 说明：逻辑说明
-      // 说明：逻辑说明
-      // 说明：逻辑说明
+      // 逻辑处理
+      // 逻辑处理
+      // 逻辑处理
       
       final int newC = activityMap[dateStr]?['new'] ?? 0;
       final int revC = activityMap[dateStr]?['review'] ?? 0;
       
-      // 说明：逻辑说明
+      // 逻辑处理
       if (newC == 0 && revC == 0) {
          final legacyDateStr = "${date.year}-${date.month}-${date.day}";
          final int lNewC = activityMap[legacyDateStr]?['new'] ?? 0;
@@ -368,7 +368,7 @@ class StatsDao {
      final db = await _dbHelper.database;
      List<PerformanceHighlight> highlights = [];
 
-     // 说明：逻辑说明
+     // 逻辑处理
      final List<Map<String, dynamic>> wrongest = await db.rawQuery('''
         SELECT w.text, wp.wrong_count 
         FROM word_progress wp 
@@ -384,22 +384,22 @@ class StatsDao {
            title: "难点单词", 
            subtitle: word, 
            badgeText: "错 $count 次", 
-           colorValue: 0xFFF59E0B, // 说明：逻辑说明
-           iconCode: 0xef76, // 说明：逻辑说明
+           colorValue: 0xFFF59E0B, // 逻辑处理
+           iconCode: 0xef76, // 逻辑处理
         ));
      } else {
-        // 说明：逻辑说明
+        // 逻辑处理
          highlights.add(PerformanceHighlight(
            title: "暂无难点", 
            subtitle: "继续保持", 
            badgeText: "Perfect", 
-           colorValue: 0xFFF59E0B, // 说明：逻辑说明
-           iconCode: 0xe87f, // 说明：逻辑说明
+           colorValue: 0xFFF59E0B, // 逻辑处理
+           iconCode: 0xe87f, // 逻辑处理
         ));
      }
 
-     // 说明：逻辑说明
-     // 说明：逻辑说明
+     // 逻辑处理
+     // 逻辑处理
      final modeSums = await db.rawQuery('''
        SELECT 
          SUM(spell_mode_count) as spell, 
@@ -427,16 +427,16 @@ class StatsDao {
            title: title, 
            subtitle: sub, 
            badgeText: "S Rank", 
-           colorValue: 0xFF3B82F6, // 说明：逻辑说明
-           iconCode: 0xe9f7, // 说明：逻辑说明
+           colorValue: 0xFF3B82F6, // 逻辑处理
+           iconCode: 0xe9f7, // 逻辑处理
        ));
      } else {
         highlights.add(PerformanceHighlight(
            title: "学习起步", 
            subtitle: "积累中...", 
            badgeText: "Level 1", 
-           colorValue: 0xFF3B82F6, // 说明：逻辑说明
-           iconCode: 0xe88a, // 说明：逻辑说明
+           colorValue: 0xFF3B82F6, // 逻辑处理
+           iconCode: 0xe88a, // 逻辑处理
        ));
      }
      

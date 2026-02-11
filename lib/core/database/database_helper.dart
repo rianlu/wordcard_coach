@@ -49,24 +49,24 @@ class DatabaseHelper {
       // 安全迁移 3 -> 4（新增同步字段）
       print("Migrating DB to version 4 (Cloud Sync Prep)...");
       
-      // 说明：逻辑说明
+      // 逻辑处理
       await _safeAddColumn(db, 'word_progress', 'account_id', 'TEXT');
       await _safeAddColumn(db, 'word_progress', 'device_id', 'TEXT');
       await _safeAddColumn(db, 'word_progress', 'last_updated_at', 'INTEGER DEFAULT 0');
       await _safeAddColumn(db, 'word_progress', 'is_deleted', 'INTEGER DEFAULT 0');
 
-      // 说明：逻辑说明
+      // 逻辑处理
       await _safeAddColumn(db, 'user_stats', 'account_id', 'TEXT');
       await _safeAddColumn(db, 'user_stats', 'device_id', 'TEXT');
       await _safeAddColumn(db, 'user_stats', 'last_updated_at', 'INTEGER DEFAULT 0');
 
-      // 说明：逻辑说明
+      // 逻辑处理
       await _safeAddColumn(db, 'daily_records', 'account_id', 'TEXT');
       await _safeAddColumn(db, 'daily_records', 'device_id', 'TEXT');
       await _safeAddColumn(db, 'daily_records', 'last_updated_at', 'INTEGER DEFAULT 0');
       await _safeAddColumn(db, 'daily_records', 'is_deleted', 'INTEGER DEFAULT 0');
 
-      // 说明：逻辑说明
+      // 逻辑处理
       await db.execute('''
         CREATE TABLE IF NOT EXISTS sync_state (
           table_name TEXT PRIMARY KEY NOT NULL,
@@ -99,7 +99,7 @@ class DatabaseHelper {
   }
 
   Future<void> _createDB(Database db, int version) async {
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE words (
         id TEXT PRIMARY KEY NOT NULL,
@@ -123,7 +123,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_words_category ON words(category)');
     await db.execute('CREATE INDEX idx_words_text ON words(text)');
 
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE sentences (
         id TEXT PRIMARY KEY NOT NULL,
@@ -135,7 +135,7 @@ class DatabaseHelper {
     ''');
     await db.execute('CREATE INDEX idx_sentences_category ON sentences(category)');
 
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE word_sentence_map (
         word_id TEXT NOT NULL,
@@ -151,7 +151,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_wsm_sentence ON word_sentence_map(sentence_id)');
     await db.execute('CREATE INDEX idx_wsm_primary ON word_sentence_map(word_id, is_primary)');
 
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE word_progress (
         id TEXT PRIMARY KEY NOT NULL,
@@ -181,7 +181,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_progress_review_date ON word_progress(next_review_date)');
     await db.execute('CREATE INDEX idx_progress_mastery ON word_progress(mastery_level)');
 
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE user_stats (
         id INTEGER PRIMARY KEY NOT NULL DEFAULT 1,
@@ -211,7 +211,7 @@ class DatabaseHelper {
       'current_book_id': ''
     });
 
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE daily_records (
         date TEXT PRIMARY KEY NOT NULL,
@@ -229,7 +229,7 @@ class DatabaseHelper {
     ''');
     await db.execute('CREATE INDEX idx_daily_records_date ON daily_records(date)');
 
-    // 说明：逻辑说明
+    // 逻辑处理
     await db.execute('''
       CREATE TABLE sync_state (
         table_name TEXT PRIMARY KEY NOT NULL,
@@ -309,13 +309,55 @@ class DatabaseHelper {
     }
   }
 
+  String _normalizeUnit(String unit) {
+    final normalized = unit.trim().toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '_');
+    return normalized.isEmpty ? 'unit' : normalized;
+  }
+
+  String _normalizeWordText(String text) {
+    return text.trim().toLowerCase();
+  }
+
+  String _wordIndexKey(String bookId, String unit, int index) {
+    return 'idx|$bookId|${_normalizeUnit(unit)}|$index';
+  }
+
+  String _wordTextKey(String bookId, String unit, String text) {
+    return 'text|$bookId|${_normalizeUnit(unit)}|${_normalizeWordText(text)}';
+  }
+
+  String _makeWordId(String bookId, String unit, int index) {
+    return 'word_${bookId}_${_normalizeUnit(unit)}_$index';
+  }
+
+  Future<Map<String, String>> _loadExistingWordIdMap(Database db, String bookId) async {
+    final List<Map<String, dynamic>> rows = await db.query(
+      'words',
+      columns: ['id', 'unit', 'order_index', 'text'],
+      where: 'book_id = ?',
+      whereArgs: [bookId],
+    );
+    final Map<String, String> map = {};
+    for (final row in rows) {
+      final unit = row['unit'] as String? ?? '';
+      final index = row['order_index'] as int? ?? 0;
+      final text = row['text'] as String? ?? '';
+      final id = row['id'] as String;
+      map[_wordIndexKey(bookId, unit, index)] = id;
+      if (text.isNotEmpty) {
+        map[_wordTextKey(bookId, unit, text)] = id;
+      }
+    }
+    return map;
+  }
+
   Future<void> _seedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId) async {
     // 期望的 数据文件 结构：
     // {
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 细节处理
+    // 细节处理
+    // 细节处理
+    // 细节处理
     // }
     
     // 需要更健壮的解析，这里动态解码
@@ -337,8 +379,8 @@ class DatabaseHelper {
     }
 
     // 判断条目是单词还是模块
-    // 说明：逻辑说明
-    // 说明：逻辑说明
+    // 细节处理
+    // 细节处理
     
     // 优先处理简单约定的结构
     // 下方处理单词列表结构
@@ -352,32 +394,34 @@ class DatabaseHelper {
            // 这是模块包装（递归）
            final moduleUnit = item['unit'] ?? defaultUnit;
            final moduleData = item['data'] ?? item['words'] ?? [];
-           await _seedWordList(batch, moduleData, grade, semester, moduleUnit, bookId);
+           await _seedWordList(batch, moduleData, grade, semester, moduleUnit, bookId, null);
          } else {
            // 这是直接的单词对象
            wordIndex++;
-           _insertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId);
+           _insertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId, null);
          }
       }
     }
   }
   
   // 递归处理模块列表的辅助方法
-  Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId) async {
+  Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId, Map<String, String>? existingIdMap) async {
     int wordIndex = 0;
     for (var w in words) {
       if (w is Map<String, dynamic>) {
         wordIndex++;
-        _insertWord(batch, w, grade, semester, unit, wordIndex, bookId);
+        _insertWord(batch, w, grade, semester, unit, wordIndex, bookId, existingIdMap);
       }
     }
   }
 
-  void _insertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId) {
+  void _insertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId, Map<String, String>? existingIdMap) {
      final text = data['text'] as String? ?? '';
      if (text.isEmpty) return;
      
-     final id = 'word_${bookId}_${unit.hashCode}_$index';
+     final indexKey = _wordIndexKey(bookId, unit, index);
+     final textKey = _wordTextKey(bookId, unit, text);
+     final id = existingIdMap?[indexKey] ?? existingIdMap?[textKey] ?? _makeWordId(bookId, unit, index);
      
      List<String> syllables = [];
      if (data['syllables'] != null && data['syllables'] is List) {
@@ -461,11 +505,12 @@ class DatabaseHelper {
         final filename = book['file'] as String;
         final grade = book['grade'] as int;
         final semester = book['semester'] as int;
+        final existingIdMap = await _loadExistingWordIdMap(db, bookId);
         
         try {
           final jsonContent = await rootBundle.loadString('assets/data/$filename');
           print("Updating $filename for book $bookId...");
-          await _safeSeedFromJson(batch, jsonContent, grade, semester, bookId);
+          await _safeSeedFromJson(batch, jsonContent, grade, semester, bookId, existingIdMap);
         } catch (e) {
           print("Error loading $filename: $e");
         }
@@ -479,7 +524,7 @@ class DatabaseHelper {
     }
   }
 
-  Future<void> _safeSeedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId) async {
+  Future<void> _safeSeedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId, Map<String, String>? existingIdMap) async {
     final dynamic decoded = jsonDecode(jsonString);
     List<dynamic> items = [];
     String defaultUnit = "Module 1";
@@ -498,33 +543,35 @@ class DatabaseHelper {
     int wordIndex = 0;
     for (var item in items) {
       if (item is Map<String, dynamic>) {
-         if (item.containsKey('data') || item.containsKey('words')) {
-           final moduleUnit = item['unit'] ?? defaultUnit;
-           final moduleData = item['data'] ?? item['words'] ?? [];
-           await _safeSeedWordList(batch, moduleData, grade, semester, moduleUnit, bookId);
-         } else {
-           wordIndex++;
-           _upsertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId);
-         }
+        if (item.containsKey('data') || item.containsKey('words')) {
+          final moduleUnit = item['unit'] ?? defaultUnit;
+          final moduleData = item['data'] ?? item['words'] ?? [];
+          await _safeSeedWordList(batch, moduleData, grade, semester, moduleUnit, bookId, existingIdMap);
+        } else {
+          wordIndex++;
+          _upsertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId, existingIdMap);
+        }
       }
     }
   }
 
-  Future<void> _safeSeedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId) async {
+  Future<void> _safeSeedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId, Map<String, String>? existingIdMap) async {
     int wordIndex = 0;
     for (var w in words) {
       if (w is Map<String, dynamic>) {
         wordIndex++;
-        _upsertWord(batch, w, grade, semester, unit, wordIndex, bookId);
+        _upsertWord(batch, w, grade, semester, unit, wordIndex, bookId, existingIdMap);
       }
     }
   }
 
-  void _upsertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId) {
+  void _upsertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId, Map<String, String>? existingIdMap) {
      final text = data['text'] as String? ?? '';
      if (text.isEmpty) return;
      
-     final id = 'word_${bookId}_${unit.hashCode}_$index';
+     final indexKey = _wordIndexKey(bookId, unit, index);
+     final textKey = _wordTextKey(bookId, unit, text);
+     final id = existingIdMap?[indexKey] ?? existingIdMap?[textKey] ?? _makeWordId(bookId, unit, index);
      
      // 重要：使用 插入或更新 保持 编号 与外键
      // 数据库 的 插入或替换 会删除旧行并触发级联删除

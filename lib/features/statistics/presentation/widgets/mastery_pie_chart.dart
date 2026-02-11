@@ -18,16 +18,16 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
 
   @override
   Widget build(BuildContext context) {
-    // 说明：逻辑说明
+    // 逻辑处理
     const colorMastered = Color(0xFF22C55E); // 绿色 500
-    const colorReviewing = Color(0xFFF59E0B); // 说明：逻辑说明
-    const colorNew = Color(0xFF94A3B8); // 说明：逻辑说明
+    const colorReviewing = Color(0xFFF59E0B); // 配色
+    const colorNew = Color(0xFF94A3B8); // 配色
 
     final total = widget.distribution.newWords + 
                   widget.distribution.learning + 
                   widget.distribution.mastered;
                   
-    // 说明：逻辑说明
+    // 逻辑处理
     final safeTotal = total == 0 ? 1 : total; 
 
     return Container(
@@ -81,7 +81,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                     centerSpaceRadius: 60,
                     startDegreeOffset: -90,
                     sections: [
-                      // 说明：逻辑说明
+                      // 逻辑处理
                       PieChartSectionData(
                         color: colorMastered,
                         value: widget.distribution.mastered.toDouble(),
@@ -90,7 +90,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                         titleStyle: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                         showTitle: widget.distribution.mastered > 0,
                       ),
-                      // 说明：逻辑说明
+                      // 逻辑处理
                       PieChartSectionData(
                         color: colorReviewing,
                         value: widget.distribution.learning.toDouble(),
@@ -99,7 +99,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                         titleStyle: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                         showTitle: widget.distribution.learning > 0,
                       ),
-                      // 说明：逻辑说明
+                      // 逻辑处理
                       PieChartSectionData(
                         color: colorNew,
                         value: widget.distribution.newWords.toDouble(),
@@ -112,7 +112,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
                   ),
                 ),
                 
-                // 说明：逻辑说明
+                // 逻辑处理
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -140,7 +140,7 @@ class _MasteryPieChartState extends State<MasteryPieChart> {
           
           const SizedBox(height: 24),
           
-          // 说明：逻辑说明
+          // 逻辑处理
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

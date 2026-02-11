@@ -9,9 +9,9 @@ class SpeechService {
 
   stt.SpeechToText _speech = stt.SpeechToText();
   bool _isAvailable = false;
-  bool _isInitializing = false; // 说明：逻辑说明
+  bool _isInitializing = false; // 逻辑处理
   
-  // 说明：逻辑说明
+  // 逻辑处理
   static const int _maxInitRetries = 3;
   int _initRetryCount = 0;
 
@@ -21,12 +21,12 @@ class SpeechService {
   final StreamController<bool> _listeningController = StreamController<bool>.broadcast();
   Stream<bool> get listeningState => _listeningController.stream;
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<bool> init() async {
-    // 说明：逻辑说明
+    // 逻辑处理
     if (_isInitializing) {
       debugPrint('STT: Init already in progress, waiting...');
-      // 说明：逻辑说明
+      // 逻辑处理
       await Future.delayed(const Duration(milliseconds: 500));
       return _isAvailable;
     }
@@ -50,7 +50,7 @@ class SpeechService {
           _listeningController.add(false);
         },
       );
-      _initRetryCount = 0; // 说明：逻辑说明
+      _initRetryCount = 0; // 逻辑处理
     } catch (e) {
       debugPrint("STT Initialization failed: $e");
       _isAvailable = false;
@@ -61,7 +61,7 @@ class SpeechService {
     return _isAvailable;
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<void> reset() async {
     debugPrint('STT: Force resetting engine...');
     try {
@@ -70,23 +70,23 @@ class SpeechService {
       debugPrint('STT: Cancel failed during reset: $e');
     }
     
-    // 说明：逻辑说明
+    // 逻辑处理
     _speech = stt.SpeechToText();
     _isAvailable = false;
     _isInitializing = false;
     
-    // 说明：逻辑说明
+    // 逻辑处理
     await Future.delayed(const Duration(milliseconds: 300));
     await init();
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<bool> startListening({
     required Function(String) onResult,
     Function(String)? onError,
     String localeId = 'en_US',
   }) async {
-    // 说明：逻辑说明
+    // 逻辑处理
     if (!_isAvailable) {
       bool initialized = await init();
       if (!initialized) {
@@ -96,7 +96,7 @@ class SpeechService {
       }
     }
 
-    // 说明：逻辑说明
+    // 逻辑处理
     if (_speech.isListening) {
       debugPrint('STT: Already listening, stopping first...');
       await _speech.stop();
@@ -107,9 +107,9 @@ class SpeechService {
       await _speech.listen(
         onResult: (val) => onResult(val.recognizedWords),
         localeId: localeId,
-        listenFor: const Duration(seconds: 30), // 说明：逻辑说明
-        pauseFor: const Duration(seconds: 5), // 说明：逻辑说明
-        cancelOnError: false, // 说明：逻辑说明
+        listenFor: const Duration(seconds: 30), // 识别时长
+        pauseFor: const Duration(seconds: 5), // 识别时长
+        cancelOnError: false, // 逻辑处理
         listenMode: stt.ListenMode.confirmation,
       );
       debugPrint('STT: Started listening successfully');
@@ -118,7 +118,7 @@ class SpeechService {
       debugPrint("STT: Error starting listening: $e");
       _listeningController.add(false);
       
-      // 说明：逻辑说明
+      // 逻辑处理
       if (_initRetryCount < _maxInitRetries) {
         _initRetryCount++;
         debugPrint('STT: Retry attempt $_initRetryCount/$_maxInitRetries');
@@ -131,11 +131,11 @@ class SpeechService {
     }
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<void> stopListening() async {
     if (_speech.isListening) {
       debugPrint('STT: Stopping listening...');
-      _listeningController.add(false); // 说明：逻辑说明
+      _listeningController.add(false); // 逻辑处理
       try {
         await _speech.stop();
       } catch (e) {
@@ -144,7 +144,7 @@ class SpeechService {
     }
   }
 
-  /// 说明：逻辑说明
+  /// 逻辑处理
   Future<void> cancel() async {
     debugPrint('STT: Cancelling...');
     _listeningController.add(false);

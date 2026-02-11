@@ -34,11 +34,12 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
   
   List<Word> _sessionWords = [];
   bool _isLoading = true;
+  DateTime? _sessionStart;
   
   SessionPhase _currentPhase = SessionPhase.learning;
   int _currentIndex = 0;
   
-  // 说明：逻辑说明
+  // 细节处理
   bool _isTransitioning = false;
   int _transitionCountdown = 3;
   SessionPhase? _pendingNextPhase;
@@ -59,9 +60,10 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     setState(() => _isLoading = true);
     try {
       final stats = await _userStatsDao.getUserStats();
-      // 说明：逻辑说明
+      // 优先使用教材编号获取新词
       final words = await _wordDao.getNewWords(
         10, 
+        bookId: stats.currentBookId.isNotEmpty ? stats.currentBookId : null,
         grade: stats.currentGrade,
         semester: stats.currentSemester
       );
@@ -70,6 +72,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
         setState(() {
           _sessionWords = words;
           _isLoading = false;
+          _sessionStart = DateTime.now();
         });
       }
     } catch (e) {
@@ -84,14 +87,14 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
         _currentIndex++;
       });
     } else {
-      // 说明：逻辑说明
+      // 细节处理
       _triggerPhaseTransition();
     }
   }
 
   void _triggerPhaseTransition() {
-    // 说明：逻辑说明
-    AudioService().stop(); // 说明：逻辑说明
+    // 细节处理
+    AudioService().stop(); // 音频控制
     SessionPhase next;
     switch (_currentPhase) {
         case SessionPhase.learning: next = SessionPhase.speaking; break;
@@ -106,7 +109,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
        return;
     }
 
-    // 说明：逻辑说明
+    // 细节处理
     setState(() {
       _isTransitioning = true;
       _transitionCountdown = 3;
@@ -150,10 +153,10 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
   Future<void> _saveProgress() async {
     try {
-       // 说明：逻辑说明
+       // 逻辑处理
        await _wordDao.batchMarkAsLearned(_sessionWords);
        
-       // 说明：逻辑说明
+       // 细节处理
        final stats = await _userStatsDao.getUserStats();
        final now = DateTime.now();
        final todayStr = "${now.year}-${now.month}-${now.day}";
@@ -170,15 +173,15 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
        
        await _userStatsDao.updateUserStats(newStats);
        
-       // 说明：逻辑说明
-       // 说明：逻辑说明
-       // 说明：逻辑说明
+       // 使用真实耗时（按分钟向上取整）
+       final start = _sessionStart ?? DateTime.now();
+       final minutes = ((DateTime.now().difference(start).inSeconds) / 60).ceil();
        await StatsDao().recordDailyActivity(
          newWords: _sessionWords.length, 
          reviewWords: 0, 
-         correct: _sessionWords.length, // 说明：逻辑说明
+         correct: _sessionWords.length, // 学习完成视为正确
          wrong: 0, 
-         minutes: 5 // 说明：逻辑说明
+         minutes: minutes == 0 ? 1 : minutes
        );
        
        debugPrint("Progress Saved: ${_sessionWords.length} words.");
@@ -210,11 +213,11 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // 说明：逻辑说明
+                  // 细节处理
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFF0FDF4), // 说明：逻辑说明
+                      color: Color(0xFFF0FDF4), // 绿色 500
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.emoji_events_rounded, size: 48, color: Color(0xFF22C55E)), // 绿色 500
@@ -235,7 +238,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
                   const SizedBox(height: 24),
 
-                  // 说明：逻辑说明
+                  // 细节处理
                   Row(
                     children: [
                       Expanded(
@@ -278,13 +281,13 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
                   const SizedBox(height: 24),
                   
-                  // 说明：逻辑说明
+                  // 细节处理
                   SizedBox(
                     width: double.infinity,
                     child: BubblyButton(
                       onPressed: () {
-                         Navigator.pop(context); // 说明：逻辑说明
-                         Navigator.pop(context); // 说明：逻辑说明
+                         Navigator.pop(context); // 返回上一页
+                         Navigator.pop(context); // 返回上一页
                       },
                       color: AppColors.primary,
                       shadowColor: AppColors.shadowBlue,
@@ -350,7 +353,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     if (_currentPhase == SessionPhase.completed) {
       return const Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(child: CircularProgressIndicator()), // 说明：逻辑说明
+        body: Center(child: CircularProgressIndicator()), // 加载指示
       );
     }
 
@@ -425,7 +428,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: KeyedSubtree(
-        key: ValueKey("${_currentPhase}_${word.id}"), // 说明：逻辑说明
+        key: ValueKey("${_currentPhase}_${word.id}"), // 稳定重建键
         child: _buildPhaseContent(word),
       )
     );

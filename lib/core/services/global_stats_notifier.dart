@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-/// 说明：逻辑说明
-/// 说明：逻辑说明
+/// 逻辑处理
+/// 逻辑处理
 class GlobalStatsNotifier extends ChangeNotifier {
   static final GlobalStatsNotifier _instance = GlobalStatsNotifier._internal();
   
