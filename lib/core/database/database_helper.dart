@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import 'dart:convert';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -252,15 +252,7 @@ class DatabaseHelper {
   Future<void> _seedData(Database db) async {
     print('Starting data seeding from MANIFEST...');
     
-    List<dynamic> manifest = [];
-    try {
-      final  manifestContent = await rootBundle.loadString('assets/data/books_manifest.json');
-      manifest = jsonDecode(manifestContent);
-      print('Loaded manifest with ${manifest.length} books.');
-    } catch(e) {
-      print('Manifest load failed: $e. Falling back to legacy list.');
-      // 兜底或空列表处理
-    }
+    final manifest = await loadBooksManifest();
     
     if (manifest.isEmpty) {
        print("Warning: Manifest empty or failed.");
@@ -271,10 +263,11 @@ class DatabaseHelper {
       final batch = db.batch();
 
       for (final book in manifest) {
-        final bookId = book['id'] as String;
-        final filename = book['file'] as String;
-        final grade = book['grade'] as int;
-        final semester = book['semester'] as int;
+        final bookId = (book['id'] ?? '').toString();
+        final filename = (book['file'] ?? '').toString();
+        final grade = _asInt(book['grade'], _inferGradeFromBookId(bookId));
+        final semester = _asInt(book['semester'], _inferSemesterFromBookId(bookId));
+        if (bookId.isEmpty || filename.isEmpty) continue;
         
         // 尝试加载 数据文件
         try {
@@ -292,9 +285,9 @@ class DatabaseHelper {
       // 如果有教材则自动选择第一本
       if (manifest.isNotEmpty) {
         final firstBook = manifest.first;
-        final bookId = firstBook['id'] as String;
-        final grade = firstBook['grade'] as int;
-        final semester = firstBook['semester'] as int;
+        final bookId = (firstBook['id'] ?? '').toString();
+        final grade = _asInt(firstBook['grade'], _inferGradeFromBookId(bookId));
+        final semester = _asInt(firstBook['semester'], _inferSemesterFromBookId(bookId));
         
         await db.update('user_stats', {
           'current_book_id': bookId,
@@ -307,6 +300,155 @@ class DatabaseHelper {
     } catch (e) {
       print('Error seeding data: $e');
     }
+  }
+
+  Future<List<dynamic>> loadBooksManifest() async {
+    try {
+      final manifestContent = await rootBundle.loadString('assets/data/books_manifest.json');
+      final dynamic decoded = jsonDecode(manifestContent);
+      final books = _normalizeManifestBooks(_extractBookList(decoded));
+      if (books.isNotEmpty) {
+        print('Loaded manifest with ${books.length} books.');
+        return books;
+      }
+    } catch (e) {
+      print('Manifest load failed: $e. Falling back to asset scan.');
+    }
+
+    try {
+      final assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      final files = assetManifest
+          .listAssets()
+          .where((k) => k.startsWith('assets/data/') && k.endsWith('.json') && !k.endsWith('books_manifest.json'))
+          .map((k) => k.split('/').last)
+          .toList()
+        ..sort();
+
+      final List<Map<String, dynamic>> fallback = [];
+      for (int i = 0; i < files.length; i++) {
+        final filename = files[i];
+        final inferred = _inferBookMeta(filename, i + 1);
+        fallback.add({
+          'id': inferred['id'],
+          'name': inferred['name'],
+          'file': filename,
+          'grade': inferred['grade'],
+          'semester': inferred['semester'],
+        });
+      }
+      print('Generated fallback manifest with ${fallback.length} books from assets.');
+      return fallback;
+    } catch (e) {
+      print('Fallback manifest generation failed: $e');
+      return [];
+    }
+  }
+
+  Map<String, dynamic> _inferBookMeta(String filename, int serial) {
+    int grade = 7;
+    int semester = 1;
+
+    if (filename.contains('七年级')) grade = 7;
+    if (filename.contains('八年级')) grade = 8;
+    if (filename.contains('九年级')) grade = 9;
+
+    if (filename.contains('下册')) {
+      semester = 2;
+    } else if (filename.contains('上册')) {
+      semester = 1;
+    }
+
+    final name = basenameWithoutExtension(filename);
+    final id = 'book_${grade}_${semester}_$serial';
+    return {
+      'id': id,
+      'name': name,
+      'grade': grade,
+      'semester': semester,
+    };
+  }
+
+  List<dynamic> _extractBookList(dynamic decoded) {
+    if (decoded is List) return decoded;
+    if (decoded is Map<String, dynamic>) {
+      const candidates = ['books', 'data', 'list', 'items'];
+      for (final key in candidates) {
+        final value = decoded[key];
+        if (value is List) return value;
+      }
+    }
+    return const [];
+  }
+
+  List<Map<String, dynamic>> _normalizeManifestBooks(List<dynamic> rawBooks) {
+    final List<Map<String, dynamic>> normalized = [];
+    for (int i = 0; i < rawBooks.length; i++) {
+      final item = rawBooks[i];
+      if (item is! Map) continue;
+      final map = Map<String, dynamic>.from(item);
+      final filename = (map['file'] ?? map['filename'] ?? map['path'] ?? '').toString();
+      if (filename.isEmpty) continue;
+      final inferred = _inferBookMeta(filename, i + 1);
+      final id = (map['id'] ?? inferred['id']).toString();
+      final name = (map['name'] ?? map['title'] ?? inferred['name']).toString();
+      normalized.add({
+        'id': id,
+        'name': name,
+        'file': filename,
+        'grade': _asInt(map['grade'], inferred['grade'] as int),
+        'semester': _asInt(map['semester'], inferred['semester'] as int),
+      });
+    }
+    return normalized;
+  }
+
+  int _asInt(dynamic value, int fallback) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) {
+      final parsed = int.tryParse(value.trim());
+      if (parsed != null) return parsed;
+      if (value.contains('七')) return 7;
+      if (value.contains('八')) return 8;
+      if (value.contains('九')) return 9;
+      if (value.contains('上')) return 1;
+      if (value.contains('下')) return 2;
+    }
+    return fallback;
+  }
+
+  int _inferGradeFromBookId(String bookId) {
+    final match = RegExp(r'(\d)').firstMatch(bookId);
+    final parsed = match == null ? null : int.tryParse(match.group(1)!);
+    if (parsed != null && parsed >= 7 && parsed <= 9) return parsed;
+    return 7;
+  }
+
+  int _inferSemesterFromBookId(String bookId) {
+    if (bookId.contains('_2') || bookId.contains('down')) return 2;
+    return 1;
+  }
+
+  ({List<dynamic> items, String unit}) _extractItemsAndUnit(dynamic decoded, {String fallbackUnit = 'Module 1'}) {
+    if (decoded is List) {
+      return (items: decoded, unit: fallbackUnit);
+    }
+
+    if (decoded is Map<String, dynamic>) {
+      final unit = (decoded['unit'] ?? decoded['module'] ?? fallbackUnit).toString();
+      const keys = ['data', 'words', 'word_list', 'vocab', 'vocabulary', 'list', 'items', 'modules'];
+      for (final key in keys) {
+        final value = decoded[key];
+        if (value is List) {
+          return (items: value, unit: unit);
+        }
+      }
+      if (decoded.containsKey('text') && decoded.containsKey('meaning')) {
+        return (items: [decoded], unit: unit);
+      }
+    }
+
+    return (items: const [], unit: fallbackUnit);
   }
 
   String _normalizeUnit(String unit) {
@@ -352,51 +494,20 @@ class DatabaseHelper {
   }
 
   Future<void> _seedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId) async {
-    // 期望的 数据文件 结构：
-    // {
-    // 细节处理
-    // 细节处理
-    // 细节处理
-    // 细节处理
-    // }
-    
-    // 需要更健壮的解析，这里动态解码
     final dynamic decoded = jsonDecode(jsonString);
-    
-    List<dynamic> items = [];
-    String defaultUnit = "Module 1";
-    
-    if (decoded is List) {
-      // 列表可能是模块或单词
-      items = decoded;
-    } else if (decoded is Map<String, dynamic>) {
-       if (decoded.containsKey('data')) {
-          if (decoded.containsKey('unit')) defaultUnit = decoded['unit'];
-          items = decoded['data'];
-       } else if (decoded.containsKey('words')) {
-           items = decoded['words'];
-       }
-    }
+    final extracted = _extractItemsAndUnit(decoded);
+    final items = extracted.items;
+    final defaultUnit = extracted.unit;
 
-    // 判断条目是单词还是模块
-    // 细节处理
-    // 细节处理
-    
-    // 优先处理简单约定的结构
-    // 下方处理单词列表结构
-    
     int wordIndex = 0;
     
     for (var item in items) {
       if (item is Map<String, dynamic>) {
          // 判断是单词还是模块包装
          if (item.containsKey('data') || item.containsKey('words')) {
-           // 这是模块包装（递归）
-           final moduleUnit = item['unit'] ?? defaultUnit;
-           final moduleData = item['data'] ?? item['words'] ?? [];
-           await _seedWordList(batch, moduleData, grade, semester, moduleUnit, bookId, null);
+           final module = _extractItemsAndUnit(item, fallbackUnit: defaultUnit);
+           await _seedWordList(batch, module.items, grade, semester, module.unit, bookId, null);
          } else {
-           // 这是直接的单词对象
            wordIndex++;
            _insertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId, null);
          }
@@ -404,7 +515,6 @@ class DatabaseHelper {
     }
   }
   
-  // 递归处理模块列表的辅助方法
   Future<void> _seedWordList(Batch batch, List<dynamic> words, int grade, int semester, String unit, String bookId, Map<String, String>? existingIdMap) async {
     int wordIndex = 0;
     for (var w in words) {
@@ -416,7 +526,7 @@ class DatabaseHelper {
   }
 
   void _insertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId, Map<String, String>? existingIdMap) {
-     final text = data['text'] as String? ?? '';
+     final text = (data['text'] ?? '').toString();
      if (text.isEmpty) return;
      
      final indexKey = _wordIndexKey(bookId, unit, index);
@@ -431,9 +541,9 @@ class DatabaseHelper {
      final word = Word(
        id: id,
        text: text,
-       meaning: data['meaning'] ?? '[释义]',
-       phonetic: data['phonetic'] ?? '',
-       pos: data['pos'] ?? '',
+       meaning: (data['meaning'] ?? '[释义]').toString(),
+       phonetic: (data['phonetic'] ?? '').toString(),
+       pos: (data['pos'] ?? '').toString(),
        grade: grade,
        semester: semester,
        unit: unit,
@@ -447,14 +557,14 @@ class DatabaseHelper {
      batch.insert('words', word.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
      
      // 处理例句
-     if (data.containsKey('app_sentences')) {
+     if (data.containsKey('app_sentences') && data['app_sentences'] is List) {
        final sentences = data['app_sentences'] as List;
        int sIndex = 0;
        for (var s in sentences) {
          if (s is Map<String, dynamic>) {
            sIndex++;
-           final en = s['en'] as String? ?? '';
-           final cn = s['cn'] as String? ?? '';
+           final en = (s['en'] ?? '').toString();
+           final cn = (s['cn'] ?? '').toString();
            if (en.isNotEmpty) {
              final sId = 'sentence_${id}_$sIndex';
              
@@ -485,15 +595,7 @@ class DatabaseHelper {
     final db = await database;
     print('Starting SAFE library update from MANIFEST...');
     
-    List<dynamic> manifest = [];
-    try {
-      final manifestContent = await rootBundle.loadString('assets/data/books_manifest.json');
-      manifest = jsonDecode(manifestContent);
-      print('Loaded manifest with ${manifest.length} books.');
-    } catch(e) {
-      print('Manifest load failed: $e');
-      return;
-    }
+    final manifest = await loadBooksManifest();
     
     if (manifest.isEmpty) return;
 
@@ -501,10 +603,11 @@ class DatabaseHelper {
       final batch = db.batch();
 
       for (final book in manifest) {
-        final bookId = book['id'] as String;
-        final filename = book['file'] as String;
-        final grade = book['grade'] as int;
-        final semester = book['semester'] as int;
+        final bookId = (book['id'] ?? '').toString();
+        final filename = (book['file'] ?? '').toString();
+        final grade = _asInt(book['grade'], _inferGradeFromBookId(bookId));
+        final semester = _asInt(book['semester'], _inferSemesterFromBookId(bookId));
+        if (bookId.isEmpty || filename.isEmpty) continue;
         final existingIdMap = await _loadExistingWordIdMap(db, bookId);
         
         try {
@@ -526,27 +629,16 @@ class DatabaseHelper {
 
   Future<void> _safeSeedFromJson(Batch batch, String jsonString, int grade, int semester, String bookId, Map<String, String>? existingIdMap) async {
     final dynamic decoded = jsonDecode(jsonString);
-    List<dynamic> items = [];
-    String defaultUnit = "Module 1";
-    
-    if (decoded is List) {
-      items = decoded;
-    } else if (decoded is Map<String, dynamic>) {
-       if (decoded.containsKey('data')) {
-          if (decoded.containsKey('unit')) defaultUnit = decoded['unit'];
-          items = decoded['data'];
-       } else if (decoded.containsKey('words')) {
-           items = decoded['words'];
-       }
-    }
+    final extracted = _extractItemsAndUnit(decoded);
+    final items = extracted.items;
+    final defaultUnit = extracted.unit;
     
     int wordIndex = 0;
     for (var item in items) {
       if (item is Map<String, dynamic>) {
         if (item.containsKey('data') || item.containsKey('words')) {
-          final moduleUnit = item['unit'] ?? defaultUnit;
-          final moduleData = item['data'] ?? item['words'] ?? [];
-          await _safeSeedWordList(batch, moduleData, grade, semester, moduleUnit, bookId, existingIdMap);
+          final module = _extractItemsAndUnit(item, fallbackUnit: defaultUnit);
+          await _safeSeedWordList(batch, module.items, grade, semester, module.unit, bookId, existingIdMap);
         } else {
           wordIndex++;
           _upsertWord(batch, item, grade, semester, defaultUnit, wordIndex, bookId, existingIdMap);
@@ -566,7 +658,7 @@ class DatabaseHelper {
   }
 
   void _upsertWord(Batch batch, Map<String, dynamic> data, int grade, int semester, String unit, int index, String bookId, Map<String, String>? existingIdMap) {
-     final text = data['text'] as String? ?? '';
+     final text = (data['text'] ?? '').toString();
      if (text.isEmpty) return;
      
      final indexKey = _wordIndexKey(bookId, unit, index);
@@ -577,8 +669,8 @@ class DatabaseHelper {
      // 数据库 的 插入或替换 会删除旧行并触发级联删除
      // 必须使用明确的 插入或更新 语法
      
-     final meaning = data['meaning'] ?? '[释义]';
-     final phonetic = data['phonetic'] ?? '';
+     final meaning = (data['meaning'] ?? '[释义]').toString();
+     final phonetic = (data['phonetic'] ?? '').toString();
      // 音节等字段处理
      String syllablesJson = '[]';
      if (data['syllables'] != null && data['syllables'] is List) {
@@ -590,7 +682,7 @@ class DatabaseHelper {
      
      // 使用 原始插入 构造 插入或更新 语句
      // 冲突时执行更新
-     final pos = data['pos'] ?? '';
+     final pos = (data['pos'] ?? '').toString();
      batch.rawInsert('''
        INSERT INTO words (id, text, meaning, phonetic, pos, grade, semester, unit, difficulty, category, book_id, order_index, syllables)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -611,14 +703,14 @@ class DatabaseHelper {
       // 若例句 编号 可复现，可直接替换
       // 例句 编号 形如 _{单词编号}_{序号}
       
-      if (data.containsKey('app_sentences')) {
+      if (data.containsKey('app_sentences') && data['app_sentences'] is List) {
        final sentences = data['app_sentences'] as List;
        int sIndex = 0;
        for (var s in sentences) {
          if (s is Map<String, dynamic>) {
            sIndex++;
-           final en = s['en'] as String? ?? '';
-           final cn = s['cn'] as String? ?? '';
+           final en = (s['en'] ?? '').toString();
+           final cn = (s['cn'] ?? '').toString();
            if (en.isNotEmpty) {
              final sId = 'sentence_${id}_$sIndex';
              

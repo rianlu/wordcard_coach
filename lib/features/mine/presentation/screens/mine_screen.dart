@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:convert';
 import 'dart:math' as dart;
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sqflite/sqflite.dart';
@@ -137,8 +135,7 @@ class _MineScreenState extends State<MineScreen> {
     // 细节处理
     if (_booksManifest.isEmpty) {
       try {
-        final jsonStr = await rootBundle.loadString('assets/data/books_manifest.json');
-        _booksManifest = jsonDecode(jsonStr);
+        _booksManifest = await DatabaseHelper().loadBooksManifest();
       } catch (e) {
         // 细节处理
       }
@@ -440,23 +437,21 @@ class _MineScreenState extends State<MineScreen> {
     // 细节处理
     final bookId = _stats!.currentBookId;
     if (bookId.isNotEmpty && _booksManifest.isNotEmpty) {
-      final book = _booksManifest.firstWhere(
-        (b) => b['id'] == bookId, 
-        orElse: () => null
-      );
-      if (book != null) {
-        return book['name'] as String;
+      final idx = _booksManifest.indexWhere((b) => b['id'] == bookId);
+      if (idx >= 0) {
+        final book = _booksManifest[idx];
+        return (book['name'] ?? '').toString();
       }
     }
     
     // 细节处理
     if (_booksManifest.isNotEmpty) {
-       final book = _booksManifest.firstWhere(
+      final idx = _booksManifest.indexWhere(
         (b) => b['grade'] == _stats!.currentGrade && b['semester'] == _stats!.currentSemester,
-        orElse: () => null
       );
-      if (book != null) {
-        return book['name'] as String;
+      if (idx >= 0) {
+        final book = _booksManifest[idx];
+        return (book['name'] ?? '').toString();
       }
     }
 

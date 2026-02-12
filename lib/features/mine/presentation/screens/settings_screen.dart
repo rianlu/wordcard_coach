@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sqflite/sqflite.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/backup_service.dart';
 import '../../../../core/widgets/bubbly_button.dart';
@@ -290,12 +291,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
     
-    // 逻辑处理
+    bool isSuccess = true;
+    String resultText = '词库已成功更新！';
     try {
-       await DatabaseHelper().updateLibraryFromAssets();
-       await Future.delayed(const Duration(milliseconds: 800));
-    } catch(e) {
-       // 逻辑处理
+      final helper = DatabaseHelper();
+      await helper.updateLibraryFromAssets();
+      await Future.delayed(const Duration(milliseconds: 500));
+      final db = await helper.database;
+      final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM words')) ?? 0;
+      if (count == 0) {
+        isSuccess = false;
+        resultText = '更新失败：未导入任何单词，请检查数据格式或教材清单。';
+      }
+    } catch (e) {
+      isSuccess = false;
+      resultText = '更新失败：$e';
     }
     
     if (!mounted) return;
@@ -305,15 +315,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.check_circle, color: Colors.white),
+            Icon(isSuccess ? Icons.check_circle : Icons.error_outline, color: Colors.white),
             const SizedBox(width: 12),
-            Text(
-              '词库已成功更新！',
-              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 16),
+            Expanded(
+              child: Text(
+                resultText,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
           ],
         ),
-        backgroundColor: Colors.green.shade600,
+        backgroundColor: isSuccess ? Colors.green.shade600 : Colors.red.shade600,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(24),

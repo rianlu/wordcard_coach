@@ -1,9 +1,9 @@
-import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
+import '../../../../core/database/database_helper.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/audio_service.dart';
 import '../../../../core/widgets/bubbly_button.dart';
@@ -23,12 +23,16 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   List<Map<String, dynamic>> _words = [];
   bool _isLoading = false;
   bool _hasMore = true;
   int _offset = 0;
-  final int _limit = 20;
+  final int _limit = 40;
+  int _requestVersion = 0;
+  Timer? _searchDebounce;
+  bool _isOpeningWordDialog = false;
 
   // 逻辑处理
   int? _masteryFilter; // 掌握度处理
@@ -45,35 +49,48 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     super.initState();
     _loadMetadata();
     _searchController.addListener(_onSearchChanged);
+    _scrollController.addListener(_onScroll);
     GlobalStatsNotifier.instance.addListener(_fullReload);
   }
 
   @override
   void dispose() {
     GlobalStatsNotifier.instance.removeListener(_fullReload);
+    _searchDebounce?.cancel();
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    if (_isLoading || !_hasMore) return;
+    if (_scrollController.position.extentAfter < 800) {
+      _loadMore();
+    }
+  }
+
   void _onSearchChanged() {
-    // 逻辑处理
-    _reload();
+    // 搜索输入做轻量防抖，避免频繁重置列表
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 250), _reload);
   }
 
   Future<void> _loadMetadata() async {
     try {
-        // 逻辑处理
-        final String jsonString = await rootBundle.loadString('assets/data/books_manifest.json');
-        _books = jsonDecode(jsonString);
+        _books = await DatabaseHelper().loadBooksManifest();
         
         // 逻辑处理
         final stats = await _userStatsDao.getUserStats();
         
         // 逻辑处理
-        if (stats.currentBookId.isNotEmpty) {
+        final bool hasCurrentBook = _books.any((b) => b['id'] == stats.currentBookId);
+        if (stats.currentBookId.isNotEmpty && hasCurrentBook) {
            _currentBookId = stats.currentBookId;
         } else if (_books.isNotEmpty) {
            _currentBookId = _books[0]['id'];
+        } else {
+           _currentBookId = null;
         }
             
         // 逻辑处理
@@ -150,35 +167,37 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
 
   /// 逻辑处理
   Future<void> _reload() async {
+    final int requestId = ++_requestVersion;
     setState(() {
       _words = [];
       _offset = 0;
       _hasMore = true;
       _isLoading = true;
     });
-    // 逻辑处理
-    _updateCounts();
-    await _loadMore();
+    await _updateCounts(requestId);
+    await _loadMore(requestId: requestId, force: true);
   }
 
-  Future<void> _updateCounts() async {
+  Future<void> _updateCounts(int requestId) async {
     final counts = await _wordDao.getWordCounts(
         bookId: _currentBookId,
         unit: _currentUnit,
         searchQuery: _searchController.text
     );
-    if (mounted) {
+    if (mounted && requestId == _requestVersion) {
         setState(() {
             _counts = counts;
         });
     }
   }
 
-  Future<void> _loadMore() async {
+  Future<void> _loadMore({int? requestId, bool force = false}) async {
+    final int activeRequestId = requestId ?? _requestVersion;
+    if (!force && _isLoading) return;
     if (!_hasMore) {
-       setState(() => _isLoading = false);
        return;
     }
+    setState(() => _isLoading = true);
 
     final newWords = await _wordDao.getDictionaryWords(
       limit: _limit,
@@ -189,13 +208,15 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       unit: _currentUnit
     );
 
-    if (mounted) {
+    if (mounted && activeRequestId == _requestVersion) {
       setState(() {
         _words.addAll(newWords);
         _offset += newWords.length;
         _hasMore = newWords.length >= _limit;
         _isLoading = false;
       });
+    } else if (mounted) {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -230,27 +251,18 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                   Expanded(
                     child: _isLoading && _words.isEmpty
                         ? const Center(child: CircularProgressIndicator())
-                        : NotificationListener<ScrollNotification>(
-                            onNotification: (ScrollNotification scrollInfo) {
-                              if (!_isLoading && _hasMore && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-                                _loadMore();
+                        : ListView.separated(
+                            controller: _scrollController,
+                            cacheExtent: 1400,
+                            padding: const EdgeInsets.all(16),
+                            itemCount: _words.length + ((_isLoading && _words.isNotEmpty) ? 1 : 0),
+                            separatorBuilder: (c, i) => const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              if (index == _words.length) {
+                                 return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
                               }
-                              return false;
+                              return _buildWordItem(_words[index]);
                             },
-                            child: ListView.separated(
-                              padding: const EdgeInsets.all(16),
-                              itemCount: _words.length + (_hasMore ? 1 : 0),
-                              separatorBuilder: (c, i) => const SizedBox(height: 12),
-                              itemBuilder: (context, index) {
-                                if (index == _words.length) {
-                                   return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
-                                }
-                                return _buildWordItem(_words[index])
-                                    .animate(delay: (50 * index).clamp(0, 500).ms) // 动效控制
-                                    .fadeIn(duration: 300.ms)
-                                    .slideX(begin: 0.1, end: 0);
-                              },
-                            ),
                           ),
                   ),
                 ],
@@ -312,8 +324,11 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   Widget _buildBookSelector() {
     String currentBookName = "全部教材";
     if (_currentBookId != null && _currentBookId!.isNotEmpty) {
-       final book = _books.firstWhere((b) => b['id'] == _currentBookId, orElse: () => null);
-       if (book != null) currentBookName = book['name'];
+       final idx = _books.indexWhere((b) => b['id'] == _currentBookId);
+       if (idx >= 0) {
+         final book = _books[idx];
+         currentBookName = (book['name'] ?? currentBookName).toString();
+       }
     }
     
     return InkWell(
@@ -733,21 +748,30 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     );
   }
   void _showWordDetail(Map<String, dynamic> item) async {
+    if (_isOpeningWordDialog) return;
+    _isOpeningWordDialog = true;
     final wordId = item['id'] as String;
     
     // 逻辑处理
     final Word? fullWord = await _wordDao.getWordDetails(wordId);
-    if (fullWord == null) return;
+    if (fullWord == null) {
+      _isOpeningWordDialog = false;
+      return;
+    }
     
-    if (!mounted) return;
+    if (!mounted) {
+      _isOpeningWordDialog = false;
+      return;
+    }
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) => _WordDetailDialog(
         fullWord: fullWord,
         item: item,
       ),
     );
+    _isOpeningWordDialog = false;
   }
 
 
@@ -788,13 +812,15 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
     if (timestamp == null || timestamp == 0) return "-";
     final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     final now = DateTime.now();
-    final diff = date.difference(now);
+    final today = DateTime(now.year, now.month, now.day);
+    final target = DateTime(date.year, date.month, date.day);
+    final diff = target.difference(today);
     
     if (diff.isNegative) {
       return "待复习";
-    } else if (diff.inHours < 24 && date.day == now.day) {
+    } else if (diff.inDays == 0) {
       return "今天";
-    } else if (date.day == now.add(const Duration(days: 1)).day) {
+    } else if (diff.inDays == 1) {
       return "明天";
     } else {
       return "${date.year}/${date.month}/${date.day}";

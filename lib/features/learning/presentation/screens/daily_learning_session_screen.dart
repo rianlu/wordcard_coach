@@ -424,11 +424,12 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
   Widget _buildCurrentView() {
     final word = _sessionWords[_currentIndex];
+    final key = ValueKey("${_currentPhase}_${word.id}");
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       child: KeyedSubtree(
-        key: ValueKey("${_currentPhase}_${word.id}"), // 稳定重建键
+        key: key,
         child: _buildPhaseContent(word),
       )
     );

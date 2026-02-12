@@ -331,8 +331,9 @@ class WordDao {
 
     // 细节处理
     if (searchQuery != null && searchQuery.isNotEmpty) {
-      whereConditions.add('w.text LIKE ?');
-      args.add('$searchQuery%'); // 细节处理
+      whereConditions.add('(w.text LIKE ? OR w.meaning LIKE ?)');
+      args.add('%$searchQuery%');
+      args.add('%$searchQuery%');
     }
     
     if (bookId != null && bookId.isNotEmpty) {

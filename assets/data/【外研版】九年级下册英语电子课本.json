@@ -7,8 +7,7 @@
       {
         "text": "direct",
         "phonetic": "[d!'rekt; da!'rekt]",
-        "pos": "a.",
-        "meaning": "直接的, 坦白的",
+        "meaning": "vt. 指示、指挥、命令；vi. 指导、指挥；adj. 直接的、坦白的",
         "app_sentences": [
           {
             "en": "Can you direct me to the nearest bookstore, please?",
@@ -19,8 +18,7 @@
       {
         "text": "pilot",
         "phonetic": "['pa!l2t]",
-        "pos": "n.",
-        "meaning": "飞行员, 领航员, 航船者, 导向器, 驾驶仪, 向导, 领导人",
+        "meaning": "vt. 领航、驾驶、引导；n. 飞行员、领航员、航船者；adj. 引导的、控制的、试点的",
         "app_sentences": [
           {
             "en": "My dream is to become a pilot and fly a big airplane.",
@@ -31,20 +29,22 @@
       {
         "text": "succeed",
         "phonetic": "[səkˈsiːd]",
-        "pos": "vi.",
-        "meaning": "成功, 继承, 继续",
+        "meaning": "vt. 继承、接替；vi. 成功、继承、继续",
         "app_sentences": [
           {
             "en": "If you work hard, you will succeed in the final exam.",
             "cn": "如果你努力学习，你会在期末考试中取得成功。"
+          },
+          {
+            "en": "If you work hard, you will succeed in achieving your dreams.",
+            "cn": "如果你努力，你就会成功实现梦想。"
           }
         ]
       },
       {
         "text": "flight",
         "phonetic": "[fla!t]",
-        "pos": "n.",
-        "meaning": "飞行, 射程, 逃走, 飞跃, 飞机航程, 班机, 迁徙, 飞逝",
+        "meaning": "vt. 射击(飞禽)、为(箭)装上羽毛、使惊飞；vi. 迁徙；n. 飞行、射程、逃走",
         "app_sentences": [
           {
             "en": "Our flight to Beijing will take off at three o'clock this afternoon.",
@@ -55,7 +55,6 @@
       {
         "text": "because of",
         "phonetic": "",
-        "pos": "",
         "meaning": "因为",
         "app_sentences": [
           {
@@ -67,8 +66,7 @@
       {
         "text": "exactly",
         "phonetic": "[!g'zæktli]",
-        "pos": "adv.",
-        "meaning": "确切地, 精确地, 恰好, 完全地, 确实, 恰恰正是, 确实如此",
+        "meaning": "adv. 确切地、精确地、恰好",
         "app_sentences": [
           {
             "en": "What exactly do you want to do this weekend?",
@@ -79,8 +77,7 @@
       {
         "text": "take care",
         "phonetic": "",
-        "pos": "",
-        "meaning": "当心, 小心; 坚持到底",
+        "meaning": "当心、小心、坚持到底",
         "app_sentences": [
           {
             "en": "Please take care of your little sister when mom is out.",
@@ -91,8 +88,7 @@
       {
         "text": "sir",
         "phonetic": "[s2; s^ː]",
-        "pos": "n.",
-        "meaning": "先生, 阁下",
+        "meaning": "n. 先生、阁下",
         "app_sentences": [
           {
             "en": "Excuse me, sir, you dropped your wallet on the floor.",
@@ -103,8 +99,7 @@
       {
         "text": "officer",
         "phonetic": "['=f!s2]",
-        "pos": "n.",
-        "meaning": "军官, 主管, 官员, 公务员",
+        "meaning": "vt. 指挥；n. 军官、主管、官员",
         "app_sentences": [
           {
             "en": "The police officer helped us find the way to the museum.",
@@ -115,8 +110,7 @@
       {
         "text": "stupid",
         "phonetic": "['stjuːp!d]",
-        "pos": "a.",
-        "meaning": "愚蠢的, 麻木的",
+        "meaning": "adj. 愚蠢的、麻木的",
         "app_sentences": [
           {
             "en": "It is stupid to go out without a coat on such a cold day.",
@@ -127,8 +121,7 @@
       {
         "text": "take off",
         "phonetic": "",
-        "pos": "",
-        "meaning": "拿掉, 取消, 脱下, 领走, 减去, 复制, 起飞, 离开, 岔开",
+        "meaning": "拿掉、取消、脱下；取消",
         "app_sentences": [
           {
             "en": "Please fasten your seat belt before the plane takes off.",
@@ -138,13 +131,16 @@
       },
       {
         "text": "jacket",
-        "phonetic": "['d3æk!t]",
-        "pos": "n.",
-        "meaning": "夹克, 外套, 护套",
+        "phonetic": "[ˈdʒækɪt]",
+        "meaning": "vt. 给...穿夹克、给...装护套；n. 夹克、外套、护套",
         "app_sentences": [
           {
             "en": "It's cold outside, so remember to wear your jacket.",
             "cn": "外面很冷，记得穿上你的夹克。"
+          },
+          {
+            "en": "Put on your jacket; it's a bit cold outside this morning.",
+            "cn": "穿上你的夹克；今天早晨外面有点冷。"
           },
           {
             "en": "He put on his jacket and went out to play with his friends.",
@@ -161,9 +157,8 @@
     "data": [
       {
         "text": "ours",
-        "phonetic": "[a%2z]",
-        "pos": "pron.",
-        "meaning": "我们的",
+        "phonetic": "[aʊəz]",
+        "meaning": "pron. 我们的",
         "app_sentences": [
           {
             "en": "Their house is big, but ours is closer to the school.",
@@ -178,8 +173,7 @@
       {
         "text": "tie",
         "phonetic": "[ta!]",
-        "pos": "n.",
-        "meaning": "带子, 线, 鞋带, 领带, 领结, 关系, 束缚, 平局, 不分胜负",
+        "meaning": "vt. 系、打结、扎；vi. 结合、打结、不分胜负；n. 带子、线、鞋带",
         "app_sentences": [
           {
             "en": "My father wears a tie to work every day.",
@@ -190,20 +184,22 @@
       {
         "text": "row",
         "phonetic": "[rəʊ]",
-        "pos": "n.",
-        "meaning": "排, 行, 街道, 划船, 吵闹",
+        "meaning": "vt. 使成排、划、划船；vi. 划船、划动、争吵；n. 排、行、街道",
         "app_sentences": [
           {
             "en": "We sit in the front row during the school assembly.",
             "cn": "在学校集会时我们坐在前排。"
+          },
+          {
+            "en": "We sat in the front row to watch the school play.",
+            "cn": "我们坐在前排观看学校话剧。"
           }
         ]
       },
       {
         "text": "pool",
         "phonetic": "[puːl]",
-        "pos": "n.",
-        "meaning": "池, 水塘, 石油层, 联营",
+        "meaning": "vt. 合伙经营、共享、采掘；vi. 汇合成塘、淤积、联营；n. 池、水塘、石油层",
         "app_sentences": [
           {
             "en": "In summer, we often go swimming in the swimming pool near my home.",
@@ -218,8 +214,7 @@
       {
         "text": "pass",
         "phonetic": "[pɑːs]",
-        "pos": "n.",
-        "meaning": "经过, 要隘, 途径, 通行, 护照, 及格",
+        "meaning": "vt. 经过、越过、通过；vi. 经过、变化、流通；n. 经过、要隘、途径",
         "app_sentences": [
           {
             "en": "I hope I can pass all my subjects this term.",
@@ -228,14 +223,17 @@
           {
             "en": "Please pass the salt to me during dinner.",
             "cn": "请吃饭时把盐递给我。"
+          },
+          {
+            "en": "I hope to pass all my exams at the end of this term.",
+            "cn": "我希望在这学期末通过我所有的考试。"
           }
         ]
       },
       {
         "text": "secondary",
         "phonetic": "['sek2nd2ri]",
-        "pos": "a.",
-        "meaning": "中级的, 中等的, 次要的, 第二的, 从属的, 辅助的",
+        "meaning": "adj. 中级的、中等的、次要的；仲(指CH-3...CH(CH-3)-型支链烃基或指二元胺及R-2CHOH型的醇)、第二",
         "app_sentences": [
           {
             "en": "Playing games is secondary; studying is your main job now.",
@@ -246,8 +244,7 @@
       {
         "text": "secondary school",
         "phonetic": "",
-        "pos": "n.",
-        "meaning": "中学",
+        "meaning": "n. 中学",
         "app_sentences": [
           {
             "en": "My brother will go to secondary school next September.",
@@ -257,9 +254,8 @@
       },
       {
         "text": "absent",
-        "phonetic": "['æbs2nt]",
-        "pos": "a.",
-        "meaning": "缺席的, 不在的, 缺乏的, 漫不经心的",
+        "phonetic": "[ˈæbsənt]",
+        "meaning": "vt. 使缺席；adj. 缺席的、不在的、缺乏的",
         "app_sentences": [
           {
             "en": "He was absent from school yesterday because he had a bad cold.",
@@ -274,8 +270,7 @@
       {
         "text": "bell",
         "phonetic": "[bel]",
-        "pos": "n.",
-        "meaning": "铃, 钟",
+        "meaning": "n. 铃、钟；响铃命令",
         "app_sentences": [
           {
             "en": "The bell rings at eight o'clock, and our class begins.",
@@ -293,8 +288,7 @@
       {
         "text": "wealthy",
         "phonetic": "['wel8i]",
-        "pos": "a.",
-        "meaning": "富有的, 丰裕的, 充分的",
+        "meaning": "adj. 富有的、丰裕的、充分的",
         "app_sentences": [
           {
             "en": "The wealthy man donated a lot of money to build a new library.",
@@ -305,20 +299,22 @@
       {
         "text": "fear",
         "phonetic": "[fɪə]",
-        "pos": "n.",
-        "meaning": "恐怖, 害怕, 担心",
+        "meaning": "v. 害怕、恐惧、为...担心；n. 恐怖、害怕、担心",
         "app_sentences": [
           {
             "en": "Many children fear the dark and like to sleep with a light on.",
             "cn": "许多孩子害怕黑暗，喜欢开着灯睡觉。"
+          },
+          {
+            "en": "Some children have a fear of speaking in front of the class.",
+            "cn": "有些孩子害怕在全班面前讲话。"
           }
         ]
       },
       {
         "text": "used to",
         "phonetic": "['juːst tuː]",
-        "pos": "",
-        "meaning": "过去经常(做)..., 过去有规律地发生",
+        "meaning": "过去经常(做)...、过去有规律地发生",
         "app_sentences": [
           {
             "en": "I used to play basketball after school, but now I prefer swimming.",
@@ -329,8 +325,7 @@
       {
         "text": "wealth",
         "phonetic": "[wel8]",
-        "pos": "n.",
-        "meaning": "财富, 资源, 财产, 丰富, 富裕, 大量",
+        "meaning": "n. 财富、资源、财产；财富",
         "app_sentences": [
           {
             "en": "Health is more important than wealth for most people.",
@@ -341,40 +336,22 @@
       {
         "text": "double",
         "phonetic": "[ˈdʌbəl]",
-        "pos": "n.",
-        "meaning": "两倍",
+        "meaning": "vt. 使加倍；vi. 加倍、代替、快步走；n. 两倍",
         "app_sentences": [
           {
             "en": "This math problem is double the difficulty of the last one.",
             "cn": "这道数学题的难度是上一道的两倍。"
-          }
-        ]
-      },
-      {
-        "text": "adj",
-        "phonetic": "",
-        "pos": "abbr.",
-        "meaning": "adjust 调整；adjacent 相邻的；adjustable 可调整的；adjusted 调节过的",
-        "app_sentences": [
-          {
-            "en": "In the phrase 'a red apple', 'red' is an adjective.",
-            "cn": "在词组‘一个红苹果’中，‘红’是一个形容词。"
           },
           {
-            "en": "'Big' is an adj that we often use to describe size.",
-            "cn": "'Big'是一个我们常用来描述大小的形容词。"
-          },
-          {
-            "en": "'Big', 'happy', and 'green' are all adjectives.",
-            "cn": "'大的'、'开心的'和'绿色的'都是形容词。"
+            "en": "We need a double room for my parents when they visit us.",
+            "cn": "我父母来看我们时我们需要一个双人间。"
           }
         ]
       },
       {
         "text": "seldom",
-        "phonetic": "['seld2m]",
-        "pos": "a.",
-        "meaning": "不常的, 稀少的",
+        "phonetic": "[ˈseldəm]",
+        "meaning": "adj. 不常的、稀少的；adv. 很少、不常",
         "app_sentences": [
           {
             "en": "My father is very busy, so he seldom watches TV.",
@@ -389,8 +366,7 @@
       {
         "text": "spare",
         "phonetic": "[spe2]",
-        "pos": "n.",
-        "meaning": "剩余, 备用品, 备件, 备用零件, 备用轮胎",
+        "meaning": "vt. 节约、省用、剩下；vi. 节约、省掉、宽恕；n. 剩余、备用品、备件",
         "app_sentences": [
           {
             "en": "I always carry a spare pen in my school bag.",
@@ -401,8 +377,7 @@
       {
         "text": "spare time",
         "phonetic": "",
-        "pos": "n.",
-        "meaning": "消遣时间; 闲空; 余; 工余",
+        "meaning": "n. 消遣时间、闲空、余",
         "app_sentences": [
           {
             "en": "I often read books in my spare time at the weekend.",
@@ -413,8 +388,7 @@
       {
         "text": "speak up",
         "phonetic": "",
-        "pos": "",
-        "meaning": "更大声地说, 大胆说出, 无保留地说出",
+        "meaning": "更大声地说、大胆说出、无保留地说出",
         "app_sentences": [
           {
             "en": "Please speak up; I can't hear you clearly at the back.",
@@ -425,8 +399,7 @@
       {
         "text": "deaf",
         "phonetic": "[def]",
-        "pos": "a.",
-        "meaning": "聋的",
+        "meaning": "adj. 聋的；聋的",
         "app_sentences": [
           {
             "en": "Some deaf people use sign language to communicate with others.",
@@ -441,8 +414,7 @@
       {
         "text": "tiny",
         "phonetic": "['ta!ni]",
-        "pos": "a.",
-        "meaning": "很少的, 微小的",
+        "meaning": "adj. 很少的、微小的",
         "app_sentences": [
           {
             "en": "There is a tiny insect on the leaf of this flower.",
@@ -452,9 +424,8 @@
       },
       {
         "text": "electric",
-        "phonetic": "[!'lektr!k]",
-        "pos": "a.",
-        "meaning": "电的, 导电的, 电动的",
+        "phonetic": "[ɪˈlektrɪk]",
+        "meaning": "adj. 电的、导电的、电动的；电的",
         "app_sentences": [
           {
             "en": "My father uses an electric shaver every morning.",
@@ -468,9 +439,8 @@
       },
       {
         "text": "light",
-        "phonetic": "[la!t]",
-        "pos": "n.",
-        "meaning": "光, 光亮, 灯, 日光, 发光体, 光源, 杰出人物, 火花, 眼光",
+        "phonetic": "[lat]",
+        "meaning": "vt. 点燃、照亮；vi. 点着、变亮、突降；n. 光、光亮、灯",
         "app_sentences": [
           {
             "en": "Please turn off the light when you leave the classroom.",
@@ -481,8 +451,7 @@
       {
         "text": "candle",
         "phonetic": "['kændl]",
-        "pos": "n.",
-        "meaning": "蜡烛",
+        "meaning": "vt. 对着光检查；n. 蜡烛",
         "app_sentences": [
           {
             "en": "We lit a candle when the electricity suddenly went out.",
@@ -492,9 +461,8 @@
       },
       {
         "text": "postman",
-        "phonetic": "['p2%stm2n]",
-        "pos": "n.",
-        "meaning": "邮递员",
+        "phonetic": "[ˈpəʊstmən]",
+        "meaning": "n. 邮递员；邮递员、理财法庭的高级律师",
         "app_sentences": [
           {
             "en": "The postman delivers letters and newspapers to our house every day.",
@@ -509,9 +477,12 @@
       {
         "text": "cold",
         "phonetic": "[k2%ld]",
-        "pos": "n.",
-        "meaning": "感冒, 寒冷",
+        "meaning": "n. 感冒、寒冷；adj. 寒冷的、冷淡的、冷静的；adv. 完全地",
         "app_sentences": [
+          {
+            "en": "The weather becomes very cold in winter, especially at night.",
+            "cn": "冬天天气变得非常冷，尤其是晚上。"
+          },
           {
             "en": "It's very cold outside, so remember to wear your warm coat.",
             "cn": "外面很冷，所以记得穿上你的保暖外套。"
@@ -525,8 +496,7 @@
       {
         "text": "heat",
         "phonetic": "[hiːt]",
-        "pos": "n.",
-        "meaning": "热, 热度, 体温, 高潮",
+        "meaning": "vt. 把...加热、使激动；vi. 加热、激昂、加剧；n. 热、热度、体温",
         "app_sentences": [
           {
             "en": "The heat from the sun made the sand very warm.",
@@ -541,8 +511,7 @@
       {
         "text": "full-time",
         "phonetic": "['f%l;ta!m]",
-        "pos": "a.",
-        "meaning": "全部时间的, 专任的",
+        "meaning": "adj. 全部时间的、专任的",
         "app_sentences": [
           {
             "en": "Her mother has a full-time job at a local hospital.",
@@ -553,8 +522,7 @@
       {
         "text": "afford",
         "phonetic": "[2'f0ːd]",
-        "pos": "vt.",
-        "meaning": "买得起, 足以, 给予",
+        "meaning": "vt. 买得起、足以、给予",
         "app_sentences": [
           {
             "en": "I saved my pocket money to afford this new dictionary.",
@@ -565,8 +533,7 @@
       {
         "text": "role",
         "phonetic": "[r2%l]",
-        "pos": "n.",
-        "meaning": "角色, 职责, 任务",
+        "meaning": "n. 角色、职责、任务；作用、功用",
         "app_sentences": [
           {
             "en": "He played the role of a brave knight in the school play.",
@@ -577,8 +544,7 @@
       {
         "text": "education",
         "phonetic": "[;edj%'ke!1n]",
-        "pos": "n.",
-        "meaning": "教育, 训练, 教育学",
+        "meaning": "n. 教育、训练、教育学；教育、训练",
         "app_sentences": [
           {
             "en": "A good education is very important for our future.",
@@ -589,8 +555,7 @@
       {
         "text": "transport",
         "phonetic": "['trænsp0ːt]",
-        "pos": "n.",
-        "meaning": "运输, 运输工具, 激动, 狂喜, 流放犯",
+        "meaning": "vt. 传送、运输、流放；n. 运输、运输工具、激动；传送",
         "app_sentences": [
           {
             "en": "Many students use bicycles as their main transport to school.",
@@ -608,8 +573,7 @@
       {
         "text": "set off",
         "phonetic": "",
-        "pos": "",
-        "meaning": "出发, 开始, 引起, 衬托, 点缀, 抵销, 分开, 划分",
+        "meaning": "出发、开始、引起；抵销",
         "app_sentences": [
           {
             "en": "We will set off for the park at seven tomorrow morning.",
@@ -620,8 +584,7 @@
       {
         "text": "sock",
         "phonetic": "[s=k]",
-        "pos": "n.",
-        "meaning": "短袜, 鞋垫, 一击",
+        "meaning": "vt. 重击、猛投、给...穿袜；vi. 打击；n. 短袜、鞋垫、一击",
         "app_sentences": [
           {
             "en": "I need to find a pair of clean socks for P.E. class.",
@@ -632,8 +595,7 @@
       {
         "text": "whenever",
         "phonetic": "[wenˈevə]",
-        "pos": "conj.",
-        "meaning": "每当",
+        "meaning": "adv. 不论何时、每逢；conj. 每当",
         "app_sentences": [
           {
             "en": "You can call me whenever you need help with your homework.",
@@ -644,8 +606,7 @@
       {
         "text": "proper",
         "phonetic": "['pr=p2]",
-        "pos": "a.",
-        "meaning": "适当的, 固有的, 高尚的, 专属的",
+        "meaning": "adj. 适当的、固有的、高尚的；adv. 完全地、彻底地",
         "app_sentences": [
           {
             "en": "Wearing proper clothes is necessary for the school trip.",
@@ -656,8 +617,7 @@
       {
         "text": "edge",
         "phonetic": "[ed3]",
-        "pos": "n.",
-        "meaning": "边缘, 尖锐, 刀刃, 优势",
+        "meaning": "vt. 使锐利、挤进、镶边；vi. 缓缓移动；n. 边缘、尖锐、刀刃",
         "app_sentences": [
           {
             "en": "Be careful not to stand too close to the edge of the pool.",
@@ -667,9 +627,8 @@
       },
       {
         "text": "yourself",
-        "phonetic": "[j2'self]",
-        "pos": "pron.",
-        "meaning": "你自己",
+        "phonetic": "[jɔːˈself]",
+        "meaning": "pron. 你自己",
         "app_sentences": [
           {
             "en": "Please tell the class about yourself, like your name and hobby.",
@@ -684,8 +643,7 @@
       {
         "text": "go off",
         "phonetic": "",
-        "pos": "",
-        "meaning": "离开, 去世, 消失, 爆炸, 被发射, 变质, 进行, 睡去, 卖掉",
+        "meaning": "离开、去世、消失",
         "app_sentences": [
           {
             "en": "The alarm clock will go off at six thirty tomorrow morning.",
@@ -696,8 +654,7 @@
       {
         "text": "starve",
         "phonetic": "[st4ːv]",
-        "pos": "v.",
-        "meaning": "(使)饿死, (使)挨饿",
+        "meaning": "v. (使)饿死、(使)挨饿；vt. 使饿死vi.饿得要死",
         "app_sentences": [
           {
             "en": "I'm starving; let's have lunch as soon as possible.",
@@ -708,19 +665,17 @@
       {
         "text": "go",
         "phonetic": "[g2%]",
-        "pos": "vi.",
-        "meaning": "去, 走, 达到, 运转, 查阅, 消失, 结束, 放弃, 花费, 流传, 趋于, 打算, 剩下",
+        "meaning": "vt. 以...打赌、对付、忍受；vi. 去、走、达到；n. 去、尝试、进行",
         "app_sentences": [
           {
             "en": "We usually go to the library to study on Saturday afternoons.",
-            "cn": "我们通常在星期六下午去图书馆学习。"
+            "cn": "我们通常在周六下午去图书馆学习。"
           }
         ]
       },
       {
         "text": "in one go",
         "phonetic": "",
-        "pos": "",
         "meaning": "一口气",
         "app_sentences": [
           {
@@ -731,9 +686,8 @@
       },
       {
         "text": "rock",
-        "phonetic": "[r=k]",
-        "pos": "n.",
-        "meaning": "岩石, 岩礁, 石头, 基石, 暗礁, 摇动, 摇滚乐",
+        "phonetic": "[rk]",
+        "meaning": "vt. 摇摆、摇动、使摇晃；vi. 摇、摇动；n. 岩石、岩礁、石头",
         "app_sentences": [
           {
             "en": "Children should not throw rocks at animals or people.",
@@ -744,7 +698,6 @@
       {
         "text": "rock climbing",
         "phonetic": "",
-        "pos": "",
         "meaning": "攀岩运动",
         "app_sentences": [
           {
@@ -755,9 +708,8 @@
       },
       {
         "text": "stone",
-        "phonetic": "[st2%n]",
-        "pos": "n.",
-        "meaning": "石头, 宝石, 果核, 纪念碑, 结石",
+        "phonetic": "[stəʊn]",
+        "meaning": "vt. 投扔石子、铺石头；n. 石头、宝石、果核；adj. 石的、石制的、完全的",
         "app_sentences": [
           {
             "en": "We skipped flat stones across the surface of the lake.",
@@ -772,8 +724,7 @@
       {
         "text": "fairly",
         "phonetic": "['fe2li]",
-        "pos": "adv.",
-        "meaning": "美观地, 公平地, 相当地, 清楚地",
+        "meaning": "adv. 美观地、公平地、相当地",
         "app_sentences": [
           {
             "en": "She is fairly good at drawing pictures of animals.",
@@ -784,8 +735,7 @@
       {
         "text": "smooth",
         "phonetic": "[smuːð]",
-        "pos": "a.",
-        "meaning": "平滑的, 平稳的, 流畅的, 和蔼的, 安祥的, 圆滑的, 调匀的, 无毛的",
+        "meaning": "vt. 使光滑、烫平、使平和；vi. 变平滑、变平静；n. 一块平地、平滑部分",
         "app_sentences": [
           {
             "en": "The surface of the new desk is very smooth and clean.",
@@ -796,20 +746,22 @@
       {
         "text": "straight",
         "phonetic": "[streɪt]",
-        "pos": "n.",
-        "meaning": "直线, 直",
+        "meaning": "n. 直线、直；adj. 直的、笔直的、正直的；adv. 直接地、立即、不断地",
         "app_sentences": [
           {
             "en": "Go straight along this road, and you will see the post office.",
             "cn": "沿着这条路直走，你就会看到邮局。"
+          },
+          {
+            "en": "Go straight down this road and you will see the library on your left.",
+            "cn": "沿着这条路直走，你会看到左边的图书馆。"
           }
         ]
       },
       {
         "text": "tent",
         "phonetic": "[tent]",
-        "pos": "n.",
-        "meaning": "帐篷, 帷幕, 住处, 塞条, 塞子",
+        "meaning": "vt. 用帐篷遮盖、使住帐篷、用塞条嵌入；vi. 住帐蓬、宿营、暂时居住；n. 帐篷、帷幕、住处",
         "app_sentences": [
           {
             "en": "We slept in a tent during our camping trip last summer.",
@@ -819,9 +771,8 @@
       },
       {
         "text": "fall",
-        "phonetic": "[f0ːl]",
-        "pos": "n.",
-        "meaning": "落下, 瀑布, 采伐量, 下降, 落差, 降低, 堕落, 秋天",
+        "phonetic": "[fɔːl]",
+        "meaning": "vi. 倒下、落下、来临；n. 落下、瀑布、采伐量；adj. 秋天的",
         "app_sentences": [
           {
             "en": "Be careful not to fall on the wet floor in the hallway.",
@@ -836,8 +787,7 @@
       {
         "text": "fall asleep",
         "phonetic": "",
-        "pos": "",
-        "meaning": "入睡, 长眠, 懈怠, 静止不动",
+        "meaning": "入睡、长眠、懈怠",
         "app_sentences": [
           {
             "en": "He was so tired that he fell asleep during the movie.",
@@ -847,9 +797,8 @@
       },
       {
         "text": "hang",
-        "phonetic": "[hæ9]",
-        "pos": "n.",
-        "meaning": "悬挂, 诀窍, 意义",
+        "phonetic": "[hæŋ]",
+        "meaning": "vt. 悬挂、附着、装饰；vi. 悬着、垂下、被绞死；n. 悬挂、诀窍、意义",
         "app_sentences": [
           {
             "en": "We hang our coats on the hooks behind the classroom door.",
@@ -864,8 +813,7 @@
       {
         "text": "sudden",
         "phonetic": "['s7dn]",
-        "pos": "n.",
-        "meaning": "突然, 忽然",
+        "meaning": "n. 突然、忽然；adj. 突然的、意外的、快速的",
         "app_sentences": [
           {
             "en": "A sudden noise from outside made the little girl very scared.",
@@ -876,8 +824,7 @@
       {
         "text": "gun",
         "phonetic": "[g7n]",
-        "pos": "n.",
-        "meaning": "枪",
+        "meaning": "n. 枪；枪",
         "app_sentences": [
           {
             "en": "Police officers sometimes carry a gun to protect people.",
@@ -887,9 +834,8 @@
       },
       {
         "text": "soft",
-        "phonetic": "[s=ft]",
-        "pos": "a.",
-        "meaning": "软的, 温和的, 柔和的, 柔滑的, 温柔的, 软弱的, 坡度小的, 笨的, 纸币的",
+        "phonetic": "[sɒft]",
+        "meaning": "n. 柔软的东西、笨人、纸币；adj. 软的、温和的、柔和的；adv. 柔软地、温和地",
         "app_sentences": [
           {
             "en": "My new pillow is very soft and comfortable to sleep on.",
@@ -903,9 +849,8 @@
       },
       {
         "text": "still",
-        "phonetic": "[st!l]",
-        "pos": "n.",
-        "meaning": "蒸馏室, 寂静, 剧照",
+        "phonetic": "[stɪl]",
+        "meaning": "v. 蒸馏、(使)平静、(使)静止；n. 蒸馏室、寂静、剧照；adj. 静止的、不动的、静寂的",
         "app_sentences": [
           {
             "en": "It is raining, but I still want to go to the park with my friends.",
@@ -919,9 +864,8 @@
       },
       {
         "text": "wood",
-        "phonetic": "[w%d]",
-        "pos": "n.",
-        "meaning": "木材, 木制品",
+        "phonetic": "[wʊd]",
+        "meaning": "vt. 植林于、给...添加木柴；vi. 收集木材；n. 木材、木制品",
         "app_sentences": [
           {
             "en": "The small house is made of wood and looks very old.",
@@ -936,8 +880,7 @@
       {
         "text": "blood",
         "phonetic": "[bl7d]",
-        "pos": "n.",
-        "meaning": "血, 血统, 流血, 气质, 生命",
+        "meaning": "vt. 使出血、用血涂；n. 血、血统、流血",
         "app_sentences": [
           {
             "en": "The nurse took a little blood from his finger for the test.",
@@ -955,8 +898,7 @@
       {
         "text": "catch up",
         "phonetic": "",
-        "pos": "",
-        "meaning": "把...很快拾起, 把...缠住",
+        "meaning": "把...很快拾起、把...缠住；抓取程序",
         "app_sentences": [
           {
             "en": "I need to study hard to catch up with my classmates in math.",
@@ -967,32 +909,37 @@
       {
         "text": "agreement",
         "phonetic": "[əˈɡriːmənt]",
-        "pos": "n.",
-        "meaning": "同意, 合约, 协议",
+        "meaning": "n. 同意、合约、协议；契约、协议、协定",
         "app_sentences": [
           {
             "en": "After long discussion, they finally reached an agreement.",
             "cn": "经过长时间的讨论，他们终于达成了一致。"
+          },
+          {
+            "en": "After discussion, we finally came to an agreement on the plan.",
+            "cn": "讨论之后，我们终于就计划达成了一致。"
           }
         ]
       },
       {
         "text": "blind",
         "phonetic": "[blaɪnd]",
-        "pos": "n.",
-        "meaning": "蒙蔽物, 窗帘",
+        "meaning": "vt. 使失明、蒙蔽、遮暗；n. 蒙蔽物、窗帘；adj. 盲目的、瞎的、不加思考的",
         "app_sentences": [
           {
             "en": "The blind man walks across the street with the help of his dog.",
             "cn": "那位盲人在他的狗的帮助下过马路。"
+          },
+          {
+            "en": "The kind man has a blind dog that helps him cross the street.",
+            "cn": "这位善良的男子有一只导盲犬帮他过马路。"
           }
         ]
       },
       {
         "text": "ouch",
         "phonetic": "[a%t1]",
-        "pos": "interj.",
-        "meaning": "哎唷(表剧痛)",
+        "meaning": "n. 扣环、胸针、珠宝饰物；interj. 哎唷(表剧痛)",
         "app_sentences": [
           {
             "en": "Ouch! I hit my knee on the corner of the desk.",
@@ -1003,8 +950,7 @@
       {
         "text": "call off",
         "phonetic": "",
-        "pos": "",
-        "meaning": "叫走, 放弃, 使转移走, 依次叫名",
+        "meaning": "叫走、放弃、使转移走",
         "app_sentences": [
           {
             "en": "They had to call off the picnic because of the bad weather.",
@@ -1015,7 +961,6 @@
       {
         "text": "thanks to",
         "phonetic": "",
-        "pos": "",
         "meaning": "由于",
         "app_sentences": [
           {
@@ -1027,7 +972,6 @@
       {
         "text": "health care",
         "phonetic": "",
-        "pos": "",
         "meaning": "卫生保健",
         "app_sentences": [
           {
@@ -1038,9 +982,8 @@
       },
       {
         "text": "expect",
-        "phonetic": "[!k'spekt]",
-        "pos": "vt.",
-        "meaning": "预期, 盼望, 期待",
+        "phonetic": "[ɪkˈspekt]",
+        "meaning": "vt. 预期、盼望、期待",
         "app_sentences": [
           {
             "en": "I expect to receive a good grade on my English test.",
@@ -1059,8 +1002,7 @@
       {
         "text": "require",
         "phonetic": "[r!'kwa!2]",
-        "pos": "vt.",
-        "meaning": "需要, 命令, 要求",
+        "meaning": "vt. 需要、命令、要求；需要、要求、命令",
         "app_sentences": [
           {
             "en": "This job requires you to work for eight hours a day.",
@@ -1071,8 +1013,7 @@
       {
         "text": "physical",
         "phonetic": "['f!z!kl]",
-        "pos": "a.",
-        "meaning": "身体的, 物质的, 自然的, 物理学的, 好色的",
+        "meaning": "n. 体格检查；adj. 身体的、物质的、自然的",
         "app_sentences": [
           {
             "en": "Physical exercise is good for both our body and mind.",
@@ -1083,8 +1024,7 @@
       {
         "text": "effort",
         "phonetic": "['ef2t]",
-        "pos": "n.",
-        "meaning": "努力, 成就",
+        "meaning": "n. 努力、成就",
         "app_sentences": [
           {
             "en": "With great effort, he finally solved the difficult problem.",
@@ -1095,7 +1035,6 @@
       {
         "text": "once in a while",
         "phonetic": "",
-        "pos": "",
         "meaning": "偶尔",
         "app_sentences": [
           {
@@ -1107,8 +1046,7 @@
       {
         "text": "harm",
         "phonetic": "[h4ːm]",
-        "pos": "n.",
-        "meaning": "伤害, 害处",
+        "meaning": "vt. 伤害、损害；n. 伤害、害处",
         "app_sentences": [
           {
             "en": "Smoking will harm your health, so please don't try it.",
@@ -1126,8 +1064,7 @@
       {
         "text": "invitation",
         "phonetic": "[;!nv!'te!1n]",
-        "pos": "n.",
-        "meaning": "邀请, 请柬, 引诱",
+        "meaning": "n. 邀请、请柬、引诱；邀请、招待、吸引",
         "app_sentences": [
           {
             "en": "I received an invitation to Lucy's birthday party yesterday.",
@@ -1137,9 +1074,8 @@
       },
       {
         "text": "invite",
-        "phonetic": "[!n'va!t]",
-        "pos": "vt.",
-        "meaning": "邀请, 请求, 引起, 招致",
+        "phonetic": "[ɪnˈvaɪt]",
+        "meaning": "vt. 邀请、请求、引起；n. 邀请",
         "app_sentences": [
           {
             "en": "I will invite all my classmates to my birthday party.",
@@ -1154,8 +1090,7 @@
       {
         "text": "calendar",
         "phonetic": "['kæl!nd2]",
-        "pos": "n.",
-        "meaning": "日历, 日程表",
+        "meaning": "vt. 列入表中；n. 日历、日程表；日历",
         "app_sentences": [
           {
             "en": "There is a beautiful picture on the wall calendar in my room.",
@@ -1165,9 +1100,8 @@
       },
       {
         "text": "balloon",
-        "phonetic": "[b2'luːn]",
-        "pos": "n.",
-        "meaning": "气球",
+        "phonetic": "[bəˈluːn]",
+        "meaning": "vt. 使成气球状；vi. 膨胀如气球、激增；n. 气球",
         "app_sentences": [
           {
             "en": "The children were happy to see many colourful balloons at the party.",
@@ -1182,20 +1116,22 @@
       {
         "text": "paint",
         "phonetic": "[peɪnt]",
-        "pos": "n.",
-        "meaning": "油漆, 颜料, 绘画作品, 涂漆",
+        "meaning": "vt. 油漆、绘、画；vi. 绘画、涂漆；n. 油漆、颜料、绘画作品",
         "app_sentences": [
           {
             "en": "We will paint the fence white during the art class tomorrow.",
             "cn": "明天美术课上我们要把栅栏漆成白色。"
+          },
+          {
+            "en": "We will paint the wall blue to match the new furniture.",
+            "cn": "我们要把墙刷成蓝色来配新家具。"
           }
         ]
       },
       {
         "text": "heat",
         "phonetic": "[hiːt]",
-        "pos": "n.",
-        "meaning": "热, 热度, 体温, 高潮",
+        "meaning": "vt. 把...加热、使激动；vi. 加热、激昂、加剧；n. 热、热度、体温",
         "app_sentences": [
           {
             "en": "The heat from the sun made the sand very warm.",
@@ -1210,8 +1146,7 @@
       {
         "text": "heat up",
         "phonetic": "",
-        "pos": "",
-        "meaning": "变热; 加[煮]热…; 沸腾, 使变得激烈; 馏",
+        "meaning": "变热、加[煮]热…、沸腾",
         "app_sentences": [
           {
             "en": "You can heat up the soup in the microwave for two minutes.",
@@ -1221,13 +1156,16 @@
       },
       {
         "text": "knife",
-        "phonetic": "[na!f]",
-        "pos": "n.",
-        "meaning": "小刀, 匕首",
+        "phonetic": "[naɪf]",
+        "meaning": "vt. 切割、伤害、切；vi. 劈开、穿过；n. 小刀、匕首",
         "app_sentences": [
           {
             "en": "Use the knife carefully to cut the apple into small pieces.",
             "cn": "小心用刀把苹果切成小块。"
+          },
+          {
+            "en": "Please be careful when you use a sharp knife in the kitchen.",
+            "cn": "在厨房里用锋利的刀时请务必小心。"
           },
           {
             "en": "Please be careful when you use a knife to cut the bread.",
@@ -1238,8 +1176,7 @@
       {
         "text": "fork",
         "phonetic": "[f0ːk]",
-        "pos": "n.",
-        "meaning": "叉子, 叉状物, 分岔",
+        "meaning": "vt. 做成叉形、叉起；vi. 分支、分歧；n. 叉子、叉状物、分岔",
         "app_sentences": [
           {
             "en": "In Western countries, people usually eat with a knife and fork.",
@@ -1250,8 +1187,7 @@
       {
         "text": "spoon",
         "phonetic": "[spuːn]",
-        "pos": "n.",
-        "meaning": "匙, 调羹, 匙形工具",
+        "meaning": "vt. 以匙舀起、调情、使成匙状；n. 匙、调羹、匙形工具",
         "app_sentences": [
           {
             "en": "She uses a spoon to eat soup and a fork to eat salad.",
@@ -1262,8 +1198,7 @@
       {
         "text": "cheeseburger",
         "phonetic": "['t1iːz;b^ːg2]",
-        "pos": "n.",
-        "meaning": "干酪汉堡包",
+        "meaning": "n. 干酪汉堡包",
         "app_sentences": [
           {
             "en": "I often order a cheeseburger and a cup of milk for lunch.",
@@ -1274,8 +1209,7 @@
       {
         "text": "Italian",
         "phonetic": "[!'tælj2n]",
-        "pos": "n.",
-        "meaning": "意大利人, 意大利语",
+        "meaning": "n. 意大利人、意大利语；adj. 意大利的、意大利语的",
         "app_sentences": [
           {
             "en": "My father likes Italian food, especially pizza and pasta.",
@@ -1286,8 +1220,7 @@
       {
         "text": "Westerner",
         "phonetic": "['west2n2]",
-        "pos": "n.",
-        "meaning": "西方人, 西洋人",
+        "meaning": "n. 西方人、西洋人",
         "app_sentences": [
           {
             "en": "Many Westerners celebrate Christmas with their families.",
@@ -1298,8 +1231,7 @@
       {
         "text": "West",
         "phonetic": "[west]",
-        "pos": "n.",
-        "meaning": "西方, 西部",
+        "meaning": "n. 西方、西部；adj. 西方的、向西的；adv. 向西、自西方、在西方",
         "app_sentences": [
           {
             "en": "The sun sets in the West at the end of the day.",
@@ -1310,8 +1242,7 @@
       {
         "text": "serve",
         "phonetic": "[s^ːv]",
-        "pos": "vt.",
-        "meaning": "可作...用, 服务, 经历, 招待, 供应, 送交, 对待",
+        "meaning": "v. 当仆人、服务、服役；vt. 可作...用、服务、经历；vi. 服务、服役、侍应",
         "app_sentences": [
           {
             "en": "We should learn to serve our community and help others.",
@@ -1325,9 +1256,8 @@
       },
       {
         "text": "similar",
-        "phonetic": "['s!m!l2]",
-        "pos": "a.",
-        "meaning": "相似的, 类似的",
+        "phonetic": "[ˈsɪmələ]",
+        "meaning": "n. 相似的东西；adj. 相似的、类似的",
         "app_sentences": [
           {
             "en": "The two houses look very similar because they were built together.",
@@ -1342,8 +1272,7 @@
       {
         "text": "wing",
         "phonetic": "[w!9]",
-        "pos": "n.",
-        "meaning": "翅膀, 翼, 机翼, 派别",
+        "meaning": "vt. 给...装上翼、飞过、使飞；vi. 飞行；n. 翅膀、翼、机翼",
         "app_sentences": [
           {
             "en": "The bird broke its wing and couldn't fly back to its nest.",
@@ -1354,8 +1283,7 @@
       {
         "text": "lady",
         "phonetic": "['le!di]",
-        "pos": "n.",
-        "meaning": "淑女, 夫人, 女士, 贵妇",
+        "meaning": "n. 淑女、夫人、女士",
         "app_sentences": [
           {
             "en": "The kind lady helped the lost boy find his parents.",
@@ -1366,8 +1294,7 @@
       {
         "text": "gentleman",
         "phonetic": "['d3entlm2n]",
-        "pos": "n.",
-        "meaning": "绅士, 先生",
+        "meaning": "n. 绅士、先生",
         "app_sentences": [
           {
             "en": "He is a true gentleman who always holds the door for others.",
@@ -1378,7 +1305,6 @@
       {
         "text": "help yourself",
         "phonetic": "",
-        "pos": "",
         "meaning": "请自己动手用餐吧",
         "app_sentences": [
           {
@@ -1389,9 +1315,8 @@
       },
       {
         "text": "cross",
-        "phonetic": "[kr=s]",
-        "pos": "n.",
-        "meaning": "十字架, 十字架形物件, 交叉, 十字标, 交叉路, 磨难, 杂交",
+        "phonetic": "[krs]",
+        "meaning": "v. 交叉、横过、越过；n. 十字架、十字架形物件、交叉；adj. 生气的、交叉的、相反的",
         "app_sentences": [
           {
             "en": "Remember to look both ways before you cross the street.",
@@ -1408,9 +1333,8 @@
     "data": [
       {
         "text": "achieve",
-        "phonetic": "[2't1iːv]",
-        "pos": "vt.",
-        "meaning": "完成, 达到",
+        "phonetic": "[əˈtʃiːv]",
+        "meaning": "vt. 完成、达到；vi. 如愿以偿",
         "app_sentences": [
           {
             "en": "With hard work, you can achieve your goals in life.",
@@ -1425,8 +1349,7 @@
       {
         "text": "including",
         "phonetic": "[!n'kluːd!9]",
-        "pos": "prep.",
-        "meaning": "包含, 包括",
+        "meaning": "prep. 包含、包括；vbl. 包括；包括、算入",
         "app_sentences": [
           {
             "en": "All students, including those who are sick, must finish the homework.",
@@ -1441,8 +1364,7 @@
       {
         "text": "speaker",
         "phonetic": "['spiːk2]",
-        "pos": "n.",
-        "meaning": "说话人, 讲演者, 发言人, 喇叭, 扬声器",
+        "meaning": "n. 说话人、讲演者、发言人；扬声器",
         "app_sentences": [
           {
             "en": "The guest speaker told us interesting stories about his travels.",
@@ -1453,8 +1375,7 @@
       {
         "text": "boss",
         "phonetic": "[b=s]",
-        "pos": "n.",
-        "meaning": "老板, 上司, 岩瘤, 浮雕, 母牛",
+        "meaning": "vt. 指挥、控制、浮雕；n. 老板、上司、岩瘤",
         "app_sentences": [
           {
             "en": "Her boss is very strict but also fair to all the workers.",
@@ -1465,8 +1386,7 @@
       {
         "text": "secretary",
         "phonetic": "['sekr2tri]",
-        "pos": "n.",
-        "meaning": "秘书, 书记, 大臣",
+        "meaning": "n. 秘书、书记、大臣；秘书",
         "app_sentences": [
           {
             "en": "The school secretary answers phone calls and helps visitors.",
@@ -1476,9 +1396,8 @@
       },
       {
         "text": "quarter",
-        "phonetic": "['kw0ːt2]",
-        "pos": "n.",
-        "meaning": "四分之一, 一刻钟, 季度, 地区",
+        "phonetic": "[ˈkwɔːtə]",
+        "meaning": "vt. 四等分、肢解；vi. 驻扎、住宿；n. 四分之一、一刻钟、季度",
         "app_sentences": [
           {
             "en": "A quarter of the students in our class like playing basketball.",
@@ -1493,8 +1412,7 @@
       {
         "text": "industry",
         "phonetic": "['!nd2stri]",
-        "pos": "n.",
-        "meaning": "勤劳, 工业, 企业, 产业, 有组织的劳动",
+        "meaning": "n. 勤劳、工业、企业；工业、实业",
         "app_sentences": [
           {
             "en": "This city is famous for its car industry and technology.",
@@ -1505,8 +1423,7 @@
       {
         "text": "zero",
         "phonetic": "[ˈzɪərəʊ]",
-        "pos": "n.",
-        "meaning": "零, 零点, 零度, 无, 乌有, 最低点",
+        "meaning": "vt. 调零、对(炮火等)作协调校正；n. 零、零点、零度；adj. 零的、没有的",
         "app_sentences": [
           {
             "en": "The temperature dropped to zero degrees last night.",
@@ -1517,8 +1434,7 @@
       {
         "text": "Indian",
         "phonetic": "['!ndi2n]",
-        "pos": "n.",
-        "meaning": "印度人, 印第安人, 印第安语",
+        "meaning": "n. 印度人、印第安人、印第安语；adj. 印度的、印度群岛的、印第安语的",
         "app_sentences": [
           {
             "en": "My neighbour is Indian, and she sometimes cooks delicious curry.",
@@ -1527,30 +1443,9 @@
         ]
       },
       {
-        "text": "adj",
-        "phonetic": "",
-        "pos": "abbr.",
-        "meaning": "adjust 调整；adjacent 相邻的；adjustable 可调整的；adjusted 调节过的",
-        "app_sentences": [
-          {
-            "en": "In the phrase 'a red apple', 'red' is an adjective.",
-            "cn": "在词组‘一个红苹果’中，‘红’是一个形容词。"
-          },
-          {
-            "en": "'Big' is an adj that we often use to describe size.",
-            "cn": "'Big'是一个我们常用来描述大小的形容词。"
-          },
-          {
-            "en": "'Big', 'happy', and 'green' are all adjectives.",
-            "cn": "'大的'、'开心的'和'绿色的'都是形容词。"
-          }
-        ]
-      },
-      {
         "text": "type",
         "phonetic": "[ta!p]",
-        "pos": "n.",
-        "meaning": "类型, 样式, 典型, 榜样, 标志, 符号, 型, 式",
+        "meaning": "vt. 作为代表、测定类型、用打字机打；vi. 打字；n. 类型、样式、典型",
         "app_sentences": [
           {
             "en": "What type of music do you like to listen to, pop or rock?",
@@ -1568,8 +1463,7 @@
       {
         "text": "handbag",
         "phonetic": "['hænd;bæg]",
-        "pos": "n.",
-        "meaning": "手提包",
+        "meaning": "n. 手提包",
         "app_sentences": [
           {
             "en": "She put her keys and phone into her small handbag.",
@@ -1580,8 +1474,7 @@
       {
         "text": "beat",
         "phonetic": "[biːt]",
-        "pos": "n.",
-        "meaning": "心跳(声), 打, 敲打声, 拍子",
+        "meaning": "v. 打、拍打、打败；n. 心跳(声)、打、敲打声；adj. 疲乏的、颓废的",
         "app_sentences": [
           {
             "en": "You need to beat the eggs well before you make the cake.",
@@ -1596,8 +1489,7 @@
       {
         "text": "pardon",
         "phonetic": "['p4ːdn]",
-        "pos": "n.",
-        "meaning": "原谅, 赦免",
+        "meaning": "vt. 宽恕、原谅；n. 原谅、赦免",
         "app_sentences": [
           {
             "en": "Pardon? Could you please repeat the question more slowly?",
@@ -1608,8 +1500,7 @@
       {
         "text": "intend",
         "phonetic": "[!n'tend]",
-        "pos": "vt.",
-        "meaning": "计划, 打算, 意思是",
+        "meaning": "vt. 计划、打算、意思是；想要、打算、意旨",
         "app_sentences": [
           {
             "en": "I intend to visit my grandparents during the summer holiday.",
@@ -1620,8 +1511,7 @@
       {
         "text": "fetch",
         "phonetic": "[fet1]",
-        "pos": "n.",
-        "meaning": "取得, 拿, 诡计, 魂",
+        "meaning": "vt. 接来、取来、售得；vi. 取物、前进；n. 取得、拿、诡计",
         "app_sentences": [
           {
             "en": "Could you please fetch me a glass of water from the kitchen?",
@@ -1631,9 +1521,8 @@
       },
       {
         "text": "pancake",
-        "phonetic": "['pæn;ke!k]",
-        "pos": "n.",
-        "meaning": "薄烤饼, 薄煎饼, 烙饼",
+        "phonetic": "[ˈpænkeɪk]",
+        "meaning": "n. 薄烤饼、薄煎饼、烙饼",
         "app_sentences": [
           {
             "en": "I like to eat pancakes with honey for breakfast on Sundays.",
@@ -1647,9 +1536,8 @@
       },
       {
         "text": "rose",
-        "phonetic": "[r2%z]",
-        "pos": "n.",
-        "meaning": "玫瑰, 蔷薇, 玫瑰色",
+        "phonetic": "[rəʊz]",
+        "meaning": "vt. 使成玫瑰色；n. 玫瑰、蔷薇、玫瑰色；adj. 玫瑰色的、玫瑰花的",
         "app_sentences": [
           {
             "en": "My mother likes red roses very much, so I bought her some.",
@@ -1664,8 +1552,7 @@
       {
         "text": "laugh at",
         "phonetic": "",
-        "pos": "",
-        "meaning": "嘲笑, 漠视, 因...发笑",
+        "meaning": "嘲笑、漠视、因...发笑",
         "app_sentences": [
           {
             "en": "It's not polite to laugh at others when they make mistakes.",
@@ -1676,8 +1563,7 @@
       {
         "text": "kindness",
         "phonetic": "['ka!ndn2s]",
-        "pos": "n.",
-        "meaning": "仁慈, 亲切, 和蔼",
+        "meaning": "n. 仁慈、亲切、和蔼",
         "app_sentences": [
           {
             "en": "We should always show kindness to animals and people in need.",
@@ -1688,8 +1574,7 @@
       {
         "text": "give up",
         "phonetic": "",
-        "pos": "",
-        "meaning": "放弃, 停止, 献出, 抛弃, 认输, 把...送交",
+        "meaning": "放弃、停止、献出；放弃、停止、把...送交",
         "app_sentences": [
           {
             "en": "Don't give up easily when you face difficulties in learning.",
@@ -1702,22 +1587,20 @@
         ]
       },
       {
-        "text": "try one",
+        "text": "try one's best",
         "phonetic": "",
-        "pos": "",
-        "meaning": "",
+        "meaning": "尽力",
         "app_sentences": [
           {
-            "en": "This chocolate is very good; would you like to try one?",
-            "cn": "这种巧克力很好吃；你想尝一个吗？"
+            "en": "You should try your best to finish the task on time.",
+            "cn": "你应该尽力按时完成任务。"
           }
         ]
       },
       {
         "text": "disappointed",
         "phonetic": "[;d!s2#p0!nt!d]",
-        "pos": "a.",
-        "meaning": "失望的",
+        "meaning": "adj. 失望的",
         "app_sentences": [
           {
             "en": "She was very disappointed because she failed the history test.",
@@ -1728,8 +1611,7 @@
       {
         "text": "bedside",
         "phonetic": "['bedsa!d]",
-        "pos": "n.",
-        "meaning": "床边",
+        "meaning": "n. 床边；adj. 床边的、临床的",
         "app_sentences": [
           {
             "en": "There is a lamp and a clock on my bedside table.",
@@ -1739,9 +1621,8 @@
       },
       {
         "text": "note",
-        "phonetic": "[n2%t]",
-        "pos": "n.",
-        "meaning": "笔记, 记录, 注解, 票据, 符号, 显要, 注重, 便笺, 照会",
+        "phonetic": "[nəʊt]",
+        "meaning": "vt. 记录、注解、注意；n. 笔记、记录、注解",
         "app_sentences": [
           {
             "en": "I wrote a note to remind myself about the meeting after school.",
@@ -1760,8 +1641,7 @@
       {
         "text": "whom",
         "phonetic": "[huːm]",
-        "pos": "pron.",
-        "meaning": "谁",
+        "meaning": "pron. 谁",
         "app_sentences": [
           {
             "en": "Whom did you invite to your birthday party last weekend?",

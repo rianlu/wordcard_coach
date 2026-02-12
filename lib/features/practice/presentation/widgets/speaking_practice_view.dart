@@ -12,14 +12,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import 'practice_success_overlay.dart';
 
-/// 逻辑处理
+/// 口语练习状态
 enum SpeakingState { 
-  idle,          // 逻辑处理
-  playingAudio,  // 逻辑处理
-  listening,     // 逻辑处理
-  processing,    // 逻辑处理
-  success,       // 逻辑处理
-  failed         // 逻辑处理
+  idle,          // 空闲
+  playingAudio,  // 播放标准音
+  listening,     // 录音识别中
+  processing,    // 处理识别结果
+  success,       // 识别通过
+  failed         // 识别失败
 }
 
 class SpeakingPracticeView extends StatefulWidget {
@@ -36,56 +36,36 @@ class SpeakingPracticeView extends StatefulWidget {
   State<SpeakingPracticeView> createState() => _SpeakingPracticeViewState();
 }
 
-class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin {
+class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _pulseController;
   
-  // 逻辑处理
+  // 练习状态
   SpeakingState _state = SpeakingState.idle;
-  String _lastHeard = '';
-  int _retryCount = 0;
+  String _lastHeard = ''; // 最近一次识别内容
+  bool _hasPlayedAudioForCurrentWord = false; // 本轮是否已播放标准音
+  int _sessionToken = 0; // 用于隔离旧异步回调
+  bool _isStartingRecognition = false; // 防并发 startListening
 
   
-  // 逻辑处理
+  // 计时器
   Timer? _skipTimer;
   Timer? _listenTimeoutTimer;
   Timer? _successTimer;
-  StreamSubscription<bool>? _listeningSubscription;
   
   // 配置
-  static const int _maxRetries = 3;
   static const int _skipButtonDelaySeconds = 3;
-  static const int _listenTimeoutSeconds = 8;
+  static const int _listenTimeoutSeconds = 12;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
     
-    // 逻辑处理
-    _listeningSubscription = SpeechService().listeningState.listen((isActive) {
-      if (mounted && _state == SpeakingState.listening) {
-        if (isActive) {
-          // 逻辑处理
-          AudioService().playAsset('mic_start.mp3');
-        } else {
-          // 逻辑处理
-          // 逻辑处理
-          // 逻辑处理
-          if (_lastHeard.isNotEmpty) {
-             debugPrint("Speech session ended with input: $_lastHeard");
-             _handleSpeechSessionEnded();
-          }
-        }
-      }
-    });
-    
-    // 逻辑处理
-    SpeechService().init();
-    
-    // 逻辑处理
+    // 启动练习流程
     _startPractice();
   }
 
@@ -93,23 +73,27 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   void didUpdateWidget(SpeakingPracticeView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.word.id != oldWidget.word.id) {
-      _resetAndRestart();
+      unawaited(_resetAndRestart());
     }
   }
 
-  void _resetAndRestart() {
+  Future<void> _resetAndRestart() async {
+    _sessionToken++;
+    final token = _sessionToken;
     _cancelAllTimers();
-    SpeechService().cancel();
+    await SpeechService().cancel();
+    if (!mounted || token != _sessionToken) return;
     
     setState(() {
       _state = SpeakingState.idle;
       _lastHeard = '';
-      _retryCount = 0;
+      _hasPlayedAudioForCurrentWord = false;
+      _isStartingRecognition = false;
 
     });
     
     _pulseController.reset();
-    _startPractice();
+    await _startPractice(token);
   }
 
   void _cancelAllTimers() {
@@ -120,155 +104,141 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   void dispose() {
+    _sessionToken++;
     _cancelAllTimers();
-    _listeningSubscription?.cancel();
     _pulseController.dispose();
-    SpeechService().cancel();
+    SpeechService().cancel(); // Key 机制保证新实例在旧实例 dispose 后才创建
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
-  /// 逻辑处理
-  Future<void> _startPractice() async {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!mounted) return;
-    
-    // 逻辑处理
-    await Future.delayed(const Duration(milliseconds: 200));
-    if (!mounted) return;
-    
-    // 逻辑处理
-    setState(() => _state = SpeakingState.playingAudio);
-    
-    await AudioService().playWord(widget.word);
-    
-    // 逻辑处理
-    await Future.delayed(const Duration(milliseconds: 400));
-    if (!mounted) return;
-    
-    // 逻辑处理
-    _beginListening();
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive || state == AppLifecycleState.detached) {
+      _cancelAllTimers();
+      SpeechService().stopListening();
+      _pulseController.stop();
+      setState(() {
+        _state = SpeakingState.failed;
+        _lastHeard = '';
+      });
+      _isStartingRecognition = false;
+    }
   }
 
-  void _beginListening() {
-    if (!mounted || _state == SpeakingState.success) return;
+  /// 启动口语练习流程
+  Future<void> _startPractice([int? token]) async {
+    final currentToken = token ?? _sessionToken;
+    if (!mounted || currentToken != _sessionToken) return;
     
-    // 逻辑处理
+    // 避免界面切换瞬间触发
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted || currentToken != _sessionToken) return;
+    
+    // 播放标准音的同时，后台预初始化语音引擎（避免第一次超时）
+    setState(() => _state = SpeakingState.playingAudio);
+    unawaited(SpeechService().ensureInitialized());
+    
+    await AudioService().playWord(widget.word);
+    if (!mounted || currentToken != _sessionToken) return;
+    _hasPlayedAudioForCurrentWord = true;
+    
+    // 播放完成后进入识别
+    await Future.delayed(const Duration(milliseconds: 400));
+    if (!mounted || currentToken != _sessionToken) return;
+    
+    // 开始监听
+    unawaited(_beginListening(currentToken));
+  }
+
+  Future<void> _beginListening([int? token]) async {
+    final currentToken = token ?? _sessionToken;
+    if (!mounted || currentToken != _sessionToken || _state == SpeakingState.success) return;
+    if (_isStartingRecognition) {
+      debugPrint('Speaking: _beginListening skipped, recognition start in progress');
+      return;
+    }
+    
+    // 启动前清理旧计时器
     _skipTimer?.cancel();
     _listenTimeoutTimer?.cancel();
     
     setState(() {
-      _state = SpeakingState.listening;
+      _state = SpeakingState.processing;
       _lastHeard = '';
     });
-    
+    _isStartingRecognition = false;
+
+    bool success = false;
+    try {
+      success = await _startSpeechRecognition(currentToken).timeout(const Duration(seconds: 12));
+    } catch (_) {
+      success = false;
+    }
+    if (!mounted || currentToken != _sessionToken) return;
+    if (!success) {
+      _handleStartListeningFailed('识别引擎启动超时或失败');
+      return;
+    }
+
+    setState(() {
+      _state = SpeakingState.listening;
+    });
     _pulseController.repeat();
-    
-    // 逻辑处理
+
+    // 控制跳过按钮显示时机
     _skipTimer = Timer(const Duration(seconds: _skipButtonDelaySeconds), () {
       if (mounted) setState(() {});  // 刷新界面
     });
-    
-    // 逻辑处理
+
+    // 监听超时保护
     _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
-      _handleListenTimeout();
+      _handleListenTimeout(currentToken);
     });
-    
-    // 逻辑处理
-    _startSpeechRecognition();
   }
 
-  Future<void> _startSpeechRecognition() async {
+  Future<bool> _startSpeechRecognition([int? token]) async {
+    final currentToken = token ?? _sessionToken;
+    if (!mounted || currentToken != _sessionToken) return false;
+    if (_isStartingRecognition) return false;
+    _isStartingRecognition = true;
     final success = await SpeechService().startListening(
-      onResult: _handleSpeechResult,
+      onResult: (text) {
+        if (currentToken != _sessionToken) return; // 过滤旧 session 的结果
+        _handleSpeechResult(text);
+      },
       onError: (error) {
         debugPrint('Speech error: $error');
-        if (mounted && _state == SpeakingState.listening) {
-          _scheduleRetry();
+        if (mounted && currentToken == _sessionToken && _state == SpeakingState.listening) {
+          _handleStartListeningFailed(error);
         }
       },
     );
-    
-    if (!success && mounted && _state == SpeakingState.listening) {
-      debugPrint('Failed to start listening, scheduling retry');
-      _scheduleRetry();
-    }
+    _isStartingRecognition = false;
+    return success;
   }
 
-  void _scheduleRetry() {
-    if (_retryCount >= _maxRetries) {
-      // 逻辑处理
-      debugPrint('Max retries reached, showing skip prompt');
-      _pulseController.stop();
-      _pulseController.reset();
-      setState(() {
-        _state = SpeakingState.failed;
-        _lastHeard = ''; // 逻辑处理
-      });
-      return;
-    }
-    
-    _retryCount++;
-    debugPrint('Retry attempt $_retryCount/$_maxRetries');
-    
-    // 逻辑处理
-    if (mounted) {
-      setState(() {
-        _lastHeard = ''; // 逻辑处理
-      });
-    }
-    
-    // 逻辑处理
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (mounted && _state == SpeakingState.listening) {
-        _startSpeechRecognition();
-      }
+  void _handleStartListeningFailed(String reason) {
+    debugPrint('Start listening failed: $reason');
+    _cancelAllTimers();
+    SpeechService().stopListening();
+    _pulseController.stop();
+    _pulseController.reset();
+    setState(() {
+      _state = SpeakingState.failed;
+      _lastHeard = '';
     });
+    _isStartingRecognition = false;
   }
 
-  void _handleListenTimeout() {
+  void _handleListenTimeout([int? token]) {
+    final currentToken = token ?? _sessionToken;
+    if (currentToken != _sessionToken) return;
     if (!mounted || _state != SpeakingState.listening) return;
     
     debugPrint('Listen timeout');
-    SpeechService().stopListening();
-    
-    if (_lastHeard.isEmpty) {
-      // 逻辑处理
-      if (_retryCount < _maxRetries) {
-        _retryCount++;
-        debugPrint('Timeout retry attempt $_retryCount/$_maxRetries');
-        // 逻辑处理
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted && _state == SpeakingState.listening) {
-            _startSpeechRecognition();
-            // 逻辑处理
-            _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
-              _handleListenTimeout();
-            });
-          }
-        });
-      } else {
-        // 逻辑处理
-        debugPrint('Max retries reached after timeout');
-        _pulseController.stop();
-        _pulseController.reset();
-        setState(() {
-          _state = SpeakingState.failed;
-        });
-      }
-    } else {
-      // 逻辑处理
-      _showRetryPrompt(_lastHeard);
-    }
-  }
-
-  void _handleSpeechSessionEnded() {
-    _listenTimeoutTimer?.cancel(); // 逻辑处理
-    
-    // 逻辑处理
-    // 逻辑处理
-    // 逻辑处理
-    
-    // 触发重试提示并显示错误反馈
-    _showRetryPrompt(_lastHeard);
+    _handleStartListeningFailed('监听超时');
   }
 
   void _handleSpeechResult(String text) {
@@ -388,7 +358,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     return 0; // 完全未匹配
   }
 
-  /// 检测到语音但匹配差时提示重试
+  /// 检测到语音但匹配差时进入失败态，等待用户手动重新开始
   void _showRetryPrompt(String recognized) {
     if (!mounted) return;
     
@@ -404,19 +374,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     setState(() {
       _state = SpeakingState.failed;
     });
-    
-    // 展示反馈后自动重试
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted && _state == SpeakingState.failed) {
-        _retryCount++;
-        if (_retryCount < _maxRetries) {
-          _beginListening();
-        } else {
-          // 达到最大重试次数，显示跳过
-          setState(() {});
-        }
-      }
-    });
+    _isStartingRecognition = false;
   }
 
   void _handleResult(int stars, String recognized) {
@@ -432,35 +390,51 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
       _lastHeard = recognized;
     });
+    _isStartingRecognition = false;
     
     _showSuccessOverlay(stars);
   }
 
 
 
-  void _skip() {
+  Future<void> _skip() async {
+    _sessionToken++;
     _cancelAllTimers();
-    SpeechService().cancel();
+    await SpeechService().cancel();
+    if (!mounted) return;
     _pulseController.stop();
     _pulseController.reset();
+    _isStartingRecognition = false;
     widget.onCompleted(0); // 跳过记 0 分
   }
 
   void _replayStandardAudio() async {
-    if (_state != SpeakingState.listening) return;
+    final currentToken = _sessionToken;
+    // 成功或正在播放时不允许重播
+    if (_state == SpeakingState.success || _state == SpeakingState.playingAudio || _state == SpeakingState.processing) return;
     
-    // 播放时暂停监听
-    await SpeechService().stopListening();
-    _listenTimeoutTimer?.cancel();
-    _pulseController.stop();
+    final wasListening = _state == SpeakingState.listening;
+    
+    if (wasListening) {
+      // 监听中：暂停监听，播放音频，再恢复监听
+      await SpeechService().stopListening();
+      _listenTimeoutTimer?.cancel();
+      _pulseController.stop();
+    }
     
     setState(() => _state = SpeakingState.playingAudio);
     
     await AudioService().playWord(widget.word);
+    if (!mounted || currentToken != _sessionToken) return;
     await Future.delayed(const Duration(milliseconds: 300));
+    if (!mounted || currentToken != _sessionToken) return;
     
-    if (mounted && _state == SpeakingState.playingAudio) {
-      _beginListening();
+    if (wasListening) {
+      // 之前在监听，恢复监听
+      unawaited(_beginListening(currentToken));
+    } else {
+      // 之前在 idle/failed，播放完回到原状态，用户可以点麦克风开始
+      setState(() => _state = SpeakingState.failed);
     }
   }
 
@@ -540,8 +514,8 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     if (_state == SpeakingState.listening && _skipTimer?.isActive == false) {
       return true;
     }
-    // 失败且达到上限时显示跳过
-    if (_state == SpeakingState.failed && _retryCount >= _maxRetries) {
+    // 失败态始终允许跳过
+    if (_state == SpeakingState.failed) {
       return true;
     }
     return false;
@@ -710,19 +684,30 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   Widget _buildVoiceMicButton() {
     final isListening = _state == SpeakingState.listening;
+    final isProcessing = _state == SpeakingState.processing;
     
     return GestureDetector(
       onTap: () {
+        if (isProcessing) return; // 正在启动识别，忽略点击
         if (_state == SpeakingState.idle || _state == SpeakingState.failed) {
-          _startPractice();
-        } 
+          _lastHeard = '';
+          if (_hasPlayedAudioForCurrentWord) {
+            unawaited(_beginListening(_sessionToken));
+          } else {
+            unawaited(_startPractice(_sessionToken));
+          }
+        } else if (_state == SpeakingState.listening) {
+          _handleStartListeningFailed('用户手动取消');
+        }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 80, height: 80, // 更小尺寸
+        width: 80, height: 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isListening ? const Color(0xFFFF5252) : AppColors.primary,
+          color: isListening ? const Color(0xFFFF5252) 
+               : isProcessing ? AppColors.primary.withValues(alpha: 0.7)
+               : AppColors.primary,
           boxShadow: [
             BoxShadow(
               color: (isListening ? const Color(0xFFFF5252) : AppColors.primary).withValues(alpha: 0.3),
@@ -731,11 +716,19 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
             )
           ]
         ),
-        child: Icon(
-          isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
-          color: Colors.white,
-          size: 32,
-        ),
+        child: isProcessing
+          ? const SizedBox(
+              width: 28, height: 28,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 3,
+              ),
+            )
+          : Icon(
+              isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
+              color: Colors.white,
+              size: 32,
+            ),
       ),
     );
   }
@@ -806,7 +799,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         }
         break;
       case SpeakingState.processing:
-        text = '正在识别...';
+        text = '准备识别...';
         color = AppColors.primary;
         icon = Icons.sync_rounded;
         break;

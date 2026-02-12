@@ -1,74 +1,74 @@
 [
-    {
-        "id": "waiyan_7_1_2024",
-        "name": "【外研版】七年级上册(2024秋版)",
-        "grade": 7,
-        "semester": 1,
-        "file": "【外研版】七年级上册(2024秋版)英语电子课本.json",
-        "version": "2024"
-    },
-    {
-        "id": "waiyan_7_1",
-        "name": "【外研版】七年级上册",
-        "grade": 7,
-        "semester": 1,
-        "file": "【外研版】七年级上册英语电子课本.json",
-        "version": "1.0"
-    },
-    {
-        "id": "waiyan_7_2_2025",
-        "name": "【外研版】七年级下册(2025春版)",
-        "grade": 7,
-        "semester": 2,
-        "file": "【外研版】七年级下册(2025春版)英语电子课本.json",
-        "version": "2025"
-    },
-    {
-        "id": "waiyan_7_2",
-        "name": "【外研版】七年级下册",
-        "grade": 7,
-        "semester": 2,
-        "file": "【外研版】七年级下册英语电子课本.json",
-        "version": "1.0"
-    },
-    {
-        "id": "waiyan_8_1_2025",
-        "name": "【外研版】八年级上册(2025秋版)",
-        "grade": 8,
-        "semester": 1,
-        "file": "【外研版】八年级上册(2025秋版)英语电子课本.json",
-        "version": "2025"
-    },
-    {
-        "id": "waiyan_8_1",
-        "name": "【外研版】八年级上册",
-        "grade": 8,
-        "semester": 1,
-        "file": "【外研版】八年级上册英语电子课本.json",
-        "version": "1.0"
-    },
-    {
-        "id": "waiyan_8_2",
-        "name": "【外研版】八年级下册",
-        "grade": 8,
-        "semester": 2,
-        "file": "【外研版】八年级下册英语电子课本.json",
-        "version": "1.0"
-    },
-    {
-        "id": "waiyan_9_1",
-        "name": "【外研版】九年级上册",
-        "grade": 9,
-        "semester": 1,
-        "file": "【外研版】九年级上册英语电子课本.json",
-        "version": "1.0"
-    },
-    {
-        "id": "waiyan_9_2",
-        "name": "【外研版】九年级下册",
-        "grade": 9,
-        "semester": 2,
-        "file": "【外研版】九年级下册英语电子课本.json",
-        "version": "1.0"
-    }
+  {
+    "id": "waiyan_7_1_2024",
+    "name": "【外研版】七年级上册(2024秋版)",
+    "grade": 7,
+    "semester": 1,
+    "file": "【外研版】七年级上册(2024秋版)英语电子课本.json",
+    "version": "2024"
+  },
+  {
+    "id": "waiyan_7_1",
+    "name": "【外研版】七年级上册",
+    "grade": 7,
+    "semester": 1,
+    "file": "【外研版】七年级上册英语电子课本.json",
+    "version": "1.0"
+  },
+  {
+    "id": "waiyan_7_2_2025",
+    "name": "【外研版】七年级下册(2025春版)",
+    "grade": 7,
+    "semester": 2,
+    "file": "【外研版】七年级下册(2025春版)英语电子课本.json",
+    "version": "2025"
+  },
+  {
+    "id": "waiyan_7_2",
+    "name": "【外研版】七年级下册",
+    "grade": 7,
+    "semester": 2,
+    "file": "【外研版】七年级下册英语电子课本.json",
+    "version": "1.0"
+  },
+  {
+    "id": "waiyan_8_1_2025",
+    "name": "【外研版】八年级上册(2025秋版)",
+    "grade": 8,
+    "semester": 1,
+    "file": "【外研版】八年级上册(2025秋版)英语电子课本.json",
+    "version": "2025"
+  },
+  {
+    "id": "waiyan_8_1",
+    "name": "【外研版】八年级上册",
+    "grade": 8,
+    "semester": 1,
+    "file": "【外研版】八年级上册英语电子课本.json",
+    "version": "1.0"
+  },
+  {
+    "id": "waiyan_8_2",
+    "name": "【外研版】八年级下册",
+    "grade": 8,
+    "semester": 2,
+    "file": "【外研版】八年级下册英语电子课本.json",
+    "version": "1.0"
+  },
+  {
+    "id": "waiyan_9_1",
+    "name": "【外研版】九年级上册",
+    "grade": 9,
+    "semester": 1,
+    "file": "【外研版】九年级上册英语电子课本.json",
+    "version": "1.0"
+  },
+  {
+    "id": "waiyan_9_2",
+    "name": "【外研版】九年级下册",
+    "grade": 9,
+    "semester": 2,
+    "file": "【外研版】九年级下册英语电子课本.json",
+    "version": "1.0"
+  }
 ]

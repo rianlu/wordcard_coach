@@ -5,7 +5,7 @@ import 'core/theme/app_theme.dart';
 import 'core/services/backup_service.dart';
 import 'features/main/presentation/screens/main_navigation_screen.dart';
 import 'features/practice/presentation/screens/word_selection_screen.dart';
-import 'features/practice/presentation/screens/speaking_practice_screen.dart';
+
 import 'features/practice/presentation/screens/spelling_practice_screen.dart';
 import 'features/statistics/presentation/screens/statistics_screen.dart';
 
@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) => const MainNavigationScreen(),
         '/practice/selection': (context) => const WordSelectionScreen(),
-        '/practice/speaking': (context) => const SpeakingPracticeScreen(),
+
         '/practice/spelling': (context) => const SpellingPracticeScreen(),
         '/statistics': (context) => const StatisticsScreen(),
       },
