@@ -249,8 +249,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                                   onPressed: _playDailyAudio,
                                   isPlaying: _isPlayingAudio,
                                   size: 32, // 逻辑处理
-                                  primaryColor: AppColors.secondary, 
-                                  playingColor: AppColors.primary,
+                                  variant: SpeakerButtonVariant.neutral,
                                ),
                              ),
                            ),

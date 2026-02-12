@@ -11,12 +11,14 @@ class WordSelectionView extends StatefulWidget {
   final Word word;
   final List<Word> options;
   final Function(int score) onCompleted;
+  final bool isReviewMode;
 
   const WordSelectionView({
     super.key, 
     required this.word, 
     required this.options, 
-    required this.onCompleted
+    required this.onCompleted,
+    this.isReviewMode = false,
   });
 
   @override
@@ -116,10 +118,11 @@ class _WordSelectionViewState extends State<WordSelectionView> {
       barrierLabel: "Success",
       barrierColor: Colors.transparent, 
       transitionDuration: Duration.zero,
-      pageBuilder: (_, __, ___) {
+      pageBuilder: (context, animation, secondaryAnimation) {
         return PracticeSuccessOverlay(
           word: widget.word,
           title: "正确!",
+          variant: widget.isReviewMode ? PracticeSuccessVariant.review : PracticeSuccessVariant.learning,
         );
       },
     );
@@ -263,33 +266,67 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   }
 
   Widget _buildWordCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.grey.shade100),
-          boxShadow: const [
-            BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
-          ]
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          Text(widget.word.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.primary)),
-          const SizedBox(height: 8),
-          Text(widget.word.phonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontWeight: FontWeight.w500)),
-          const SizedBox(height: 24),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 360;
+        final wordFontSize = isCompact ? 26.0 : 32.0;
+        final phoneticFontSize = isCompact ? 15.0 : 18.0;
 
-          // 带动画的发音按钮
-          AnimatedSpeakerButton(
-            onPressed: _playAudio,
-            isPlaying: _isPlaying,
-            size: 32,
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: Colors.grey.shade100),
+            boxShadow: const [
+              BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
+            ],
           ),
-        ],
-      ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.word.text,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: wordFontSize,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.primary,
+                        height: 1.1,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.word.phonetic,
+                      style: TextStyle(
+                        fontSize: phoneticFontSize,
+                        color: AppColors.textMediumEmphasis,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              AnimatedSpeakerButton(
+                onPressed: _playAudio,
+                isPlaying: _isPlaying,
+                size: 32,
+                variant: widget.isReviewMode ? SpeakerButtonVariant.review : SpeakerButtonVariant.learning,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -309,11 +346,18 @@ class _WordSelectionViewState extends State<WordSelectionView> {
       final isSelectedAndCorrect = isCorrect && _selectedOptionId == widget.word.id;
 
       if (isSelectedAndCorrect) {
-         // 正确且被选中
-         bgColor = const Color(0xFF4ADE80); // 绿色 400
-         borderColor = const Color(0xFF22C55E); // 绿色 500（边框/阴影）
-         shadowColor = const Color(0xFF15803D); // 绿色 700
-         textColor = Colors.white;
+         // 正确且被选中：复习模式使用黄系，学习模式使用绿系
+         if (widget.isReviewMode) {
+           bgColor = const Color(0xFFFFE082);
+           borderColor = const Color(0xFFFFC107);
+           shadowColor = const Color(0xFFD4AA00);
+           textColor = const Color(0xFF664400);
+         } else {
+           bgColor = AppColors.primary;
+           borderColor = const Color(0xFF1A5DBD);
+           shadowColor = AppColors.shadowBlue;
+           textColor = Colors.white;
+         }
       } else if (isSelected) {
          // 错误
          bgColor = const Color(0xFFF87171); // 红色 400

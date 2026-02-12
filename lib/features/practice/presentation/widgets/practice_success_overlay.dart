@@ -5,11 +5,17 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/database/models/word.dart';
 import 'dart:math' as math;
 
+enum PracticeSuccessVariant {
+  learning,
+  review,
+}
+
 class PracticeSuccessOverlay extends StatelessWidget {
   final Word word;
   final String title;
   final String? subtitle;
   final int stars; // 口语练习的星级（1-3 星）
+  final PracticeSuccessVariant variant;
 
   const PracticeSuccessOverlay({
     super.key,
@@ -17,15 +23,22 @@ class PracticeSuccessOverlay extends StatelessWidget {
     this.title = 'CORRECT!',
     this.subtitle,
     this.stars = 0, // 0 表示不显示星级（拼写练习）
+    this.variant = PracticeSuccessVariant.learning,
   });
 
 
   @override
   Widget build(BuildContext context) {
+    final isReview = variant == PracticeSuccessVariant.review;
+    final accentColor = isReview ? const Color(0xFFFFC107) : AppColors.primary;
+    final accentTextColor = isReview ? const Color(0xFF664400) : AppColors.primary;
+    final iconBgColor = isReview ? const Color(0xFFFFF3CD) : const Color(0xFFEAF3FF);
+    final iconColor = isReview ? const Color(0xFFB98A00) : AppColors.primary;
+
     return BackdropFilter(
       filter: ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
       child: Container(
-        color: Colors.black.withOpacity(0.05), // 轻微遮罩（保持一致）
+        color: Colors.black.withValues(alpha: 0.05), // 轻微遮罩（保持一致）
         child: Center(
           child: TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
@@ -60,12 +73,12 @@ class PracticeSuccessOverlay extends StatelessWidget {
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
                           BoxShadow(
-                            color: AppColors.primary.withOpacity(0.05),
+                            color: accentColor.withValues(alpha: 0.08),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -78,12 +91,12 @@ class PracticeSuccessOverlay extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFDCFCE7), // 浅绿 100
+                              color: iconBgColor,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.check_rounded, 
-                              color: Color(0xFF22C55E), // 绿色 500
+                              color: iconColor,
                               size: 28,
                             ),
                           ),
@@ -103,7 +116,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
                                       style: GoogleFonts.plusJakartaSans(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w900,
-                                        color: const Color(0xFF22C55E),
+                                        color: accentTextColor,
                                         letterSpacing: 1.0,
                                       ),
                                     ),
@@ -124,7 +137,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 26,
                                     fontWeight: FontWeight.w900,
-                                    color: AppColors.primary,
+                                    color: accentTextColor,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -146,7 +159,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
                        builder: (context, val, child) {
                          return Transform.rotate(
                            angle: val * math.pi / 4,
-                           child: Icon(Icons.auto_awesome_rounded, color: Colors.amber.shade400, size: 24),
+                           child: Icon(Icons.auto_awesome_rounded, color: accentColor, size: 24),
                          );
                        },
                      ),
@@ -228,7 +241,7 @@ class SparklePainter extends CustomPainter {
     for (var particle in particles) {
       final double progress = (animationValue + particle.opacity) % 1.0;
       final double currentOpacity = math.sin(progress * math.pi) * 0.6;
-      paint.color = Colors.amber.shade300.withOpacity(currentOpacity);
+      paint.color = Colors.amber.shade300.withValues(alpha: currentOpacity);
       
       canvas.drawCircle(
         Offset(size.width / 2 + particle.x, size.height / 2 + particle.y),

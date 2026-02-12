@@ -72,7 +72,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
     final random = Random();
     int len = _targetWord.length;
     // 计算隐藏字母数量
-    int missingCount = (len * 0.4).ceil().clamp(1, len - 1);
+    int missingCount = (len * 0.4).ceil().clamp(1, min(len - 1, 7));
     
     // 随机选择唯一索引
     Set<int> indices = {};
@@ -86,11 +86,11 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
     // 包含所有缺失字母
     Set<String> letters = {};
     for (int idx in _missingIndices) {
-      letters.add(_targetWord[idx].toUpperCase());
+      letters.add(_targetWord[idx].toLowerCase());
     }
     // 加入随机干扰字母
-    const allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    while (letters.length < 8) { // 目标 8 个按键 + 退格
+    const allChars = "abcdefghijklmnopqrstuvwxyz";
+    while (letters.length < 7) { // 固定 7 个字母键
        letters.add(allChars[random.nextInt(allChars.length)]);
     }
     _keyboardLetters = letters.toList()..shuffle();
@@ -127,11 +127,11 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
           constructed += _userInputs[inputIndex];
           inputIndex++;
         } else {
-          constructed += _targetWord[i].toUpperCase();
+          constructed += _targetWord[i];
         }
       }
 
-      if (constructed.toUpperCase() == _targetWord.toUpperCase()) {
+      if (constructed.toLowerCase() == _targetWord.toLowerCase()) {
          // 正确
          Future.delayed(const Duration(milliseconds: 500), () {
             if (mounted) {
@@ -365,7 +365,7 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
            return Column(
              children: [
                Text(
-                 displayChar.toUpperCase(), 
+                 displayChar, 
                  style: GoogleFonts.plusJakartaSans(
                    fontSize: 28, 
                    fontWeight: FontWeight.w900, 
@@ -386,20 +386,45 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
   }
 
   Widget _buildLetterButtons() {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      alignment: WrapAlignment.center,
-      children: [
-        ..._keyboardLetters.map((char) => _buildLetterButton(char)),
-        _buildBackspaceButton(),
-      ],
+    final row1 = _keyboardLetters.take(4).toList();
+    final row2 = _keyboardLetters.skip(4).take(3).toList();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const spacing = 10.0;
+        final buttonSize = ((constraints.maxWidth - spacing * 3) / 4).clamp(44.0, 72.0);
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < row1.length; i++) ...[
+                  _buildLetterButton(row1[i], size: buttonSize),
+                  if (i != row1.length - 1) const SizedBox(width: spacing),
+                ],
+              ],
+            ),
+            const SizedBox(height: spacing),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < row2.length; i++) ...[
+                  _buildLetterButton(row2[i], size: buttonSize),
+                  const SizedBox(width: spacing),
+                ],
+                _buildBackspaceButton(size: buttonSize),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _buildLetterButton(String char) {
+  Widget _buildLetterButton(String char, {double size = 64}) {
     return SizedBox(
-      width: 64, height: 64,
+      width: size, height: size,
       child: BubblyButton(
         onPressed: () => _handleLetterInput(char),
         color: AppColors.secondary,
@@ -407,23 +432,23 @@ class _SpellingPracticeScreenState extends State<SpellingPracticeScreen> {
         padding: EdgeInsets.zero,
         borderRadius: 32,
         child: Center(
-          child: Text(char, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
+          child: Text(char, style: TextStyle(fontSize: size * 0.36, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
         ),
       ),
     );
   }
 
-  Widget _buildBackspaceButton() {
+  Widget _buildBackspaceButton({double size = 64}) {
      return SizedBox(
-      width: 64, height: 64,
+      width: size, height: size,
       child: BubblyButton(
         onPressed: _handleBackspace,
         color: const Color(0xFFe2e8f0),
         shadowColor: const Color(0xFFcbd5e1),
         padding: EdgeInsets.zero,
         borderRadius: 32,
-        child: const Center(
-          child: Icon(Icons.backspace, color: AppColors.textMediumEmphasis),
+        child: Center(
+          child: Icon(Icons.backspace, color: AppColors.textMediumEmphasis, size: size * 0.36),
         ),
       ),
     );

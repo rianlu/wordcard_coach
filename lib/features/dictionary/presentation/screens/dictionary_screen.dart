@@ -901,6 +901,7 @@ class _WordDetailDialogState extends State<_WordDetailDialog> {
                              onPressed: _playAudio,
                              isPlaying: _isPlaying,
                              size: 32,
+                             variant: SpeakerButtonVariant.neutral,
                          ),
                       ],
                     ),

@@ -25,11 +25,13 @@ enum SpeakingState {
 class SpeakingPracticeView extends StatefulWidget {
   final Word word;
   final Function(int score) onCompleted;
+  final bool isReviewMode;
 
   const SpeakingPracticeView({
     super.key, 
     required this.word, 
     required this.onCompleted,
+    this.isReviewMode = false,
   });
 
   @override
@@ -453,6 +455,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
           word: widget.word,
           title: _getStarTitle(stars),
           stars: stars,
+          variant: widget.isReviewMode ? PracticeSuccessVariant.review : PracticeSuccessVariant.learning,
         );
       },
     );
@@ -674,6 +677,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                 onPressed: _replayStandardAudio,
                 isPlaying: _state == SpeakingState.playingAudio,
                 size: 24,
+                variant: widget.isReviewMode ? SpeakerButtonVariant.review : SpeakerButtonVariant.learning,
               ),
             ),
           ),

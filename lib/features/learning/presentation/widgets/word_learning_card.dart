@@ -210,6 +210,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
              onPressed: _playAudio,
              isPlaying: _isPlaying,
              size: 32,
+             variant: SpeakerButtonVariant.learning,
            ),
 
            const SizedBox(height: 32),

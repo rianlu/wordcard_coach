@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
+enum SpeakerButtonVariant {
+  neutral,
+  learning,
+  review,
+}
+
 /// 逻辑处理
 /// 逻辑处理
 class AnimatedSpeakerButton extends StatefulWidget {
   final VoidCallback onPressed;
   final bool isPlaying;
   final double size;
-  final Color primaryColor;
-  final Color playingColor;
+  final SpeakerButtonVariant variant;
+  final Color? primaryColor;
+  final Color? playingColor;
 
   const AnimatedSpeakerButton({
     super.key,
     required this.onPressed,
     this.isPlaying = false,
     this.size = 32,
-    this.primaryColor = AppColors.primary,
-    this.playingColor = AppColors.secondary,
+    this.variant = SpeakerButtonVariant.neutral,
+    this.primaryColor,
+    this.playingColor,
   });
 
   @override
@@ -59,7 +67,11 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
 
   @override
   Widget build(BuildContext context) {
-    final currentColor = widget.isPlaying ? widget.playingColor : widget.primaryColor;
+    final (defaultPrimary, defaultPlaying) = _resolveVariantColors(widget.variant);
+    final primary = widget.primaryColor ?? defaultPrimary;
+    final playing = widget.playingColor ?? defaultPlaying;
+    final currentColor = widget.isPlaying ? playing : primary;
+    final iconColor = _resolveIconColor(widget.variant, widget.isPlaying);
     
     return GestureDetector(
       onTap: widget.onPressed,
@@ -76,7 +88,7 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
                 color: currentColor,
                 boxShadow: [
                   BoxShadow(
-                    color: currentColor.withOpacity(0.4),
+                    color: currentColor.withValues(alpha: 0.4),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -84,7 +96,7 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
               ),
               child: Icon(
                 widget.isPlaying ? Icons.graphic_eq_rounded : Icons.volume_up_rounded,
-                color: Colors.white,
+                color: iconColor,
                 size: widget.size,
               ),
             ),
@@ -92,5 +104,29 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
         },
       ),
     );
+  }
+
+  (Color, Color) _resolveVariantColors(SpeakerButtonVariant variant) {
+    switch (variant) {
+      case SpeakerButtonVariant.learning:
+        // 学习模式：播放中更亮，不做压暗
+        return (AppColors.primary, const Color(0xFF4A97FF));
+      case SpeakerButtonVariant.review:
+        // 复习模式：播放中更亮的黄
+        return (AppColors.secondary, const Color(0xFFFFD84D));
+      case SpeakerButtonVariant.neutral:
+        return (const Color(0xFFE2E8F0), const Color(0xFF94A3B8));
+    }
+  }
+
+  Color _resolveIconColor(SpeakerButtonVariant variant, bool isPlaying) {
+    switch (variant) {
+      case SpeakerButtonVariant.learning:
+        return Colors.white;
+      case SpeakerButtonVariant.review:
+        return Colors.white;
+      case SpeakerButtonVariant.neutral:
+        return isPlaying ? Colors.white : const Color(0xFF475569);
+    }
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
@@ -116,11 +116,11 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   void _triggerNextAnimation() {
     setState(() {
       _isCardFlyingOut = true;
-      // 细节处理
-      _slideOffset = const Offset(500, -200); 
+      // 极简过渡：旧卡仅轻微左移，避免晃眼
+      _slideOffset = const Offset(-0.08, 0);
     });
 
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 280), () {
       if (mounted) _next();
     });
   }
@@ -159,18 +159,33 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
 
 
   void _showSummaryDialog() {
-    showDialog(
+    showGeneralDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        return AppDialog.success(
-          title: "复习完成！",
-          subtitle: "你复习了 ${_reviewWords.length} 个单词，继续保持！",
-          primaryButtonText: "完成",
-          onPrimaryPressed: () {
-            Navigator.pop(context); // 返回上一页
-            Navigator.pop(context); // 返回上一页
-          },
+      barrierLabel: 'ReviewSummary',
+      barrierColor: Colors.transparent,
+      transitionDuration: const Duration(milliseconds: 180),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return BackdropFilter(
+          filter: ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: Container(
+            color: Colors.black.withValues(alpha: 0.08),
+            child: Center(
+              child: AppDialog(
+                icon: Icons.check_circle_rounded,
+                iconColor: const Color(0xFF664400),
+                iconBackgroundColor: AppColors.secondary.withValues(alpha: 0.22),
+                title: "复习完成！",
+                subtitle: "你复习了 ${_reviewWords.length} 个单词，继续保持！",
+                primaryButtonText: "完成",
+                primaryButtonColor: const Color(0xFFB98A00),
+                onPrimaryPressed: () {
+                  Navigator.pop(context); // 关闭弹窗
+                  Navigator.pop(context); // 返回上一页
+                },
+              ),
+            ),
+          ),
         );
       },
     );
@@ -348,7 +363,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
             child: CircularProgressIndicator(
               value: 1.0 - progress, // 细节处理
               strokeWidth: 6,
-              color: AppColors.primary,
+              color: const Color(0xFFFFC107),
               strokeCap: StrokeCap.round,
             ),
           ),
@@ -357,7 +372,11 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
             children: [
               Text(
                 "$remaining",
-                style: GoogleFonts.plusJakartaSans(fontSize: fontSize, fontWeight: FontWeight.w800, color: AppColors.primary),
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF664400),
+                ),
               ),
               Text(
                 "剩余",
@@ -382,12 +401,25 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         // 细节处理
         AnimatedSlide(
           offset: _isCardFlyingOut ? _slideOffset : Offset.zero,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInBack,
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeInOutCubic,
           child: AnimatedOpacity(
             opacity: _isCardFlyingOut ? 0.0 : 1.0,
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            child: TweenAnimationBuilder<double>(
+            key: ValueKey('active_${_reviewWords[_currentIndex].id}_${_modes[_currentIndex].name}'),
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
             child: _buildActiveCard(),
+            builder: (context, value, child) {
+              return Opacity(
+                opacity: value,
+                child: child,
+              );
+            },
+          ),
           ),
         ),
       ],
@@ -455,12 +487,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         return SpeakingPracticeView(
           key: ValueKey("speak_${word.id}"),
           word: word,
+          isReviewMode: true,
           onCompleted: (score) => _handleAnswer(mode, score), 
         );
       case ReviewMode.spelling:
         return SpellingPracticeView(
           key: ValueKey("spell_${word.id}"),
           word: word,
+          isReviewMode: true,
           onCompleted: (score) => _handleAnswer(mode, score),
         );
       case ReviewMode.selection:
@@ -468,6 +502,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           key: ValueKey("select_${word.id}"),
           word: word,
           options: _generateOptions(word),
+          isReviewMode: true,
           onCompleted: (score) => _handleAnswer(mode, score),
         );
     }
@@ -489,79 +524,105 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   }
   
   Widget _buildEmptyState() {
-     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            const Positioned.fill(child: MeshGradientBackground()),
-            Center(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          const Positioned.fill(child: MeshGradientBackground()),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Container(
-                    padding: const EdgeInsets.all(32),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                         BoxShadow(
-                           color: AppColors.primary.withValues(alpha: 0.15),
-                           blurRadius: 40,
-                           offset: const Offset(0, 10)
-                         )
-                      ]
-                    ),
-                    child: const Icon(Icons.check_circle_rounded, size: 80, color: AppColors.primary),
-                  ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
-                  
-                  const SizedBox(height: 32),
-                  
-                  Text(
-                    "暂无复习任务", 
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 24, 
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textHighEmphasis
-                    )
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    "休息一下，或者去学习新单词吧！",
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 14,
-                      color: AppColors.textMediumEmphasis
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white.withValues(alpha: 0.85),
+                      child: IconButton(
+                        icon: const Icon(Icons.close_rounded, color: Colors.black54),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
                   ),
-
-                  const SizedBox(height: 48),
-
-                  BubblyButton(
-                    onPressed: () => Navigator.pop(context), 
-                    color: Colors.white,
-                    shadowColor: Colors.grey.shade200,
-                    borderRadius: 20,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.arrow_back_rounded, color: AppColors.textHighEmphasis, size: 20),
-                        const SizedBox(width: 8),
-                        Text(
-                          "返回首页",
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold, // 细节处理
-                            color: AppColors.textHighEmphasis
-                          )
-                        ),
-                      ],
+                  const Spacer(),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 460),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: AppColors.shadowWhite,
+                            blurRadius: 28,
+                            offset: Offset(0, 12),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary.withValues(alpha: 0.2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.check_circle_rounded, size: 44, color: Color(0xFF664400)),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            "今日复习已完成",
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.textHighEmphasis,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "太好了，今天没有待复习单词。\n你可以继续学习新单词。",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 14,
+                              height: 1.5,
+                              color: AppColors.textMediumEmphasis,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            width: double.infinity,
+                            child: BubblyButton(
+                              onPressed: () => Navigator.pop(context),
+                              color: AppColors.secondary,
+                              shadowColor: AppColors.shadowYellow,
+                              borderRadius: 16,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              child: Center(
+                                child: Text(
+                                  "返回首页",
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFF664400),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
+                  ),
+                  const Spacer(),
                 ],
               ),
             ),
-          ],
-        ),
-     );
+          ),
+        ],
+      ),
+    );
   }
 }

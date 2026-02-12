@@ -445,6 +445,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
       case SessionPhase.speaking:
         return SpeakingPracticeView(
           word: word,
+          isReviewMode: false,
           onCompleted: (_) => _next(),
         );
       case SessionPhase.selection:
@@ -455,11 +456,13 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
         return WordSelectionView(
           word: word,
           options: options,
+          isReviewMode: false,
           onCompleted: (_) => _next(),
         );
       case SessionPhase.spelling:
         return SpellingPracticeView(
           word: word,
+          isReviewMode: false,
           onCompleted: (_) => _next(),
         );
       default:

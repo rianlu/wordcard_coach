@@ -11,11 +11,13 @@ import 'practice_success_overlay.dart';
 class SpellingPracticeView extends StatefulWidget {
   final Word word;
   final Function(int score) onCompleted;
+  final bool isReviewMode;
 
   const SpellingPracticeView({
     super.key, 
     required this.word, 
-    required this.onCompleted
+    required this.onCompleted,
+    this.isReviewMode = false,
   });
 
   @override
@@ -27,9 +29,10 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   bool _showSuccess = false; // 加入成功状态
   int _hintsUsed = 0;
   bool _revealFullWord = false; // 提示用尽且错误时显示完整单词
+  int? _hintHighlightSlot; // 最近一次提示填充的槽位，用于短暂高亮
   
-  // 配置
-  static const int _maxHints = 2; // 最大提示次数
+  // 提示次数随题目难度自适应：最多 3 次，避免过度提示
+  int get _maxHints => _missingIndices.length.clamp(1, 3);
 
   // 游戏状态
   String _targetWord = "";
@@ -57,13 +60,14 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     _showSuccess = false;
     _hintsUsed = 0;
     _revealFullWord = false;
+    _hintHighlightSlot = null;
     
     final random = Random();
     int len = _targetWord.length;
     // 计算隐藏字母数量
     // 保证至少隐藏 1 个字母
     int upperLimit = max(1, len - 1);
-    int missingCount = (len * 0.4).ceil().clamp(1, upperLimit);
+    int missingCount = (len * 0.4).ceil().clamp(1, min(upperLimit, 7));
     
     // 随机选择唯一索引
     Set<int> indices = {};
@@ -84,11 +88,11 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     // 包含所有缺失字母
     Set<String> letters = {};
     for (int idx in _missingIndices) {
-      letters.add(_targetWord[idx].toUpperCase());
+      letters.add(_targetWord[idx].toLowerCase());
     }
     // 加入随机干扰字母
-    const allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    while (letters.length < 8) { // 目标 8 个按键 + 退格
+    const allChars = "abcdefghijklmnopqrstuvwxyz";
+    while (letters.length < 7) { // 固定 7 个字母键
        letters.add(allChars[random.nextInt(allChars.length)]);
     }
     _keyboardLetters = letters.toList()..shuffle();
@@ -122,25 +126,24 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     if (_showSuccess || _revealFullWord) return;
     if (_hintsUsed >= _maxHints) return; // 达到提示上限
     
-    // 查找空位
-    List<int> emptyIndices = [];
-    for (int i = 0; i < _userInputs.length; i++) {
-      if (_userInputs[i].isEmpty) emptyIndices.add(i);
-    }
-
-    if (emptyIndices.isNotEmpty) {
+    // 从前往后补全，符合低年级拼写回忆习惯
+    final int slotIndex = _userInputs.indexOf("");
+    if (slotIndex != -1) {
       setState(() {
-         // 随机选择空位
-         final random = Random();
-         int slotIndex = emptyIndices[random.nextInt(emptyIndices.length)];
-         
          // 从目标单词取出实际字母
          // 缺失索引映射：输入槽位 -> 单词索引
          int wordIndex = _missingIndices[slotIndex];
-         String char = _targetWord[wordIndex].toUpperCase();
+         String char = _targetWord[wordIndex].toLowerCase();
          
          _userInputs[slotIndex] = char;
          _hintsUsed++;
+         _hintHighlightSlot = slotIndex;
+      });
+      Future.delayed(const Duration(milliseconds: 700), () {
+        if (!mounted) return;
+        if (_hintHighlightSlot == slotIndex) {
+          setState(() => _hintHighlightSlot = null);
+        }
       });
       _checkCompletion();
     }
@@ -158,11 +161,11 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
           constructed += _userInputs[inputIndex];
           inputIndex++;
         } else {
-          constructed += _targetWord[i].toUpperCase();
+          constructed += _targetWord[i];
         }
       }
 
-      if (constructed.toUpperCase() == _targetWord.toUpperCase()) {
+      if (constructed.toLowerCase() == _targetWord.toLowerCase()) {
          // 正确
          // 1. 立即显示成功状态
          setState(() {
@@ -188,7 +191,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
              // 填充所有缺失字母
              for (int i = 0; i < _missingIndices.length; i++) {
                int wordIndex = _missingIndices[i];
-               _userInputs[i] = _targetWord[wordIndex].toUpperCase();
+               _userInputs[i] = _targetWord[wordIndex].toLowerCase();
              }
            });
            
@@ -379,17 +382,20 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
 
          if (isMissing) {
            int slotIndex = _missingIndices.indexOf(index);
+           final isHintHighlighted = _hintHighlightSlot == slotIndex;
            if (_userInputs[slotIndex].isNotEmpty) {
              // 已填
              displayChar = _userInputs[slotIndex];
-             bgColor = AppColors.primary.withValues(alpha: 0.1);
-             borderColor = AppColors.primary;
-             textColor = AppColors.primary;
+             bgColor = isHintHighlighted
+                 ? const Color(0xFFFFF4CC)
+                 : AppColors.primary.withValues(alpha: 0.1);
+             borderColor = isHintHighlighted ? const Color(0xFFF59E0B) : AppColors.primary;
+             textColor = isHintHighlighted ? const Color(0xFFB45309) : AppColors.primary;
            } else {
              // 空位
              displayChar = "";
              bgColor = Colors.white;
-             borderColor = Colors.grey.shade300;
+             borderColor = isHintHighlighted ? const Color(0xFFF59E0B) : Colors.grey.shade300;
            }
          } else {
             // 固定字母
@@ -397,7 +403,9 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
             textColor = Colors.grey.shade500;
          }
 
-         return Container(
+         return AnimatedContainer(
+           duration: const Duration(milliseconds: 180),
+           curve: Curves.easeOut,
            width: boxSize, height: boxSize * 1.2, // 保持宽高比
            alignment: Alignment.center,
            decoration: BoxDecoration(
@@ -406,7 +414,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
              border: Border.all(color: borderColor, width: 2),
            ),
            child: Text(
-             displayChar.toUpperCase(),
+             displayChar,
              style: GoogleFonts.plusJakartaSans(
                fontSize: fontSize,
                fontWeight: FontWeight.w900,
@@ -435,14 +443,39 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
   }
 
   Widget _buildKeyboardArea() {
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      alignment: WrapAlignment.center,
-      children: [
-        ..._keyboardLetters.map((char) => _buildLetterButton(char)),
-        _buildBackspaceButton(),
-      ],
+    final row1 = _keyboardLetters.take(4).toList();
+    final row2 = _keyboardLetters.skip(4).take(3).toList();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const spacing = 10.0;
+        final buttonSize = ((constraints.maxWidth - spacing * 3) / 4).clamp(44.0, 64.0);
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < row1.length; i++) ...[
+                  _buildLetterButton(row1[i], size: buttonSize),
+                  if (i != row1.length - 1) const SizedBox(width: spacing),
+                ],
+              ],
+            ),
+            const SizedBox(height: spacing),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < row2.length; i++) ...[
+                  _buildLetterButton(row2[i], size: buttonSize),
+                  const SizedBox(width: spacing),
+                ],
+                _buildBackspaceButton(size: buttonSize),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -490,6 +523,7 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
         return PracticeSuccessOverlay(
           word: widget.word,
           title: "正确!",
+          variant: widget.isReviewMode ? PracticeSuccessVariant.review : PracticeSuccessVariant.learning,
         );
       },
     );
@@ -504,9 +538,9 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
     });
   }
 
-  Widget _buildLetterButton(String char) {
+  Widget _buildLetterButton(String char, {double size = 56}) {
     return SizedBox(
-      width: 56, height: 56,
+      width: size, height: size,
       child: BubblyButton(
         onPressed: () => _handleLetterInput(char),
         color: Colors.white,
@@ -514,23 +548,23 @@ class _SpellingPracticeViewState extends State<SpellingPracticeView> {
         padding: EdgeInsets.zero,
         borderRadius: 16,
         child: Center(
-          child: Text(char, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
+          child: Text(char, style: TextStyle(fontSize: size * 0.36, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
         ),
       ),
     );
   }
 
-  Widget _buildBackspaceButton() {
+  Widget _buildBackspaceButton({double size = 56}) {
      return SizedBox(
-      width: 56, height: 56,
+      width: size, height: size,
       child: BubblyButton(
         onPressed: _handleBackspace,
         color: const Color(0xFFFEE2E2), // 红色 100
         shadowColor: const Color(0xFFFECaca),
         padding: EdgeInsets.zero,
         borderRadius: 16,
-        child: const Center(
-          child: Icon(Icons.backspace, color: Color(0xFFEF4444), size: 20),
+        child: Center(
+          child: Icon(Icons.backspace, color: const Color(0xFFEF4444), size: size * 0.36),
         ),
       ),
     );
