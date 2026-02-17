@@ -72,90 +72,72 @@ class _WordLearningCardState extends State<WordLearningCard> {
           final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
 
           if (isWide) {
-            return Stack(
+            return Row(
               children: [
-                Row(
-                  children: [
-                    // 逻辑处理
-                    Expanded(
-                      flex: 5,
-                      child: LayoutBuilder(
-                        builder: (context, constraint) {
-                          return SingleChildScrollView(
-                            padding: const EdgeInsets.all(24),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(minHeight: constraint.maxHeight - 48),
-                              child: Center(child: _buildWordInfoCard()),
+                Expanded(
+                  flex: 5,
+                  child: LayoutBuilder(
+                    builder: (context, constraint) {
+                      return SingleChildScrollView(
+                        padding: const EdgeInsets.all(24),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(minHeight: constraint.maxHeight - 48),
+                          child: Center(child: _buildWordInfoCard()),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(left: BorderSide(color: Colors.black12)),
+                      color: Colors.white54,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: _buildExampleCard(),
                             ),
-                          );
-                        }
+                          ),
+                          const SizedBox(height: 16),
+                          _buildNextButton(),
+                        ],
                       ),
                     ),
-                    // 逻辑处理
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          border: Border(left: BorderSide(color: Colors.black12)),
-                          color: Colors.white54,
-                        ),
-                        child: Stack(
-                          children: [
-                            LayoutBuilder(
-                              builder: (context, constraint) {
-                                return SingleChildScrollView(
-                                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 100),
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(minHeight: constraint.maxHeight - 124),
-                                    child: Center(child: _buildExampleCard()),
-                                  ),
-                                );
-                              }
-                            ),
-                            Positioned(
-                              left: 24, right: 24, bottom: 24,
-                              child: _buildNextButton(),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             );
           }
 
           // 竖屏布局
-          return Stack(
+          return Column(
             children: [
-              Positioned.fill(
-                child: LayoutBuilder(
-                  builder: (context, viewportConstraints) {
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(24, 64, 24, 120), // 内边距
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight - 184, // 逻辑处理
-                        ),
-                        child: Column(
-                          // 逻辑处理
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                             _buildWordInfoCard(),
-                             const SizedBox(height: 24),
-                             _buildExampleCard(),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildWordInfoCard(),
+                      const SizedBox(height: 16),
+                      _buildExampleCard(),
+                    ],
+                  ),
                 ),
               ),
-              Positioned(
-                left: 24, right: 24, bottom: 32,
-                child: _buildNextButton(),
-              )
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
+                  child: _buildNextButton(),
+                ),
+              ),
             ],
           );
         },
@@ -247,7 +229,7 @@ class _WordLearningCardState extends State<WordLearningCard> {
          children: [
            Row(
              children: [
-               Icon(Icons.format_quote_rounded, color: AppColors.secondary.withOpacity(0.8), size: 20),
+               Icon(Icons.format_quote_rounded, color: AppColors.secondary.withValues(alpha: 0.8), size: 20),
                const SizedBox(width: 8),
                Text(
                  "EXAMPLE SENTENCE", 
@@ -307,19 +289,18 @@ class _WordLearningCardState extends State<WordLearningCard> {
     return BubblyButton(
       onPressed: widget.onNext,
       color: AppColors.primary,
-      shadowColor: const Color(0xFF1e3a8a), 
-      borderRadius: 32,
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 32),
+      shadowColor: AppColors.shadowBlue,
+      borderRadius: 16,
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "下一个", 
+            "下一步",
             style: GoogleFonts.notoSans(
               color: Colors.white, 
-              fontSize: 18, 
-              fontWeight: FontWeight.w900,
-              letterSpacing: 2.0
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(width: 8),

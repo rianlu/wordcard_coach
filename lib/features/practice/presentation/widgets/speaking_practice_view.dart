@@ -7,7 +7,6 @@ import '../../../../core/services/audio_service.dart';
 import '../../../../core/services/speech_service.dart';
 import '../../../../core/utils/phonetic_utils.dart';
 import '../../../../core/widgets/animated_speaker_button.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 
 import 'practice_success_overlay.dart';
@@ -57,6 +56,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   // 配置
   static const int _skipButtonDelaySeconds = 3;
   static const int _listenTimeoutSeconds = 12;
+
+  Color get _accentColor => widget.isReviewMode ? AppColors.secondary : AppColors.primary;
+  bool get _isLearningMode => !widget.isReviewMode;
 
   @override
   void initState() {
@@ -539,13 +541,22 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                   flex: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildTargetWord(),
-                        const SizedBox(height: 32),
-                        _buildStatusHUD(),
-                      ],
+                    child: LayoutBuilder(
+                      builder: (context, viewport) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(minHeight: viewport.maxHeight),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildTargetWord(),
+                                const SizedBox(height: 24),
+                                _buildStatusHUD(),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -576,18 +587,23 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
           return Column(
             children: [
               Expanded(
-                flex: 4,
+                flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      _buildTargetWord(),
-                      const SizedBox(height: 32),
-                      _buildStatusHUD(),
-                      const Spacer(),
-                    ],
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: constraints.maxHeight * 0.58),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 20),
+                          _buildTargetWord(),
+                          const SizedBox(height: 20),
+                          _buildStatusHUD(),
+                          const SizedBox(height: 22),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -595,7 +611,11 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
               // 底部控制区
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 48),
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight * (_isLearningMode ? 0.34 : 0.28),
+                  maxHeight: constraints.maxHeight * (_isLearningMode ? 0.4 : 0.34),
+                ),
+                padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -607,10 +627,11 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                   ]
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     _buildVoiceWave(),
-                    const SizedBox(height: 32),
+                    SizedBox(height: _isLearningMode ? 20 : 12),
                     _buildVoiceControls(),
                   ],
                 ),
@@ -623,44 +644,40 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   Widget _buildVoiceWave() {
-     // 音频可视化占位
-     return SizedBox(
-       height: 60,
-       child: Center(
-         child: _state == SpeakingState.listening 
-           ? Row(
-               mainAxisAlignment: MainAxisAlignment.center,
-               children: List.generate(5, (index) => 
-                 Container(
-                   width: 6,
-                   height: 20 + 20 * (index % 2 == 0 ? 1.0 : 0.6), // 模拟波形
-                   margin: const EdgeInsets.symmetric(horizontal: 4),
-                   decoration: BoxDecoration(
-                     color: AppColors.primary.withValues(alpha: 0.6),
-                     borderRadius: BorderRadius.circular(10)
-                   ),
-                 ).animate(onPlay: (c) => c.repeat(reverse: true))
-                  .scaleY(begin: 0.5, end: 1.5, duration: Duration(milliseconds: 300 + index * 100))
-               ),
-             )
-           : const SizedBox.shrink()
-       ),
-     );
+     // 固定占位，避免识别状态切换导致控制区上下跳动
+     return const SizedBox(height: 28);
   }
 
   Widget _buildVoiceControls() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 左侧：跳过按钮/占位
           SizedBox(
-            width: 80,
+            width: _isLearningMode ? 98 : 86,
             child: _shouldShowSkipButton() 
-              ? TextButton(
+              ? TextButton.icon(
                   onPressed: _skip,
-                  child: Text("跳过", style: TextStyle(color: Colors.grey.shade400)),
+                  style: TextButton.styleFrom(
+                    minimumSize: Size(_isLearningMode ? 96 : 84, _isLearningMode ? 42 : 38),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    backgroundColor: Colors.grey.shade100,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(999),
+                      side: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  icon: Icon(Icons.skip_next_rounded, size: 18, color: Colors.grey.shade600),
+                  label: Text(
+                    "跳过",
+                    style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                    ),
+                  ),
                 )
               : const SizedBox(),
           ),
@@ -676,7 +693,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
               child: AnimatedSpeakerButton(
                 onPressed: _replayStandardAudio,
                 isPlaying: _state == SpeakingState.playingAudio,
-                size: 24,
+                size: _isLearningMode ? 32 : 26,
                 variant: widget.isReviewMode ? SpeakerButtonVariant.review : SpeakerButtonVariant.learning,
               ),
             ),
@@ -706,15 +723,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 80, height: 80,
+        width: _isLearningMode ? 92 : 80, height: _isLearningMode ? 92 : 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isListening ? const Color(0xFFFF5252) 
-               : isProcessing ? AppColors.primary.withValues(alpha: 0.7)
-               : AppColors.primary,
+               : isProcessing ? _accentColor.withValues(alpha: 0.7)
+               : _accentColor,
           boxShadow: [
             BoxShadow(
-              color: (isListening ? const Color(0xFFFF5252) : AppColors.primary).withValues(alpha: 0.3),
+              color: (isListening ? const Color(0xFFFF5252) : _accentColor).withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 8),
             )
@@ -738,44 +755,73 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   Widget _buildTargetWord() {
-    return Column(
-      children: [
-        Text(
-          "READ ALOUD",
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 12, fontWeight: FontWeight.w900, 
-            color: AppColors.textMediumEmphasis, letterSpacing: 1.0
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          widget.word.text,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 48, // 更大尺寸
-            fontWeight: FontWeight.w900,
-            color: AppColors.primary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          widget.word.phonetic,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textMediumEmphasis,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          widget.word.meaning,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textHighEmphasis.withValues(alpha: 0.6),
-          ),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screen = MediaQuery.of(context).size;
+        final isPortrait = screen.height >= screen.width;
+        final isNarrow = constraints.maxWidth < 360;
+        final wordLength = widget.word.text.length;
+        double wordFontSize;
+        if (isNarrow) {
+          wordFontSize = _isLearningMode ? 38.0 : 32.0;
+        } else if (wordLength > 16) {
+          wordFontSize = isPortrait ? (_isLearningMode ? 40.0 : 34.0) : (_isLearningMode ? 36.0 : 32.0);
+        } else if (wordLength > 12) {
+          wordFontSize = isPortrait ? (_isLearningMode ? 46.0 : 38.0) : (_isLearningMode ? 40.0 : 34.0);
+        } else {
+          wordFontSize = isPortrait ? (_isLearningMode ? 58.0 : 48.0) : (_isLearningMode ? 48.0 : 40.0);
+        }
+        final phoneticFontSize = isNarrow ? (_isLearningMode ? 20.0 : 17.0) : (isPortrait ? (_isLearningMode ? 24.0 : 20.0) : (_isLearningMode ? 20.0 : 18.0));
+
+        return Column(
+          children: [
+            Text(
+              "READ ALOUD",
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 12, fontWeight: FontWeight.w900,
+                color: AppColors.textMediumEmphasis, letterSpacing: 1.0
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              widget.word.text,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: wordFontSize,
+                fontWeight: FontWeight.w900,
+                color: _accentColor,
+                height: 1.05,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              widget.word.phonetic,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: phoneticFontSize,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textMediumEmphasis,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              widget.word.meaning,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: isPortrait ? (_isLearningMode ? 20 : 16) : 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textHighEmphasis.withValues(alpha: 0.6),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: isPortrait ? (_isLearningMode ? 3 : 2) : 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -794,17 +840,17 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       case SpeakingState.listening:
         if (_lastHeard.isNotEmpty) {
           text = '听到: "$_lastHeard"';
-          color = AppColors.primary;
+          color = _accentColor;
           icon = Icons.hearing_rounded;
         } else {
           text = '请大声读出来...';
-          color = AppColors.secondary;
+          color = _accentColor;
           icon = Icons.mic_rounded;
         }
         break;
       case SpeakingState.processing:
         text = '准备识别...';
-        color = AppColors.primary;
+        color = _accentColor;
         icon = Icons.sync_rounded;
         break;
       case SpeakingState.success:
@@ -821,12 +867,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-      child: Container(
-        key: ValueKey(_state),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(30),
+        child: Container(
+          key: ValueKey(_state),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(30),
           border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Row(
@@ -834,12 +880,16 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
           children: [
             Icon(icon, color: color, size: 20),
             const SizedBox(width: 8),
-            Text(
-              text,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: color,
+            Flexible(
+              child: Text(
+                text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
               ),
             ),
           ],
