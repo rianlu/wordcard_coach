@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,33 +26,69 @@ class BackupService {
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
   
-  // 逻辑处理
-  // 逻辑处理
-  // 逻辑处理
-  static const _keyString = 'WordCardCoachBackupKey2026Secure'; 
-  // 逻辑处理
-  static const _ivString = 'WCC_Backup_IV_16'; 
+  static const _keyString = 'WordCardCoachBackupKey2026Secure';
+  static const _payloadPrefixV2 = 'WCC2';
 
   // ---------------------------------------------------------------------------
   // 逻辑处理
   // ---------------------------------------------------------------------------
   
-  String _encryptData(String plainText) {
+  String _encryptData(String plainText, {required encrypt.IV iv}) {
     final key = encrypt.Key.fromUtf8(_keyString);
-    final iv = encrypt.IV.fromUtf8(_ivString);
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
     final encrypted = encrypter.encrypt(plainText, iv: iv);
     return encrypted.base64;
   }
 
-  String _decryptData(String encryptedBase64) {
+  String _encryptDataV2(String plainText) {
+    final random = Random.secure();
+    final ivBytes = List<int>.generate(16, (_) => random.nextInt(256));
+    final iv = encrypt.IV(Uint8List.fromList(ivBytes));
+    final cipherText = _encryptData(plainText, iv: iv);
+    final payloadWithoutMac = '$_payloadPrefixV2:${iv.base64}:$cipherText';
+    final mac = _computeMac(payloadWithoutMac);
+    return '$payloadWithoutMac:$mac';
+  }
+
+  String _decryptDataV2(String encryptedPayload) {
     final key = encrypt.Key.fromUtf8(_keyString);
-    final iv = encrypt.IV.fromUtf8(_ivString);
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
-    final decrypted = encrypter.decrypt64(encryptedBase64, iv: iv);
-    return decrypted;
+    if (!encryptedPayload.startsWith('$_payloadPrefixV2:')) {
+      throw const FormatException('Unsupported backup format');
+    }
+    final parts = encryptedPayload.split(':');
+    if (parts.length < 4) {
+      throw const FormatException('Corrupted backup payload');
+    }
+
+    final mac = parts.last;
+    final payloadWithoutMac = parts.sublist(0, parts.length - 1).join(':');
+    final expectedMac = _computeMac(payloadWithoutMac);
+    if (!_constantTimeEquals(mac, expectedMac)) {
+      throw const FormatException('Backup integrity check failed');
+    }
+
+    final iv = encrypt.IV.fromBase64(parts[1]);
+    final cipher = parts.sublist(2, parts.length - 1).join(':');
+    return encrypter.decrypt64(cipher, iv: iv);
+  }
+
+  String _computeMac(String payload) {
+    final keyBytes = utf8.encode(_keyString);
+    final payloadBytes = utf8.encode(payload);
+    final hmac = crypto.Hmac(crypto.sha256, keyBytes);
+    return hmac.convert(payloadBytes).toString();
+  }
+
+  bool _constantTimeEquals(String a, String b) {
+    if (a.length != b.length) return false;
+    var diff = 0;
+    for (var i = 0; i < a.length; i++) {
+      diff |= a.codeUnitAt(i) ^ b.codeUnitAt(i);
+    }
+    return diff == 0;
   }
 
   // ---------------------------------------------------------------------------
@@ -72,7 +111,7 @@ class BackupService {
       
       final exportData = {
         'metadata': {
-          'version': 1,
+          'version': 2,
           'type': 'encrypted_wcc',
           'exported_at': DateTime.now().millisecondsSinceEpoch,
           'account_id': accountId,
@@ -88,23 +127,24 @@ class BackupService {
 
       // 逻辑处理
       final jsonString = jsonEncode(exportData);
-      final encryptedString = _encryptData(jsonString);
+      final encryptedString = _encryptDataV2(jsonString);
       
       // 逻辑处理
       final tempDir = await getTemporaryDirectory();
       final dateStr = DateFormat('yyyyMMdd_HHmm').format(DateTime.now());
       // 逻辑处理
-      final fileName = 'wordcoach_backup_${dateStr}_v1.wcc';
+      final fileName = 'wordcoach_backup_${dateStr}_v2.wcc';
       final file = File('${tempDir.path}/$fileName');
       await file.writeAsString(encryptedString);
 
       // 逻辑处理
       if (context.mounted) {
         final box = context.findRenderObject() as RenderBox?;
+        if (box == null) return;
         await Share.shareXFiles(
           [XFile(file.path)],
           text: '这是我的《单词教练》学习进度备份 ($nickname)，请妥善保存。\n请使用《单词教练》App打开此文件。',
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
         );
       }
       
@@ -147,6 +187,7 @@ class BackupService {
       }
       
       final file = File(filePath);
+      if (!context.mounted) return;
       await importDataFromFile(file, context);
 
     } catch (e) {
@@ -175,10 +216,10 @@ class BackupService {
       } catch (_) {
          // 逻辑处理
          try {
-           final decrypted = _decryptData(content);
+           final decrypted = _decryptDataV2(content);
            jsonMap = jsonDecode(decrypted);
          } catch (e) {
-           throw Exception('文件已损坏或格式不正确');
+           throw Exception('文件已损坏、被篡改，或格式不正确');
          }
       }
       
@@ -190,7 +231,7 @@ class BackupService {
       final metadata = jsonMap['metadata'];
       final importedAccountId = metadata['account_id'];
       final importedNickname = metadata['nickname'];
-      final importedTimestamp = metadata['exported_at'] as int;
+      final importedTimestamp = _asInt(metadata['exported_at']);
       
       // 逻辑处理
       final db = await _dbHelper.database;
@@ -218,7 +259,7 @@ class BackupService {
       if (!confirmed) return;
 
       // 逻辑处理
-      await _executeRestore(jsonMap['data']);
+      await _executeRestore(Map<String, dynamic>.from(jsonMap['data'] as Map));
       
       // 逻辑处理
       if (context.mounted) {
@@ -266,13 +307,13 @@ class BackupService {
       await txn.delete('user_stats');
       
       // 逻辑处理
-      final userStatsList = List<Map<String, dynamic>>.from(data['user_stats']);
+      final userStatsList = _asMapList(data['user_stats']);
       for (var item in userStatsList) {
         await txn.insert('user_stats', item);
       }
       
       // 逻辑处理
-      final wordProgressList = List<Map<String, dynamic>>.from(data['word_progress']);
+      final wordProgressList = _asMapList(data['word_progress']);
       final batch = txn.batch(); // 逻辑处理
       for (var item in wordProgressList) {
         batch.insert('word_progress', item);
@@ -280,11 +321,26 @@ class BackupService {
       await batch.commit(noResult: true);
       
       // 逻辑处理
-      final dailyRecordsList = List<Map<String, dynamic>>.from(data['daily_records']);
+      final dailyRecordsList = _asMapList(data['daily_records']);
       for (var item in dailyRecordsList) {
         await txn.insert('daily_records', item);
       }
     });
+  }
+
+  List<Map<String, dynamic>> _asMapList(dynamic value) {
+    if (value is! List) return const [];
+    return value
+        .whereType<Map>()
+        .map((e) => Map<String, dynamic>.from(e))
+        .toList();
+  }
+
+  int _asInt(dynamic value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value) ?? 0;
+    return 0;
   }
 
   Future<bool> _showNormalConfirmDialog(BuildContext context, String? nickname, int timestamp) async {

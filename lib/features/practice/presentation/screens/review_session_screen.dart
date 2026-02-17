@@ -345,8 +345,9 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     final remaining = _reviewWords.length - _currentIndex;
     final progress = (_currentIndex) / _reviewWords.length;
     
-    return Container(
-      width: size, height: size,
+    return SizedBox(
+      width: size,
+      height: size,
       child: Stack(
         alignment: Alignment.center,
         children: [

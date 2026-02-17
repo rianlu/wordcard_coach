@@ -35,39 +35,48 @@ class WordDao {
 
   // 为单词列表加载例句
   Future<List<Word>> _attachSentences(List<Word> words) async {
+    if (words.isEmpty) return words;
+
     final db = await _dbHelper.database;
-    List<Word> results = [];
-    
-    for (var word in words) {
-      // 查询该单词关联的例句
-      final List<Map<String, dynamic>> sentenceMaps = await db.rawQuery('''
-        SELECT s.text, s.translation 
-        FROM sentences s
-        JOIN word_sentence_map m ON s.id = m.sentence_id
-        WHERE m.word_id = ?
-        ORDER BY m.is_primary DESC, m.sentence_id ASC
-      ''', [word.id]);
-      
-      List<Map<String, String>> examples = sentenceMaps.map((m) => {
-        'en': m['text'] as String,
-        'cn': m['translation'] as String
-      }).toList();
-      
-      // 补全单词的例句信息
-      results.add(Word(
+    final wordIds = words.map((w) => w.id).toList();
+    final placeholders = List.filled(wordIds.length, '?').join(',');
+
+    final sentenceMaps = await db.rawQuery('''
+      SELECT m.word_id, s.text, s.translation
+      FROM word_sentence_map m
+      JOIN sentences s ON s.id = m.sentence_id
+      WHERE m.word_id IN ($placeholders)
+      ORDER BY m.word_id, m.is_primary DESC, m.sentence_id ASC
+    ''', wordIds);
+
+    final Map<String, List<Map<String, String>>> examplesByWordId = {};
+    for (final row in sentenceMaps) {
+      final wordId = row['word_id'] as String;
+      final example = {
+        'en': row['text'] as String? ?? '',
+        'cn': row['translation'] as String? ?? '',
+      };
+      examplesByWordId.putIfAbsent(wordId, () => <Map<String, String>>[]).add(example);
+    }
+
+    return words.map((word) {
+      return Word(
         id: word.id,
         text: word.text,
         meaning: word.meaning,
         phonetic: word.phonetic,
+        pos: word.pos,
         grade: word.grade,
         semester: word.semester,
         unit: word.unit,
         difficulty: word.difficulty,
         category: word.category,
-        examples: examples
-      ));
-    }
-    return results;
+        bookId: word.bookId,
+        orderIndex: word.orderIndex,
+        syllables: word.syllables,
+        examples: examplesByWordId[word.id] ?? const [],
+      );
+    }).toList();
   }
 
   Future<List<Word>> getNewWords(int limit, {String? bookId, int? grade, int? semester}) async {
@@ -95,7 +104,7 @@ class WordDao {
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT * FROM words 
       WHERE $whereClause
-      ORDER BY rowid ASC
+      ORDER BY grade ASC, semester ASC, book_id ASC, order_index ASC, rowid ASC
       LIMIT ?
     ''', args);
     

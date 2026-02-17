@@ -137,28 +137,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           height: 180, // 布局尺寸
           child: Stack(
             children: [
-               // 逻辑处理
-               Positioned(
-                 left: 550, // 逻辑处理
-                 top: 10, 
-                 bottom: 10,
-                 child: LayoutBuilder(
-                   builder: (context, constraints) {
-                     // 逻辑处理
-                     // 逻辑处理
-                     // 逻辑处理
-                     // 逻辑处理
-                     return CustomPaint(
-                       size: const Size(1, double.infinity),
-                       painter: DashedLinePainter(
-                         color: const Color(0xFFE5E7EB),
-                         dashHeight: 8,
-                         dashSpace: 6,
-                       ),
-                     );
-                   }
-                 ),
-               ),
                 // 逻辑处理
                 // 逻辑处理
                 // 逻辑处理

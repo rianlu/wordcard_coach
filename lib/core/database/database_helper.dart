@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart' show AssetManifest, rootBundle;
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -47,7 +48,7 @@ class DatabaseHelper {
 
     if (oldVersion < 4) {
       // 安全迁移 3 -> 4（新增同步字段）
-      print("Migrating DB to version 4 (Cloud Sync Prep)...");
+      debugPrint("Migrating DB to version 4 (Cloud Sync Prep)...");
       
       // 逻辑处理
       await _safeAddColumn(db, 'word_progress', 'account_id', 'TEXT');
@@ -77,13 +78,13 @@ class DatabaseHelper {
 
     if (oldVersion < 5) {
       // 迁移 4 -> 5（ 表新增 字段）
-      print("Migrating DB to version 5 (Adding pos column)...");
+      debugPrint("Migrating DB to version 5 (Adding pos column)...");
       await _safeAddColumn(db, 'words', 'pos', "TEXT NOT NULL DEFAULT ''");
     }
 
     if (oldVersion < 6) {
       // 迁移 5 -> 6（ 表新增 _序号 字段）
-      print("Migrating DB to version 6 (Adding order_index column)...");
+      debugPrint("Migrating DB to version 6 (Adding order_index column)...");
       await _safeAddColumn(db, 'words', 'order_index', "INTEGER NOT NULL DEFAULT 0");
     }
   }
@@ -94,7 +95,7 @@ class DatabaseHelper {
       await db.execute('ALTER TABLE $table ADD COLUMN $column $type');
     } catch (e) {
       // 字段已存在则忽略
-      print("Column $column already exists in $table");
+      debugPrint("Column $column already exists in $table");
     }
   }
 
@@ -250,12 +251,12 @@ class DatabaseHelper {
   }
 
   Future<void> _seedData(Database db) async {
-    print('Starting data seeding from MANIFEST...');
+    debugPrint('Starting data seeding from MANIFEST...');
     
     final manifest = await loadBooksManifest();
     
     if (manifest.isEmpty) {
-       print("Warning: Manifest empty or failed.");
+       debugPrint("Warning: Manifest empty or failed.");
        return; 
     }
 
@@ -272,15 +273,15 @@ class DatabaseHelper {
         // 尝试加载 数据文件
         try {
           final jsonContent = await rootBundle.loadString('assets/data/$filename');
-          print("Importing $filename for book $bookId...");
+          debugPrint("Importing $filename for book $bookId...");
           await _seedFromJson(batch, jsonContent, grade, semester, bookId);
         } catch (e) {
-          print("Error loading $filename: $e");
+          debugPrint("Error loading $filename: $e");
         }
       }
 
       await batch.commit(noResult: true);
-      print('Data seeding completed.');
+      debugPrint('Data seeding completed.');
       
       // 如果有教材则自动选择第一本
       if (manifest.isNotEmpty) {
@@ -294,11 +295,11 @@ class DatabaseHelper {
           'current_grade': grade,
           'current_semester': semester
         }, where: 'id = 1');
-        print('Auto-selected default book: $bookId');
+        debugPrint('Auto-selected default book: $bookId');
       }
       
     } catch (e) {
-      print('Error seeding data: $e');
+      debugPrint('Error seeding data: $e');
     }
   }
 
@@ -308,11 +309,11 @@ class DatabaseHelper {
       final dynamic decoded = jsonDecode(manifestContent);
       final books = _normalizeManifestBooks(_extractBookList(decoded));
       if (books.isNotEmpty) {
-        print('Loaded manifest with ${books.length} books.');
+        debugPrint('Loaded manifest with ${books.length} books.');
         return books;
       }
     } catch (e) {
-      print('Manifest load failed: $e. Falling back to asset scan.');
+      debugPrint('Manifest load failed: $e. Falling back to asset scan.');
     }
 
     try {
@@ -336,10 +337,10 @@ class DatabaseHelper {
           'semester': inferred['semester'],
         });
       }
-      print('Generated fallback manifest with ${fallback.length} books from assets.');
+      debugPrint('Generated fallback manifest with ${fallback.length} books from assets.');
       return fallback;
     } catch (e) {
-      print('Fallback manifest generation failed: $e');
+      debugPrint('Fallback manifest generation failed: $e');
       return [];
     }
   }
@@ -593,7 +594,7 @@ class DatabaseHelper {
   /// 安全更新：从 数据文件 更新单词且保留进度
   Future<void> updateLibraryFromAssets() async {
     final db = await database;
-    print('Starting SAFE library update from MANIFEST...');
+    debugPrint('Starting SAFE library update from MANIFEST...');
     
     final manifest = await loadBooksManifest();
     
@@ -612,18 +613,18 @@ class DatabaseHelper {
         
         try {
           final jsonContent = await rootBundle.loadString('assets/data/$filename');
-          print("Updating $filename for book $bookId...");
+          debugPrint("Updating $filename for book $bookId...");
           await _safeSeedFromJson(batch, jsonContent, grade, semester, bookId, existingIdMap);
         } catch (e) {
-          print("Error loading $filename: $e");
+          debugPrint("Error loading $filename: $e");
         }
       }
 
       await batch.commit(noResult: true);
-      print('Library update completed successfully.');
+      debugPrint('Library update completed successfully.');
       
     } catch (e) {
-      print('Error updating library: $e');
+      debugPrint('Error updating library: $e');
     }
   }
 

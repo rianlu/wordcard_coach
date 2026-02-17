@@ -102,8 +102,8 @@ class StudyHeatMap extends StatelessWidget {
 
   Color _getColorForCount(int count) {
     if (count == 0) return Colors.grey.shade200;
-    if (count < 5) return AppColors.primary.withOpacity(0.3);
-    if (count < 10) return AppColors.primary.withOpacity(0.6);
+    if (count < 5) return AppColors.primary.withValues(alpha: 0.3);
+    if (count < 10) return AppColors.primary.withValues(alpha: 0.6);
     if (count < 20) return AppColors.primary;
     return const Color(0xFF1E40AF); // 配色
   }

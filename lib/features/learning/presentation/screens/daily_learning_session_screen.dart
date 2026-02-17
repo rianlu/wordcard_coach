@@ -374,7 +374,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
           preferredSize: const Size.fromHeight(6.0),
           child: LinearProgressIndicator(
             value: progress,
-            backgroundColor: AppColors.primary.withOpacity(0.1),
+            backgroundColor: AppColors.primary.withValues(alpha: 0.1),
             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
             minHeight: 4,
           ),
@@ -403,7 +403,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.primary,
-                          boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.4), blurRadius: 40, offset: const Offset(0, 10))]
+                          boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.4), blurRadius: 40, offset: const Offset(0, 10))]
                         ),
                         child: Text(
                           "$_transitionCountdown",

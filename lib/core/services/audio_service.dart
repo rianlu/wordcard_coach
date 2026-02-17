@@ -70,7 +70,7 @@ class AudioService {
       // 逻辑处理
       if (_isEnglish(word.text)) {
         final int apiType = type == AudioType.us ? 0 : 1;
-        final String url = "http://dict.youdao.com/dictvoice?type=$apiType&audio=${Uri.encodeComponent(word.text)}";
+        final String url = "https://dict.youdao.com/dictvoice?type=$apiType&audio=${Uri.encodeComponent(word.text)}";
         
         try {
           // 逻辑处理
@@ -97,7 +97,7 @@ class AudioService {
           }
 
         } catch (e) {
-          print("Youdao API failed for ${word.text}, falling back to Google. Error: $e");
+          debugPrint("Youdao API failed for ${word.text}, falling back to Google. Error: $e");
           // 逻辑处理
         }
       }
@@ -110,7 +110,7 @@ class AudioService {
       if (isSingleWord && _isEnglish(word.text)) {
         try {
            final String cleanWord = word.text.trim().toLowerCase();
-           final String googleUrl = "https://ssl.gstatic.com/dictionary/static/sounds/oxford/${cleanWord}--_us_1.mp3";
+           final String googleUrl = "https://ssl.gstatic.com/dictionary/static/sounds/oxford/$cleanWord--_us_1.mp3";
            
            // 逻辑处理
            final FileInfo? cachedFile = await _cacheManager.getFileFromCache(googleUrl);
@@ -137,20 +137,20 @@ class AudioService {
 
 
         } catch (e) {
-          print("Google API failed for ${word.text}, falling back to TTS. Error: $e");
+          debugPrint("Google API failed for ${word.text}, falling back to TTS. Error: $e");
           // 逻辑处理
         }
       }
       
       // 逻辑处理
-      print("Falling back to TTS for: ${word.text}");
+      debugPrint("Falling back to TTS for: ${word.text}");
        // 逻辑处理
       if (!_isInit) await init(); // 逻辑处理
       await _flutterTts.speak(word.text);
       await _flutterTts.awaitSpeakCompletion(true);
       
     } catch (e) {
-      print("Audio playback init failed: $e");
+      debugPrint("Audio playback init failed: $e");
     }
   }
 
@@ -161,16 +161,18 @@ class AudioService {
         await stop();
 
         if (_isEnglish(sentence)) {
-             final String url = "http://dict.youdao.com/dictvoice?type=0&audio=${Uri.encodeComponent(sentence)}";
+             final String url = "https://dict.youdao.com/dictvoice?type=0&audio=${Uri.encodeComponent(sentence)}";
               try {
-                File file = await _cacheManager.getSingleFile(url);
+                File file = await _cacheManager
+                    .getSingleFile(url)
+                    .timeout(const Duration(seconds: 12));
                 if (await file.exists()) {
                    await _audioPlayer.play(DeviceFileSource(file.path));
-                   await _audioPlayer.onPlayerComplete.first;
+                   await _audioPlayer.onPlayerComplete.first.timeout(const Duration(seconds: 20));
                    return;
                 }
               } catch (e) {
-                print("Sentence Cache error: $e");
+                debugPrint("Sentence Cache error: $e");
               }
         }
 
@@ -179,7 +181,7 @@ class AudioService {
         await _flutterTts.speak(sentence);
 
       } catch (e) {
-        print("Sentence playback failed: $e");
+        debugPrint("Sentence playback failed: $e");
       }
   }
 

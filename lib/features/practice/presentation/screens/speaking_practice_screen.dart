@@ -127,9 +127,9 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.secondary.withOpacity(0.2),
+              color: AppColors.secondary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.secondary.withOpacity(0.3)),
+              border: Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
             ),
             child: const Row(
               children: [
@@ -241,7 +241,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
               color: AppColors.primary,
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withOpacity(0.4),
+                  color: AppColors.primary.withValues(alpha: 0.4),
                   blurRadius: 24,
                   offset: const Offset(0, 8),
                 ),
@@ -326,10 +326,10 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           // 随着动画进度，透明度从 0.6 变为 0.0，产生消失感
-                          color: AppColors.secondary.withOpacity(0.6 * (1 - _controller.value)),
+                          color: AppColors.secondary.withValues(alpha: 0.6 * (1 - _controller.value)),
                           // 增加边框会让波纹更有边界感
                           border: Border.all(
-                            color: AppColors.secondary.withOpacity(0.3 * (1 - _controller.value)),
+                            color: AppColors.secondary.withValues(alpha: 0.3 * (1 - _controller.value)),
                             width: 2,
                           ),
                         ),
@@ -349,7 +349,7 @@ class _SpeakingPracticeScreenState extends State<SpeakingPracticeScreen> with Si
                     border: Border.all(color: Colors.white, width: 4),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.secondary.withOpacity(0.4),
+                        color: AppColors.secondary.withValues(alpha: 0.4),
                         blurRadius: _isListening ? 30 : 20,
                         spreadRadius: _isListening ? 4 : 0,
                         offset: const Offset(0, 4),
