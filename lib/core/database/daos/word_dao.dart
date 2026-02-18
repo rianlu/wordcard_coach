@@ -278,10 +278,19 @@ class WordDao {
       whereClause += ' AND w.unit = ?';
       args.add(unit);
     }
-    if (searchQuery != null && searchQuery.isNotEmpty) {
-      whereClause += ' AND (w.text LIKE ? OR w.meaning LIKE ?)';
-      args.add('%$searchQuery%');
-      args.add('%$searchQuery%');
+    final analyzed = _analyzeSearchQuery(searchQuery);
+    if (analyzed.hasSearch) {
+      if (analyzed.hasLatinOrDigit && !analyzed.hasCjk) {
+        whereClause += ' AND LOWER(w.text) LIKE ?';
+        args.add('%${analyzed.queryLower}%');
+      } else if (analyzed.hasCjk && !analyzed.hasLatinOrDigit) {
+        whereClause += ' AND w.meaning LIKE ?';
+        args.add('%${analyzed.query}%');
+      } else {
+        whereClause += ' AND (LOWER(w.text) LIKE ? OR w.meaning LIKE ?)';
+        args.add('%${analyzed.queryLower}%');
+        args.add('%${analyzed.query}%');
+      }
     }
 
     final List<Map<String, dynamic>> result = await db.rawQuery('''
@@ -339,10 +348,19 @@ class WordDao {
     }
 
     // 细节处理
-    if (searchQuery != null && searchQuery.isNotEmpty) {
-      whereConditions.add('(w.text LIKE ? OR w.meaning LIKE ?)');
-      args.add('%$searchQuery%');
-      args.add('%$searchQuery%');
+    final analyzed = _analyzeSearchQuery(searchQuery);
+    if (analyzed.hasSearch) {
+      if (analyzed.hasLatinOrDigit && !analyzed.hasCjk) {
+        whereConditions.add('LOWER(w.text) LIKE ?');
+        args.add('%${analyzed.queryLower}%');
+      } else if (analyzed.hasCjk && !analyzed.hasLatinOrDigit) {
+        whereConditions.add('w.meaning LIKE ?');
+        args.add('%${analyzed.query}%');
+      } else {
+        whereConditions.add('(LOWER(w.text) LIKE ? OR w.meaning LIKE ?)');
+        args.add('%${analyzed.queryLower}%');
+        args.add('%${analyzed.query}%');
+      }
     }
     
     if (bookId != null && bookId.isNotEmpty) {
@@ -359,8 +377,24 @@ class WordDao {
       sql += ' WHERE ${whereConditions.join(' AND ')}';
     }
 
-    // 细节处理
-    sql += ' ORDER BY w.grade ASC, w.semester ASC, w.unit ASC, w.order_index ASC LIMIT ? OFFSET ?';
+    if (analyzed.hasSearch) {
+      sql += '''
+        ORDER BY
+          CASE
+            WHEN LOWER(w.text) = ? THEN 0
+            WHEN LOWER(w.text) LIKE ? THEN 1
+            WHEN w.meaning LIKE ? THEN 2
+            ELSE 3
+          END,
+          w.grade ASC, w.semester ASC, w.unit ASC, w.order_index ASC
+      ''';
+      args.add(analyzed.queryLower);
+      args.add('${analyzed.queryLower}%');
+      args.add('%${analyzed.query}%');
+    } else {
+      sql += ' ORDER BY w.grade ASC, w.semester ASC, w.unit ASC, w.order_index ASC';
+    }
+    sql += ' LIMIT ? OFFSET ?';
     args.add(limit);
     args.add(offset);
 
@@ -376,6 +410,29 @@ class WordDao {
       [bookId]
     );
     return maps.map((e) => e['unit'] as String).toList();
+  }
+
+  ({bool hasSearch, bool hasLatinOrDigit, bool hasCjk, String query, String queryLower})
+      _analyzeSearchQuery(String? searchQuery) {
+    final query = (searchQuery ?? '').trim();
+    if (query.isEmpty) {
+      return (
+        hasSearch: false,
+        hasLatinOrDigit: false,
+        hasCjk: false,
+        query: '',
+        queryLower: '',
+      );
+    }
+    final hasLatinOrDigit = RegExp(r'[A-Za-z0-9]').hasMatch(query);
+    final hasCjk = RegExp(r'[\u4e00-\u9fff]').hasMatch(query);
+    return (
+      hasSearch: true,
+      hasLatinOrDigit: hasLatinOrDigit,
+      hasCjk: hasCjk,
+      query: query,
+      queryLower: query.toLowerCase(),
+    );
   }
 
   /// 细节处理
