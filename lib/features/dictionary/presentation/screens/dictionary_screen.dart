@@ -11,6 +11,8 @@ import '../../../../core/database/models/word.dart';
 import '../../../../core/services/global_stats_notifier.dart';
 import '../../../../core/widgets/animated_speaker_button.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../../core/database/models/word_progress.dart';
+import '../widgets/word_detail_sheet.dart';
 
 class DictionaryScreen extends StatefulWidget {
   const DictionaryScreen({super.key});
@@ -753,239 +755,40 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     final wordId = item['id'] as String;
     
     // 逻辑处理
-    final Word? fullWord = await _wordDao.getWordDetails(wordId);
-    if (fullWord == null) {
-      _isOpeningWordDialog = false;
-      return;
-    }
-    
-    if (!mounted) {
-      _isOpeningWordDialog = false;
-      return;
-    }
-
-    await showDialog(
-      context: context,
-      builder: (context) => _WordDetailDialog(
-        fullWord: fullWord,
-        item: item,
-      ),
-    );
-    _isOpeningWordDialog = false;
-  }
-
-
-}
-
-class _WordDetailDialog extends StatefulWidget {
-  final Word fullWord;
-  final Map<String, dynamic> item;
-
-  const _WordDetailDialog({
-    required this.fullWord,
-    required this.item,
-  });
-
-  @override
-  State<_WordDetailDialog> createState() => _WordDetailDialogState();
-}
-
-class _WordDetailDialogState extends State<_WordDetailDialog> {
-  bool _isPlaying = false;
-
-  Future<void> _playAudio() async {
-    if (_isPlaying) return;
-    setState(() => _isPlaying = true);
     try {
-      await AudioService().playWord(widget.fullWord);
+      final Word? fullWord = await _wordDao.getWordDetails(wordId);
+      final WordProgress? progress = await _wordDao.getWordProgress(wordId);
+      
+      if (fullWord == null || !mounted) {
+        _isOpeningWordDialog = false;
+        return;
+      }
+      
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => Container(
+           decoration: const BoxDecoration(
+             color: Colors.white,
+             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+           ),
+           child: WordDetailSheet(
+             word: fullWord,
+             progress: progress,
+           ),
+        ),
+      );
+    } catch (e) {
+      debugPrint("Error opening detail sheet: $e");
     } finally {
       if (mounted) {
-        await Future.delayed(const Duration(milliseconds: 50));
-        if (mounted) {
-          setState(() => _isPlaying = false);
-        }
+        _isOpeningWordDialog = false;
       }
     }
   }
 
-  String _formatNextReview(int? timestamp) {
-    if (timestamp == null || timestamp == 0) return "-";
-    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final target = DateTime(date.year, date.month, date.day);
-    final diff = target.difference(today);
-    
-    if (diff.isNegative) {
-      return "待复习";
-    } else if (diff.inDays == 0) {
-      return "今天";
-    } else if (diff.inDays == 1) {
-      return "明天";
-    } else {
-      return "${date.year}/${date.month}/${date.day}";
-    }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    // 逻辑处理
-    final isLearned = (widget.item['is_learned'] as int? ?? 0) == 1;
-    final nextReviewTs = widget.item['next_review_date'] as int?;
-    final interval = widget.item['interval'] as int?;
-    final mastery = widget.item['mastery_level'] as int? ?? 0;
-
-    double memoryStrength = 0.0;
-    Color memoryColor = Colors.grey;
-    String memoryLabel = "未学习";
-    
-    if (isLearned) {
-        final int currentInterval = interval ?? 1;
-        if (mastery == 2) {
-             double ratio = currentInterval / 30.0; // 逻辑处理
-             if (ratio > 1.0) ratio = 1.0;
-             memoryStrength = 0.8 + (ratio * 0.2); // 0.8 - 1.0
-             memoryColor = Colors.green;
-             memoryLabel = "已掌握";
-        } else {
-             if (currentInterval >= 8) {
-               memoryStrength = 0.65 + (currentInterval / 21.0) * 0.15;
-               if (memoryStrength > 0.8) memoryStrength = 0.8;
-               memoryColor = const Color(0xFF8BC34A); 
-               memoryLabel = "熟练中";
-             } else if (currentInterval >= 3) {
-               memoryStrength = 0.35 + (currentInterval / 8.0) * 0.3;
-               memoryColor = const Color(0xFFFF9800); 
-               memoryLabel = "学习中";
-             } else {
-               memoryStrength = 0.15 + (currentInterval / 3.0) * 0.2;
-               memoryColor = const Color(0xFFFFB74D); 
-               memoryLabel = "初学";
-             }
-        }
-    }
-
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 450),
-        child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: const [
-                    BoxShadow(color: Colors.black26, blurRadius: 40, offset: Offset(0, 10))
-                ]
-            ),
-          child: SingleChildScrollView(
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                         Expanded(
-                             child: Column(
-                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                 children: [
-                                     Text(widget.fullWord.text, style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis)),
-                                     const SizedBox(height: 4),
-                                     Text(widget.fullWord.displayPhonetic, style: const TextStyle(fontSize: 18, color: AppColors.textMediumEmphasis, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500)),
-                                 ]
-                             )
-                         ),
-                         AnimatedSpeakerButton(
-                             onPressed: _playAudio,
-                             isPlaying: _isPlaying,
-                             size: 32,
-                             variant: SpeakerButtonVariant.neutral,
-                         ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    const Text("中文释义", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                    const SizedBox(height: 8),
-                    Text(widget.fullWord.meaning, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
-                    
-                    const SizedBox(height: 24),
-                    Container(padding: const EdgeInsets.symmetric(vertical: 8), width: double.infinity, height: 1, color: Colors.grey.shade100),
-                    const SizedBox(height: 16),
-                    
-                    if (isLearned) 
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                            Row(
-                                children: const [
-                                    Icon(Icons.memory, size: 16, color: AppColors.secondary),
-                                    SizedBox(width: 8),
-                                    Text("记忆强度", style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textHighEmphasis)),
-                                ],
-                            ),
-                            const SizedBox(height: 12),
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: LinearProgressIndicator(
-                                    value: memoryStrength,
-                                    minHeight: 12,
-                                    backgroundColor: Colors.grey.shade100,
-                                    valueColor: AlwaysStoppedAnimation<Color>(memoryColor),
-                                ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                    Text(memoryLabel, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: memoryColor)),
-                                    Text("下次复习: ${_formatNextReview(nextReviewTs)}", style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                                ],
-                            ),
-                            const SizedBox(height: 24),
-                        ]
-                    ),
-                    
-                    if (widget.fullWord.examples.isNotEmpty)
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                const Text("例句", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                                const SizedBox(height: 12),
-                                ...widget.fullWord.examples.map((ex) => Container(
-                                    margin: const EdgeInsets.only(bottom: 12),
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey.shade50,
-                                        borderRadius: BorderRadius.circular(12)
-                                    ),
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                            Text(ex['en'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textHighEmphasis)),
-                                            const SizedBox(height: 4),
-                                            Text(ex['cn'] ?? '', style: const TextStyle(fontSize: 12, color: AppColors.textMediumEmphasis)),
-                                        ],
-                                    ),
-                                )),
-                                const SizedBox(height: 24),
-                            ],
-                        ),
-                    
-                    SizedBox(
-                        width: double.infinity,
-                        child: TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text("关闭", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold))
-                        )
-                    )
-                ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
+
+

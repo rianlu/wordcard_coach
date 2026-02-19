@@ -468,4 +468,14 @@ class WordDao {
     
     return Word.fromJson(wordData);
   }
+  Future<WordProgress?> getWordProgress(String wordId) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'word_progress',
+      where: 'word_id = ?',
+      whereArgs: [wordId],
+    );
+    if (maps.isEmpty) return null;
+    return WordProgress.fromJson(maps.first);
+  }
 }
