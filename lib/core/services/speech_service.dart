@@ -2,6 +2,13 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
+class SpeechRecognitionChunk {
+  final String text;
+  final bool isFinal;
+
+  const SpeechRecognitionChunk({required this.text, required this.isFinal});
+}
+
 /// 语音识别服务
 ///
 /// 封装了 [stt.SpeechToText] 库，提供简单的 [startListening], [stopListening], [cancel] 接口。
@@ -53,7 +60,8 @@ class SpeechService {
   /// 监听状态流控制器
   ///
   /// 向外部广播当前的监听状态 (true: 正在监听, false: 停止/空闲)
-  final StreamController<bool> _listeningController = StreamController<bool>.broadcast();
+  final StreamController<bool> _listeningController =
+      StreamController<bool>.broadcast();
 
   /// 获取监听状态流
   Stream<bool> get listeningState => _listeningController.stream;
@@ -95,7 +103,7 @@ class SpeechService {
 
       if (_isAvailable) {
         await _resolveLocaleId();
-        
+
         // 双重检查权限，因为 initialize 可能成功但没权限 (取决于平台行为)
         final permitted = await _speech.hasPermission;
         if (!permitted) {
@@ -108,7 +116,7 @@ class SpeechService {
       debugPrint('STT: Init failed: $e');
       _isAvailable = false;
     }
-    
+
     _initFuture = null; // 清除Future缓存，允许后续重试
     return _isAvailable;
   }
@@ -131,6 +139,14 @@ class SpeechService {
         _resolvedLocaleId = 'en-GB';
       } else if (locales.any((l) => l.localeId == 'en_US')) {
         _resolvedLocaleId = 'en_US';
+      } else if (locales.any((l) => l.localeId == 'en-US')) {
+        _resolvedLocaleId = 'en-US';
+      } else if (locales.any(
+        (l) => l.localeId.toLowerCase().startsWith('en'),
+      )) {
+        _resolvedLocaleId = locales
+            .firstWhere((l) => l.localeId.toLowerCase().startsWith('en'))
+            .localeId;
       } else {
         final systemLocale = await _speech.systemLocale();
         _resolvedLocaleId = systemLocale?.localeId ?? locales.first.localeId;
@@ -147,13 +163,13 @@ class SpeechService {
 
   /// 启动语音识别
   ///
-  /// [onResult] 识别结果回调，参数为识别到的文本字符串。
+  /// [onResult] 识别结果回调，包含文本与是否最终结果。
   /// [onError] 发生错误时的回调，参数为错误描述信息。
   /// [localeId] 可选，指定特定的语言 ID。如果未指定，将使用 [_resolveLocaleId] 确定的默认值。
   ///
   /// 返回值: Future<bool> 表示是否成功启动了监听。
   Future<bool> startListening({
-    required Function(String) onResult,
+    required Function(SpeechRecognitionChunk) onResult,
     Function(String)? onError,
     String? localeId,
   }) async {
@@ -169,7 +185,7 @@ class SpeechService {
       // 这里的延时是为了让底层引擎有时间完成状态切换
       await Future.delayed(const Duration(milliseconds: 100));
     }
-    
+
     // 检查是否有新操作插队
     if (myGen != _generation) return false;
 
@@ -184,17 +200,17 @@ class SpeechService {
         try {
           await _speech.cancel();
         } catch (_) {}
-        
+
         _speech = stt.SpeechToText();
         _isAvailable = false;
         _initFuture = null;
-        
+
         await Future.delayed(const Duration(milliseconds: 300));
         if (myGen != _generation) return false;
 
         final retryOk = await ensureInitialized();
         if (myGen != _generation) return false;
-        
+
         if (!retryOk) {
           onError?.call('Speech recognition not available');
           return false;
@@ -213,7 +229,7 @@ class SpeechService {
       onError?.call('Permission check failed');
       return false;
     }
-    
+
     if (myGen != _generation) return false;
 
     // 4. 调用底层 API 开始监听
@@ -223,7 +239,12 @@ class SpeechService {
         onResult: (val) {
           // 仅当 generation 匹配时才处理结果，防止将旧 session 的结果回调给新 session
           if (myGen == _generation) {
-            onResult(val.recognizedWords);
+            onResult(
+              SpeechRecognitionChunk(
+                text: val.recognizedWords,
+                isFinal: val.finalResult,
+              ),
+            );
           }
         },
         localeId: targetLocale,
@@ -263,7 +284,7 @@ class SpeechService {
     _generation++;
     debugPrint('STT: Stop (gen=$_generation)');
     _listeningController.add(false);
-    
+
     if (_speech.isListening) {
       try {
         await _speech.stop();
@@ -281,7 +302,7 @@ class SpeechService {
     _generation++;
     debugPrint('STT: Cancel (gen=$_generation)');
     _listeningController.add(false);
-    
+
     try {
       // 设定超时防止 cancel 卡死
       await _speech.cancel().timeout(const Duration(seconds: 2));

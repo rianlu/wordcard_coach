@@ -8,17 +8,16 @@ import '../../../../core/services/speech_service.dart';
 import '../../../../core/utils/phonetic_utils.dart';
 import '../../../../core/widgets/animated_speaker_button.dart';
 
-
 import 'practice_success_overlay.dart';
 
 /// 口语练习状态
-enum SpeakingState { 
-  idle,          // 空闲
-  playingAudio,  // 播放标准音
-  listening,     // 录音识别中
-  processing,    // 处理识别结果
-  success,       // 识别通过
-  failed         // 识别失败
+enum SpeakingState {
+  idle, // 空闲
+  playingAudio, // 播放标准音
+  listening, // 录音识别中
+  processing, // 处理识别结果
+  success, // 识别通过
+  failed, // 识别失败
 }
 
 class SpeakingPracticeView extends StatefulWidget {
@@ -27,8 +26,8 @@ class SpeakingPracticeView extends StatefulWidget {
   final bool isReviewMode;
 
   const SpeakingPracticeView({
-    super.key, 
-    required this.word, 
+    super.key,
+    required this.word,
     required this.onCompleted,
     this.isReviewMode = false,
   });
@@ -37,27 +36,30 @@ class SpeakingPracticeView extends StatefulWidget {
   State<SpeakingPracticeView> createState() => _SpeakingPracticeViewState();
 }
 
-class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _pulseController;
-  
+  StreamSubscription<bool>? _engineListeningSub;
+
   // 练习状态
   SpeakingState _state = SpeakingState.idle;
   String _lastHeard = ''; // 最近一次识别内容
   bool _hasPlayedAudioForCurrentWord = false; // 本轮是否已播放标准音
   int _sessionToken = 0; // 用于隔离旧异步回调
   bool _isStartingRecognition = false; // 防并发 startListening
+  bool _engineIsListening = false; // 引擎底层真实监听状态
 
-  
   // 计时器
   Timer? _skipTimer;
   Timer? _listenTimeoutTimer;
   Timer? _successTimer;
-  
+
   // 配置
   static const int _skipButtonDelaySeconds = 3;
-  static const int _listenTimeoutSeconds = 12;
+  static const int _listenTimeoutSeconds = 16;
 
-  Color get _accentColor => widget.isReviewMode ? AppColors.secondary : AppColors.primary;
+  Color get _accentColor =>
+      widget.isReviewMode ? AppColors.secondary : AppColors.primary;
   bool get _isLearningMode => !widget.isReviewMode;
 
   @override
@@ -68,7 +70,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-    
+    _engineListeningSub = SpeechService().listeningState.listen(
+      _handleEngineListeningChanged,
+    );
+
     // 启动练习流程
     _startPractice();
   }
@@ -87,15 +92,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     _cancelAllTimers();
     await SpeechService().cancel();
     if (!mounted || token != _sessionToken) return;
-    
+
     setState(() {
       _state = SpeakingState.idle;
       _lastHeard = '';
       _hasPlayedAudioForCurrentWord = false;
       _isStartingRecognition = false;
-
     });
-    
+
     _pulseController.reset();
     await _startPractice(token);
   }
@@ -110,19 +114,33 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   void dispose() {
     _sessionToken++;
     _cancelAllTimers();
+    _engineListeningSub?.cancel();
     _pulseController.dispose();
     SpeechService().cancel(); // Key 机制保证新实例在旧实例 dispose 后才创建
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
+  void _handleEngineListeningChanged(bool isListening) {
+    if (!mounted) return;
+    _engineIsListening = isListening;
+    if (isListening) return;
+    // 引擎意外停止时，UI 主动收敛到失败态，避免界面仍显示“正在监听”
+    if (_state == SpeakingState.listening) {
+      _handleStartListeningFailed('识别已停止，请重试');
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!mounted) return;
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive || state == AppLifecycleState.detached) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
       _cancelAllTimers();
       SpeechService().stopListening();
       _pulseController.stop();
+      _engineIsListening = false;
       setState(() {
         _state = SpeakingState.failed;
         _lastHeard = '';
@@ -135,39 +153,45 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   Future<void> _startPractice([int? token]) async {
     final currentToken = token ?? _sessionToken;
     if (!mounted || currentToken != _sessionToken) return;
-    
+
     // 避免界面切换瞬间触发
     await Future.delayed(const Duration(milliseconds: 200));
     if (!mounted || currentToken != _sessionToken) return;
-    
+
     // 播放标准音的同时，后台预初始化语音引擎（避免第一次超时）
     setState(() => _state = SpeakingState.playingAudio);
     unawaited(SpeechService().ensureInitialized());
-    
+
     await AudioService().playWord(widget.word);
     if (!mounted || currentToken != _sessionToken) return;
     _hasPlayedAudioForCurrentWord = true;
-    
+
     // 播放完成后进入识别
     await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted || currentToken != _sessionToken) return;
-    
+
     // 开始监听
     unawaited(_beginListening(currentToken));
   }
 
   Future<void> _beginListening([int? token]) async {
     final currentToken = token ?? _sessionToken;
-    if (!mounted || currentToken != _sessionToken || _state == SpeakingState.success) return;
-    if (_isStartingRecognition) {
-      debugPrint('Speaking: _beginListening skipped, recognition start in progress');
+    if (!mounted ||
+        currentToken != _sessionToken ||
+        _state == SpeakingState.success) {
       return;
     }
-    
+    if (_isStartingRecognition) {
+      debugPrint(
+        'Speaking: _beginListening skipped, recognition start in progress',
+      );
+      return;
+    }
+
     // 启动前清理旧计时器
     _skipTimer?.cancel();
     _listenTimeoutTimer?.cancel();
-    
+
     setState(() {
       _state = SpeakingState.processing;
       _lastHeard = '';
@@ -176,7 +200,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
     bool success = false;
     try {
-      success = await _startSpeechRecognition(currentToken).timeout(const Duration(seconds: 12));
+      success = await _startSpeechRecognition(
+        currentToken,
+      ).timeout(const Duration(seconds: 12));
     } catch (_) {
       success = false;
     }
@@ -189,17 +215,16 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     setState(() {
       _state = SpeakingState.listening;
     });
+    _engineIsListening = true;
     _pulseController.repeat();
 
     // 控制跳过按钮显示时机
     _skipTimer = Timer(const Duration(seconds: _skipButtonDelaySeconds), () {
-      if (mounted) setState(() {});  // 刷新界面
+      if (mounted) setState(() {}); // 刷新界面
     });
 
-    // 监听超时保护
-    _listenTimeoutTimer = Timer(const Duration(seconds: _listenTimeoutSeconds), () {
-      _handleListenTimeout(currentToken);
-    });
+    // 监听超时保护（检测到有效语音后会自动续期）
+    _armListenTimeout(currentToken);
   }
 
   Future<bool> _startSpeechRecognition([int? token]) async {
@@ -208,13 +233,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     if (_isStartingRecognition) return false;
     _isStartingRecognition = true;
     final success = await SpeechService().startListening(
-      onResult: (text) {
+      onResult: (chunk) {
         if (currentToken != _sessionToken) return; // 过滤旧 session 的结果
-        _handleSpeechResult(text);
+        _handleSpeechResult(chunk.text, isFinal: chunk.isFinal);
       },
       onError: (error) {
         debugPrint('Speech error: $error');
-        if (mounted && currentToken == _sessionToken && _state == SpeakingState.listening) {
+        if (mounted &&
+            currentToken == _sessionToken &&
+            _state == SpeakingState.listening) {
           _handleStartListeningFailed(error);
         }
       },
@@ -229,6 +256,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     SpeechService().stopListening();
     _pulseController.stop();
     _pulseController.reset();
+    _engineIsListening = false;
     setState(() {
       _state = SpeakingState.failed;
       _lastHeard = '';
@@ -240,24 +268,45 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     final currentToken = token ?? _sessionToken;
     if (currentToken != _sessionToken) return;
     if (!mounted || _state != SpeakingState.listening) return;
-    
+
     debugPrint('Listen timeout');
     _handleStartListeningFailed('监听超时');
   }
 
-  void _handleSpeechResult(String text) {
+  void _armListenTimeout(int token) {
+    _listenTimeoutTimer?.cancel();
+    _listenTimeoutTimer = Timer(
+      const Duration(seconds: _listenTimeoutSeconds),
+      () {
+        _handleListenTimeout(token);
+      },
+    );
+  }
+
+  void _handleSpeechResult(String text, {required bool isFinal}) {
     if (!mounted || _state != SpeakingState.listening) return;
-    
-    final recognized = text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
+
+    final recognized = text
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^\w\s]'), '')
+        .trim();
     if (recognized.isEmpty) return;
-    
+
+    // 有语音输入就续期，避免“还在说就超时”
+    _armListenTimeout(_sessionToken);
     setState(() => _lastHeard = recognized);
-    
-    final target = widget.word.text.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '').trim();
-    
+
+    // 中间结果只更新 UI，不做通过/失败判定
+    if (!isFinal) return;
+
+    final target = widget.word.text
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^\w\s]'), '')
+        .trim();
+
     // 计算匹配质量与星级
     final stars = _calculateStars(recognized, target);
-    
+
     // 2 星以上才自动通过
     if (stars >= 2) {
       _handleResult(stars, recognized);
@@ -266,8 +315,10 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       debugPrint('Partial match only (1 star), prompting retry');
       _listenTimeoutTimer?.cancel(); // 已有输入，取消超时
       _showRetryPrompt(recognized);
+    } else {
+      // 最终结果完全未匹配，进入重试态
+      _showRetryPrompt(recognized);
     }
-    // 0 星时继续监听更多输入
   }
 
   /// 根据匹配质量计算星级
@@ -277,7 +328,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     final abbreviations = {
       'sb.': 'somebody',
       'sb': 'somebody',
-      'sth.': 'something', 
+      'sth.': 'something',
       'sth': 'something',
       'esp.': 'especially',
       'etc.': 'et cetera',
@@ -290,15 +341,18 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       'v.': 'verb',
       'prep.': 'preposition',
     };
-    
+
     String result = text.toLowerCase();
     abbreviations.forEach((abbr, full) {
       result = result.replaceAll(abbr.toLowerCase(), full);
     });
-    
+
     // 移除标点以便匹配
-    result = result.replaceAll(RegExp(r'[^\w\s]'), ' ').replaceAll(RegExp(r'\s+'), ' ').trim();
-    
+    result = result
+        .replaceAll(RegExp(r'[^\w\s]'), ' ')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
+
     return result;
   }
 
@@ -307,35 +361,52 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     // 规范化字符串以便比较
     String normalizedRecognized = _normalizeAbbreviations(recognized);
     String normalizedTarget = _normalizeAbbreviations(target);
-    
-    // 检查完全匹配或包含关系
-    if (normalizedRecognized == normalizedTarget || normalizedRecognized.contains(normalizedTarget)) {
+    final recognizedWords = normalizedRecognized
+        .split(' ')
+        .where((w) => w.isNotEmpty)
+        .toList();
+    final targetWords = normalizedTarget
+        .split(' ')
+        .where((w) => w.isNotEmpty)
+        .toList();
+
+    // 完全匹配（避免使用子串 contains 导致误判）
+    if (normalizedRecognized == normalizedTarget) {
       return 3; // 完全匹配
     }
-    
+    // 单词场景：识别结果中任一词精确命中目标词
+    if (targetWords.length == 1 &&
+        recognizedWords.any((w) => w == normalizedTarget)) {
+      return 3;
+    }
+
     // 使用编辑距离判断近似
-    int distance = _levenshtein(normalizedRecognized, normalizedTarget);
-    
-    if (distance <= 1) {
+    final int distance = _levenshtein(normalizedRecognized, normalizedTarget);
+    final int targetLen = normalizedTarget.replaceAll(' ', '').length;
+    final int strict3StarThreshold = targetLen <= 5
+        ? 1
+        : (targetLen <= 9 ? 2 : 3);
+    final int tolerant2StarThreshold = targetLen <= 5
+        ? 2
+        : (targetLen <= 9 ? 4 : 5);
+
+    if (distance <= strict3StarThreshold) {
       return 3; // 非常接近，视为完美匹配
     }
-    
-    if (distance <= 3) {
+
+    if (distance <= tolerant2StarThreshold) {
       return 2; // 匹配良好
     }
-    
+
     // 使用 音标算法 做语音相似匹配
     String targetSoundex = PhoneticUtils.soundex(normalizedTarget);
-    for (String word in normalizedRecognized.split(' ')) {
+    for (String word in recognizedWords) {
       if (PhoneticUtils.soundex(word) == targetSoundex) {
         return 2; // 发音相似
       }
     }
-    
-    // 检查目标词是否出现在识别结果中
-    List<String> targetWords = normalizedTarget.split(' ');
-    List<String> recognizedWords = normalizedRecognized.split(' ');
-    
+
+    // 多词场景：逐词容错
     int matchedWords = 0;
     for (String tw in targetWords) {
       if (tw.length < 2) continue; // 跳过过短的词
@@ -343,38 +414,42 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         matchedWords++;
       }
     }
-    
+
     // 大部分匹配则判定为较好
     if (targetWords.isNotEmpty && matchedWords >= targetWords.length * 0.7) {
       return 2;
     }
-    
-    // 检查目标词是否以其他形式出现
-    if (recognizedWords.any((w) => _levenshtein(w, normalizedTarget) <= 2)) {
+
+    // 单词场景进一步放宽：允许一个音节左右误差
+    if (targetWords.length == 1 &&
+        recognizedWords.any(
+          (w) => _levenshtein(w, normalizedTarget) <= (targetLen <= 6 ? 2 : 3),
+        )) {
       return 1; // 部分匹配时提示重试
     }
-    
+
     // 检测到语音但未匹配时返回 1
     if (recognized.isNotEmpty) {
       return 1;
     }
-    
+
     return 0; // 完全未匹配
   }
 
   /// 检测到语音但匹配差时进入失败态，等待用户手动重新开始
   void _showRetryPrompt(String recognized) {
     if (!mounted) return;
-    
+
     // 播放错误音效
     AudioService().playAsset('wrong.mp3');
-    
+
     // 取消计时并停止当前监听
     _skipTimer?.cancel();
     _listenTimeoutTimer?.cancel();
     SpeechService().stopListening();
     _pulseController.stop();
-    
+    _engineIsListening = false;
+
     setState(() {
       _state = SpeakingState.failed;
     });
@@ -383,23 +458,22 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   void _handleResult(int stars, String recognized) {
     if (!mounted || _state == SpeakingState.success) return;
-    
+
     _cancelAllTimers();
     SpeechService().stopListening();
     _pulseController.stop();
     _pulseController.reset();
-    
+    _engineIsListening = false;
+
     setState(() {
       _state = SpeakingState.success;
 
       _lastHeard = recognized;
     });
     _isStartingRecognition = false;
-    
+
     _showSuccessOverlay(stars);
   }
-
-
 
   Future<void> _skip() async {
     _sessionToken++;
@@ -408,6 +482,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
     if (!mounted) return;
     _pulseController.stop();
     _pulseController.reset();
+    _engineIsListening = false;
     _isStartingRecognition = false;
     widget.onCompleted(0); // 跳过记 0 分
   }
@@ -415,24 +490,29 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   void _replayStandardAudio() async {
     final currentToken = _sessionToken;
     // 成功或正在播放时不允许重播
-    if (_state == SpeakingState.success || _state == SpeakingState.playingAudio || _state == SpeakingState.processing) return;
-    
+    if (_state == SpeakingState.success ||
+        _state == SpeakingState.playingAudio ||
+        _state == SpeakingState.processing) {
+      return;
+    }
+
     final wasListening = _state == SpeakingState.listening;
-    
+
     if (wasListening) {
       // 监听中：暂停监听，播放音频，再恢复监听
       await SpeechService().stopListening();
       _listenTimeoutTimer?.cancel();
       _pulseController.stop();
+      _engineIsListening = false;
     }
-    
+
     setState(() => _state = SpeakingState.playingAudio);
-    
+
     await AudioService().playWord(widget.word);
     if (!mounted || currentToken != _sessionToken) return;
     await Future.delayed(const Duration(milliseconds: 300));
     if (!mounted || currentToken != _sessionToken) return;
-    
+
     if (wasListening) {
       // 之前在监听，恢复监听
       unawaited(_beginListening(currentToken));
@@ -445,7 +525,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   void _showSuccessOverlay(int stars) {
     // 音效
     AudioService().playAsset('correct.mp3');
-    
+
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -457,7 +537,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
           word: widget.word,
           title: _getStarTitle(stars),
           stars: stars,
-          variant: widget.isReviewMode ? PracticeSuccessVariant.review : PracticeSuccessVariant.learning,
+          variant: widget.isReviewMode
+              ? PracticeSuccessVariant.review
+              : PracticeSuccessVariant.learning,
         );
       },
     );
@@ -480,10 +562,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   String _getStarTitle(int stars) {
     switch (stars) {
-      case 3: return '太棒了！';
-      case 2: return '不错哦！';
-      case 1: return '继续加油！';
-      default: return '完成！';
+      case 3:
+        return '太棒了！';
+      case 2:
+        return '不错哦！';
+      case 1:
+        return '继续加油！';
+      default:
+        return '完成！';
     }
   }
 
@@ -504,7 +590,11 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       v1[0] = i + 1;
       for (int j = 0; j < t.length; j++) {
         int cost = (s[i] == t[j]) ? 0 : 1;
-        v1[j + 1] = [v1[j] + 1, v0[j + 1] + 1, v0[j] + cost].reduce((min, e) => e < min ? e : min);
+        v1[j + 1] = [
+          v1[j] + 1,
+          v0[j + 1] + 1,
+          v0[j] + cost,
+        ].reduce((min, e) => e < min ? e : min);
       }
       for (int j = 0; j < t.length + 1; j++) {
         v0[j] = v1[j];
@@ -528,11 +618,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox.expand(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
+          final isWide =
+              constraints.maxWidth > constraints.maxHeight &&
+              constraints.maxWidth > 480;
 
           if (isWide) {
             return Row(
@@ -545,7 +636,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                       builder: (context, viewport) {
                         return SingleChildScrollView(
                           child: ConstrainedBox(
-                            constraints: BoxConstraints(minHeight: viewport.maxHeight),
+                            constraints: BoxConstraints(
+                              minHeight: viewport.maxHeight,
+                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -592,7 +685,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: SingleChildScrollView(
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: constraints.maxHeight * 0.58),
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight * 0.58,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -607,13 +702,15 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                   ),
                 ),
               ),
-              
+
               // 底部控制区
               Container(
                 width: double.infinity,
                 constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight * (_isLearningMode ? 0.34 : 0.28),
-                  maxHeight: constraints.maxHeight * (_isLearningMode ? 0.4 : 0.34),
+                  minHeight:
+                      constraints.maxHeight * (_isLearningMode ? 0.34 : 0.28),
+                  maxHeight:
+                      constraints.maxHeight * (_isLearningMode ? 0.4 : 0.34),
                 ),
                 padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
                 decoration: const BoxDecoration(
@@ -623,8 +720,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                     topRight: Radius.circular(32),
                   ),
                   boxShadow: [
-                    BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, -5))
-                  ]
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 20,
+                      offset: Offset(0, -5),
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -644,8 +745,8 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   Widget _buildVoiceWave() {
-     // 固定占位，避免识别状态切换导致控制区上下跳动
-     return const SizedBox(height: 28);
+    // 固定占位，避免识别状态切换导致控制区上下跳动
+    return const SizedBox(height: 28);
   }
 
   Widget _buildVoiceControls() {
@@ -657,29 +758,39 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
           // 左侧：跳过按钮/占位
           SizedBox(
             width: _isLearningMode ? 98 : 86,
-            child: _shouldShowSkipButton() 
-              ? TextButton.icon(
-                  onPressed: _skip,
-                  style: TextButton.styleFrom(
-                    minimumSize: Size(_isLearningMode ? 96 : 84, _isLearningMode ? 42 : 38),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    backgroundColor: Colors.grey.shade100,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(999),
-                      side: BorderSide(color: Colors.grey.shade300),
+            child: _shouldShowSkipButton()
+                ? TextButton.icon(
+                    onPressed: _skip,
+                    style: TextButton.styleFrom(
+                      minimumSize: Size(
+                        _isLearningMode ? 96 : 84,
+                        _isLearningMode ? 42 : 38,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      backgroundColor: Colors.grey.shade100,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                        side: BorderSide(color: Colors.grey.shade300),
+                      ),
                     ),
-                  ),
-                  icon: Icon(Icons.skip_next_rounded, size: 18, color: Colors.grey.shade600),
-                  label: Text(
-                    "跳过",
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
+                    icon: Icon(
+                      Icons.skip_next_rounded,
+                      size: 18,
+                      color: Colors.grey.shade600,
                     ),
-                  ),
-                )
-              : const SizedBox(),
+                    label: Text(
+                      "跳过",
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
           ),
 
           // 中间：麦克风按钮
@@ -694,7 +805,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
                 onPressed: _replayStandardAudio,
                 isPlaying: _state == SpeakingState.playingAudio,
                 size: _isLearningMode ? 32 : 26,
-                variant: widget.isReviewMode ? SpeakerButtonVariant.review : SpeakerButtonVariant.learning,
+                variant: widget.isReviewMode
+                    ? SpeakerButtonVariant.review
+                    : SpeakerButtonVariant.learning,
               ),
             ),
           ),
@@ -704,9 +817,9 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
   }
 
   Widget _buildVoiceMicButton() {
-    final isListening = _state == SpeakingState.listening;
+    final isListening = _state == SpeakingState.listening && _engineIsListening;
     final isProcessing = _state == SpeakingState.processing;
-    
+
     return GestureDetector(
       onTap: () {
         if (isProcessing) return; // 正在启动识别，忽略点击
@@ -723,33 +836,38 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: _isLearningMode ? 92 : 80, height: _isLearningMode ? 92 : 80,
+        width: _isLearningMode ? 92 : 80,
+        height: _isLearningMode ? 92 : 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isListening ? const Color(0xFFFF5252) 
-               : isProcessing ? _accentColor.withValues(alpha: 0.7)
-               : _accentColor,
+          color: isListening
+              ? const Color(0xFFFF5252)
+              : isProcessing
+              ? _accentColor.withValues(alpha: 0.7)
+              : _accentColor,
           boxShadow: [
             BoxShadow(
-              color: (isListening ? const Color(0xFFFF5252) : _accentColor).withValues(alpha: 0.3),
+              color: (isListening ? const Color(0xFFFF5252) : _accentColor)
+                  .withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 8),
-            )
-          ]
+            ),
+          ],
         ),
         child: isProcessing
-          ? const SizedBox(
-              width: 28, height: 28,
-              child: CircularProgressIndicator(
+            ? const SizedBox(
+                width: 28,
+                height: 28,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 3,
+                ),
+              )
+            : Icon(
+                isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
                 color: Colors.white,
-                strokeWidth: 3,
+                size: 32,
               ),
-            )
-          : Icon(
-              isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
-              color: Colors.white,
-              size: 32,
-            ),
       ),
     );
   }
@@ -765,21 +883,33 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         if (isNarrow) {
           wordFontSize = _isLearningMode ? 38.0 : 32.0;
         } else if (wordLength > 16) {
-          wordFontSize = isPortrait ? (_isLearningMode ? 40.0 : 34.0) : (_isLearningMode ? 36.0 : 32.0);
+          wordFontSize = isPortrait
+              ? (_isLearningMode ? 40.0 : 34.0)
+              : (_isLearningMode ? 36.0 : 32.0);
         } else if (wordLength > 12) {
-          wordFontSize = isPortrait ? (_isLearningMode ? 46.0 : 38.0) : (_isLearningMode ? 40.0 : 34.0);
+          wordFontSize = isPortrait
+              ? (_isLearningMode ? 46.0 : 38.0)
+              : (_isLearningMode ? 40.0 : 34.0);
         } else {
-          wordFontSize = isPortrait ? (_isLearningMode ? 58.0 : 48.0) : (_isLearningMode ? 48.0 : 40.0);
+          wordFontSize = isPortrait
+              ? (_isLearningMode ? 58.0 : 48.0)
+              : (_isLearningMode ? 48.0 : 40.0);
         }
-        final phoneticFontSize = isNarrow ? (_isLearningMode ? 20.0 : 17.0) : (isPortrait ? (_isLearningMode ? 24.0 : 20.0) : (_isLearningMode ? 20.0 : 18.0));
+        final phoneticFontSize = isNarrow
+            ? (_isLearningMode ? 20.0 : 17.0)
+            : (isPortrait
+                  ? (_isLearningMode ? 24.0 : 20.0)
+                  : (_isLearningMode ? 20.0 : 18.0));
 
         return Column(
           children: [
             Text(
               "READ ALOUD",
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 12, fontWeight: FontWeight.w900,
-                color: AppColors.textMediumEmphasis, letterSpacing: 1.0
+                fontSize: 12,
+                fontWeight: FontWeight.w900,
+                color: AppColors.textMediumEmphasis,
+                letterSpacing: 1.0,
               ),
             ),
             const SizedBox(height: 16),
@@ -838,7 +968,11 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
         icon = Icons.volume_up_rounded;
         break;
       case SpeakingState.listening:
-        if (_lastHeard.isNotEmpty) {
+        if (!_engineIsListening) {
+          text = '识别引擎连接中...';
+          color = AppColors.textMediumEmphasis;
+          icon = Icons.settings_input_antenna_rounded;
+        } else if (_lastHeard.isNotEmpty) {
           text = '听到: "$_lastHeard"';
           color = _accentColor;
           icon = Icons.hearing_rounded;
@@ -867,12 +1001,12 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-        child: Container(
-          key: ValueKey(_state),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(30),
+      child: Container(
+        key: ValueKey(_state),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(30),
           border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Row(
@@ -897,6 +1031,4 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView> with Single
       ),
     );
   }
-
-
 }
