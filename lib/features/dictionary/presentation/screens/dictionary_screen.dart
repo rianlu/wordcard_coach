@@ -5,14 +5,8 @@ import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/daos/user_stats_dao.dart';
 import '../../../../core/database/database_helper.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/services/audio_service.dart';
-import '../../../../core/widgets/bubbly_button.dart';
-import '../../../../core/database/models/word.dart';
 import '../../../../core/services/global_stats_notifier.dart';
-import '../../../../core/widgets/animated_speaker_button.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../../core/database/models/word_progress.dart';
-import '../widgets/word_detail_sheet.dart';
 import '../widgets/dictionary_word_tile.dart';
 import '../../../../core/widgets/book_selection_sheet.dart';
 import 'dictionary_search_screen.dart';
@@ -37,8 +31,6 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   final int _limit = 40;
 
   int _requestVersion = 0;
-  bool _isOpeningWordDialog = false;
-
   // 逻辑处理
   int? _masteryFilter; // 掌握度处理
   String? _currentBookId; // 逻辑处理

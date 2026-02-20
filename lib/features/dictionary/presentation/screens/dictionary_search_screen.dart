@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -32,7 +31,7 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
     super.initState();
     _searchController.addListener(_onSearchChanged);
     _scrollController.addListener(_onScroll);
-    
+
     // Auto focus after frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _searchFocusNode.requestFocus();
@@ -83,7 +82,7 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
       _hasMore = true;
       _isLoading = true;
     });
-    
+
     await _loadMore(requestId: requestId, force: true);
   }
 
@@ -91,7 +90,7 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
     final int activeRequestId = requestId ?? _requestVersion;
     if (!force && _isLoading) return;
     if (!_hasMore) return;
-    
+
     final query = _searchController.text.trim();
     if (query.isEmpty) return;
 
@@ -102,7 +101,7 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
         limit: _limit,
         offset: _offset,
         searchQuery: query,
-        // No book/unit/mastery filter in global search for now, unless desired. 
+        // No book/unit/mastery filter in global search for now, unless desired.
         // User's prompt implies general dictionary search.
       );
 
@@ -117,11 +116,11 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
     } catch (e) {
       debugPrint("Search error: $e");
       if (mounted && activeRequestId == _requestVersion) {
-         setState(() => _isLoading = false);
+        setState(() => _isLoading = false);
       }
     }
   }
-  
+
   void _clearSearch() {
     _searchController.clear();
     _reload(); // Will clear list
@@ -137,9 +136,7 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
         child: Column(
           children: [
             _buildHeader(),
-            Expanded(
-              child: _buildBody(),
-            ),
+            Expanded(child: _buildBody()),
           ],
         ),
       ),
@@ -165,18 +162,31 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
               child: TextField(
                 controller: _searchController,
                 focusNode: _searchFocusNode,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textHighEmphasis),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textHighEmphasis,
+                ),
                 decoration: InputDecoration(
-                  icon: const Icon(Icons.search_rounded, color: AppColors.textMediumEmphasis),
+                  icon: const Icon(
+                    Icons.search_rounded,
+                    color: AppColors.textMediumEmphasis,
+                  ),
                   border: InputBorder.none,
                   hintText: "搜索单词...",
-                  hintStyle: const TextStyle(color: AppColors.textMediumEmphasis),
-                  suffixIcon: _searchController.text.isNotEmpty 
-                    ? IconButton(
-                        icon: const Icon(Icons.close_rounded, size: 20, color: AppColors.textMediumEmphasis),
-                        onPressed: _clearSearch,
-                      )
-                    : null,
+                  hintStyle: const TextStyle(
+                    color: AppColors.textMediumEmphasis,
+                  ),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(
+                            Icons.close_rounded,
+                            size: 20,
+                            color: AppColors.textMediumEmphasis,
+                          ),
+                          onPressed: _clearSearch,
+                        )
+                      : null,
                 ),
                 textInputAction: TextInputAction.search,
                 onSubmitted: (_) {
@@ -193,10 +203,13 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
             },
             style: TextButton.styleFrom(
               foregroundColor: AppColors.primary,
-              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
             child: const Text("取消"),
-          )
+          ),
         ],
       ),
     );
@@ -204,17 +217,25 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
 
   Widget _buildBody() {
     final query = _searchController.text.trim();
-    
+
     if (query.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.manage_search_rounded, size: 64, color: Colors.grey.shade200),
+            Icon(
+              Icons.manage_search_rounded,
+              size: 64,
+              color: Colors.grey.shade200,
+            ),
             const SizedBox(height: 16),
             Text(
               "输入单词进行搜索",
-              style: TextStyle(color: Colors.grey.shade400, fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                color: Colors.grey.shade400,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),
@@ -222,19 +243,27 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
     }
 
     if (_isLoading && _results.isEmpty) {
-       return const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
-    
+
     if (_results.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off_rounded, size: 64, color: Colors.grey.shade200),
+            Icon(
+              Icons.search_off_rounded,
+              size: 64,
+              color: Colors.grey.shade200,
+            ),
             const SizedBox(height: 16),
             Text(
               "未找到相关单词",
-              style: TextStyle(color: Colors.grey.shade400, fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                color: Colors.grey.shade400,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),
@@ -248,19 +277,24 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
       separatorBuilder: (c, i) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         if (index == _results.length) {
-          return const Center(child: Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator()));
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
         return DictionaryWordTile(
-            item: _results[index],
-            onTap: () {
-                // Keep focus when tapping? No, user wants unfocus -> detail.
-                // But specifically for search screen, let's keep it simple:
-                // Tap -> Detail opens. Since Detail is modal, keyboard might hide or stay behind. 
-                // But DetailSheet is bottom sheet.
-                // To prevent keyboard flickering, we might want to unfocus.
-                FocusScope.of(context).unfocus();
-                DictionaryWordTile.showDetail(context, _results[index]);
-            },
+          item: _results[index],
+          onTap: () {
+            // Keep focus when tapping? No, user wants unfocus -> detail.
+            // But specifically for search screen, let's keep it simple:
+            // Tap -> Detail opens. Since Detail is modal, keyboard might hide or stay behind.
+            // But DetailSheet is bottom sheet.
+            // To prevent keyboard flickering, we might want to unfocus.
+            FocusScope.of(context).unfocus();
+            DictionaryWordTile.showDetail(context, _results[index]);
+          },
         ).animate().fadeIn(duration: 300.ms);
       },
     );
