@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-enum SpeakerButtonVariant {
-  neutral,
-  learning,
-  review,
-}
+enum SpeakerButtonVariant { neutral, learning, review }
 
 /// 逻辑处理
 /// 逻辑处理
@@ -33,6 +29,13 @@ class AnimatedSpeakerButton extends StatefulWidget {
 
 class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
     with SingleTickerProviderStateMixin {
+  static const double _glowIdleAlpha = 0.22;
+  static const double _glowActiveAlpha = 0.36;
+  static const double _glowIdleBlur = 14;
+  static const double _glowActiveBlur = 22;
+  static const double _glowIdleYOffset = 4;
+  static const double _glowActiveYOffset = 8;
+
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
 
@@ -41,9 +44,9 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
     super.initState();
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 900),
     );
-    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.15).animate(
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
   }
@@ -67,12 +70,19 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
 
   @override
   Widget build(BuildContext context) {
-    final (defaultPrimary, defaultPlaying) = _resolveVariantColors(widget.variant);
+    final (defaultPrimary, defaultPlaying) = _resolveVariantColors(
+      widget.variant,
+    );
     final primary = widget.primaryColor ?? defaultPrimary;
     final playing = widget.playingColor ?? defaultPlaying;
     final currentColor = widget.isPlaying ? playing : primary;
     final iconColor = _resolveIconColor(widget.variant, widget.isPlaying);
-    
+    final glowAlpha = widget.isPlaying ? _glowActiveAlpha : _glowIdleAlpha;
+    final glowBlur = widget.isPlaying ? _glowActiveBlur : _glowIdleBlur;
+    final glowYOffset = widget.isPlaying
+        ? _glowActiveYOffset
+        : _glowIdleYOffset;
+
     return GestureDetector(
       onTap: widget.onPressed,
       child: AnimatedBuilder(
@@ -88,14 +98,16 @@ class _AnimatedSpeakerButtonState extends State<AnimatedSpeakerButton>
                 color: currentColor,
                 boxShadow: [
                   BoxShadow(
-                    color: currentColor.withValues(alpha: 0.4),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
+                    color: currentColor.withValues(alpha: glowAlpha),
+                    blurRadius: glowBlur,
+                    offset: Offset(0, glowYOffset),
                   ),
                 ],
               ),
               child: Icon(
-                widget.isPlaying ? Icons.graphic_eq_rounded : Icons.volume_up_rounded,
+                widget.isPlaying
+                    ? Icons.graphic_eq_rounded
+                    : Icons.volume_up_rounded,
                 color: iconColor,
                 size: widget.size,
               ),

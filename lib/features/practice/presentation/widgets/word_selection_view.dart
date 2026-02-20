@@ -14,9 +14,9 @@ class WordSelectionView extends StatefulWidget {
   final bool isReviewMode;
 
   const WordSelectionView({
-    super.key, 
-    required this.word, 
-    required this.options, 
+    super.key,
+    required this.word,
+    required this.options,
     required this.onCompleted,
     this.isReviewMode = false,
   });
@@ -36,12 +36,12 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   void didUpdateWidget(WordSelectionView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.word.id != widget.word.id) {
-       setState(() {
-         _selectedOptionId = null;
-         _wrongAttempts = 0;
+      setState(() {
+        _selectedOptionId = null;
+        _wrongAttempts = 0;
 
-         _isPlaying = false;
-       });
+        _isPlaying = false;
+      });
     }
   }
 
@@ -71,19 +71,19 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     // 稍作延迟以展示结果
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) {
-          if (isCorrect) {
-            // 展示成功提示层
-             if (mounted) {
-               _showSuccessOverlay();
-             }
-          } else {
-            // 错误时播放提示并重置
-            AudioService().playAsset('wrong.mp3');
-            _showErrorToast();
-            setState(() {
-              _selectedOptionId = null;
-              _wrongAttempts++;
-            });
+        if (isCorrect) {
+          // 展示成功提示层
+          if (mounted) {
+            _showSuccessOverlay();
+          }
+        } else {
+          // 错误时播放提示并重置
+          AudioService().playAsset('wrong.mp3');
+          _showErrorToast();
+          setState(() {
+            _selectedOptionId = null;
+            _wrongAttempts++;
+          });
         }
       }
     });
@@ -101,12 +101,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _buildMainContent(),
-
-      ],
-    );
+    return Stack(children: [_buildMainContent()]);
   }
 
   void _showSuccessOverlay() {
@@ -118,13 +113,15 @@ class _WordSelectionViewState extends State<WordSelectionView> {
       context: context,
       barrierDismissible: false,
       barrierLabel: "Success",
-      barrierColor: Colors.transparent, 
+      barrierColor: Colors.transparent,
       transitionDuration: Duration.zero,
       pageBuilder: (context, animation, secondaryAnimation) {
         return PracticeSuccessOverlay(
           word: widget.word,
           title: "正确!",
-          variant: widget.isReviewMode ? PracticeSuccessVariant.review : PracticeSuccessVariant.learning,
+          variant: widget.isReviewMode
+              ? PracticeSuccessVariant.review
+              : PracticeSuccessVariant.learning,
         );
       },
     );
@@ -141,11 +138,15 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   Widget _buildMainContent() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > constraints.maxHeight && constraints.maxWidth > 480;
+        final isWide =
+            constraints.maxWidth > constraints.maxHeight &&
+            constraints.maxWidth > 480;
         final isTall = constraints.maxHeight > 600;
         final isPhone = constraints.biggest.shortestSide < 600;
         final isPortrait = constraints.maxHeight >= constraints.maxWidth;
-        final useSingleColumn = isPhone && isPortrait;
+        // 手机竖屏优先双列，保障四个选项无需滚动即可完整显示
+        final useSingleColumn =
+            isPhone && isPortrait && constraints.maxHeight >= 820;
 
         if (isWide) {
           return Row(
@@ -161,7 +162,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                 flex: 5,
                 child: Padding(
                   padding: const EdgeInsets.all(24),
-                  child: _buildOptionsGrid(),
+                  child: _buildOptionsGrid(useSingleColumn: false),
                 ),
               ),
             ],
@@ -169,40 +170,53 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         }
 
         if (!isTall) {
-           // 逻辑处理
-           return SingleChildScrollView(
-             padding: const EdgeInsets.all(24),
-             child: Column(
-               children: [
-                 _buildWordCard(compactTop: useSingleColumn),
-                 const SizedBox(height: 24),
-                 // 逻辑处理
-                 // 逻辑处理
-                 _buildOptionsGrid(shrinkWrap: true, scrollable: false),
-               ],
-             ),
-           );
+          // 逻辑处理
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                _buildWordCard(compactTop: useSingleColumn),
+                const SizedBox(height: 24),
+                // 逻辑处理
+                // 逻辑处理
+                _buildOptionsGrid(
+                  shrinkWrap: true,
+                  useSingleColumn: useSingleColumn,
+                ),
+              ],
+            ),
+          );
         }
 
         // 标准 竖屏布局
         return Column(
           children: [
             Expanded(
-              flex: useSingleColumn ? 4 : 4,
+              flex: useSingleColumn ? 4 : 3,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(24, useSingleColumn ? 24 : 24, 24, useSingleColumn ? 12 : 24),
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  useSingleColumn ? 24 : 24,
+                  24,
+                  useSingleColumn ? 12 : 24,
+                ),
                 child: Center(
                   child: SingleChildScrollView(
-                    child: _buildWordCard(compactTop: useSingleColumn)
-                  )
+                    child: _buildWordCard(compactTop: useSingleColumn),
+                  ),
                 ),
               ),
             ),
             Expanded(
-              flex: useSingleColumn ? 6 : 5,
+              flex: useSingleColumn ? 6 : 7,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(24, 0, 24, useSingleColumn ? 16 : 24),
-                child: _buildOptionsGrid(),
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  0,
+                  24,
+                  useSingleColumn ? 16 : 24,
+                ),
+                child: _buildOptionsGrid(useSingleColumn: useSingleColumn),
               ),
             ),
           ],
@@ -211,11 +225,10 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     );
   }
 
-  Widget _buildOptionsGrid({bool shrinkWrap = false, bool scrollable = true}) {
-    final screen = MediaQuery.of(context).size;
-    final isPortrait = screen.height >= screen.width;
-    final isPhone = screen.shortestSide < 600;
-    final useSingleColumn = isPhone && isPortrait;
+  Widget _buildOptionsGrid({
+    bool shrinkWrap = false,
+    required bool useSingleColumn,
+  }) {
     final titleFontSize = useSingleColumn ? 16.0 : 12.0;
 
     return Column(
@@ -234,44 +247,63 @@ class _WordSelectionViewState extends State<WordSelectionView> {
           ),
         ),
         SizedBox(height: useSingleColumn ? 10 : 16),
-        shrinkWrap 
-        ? GridView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: useSingleColumn ? 1 : 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: useSingleColumn ? 3.6 : 1.3,
-            ),
-            itemCount: widget.options.length,
-            itemBuilder: (context, index) {
-              return _buildOptionTile(context, widget.options[index], compactSingleColumn: useSingleColumn);
-            },
-          )
-        : Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                // 逻辑处理
-                final gap = (constraints.maxWidth * 0.04).clamp(12.0, 20.0);
-                return GridView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: const BouncingScrollPhysics(), 
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: useSingleColumn ? 1 : 2,
-                    crossAxisSpacing: gap,
-                    mainAxisSpacing: gap,
-                    childAspectRatio: useSingleColumn ? 3.6 : 1.3, 
-                  ),
-                  itemCount: widget.options.length,
-                  itemBuilder: (context, index) {
-                    return _buildOptionTile(context, widget.options[index], compactSingleColumn: useSingleColumn);
+        shrinkWrap
+            ? GridView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: useSingleColumn ? 1 : 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: useSingleColumn ? 3.6 : 1.3,
+                ),
+                itemCount: widget.options.length,
+                itemBuilder: (context, index) {
+                  return _buildOptionTile(
+                    context,
+                    widget.options[index],
+                    compactSingleColumn: useSingleColumn,
+                  );
+                },
+              )
+            : Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final gap = (constraints.maxWidth * 0.04).clamp(12.0, 20.0);
+                    final crossAxisCount = useSingleColumn ? 1 : 2;
+                    final rows = (widget.options.length / crossAxisCount)
+                        .ceil();
+                    final tileWidth =
+                        (constraints.maxWidth - gap * (crossAxisCount - 1)) /
+                        crossAxisCount;
+                    final tileHeight =
+                        (constraints.maxHeight - gap * (rows - 1)) / rows;
+                    final dynamicRatio = (tileWidth / tileHeight).clamp(
+                      useSingleColumn ? 3.0 : 1.1,
+                      useSingleColumn ? 5.5 : 2.2,
+                    );
+                    return GridView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        crossAxisSpacing: gap,
+                        mainAxisSpacing: gap,
+                        childAspectRatio: dynamicRatio,
+                      ),
+                      itemCount: widget.options.length,
+                      itemBuilder: (context, index) {
+                        return _buildOptionTile(
+                          context,
+                          widget.options[index],
+                          compactSingleColumn: useSingleColumn,
+                        );
+                      },
+                    );
                   },
-                );
-              },
-            ),
-          ),
+                ),
+              ),
       ],
     );
   }
@@ -283,10 +315,14 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         final isCompact = constraints.maxWidth < 360;
         final wordFontSize = isCompact
             ? (isLearningMode ? 30.0 : 27.0)
-            : (isLearningMode ? (compactTop ? 40.0 : 36.0) : (compactTop ? 35.0 : 32.0));
+            : (isLearningMode
+                  ? (compactTop ? 40.0 : 36.0)
+                  : (compactTop ? 35.0 : 32.0));
         final phoneticFontSize = isCompact
             ? (isLearningMode ? 17.0 : 15.0)
-            : (isLearningMode ? (compactTop ? 22.0 : 19.0) : (compactTop ? 20.0 : 18.0));
+            : (isLearningMode
+                  ? (compactTop ? 22.0 : 19.0)
+                  : (compactTop ? 20.0 : 18.0));
 
         return Container(
           width: double.infinity,
@@ -296,7 +332,11 @@ class _WordSelectionViewState extends State<WordSelectionView> {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: Colors.grey.shade100),
             boxShadow: const [
-              BoxShadow(color: AppColors.shadowWhite, offset: Offset(0, 4), blurRadius: 0)
+              BoxShadow(
+                color: AppColors.shadowWhite,
+                offset: Offset(0, 4),
+                blurRadius: 0,
+              ),
             ],
           ),
           child: Row(
@@ -337,7 +377,9 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                 onPressed: _playAudio,
                 isPlaying: _isPlaying,
                 size: compactTop ? 34 : (isLearningMode ? 34 : 32),
-                variant: widget.isReviewMode ? SpeakerButtonVariant.review : SpeakerButtonVariant.learning,
+                variant: widget.isReviewMode
+                    ? SpeakerButtonVariant.review
+                    : SpeakerButtonVariant.learning,
               ),
             ],
           ),
@@ -346,11 +388,15 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     );
   }
 
-  Widget _buildOptionTile(BuildContext context, Word optionWord, {bool compactSingleColumn = false}) {
+  Widget _buildOptionTile(
+    BuildContext context,
+    Word optionWord, {
+    bool compactSingleColumn = false,
+  }) {
     final isLearningMode = !widget.isReviewMode;
     final isSelected = _selectedOptionId == optionWord.id;
-    final isPressed = _pressingOptionId == optionWord.id && _selectedOptionId == null;
-
+    final isPressed =
+        _pressingOptionId == optionWord.id && _selectedOptionId == null;
 
     // 弹跳风格配色
     Color bgColor = Colors.white;
@@ -361,33 +407,34 @@ class _WordSelectionViewState extends State<WordSelectionView> {
 
     if (_selectedOptionId != null) {
       final isCorrect = optionWord.id == widget.word.id;
-      final isSelectedAndCorrect = isCorrect && _selectedOptionId == widget.word.id;
+      final isSelectedAndCorrect =
+          isCorrect && _selectedOptionId == widget.word.id;
 
       if (isSelectedAndCorrect) {
-         // 正确且被选中：复习模式使用黄系，学习模式使用绿系
-         if (widget.isReviewMode) {
-           bgColor = const Color(0xFFFFE082);
-           borderColor = const Color(0xFFFFC107);
-           shadowColor = const Color(0xFFD4AA00);
-           textColor = const Color(0xFF664400);
-         } else {
-           bgColor = AppColors.primary;
-           borderColor = const Color(0xFF1A5DBD);
-           shadowColor = AppColors.shadowBlue;
-           textColor = Colors.white;
-         }
+        // 正确且被选中：复习模式使用黄系，学习模式使用绿系
+        if (widget.isReviewMode) {
+          bgColor = const Color(0xFFFFE082);
+          borderColor = const Color(0xFFFFC107);
+          shadowColor = const Color(0xFFD4AA00);
+          textColor = const Color(0xFF664400);
+        } else {
+          bgColor = AppColors.primary;
+          borderColor = const Color(0xFF1A5DBD);
+          shadowColor = AppColors.shadowBlue;
+          textColor = Colors.white;
+        }
       } else if (isSelected) {
-         // 错误
-         bgColor = const Color(0xFFF87171); // 红色 400
-         borderColor = const Color(0xFFEF4444); // 红色 500
-         shadowColor = const Color(0xFFB91C1C); // 红色 700
-         textColor = Colors.white;
+        // 错误
+        bgColor = const Color(0xFFF87171); // 红色 400
+        borderColor = const Color(0xFFEF4444); // 红色 500
+        shadowColor = const Color(0xFFB91C1C); // 红色 700
+        textColor = Colors.white;
       } else {
-         // 其他选项
-         bgColor = Colors.grey.shade100;
-         textColor = Colors.grey.shade400;
-         yOffset = 0; // 按下效果
-         shadowColor = Colors.transparent;
+        // 其他选项
+        bgColor = Colors.grey.shade100;
+        textColor = Colors.grey.shade400;
+        yOffset = 0; // 按下效果
+        shadowColor = Colors.transparent;
       }
     } else {
       // 正常状态
@@ -426,12 +473,12 @@ class _WordSelectionViewState extends State<WordSelectionView> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: borderColor, width: 2),
           boxShadow: [
-             BoxShadow(
-               color: shadowColor,
-               offset: Offset(0, isPressed ? 1 : yOffset),
-               blurRadius: 0, // 实体阴影效果
-             )
-          ]
+            BoxShadow(
+              color: shadowColor,
+              offset: Offset(0, isPressed ? 1 : yOffset),
+              blurRadius: 0, // 实体阴影效果
+            ),
+          ],
         ),
         child: Center(
           child: Text(

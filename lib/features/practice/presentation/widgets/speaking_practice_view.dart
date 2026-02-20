@@ -38,6 +38,16 @@ class SpeakingPracticeView extends StatefulWidget {
 
 class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  static const double _glowIdleAlpha = 0.22;
+  static const double _glowActiveAlpha = 0.36;
+  static const double _glowRecordingAlpha = 0.46;
+  static const double _glowIdleBlur = 14;
+  static const double _glowActiveBlur = 22;
+  static const double _glowRecordingBlur = 26;
+  static const double _glowIdleYOffset = 4;
+  static const double _glowActiveYOffset = 8;
+  static const double _glowRecordingYOffset = 10;
+
   late AnimationController _pulseController;
   StreamSubscription<bool>? _engineListeningSub;
 
@@ -68,7 +78,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
     WidgetsBinding.instance.addObserver(this);
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1200),
     );
     _engineListeningSub = SpeechService().listeningState.listen(
       _handleEngineListeningChanged,
@@ -834,40 +844,99 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
           _handleStartListeningFailed('用户手动取消');
         }
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: _isLearningMode ? 92 : 80,
-        height: _isLearningMode ? 92 : 80,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isListening
-              ? const Color(0xFFFF5252)
+      child: AnimatedBuilder(
+        animation: _pulseController,
+        builder: (context, child) {
+          final pulse = _pulseController.value;
+          final scale = isListening ? (1.0 + pulse * 0.06) : 1.0;
+          final ringOpacity = isListening ? (0.24 * (1 - pulse)) : 0.0;
+          final ringScale = isListening ? (1.0 + pulse * 0.55) : 1.0;
+          final buttonSize = _isLearningMode ? 92.0 : 80.0;
+          final glowAlpha = isListening
+              ? _glowRecordingAlpha
               : isProcessing
-              ? _accentColor.withValues(alpha: 0.7)
-              : _accentColor,
-          boxShadow: [
-            BoxShadow(
-              color: (isListening ? const Color(0xFFFF5252) : _accentColor)
-                  .withValues(alpha: 0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: isProcessing
-            ? const SizedBox(
-                width: 28,
-                height: 28,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 3,
+              ? _glowActiveAlpha
+              : _glowIdleAlpha;
+          final glowBlur = isListening
+              ? _glowRecordingBlur
+              : isProcessing
+              ? _glowActiveBlur
+              : _glowIdleBlur;
+          final glowYOffset = isListening
+              ? _glowRecordingYOffset
+              : isProcessing
+              ? _glowActiveYOffset
+              : _glowIdleYOffset;
+
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              if (isListening)
+                Transform.scale(
+                  scale: ringScale,
+                  child: Container(
+                    width: buttonSize,
+                    height: buttonSize,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(
+                        0xFFFF5252,
+                      ).withValues(alpha: ringOpacity),
+                      border: Border.all(
+                        color: const Color(
+                          0xFFFF5252,
+                        ).withValues(alpha: ringOpacity * 0.9),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            : Icon(
-                isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
-                color: Colors.white,
-                size: 32,
+              Transform.scale(
+                scale: scale,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  width: buttonSize,
+                  height: buttonSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isListening
+                        ? const Color(0xFFFF5252)
+                        : isProcessing
+                        ? _accentColor.withValues(alpha: 0.7)
+                        : _accentColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            (isListening
+                                    ? const Color(0xFFFF5252)
+                                    : _accentColor)
+                                .withValues(alpha: glowAlpha),
+                        blurRadius: glowBlur,
+                        offset: Offset(0, glowYOffset),
+                      ),
+                    ],
+                  ),
+                  child: isProcessing
+                      ? const SizedBox(
+                          width: 28,
+                          height: 28,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3,
+                          ),
+                        )
+                      : Icon(
+                          isListening
+                              ? Icons.mic_rounded
+                              : Icons.mic_none_rounded,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                ),
               ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -957,44 +1026,66 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
 
   Widget _buildStatusHUD() {
     String text;
-    Color color;
+    Color foregroundColor;
+    Color backgroundColor;
+    Color borderColor;
     IconData? icon;
 
     switch (_state) {
       case SpeakingState.idle:
       case SpeakingState.playingAudio:
         text = '请听发音...';
-        color = AppColors.textMediumEmphasis;
+        foregroundColor = AppColors.textMediumEmphasis;
+        backgroundColor = const Color(0xFFF3F6FA);
+        borderColor = const Color(0xFFD9E1EA);
         icon = Icons.volume_up_rounded;
         break;
       case SpeakingState.listening:
         if (!_engineIsListening) {
           text = '识别引擎连接中...';
-          color = AppColors.textMediumEmphasis;
+          foregroundColor = const Color(0xFF546E7A);
+          backgroundColor = const Color(0xFFEEF3F7);
+          borderColor = const Color(0xFFCFD8E1);
           icon = Icons.settings_input_antenna_rounded;
         } else if (_lastHeard.isNotEmpty) {
           text = '听到: "$_lastHeard"';
-          color = _accentColor;
+          foregroundColor = const Color(0xFF00695C);
+          backgroundColor = const Color(0xFFE6F7F4);
+          borderColor = const Color(0xFF9EDFD4);
           icon = Icons.hearing_rounded;
         } else {
           text = '请大声读出来...';
-          color = _accentColor;
+          if (widget.isReviewMode) {
+            foregroundColor = const Color(0xFF6A4E00);
+            backgroundColor = const Color(0xFFFFF3CD);
+            borderColor = const Color(0xFFE5C04A);
+          } else {
+            foregroundColor = AppColors.primary;
+            backgroundColor = const Color(0xFFEAF2FF);
+            borderColor = const Color(0xFFBFD4FF);
+          }
           icon = Icons.mic_rounded;
         }
         break;
       case SpeakingState.processing:
         text = '准备识别...';
-        color = _accentColor;
+        foregroundColor = const Color(0xFF5E35B1);
+        backgroundColor = const Color(0xFFF1EBFF);
+        borderColor = const Color(0xFFD6C5FF);
         icon = Icons.sync_rounded;
         break;
       case SpeakingState.success:
         text = '完美!';
-        color = Colors.green;
+        foregroundColor = const Color(0xFF2E7D32);
+        backgroundColor = const Color(0xFFEAF8EC);
+        borderColor = const Color(0xFFB8E1BE);
         icon = Icons.check_circle_rounded;
         break;
       case SpeakingState.failed:
         text = '再试一次!';
-        color = Colors.orange;
+        foregroundColor = const Color(0xFFEF6C00);
+        backgroundColor = const Color(0xFFFFF1E6);
+        borderColor = const Color(0xFFFFD0AD);
         icon = Icons.refresh_rounded;
         break;
     }
@@ -1005,14 +1096,14 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
         key: ValueKey(_state),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: color.withValues(alpha: 0.3)),
+          border: Border.all(color: borderColor),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: color, size: 20),
+            Icon(icon, color: foregroundColor, size: 20),
             const SizedBox(width: 8),
             Flexible(
               child: Text(
@@ -1022,7 +1113,7 @@ class _SpeakingPracticeViewState extends State<SpeakingPracticeView>
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: color,
+                  color: foregroundColor,
                 ),
               ),
             ),
