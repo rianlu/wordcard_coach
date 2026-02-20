@@ -27,10 +27,9 @@ class _WordDetailSheetState extends State<WordDetailSheet> {
   bool _isPlaying = false;
   bool _isExamplesExpanded = false;
 
-  @override
   void initState() {
     super.initState();
-    _playAudio(); // 自动播放一次发音
+    // _playAudio(); // Disable auto-play
   }
 
   Future<void> _playAudio() async {

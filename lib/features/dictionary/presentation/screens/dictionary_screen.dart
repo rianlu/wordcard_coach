@@ -13,6 +13,8 @@ import '../../../../core/widgets/animated_speaker_button.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/database/models/word_progress.dart';
 import '../widgets/word_detail_sheet.dart';
+import '../widgets/dictionary_word_tile.dart';
+import 'dictionary_search_screen.dart';
 
 class DictionaryScreen extends StatefulWidget {
   const DictionaryScreen({super.key});
@@ -24,16 +26,16 @@ class DictionaryScreen extends StatefulWidget {
 class _DictionaryScreenState extends State<DictionaryScreen> {
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
-  final TextEditingController _searchController = TextEditingController();
+  
+  // List state
   final ScrollController _scrollController = ScrollController();
-
   List<Map<String, dynamic>> _words = [];
   bool _isLoading = false;
   bool _hasMore = true;
   int _offset = 0;
   final int _limit = 40;
+  
   int _requestVersion = 0;
-  Timer? _searchDebounce;
   bool _isOpeningWordDialog = false;
 
   // 逻辑处理
@@ -50,7 +52,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   void initState() {
     super.initState();
     _loadMetadata();
-    _searchController.addListener(_onSearchChanged);
+    // Search listener removed
     _scrollController.addListener(_onScroll);
     GlobalStatsNotifier.instance.addListener(_fullReload);
   }
@@ -58,8 +60,6 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   @override
   void dispose() {
     GlobalStatsNotifier.instance.removeListener(_fullReload);
-    _searchDebounce?.cancel();
-    _searchController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -70,12 +70,6 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     if (_scrollController.position.extentAfter < 800) {
       _loadMore();
     }
-  }
-
-  void _onSearchChanged() {
-    // 搜索输入做轻量防抖，避免频繁重置列表
-    _searchDebounce?.cancel();
-    _searchDebounce = Timer(const Duration(milliseconds: 250), _reload);
   }
 
   Future<void> _loadMetadata() async {
@@ -184,7 +178,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     final counts = await _wordDao.getWordCounts(
         bookId: _currentBookId,
         unit: _currentUnit,
-        searchQuery: _searchController.text
+        searchQuery: "" 
     );
     if (mounted && requestId == _requestVersion) {
         setState(() {
@@ -205,7 +199,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       limit: _limit,
       offset: _offset,
       masteryFilter: _masteryFilter,
-      searchQuery: _searchController.text,
+      searchQuery: "",
       bookId: _currentBookId,
       unit: _currentUnit
     );
@@ -263,7 +257,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                               if (index == _words.length) {
                                  return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
                               }
-                              return _buildWordItem(_words[index]);
+                              return DictionaryWordTile(
+                                item: _words[index],
+                                onTap: () => DictionaryWordTile.showDetail(context, _words[index]),
+                              );
                             },
                           ),
                   ),
@@ -298,23 +295,36 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          // 逻辑处理
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(color: AppColors.shadowWhite, blurRadius: 10, offset: const Offset(0, 4))
-              ]
-            ),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.search_rounded, color: AppColors.textMediumEmphasis),
-                border: InputBorder.none,
-                hintText: "搜索单词...",
-                hintStyle: TextStyle(color: AppColors.textMediumEmphasis),
+          // Search Bar Button (Navigates to Search Screen)
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => const DictionarySearchScreen(),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [
+                  BoxShadow(color: AppColors.shadowWhite, blurRadius: 10, offset: Offset(0, 4))
+                ]
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.search_rounded, color: AppColors.textMediumEmphasis),
+                  SizedBox(width: 12),
+                  Text(
+                    "搜索单词...",
+                    style: TextStyle(color: AppColors.textMediumEmphasis, fontSize: 16),
+                  ),
+                ],
               ),
             ),
           )
@@ -673,120 +683,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     );
   }
 
-  Widget _buildWordItem(Map<String, dynamic> item) {
-    // 逻辑处理
-    final text = item['text'] as String;
-    final meaning = item['meaning'] as String;
-    final mastery = item['mastery_level'] as int? ?? 0; // 掌握度处理
-    final isLearned = (item['is_learned'] as int? ?? 0) == 1;
-    final interval = item['interval'] as int? ?? 1;
 
-    Color badgeColor = Colors.grey.shade400;
-    String badgeText = "未开始";
-    IconData badgeIcon = Icons.circle_outlined;
-
-    if (isLearned) {
-      if (mastery == 2) {
-        badgeColor = Colors.green;
-        badgeText = "已掌握";
-        badgeIcon = Icons.check_circle;
-      } else {
-        // 逻辑处理
-        // 逻辑处理
-        // 逻辑处理
-        // 逻辑处理
-        if (interval >= 8) {
-          badgeColor = const Color(0xFF8BC34A); // 配色
-          badgeText = "熟练中";
-          badgeIcon = Icons.trending_up;
-        } else if (interval >= 3) {
-          badgeColor = const Color(0xFFFF9800); // 配色
-          badgeText = "学习中";
-          badgeIcon = Icons.schedule;
-        } else {
-          badgeColor = const Color(0xFFFFB74D); // 配色
-          badgeText = "初学";
-          badgeIcon = Icons.flag;
-        }
-      }
-    }
-
-    return BubblyButton(
-      onPressed: () => _showWordDetail(item),
-      color: Colors.white,
-      shadowColor: AppColors.shadowWhite,
-      borderRadius: 16,
-      padding: const EdgeInsets.all(16),
-      child: Row(
-          children: [
-            Container(
-                width: 4, height: 40,
-                decoration: BoxDecoration(
-                    color: badgeColor,
-                    borderRadius: BorderRadius.circular(2)
-                ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(text, style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textHighEmphasis)),
-                  const SizedBox(height: 4),
-                  Text(meaning, style: const TextStyle(fontSize: 14, color: AppColors.textMediumEmphasis), maxLines: 1, overflow: TextOverflow.ellipsis),
-                ],
-              ),
-            ),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                    Icon(badgeIcon, size: 16, color: badgeColor),
-                    const SizedBox(height: 4),
-                    Text(badgeText, style: TextStyle(fontSize: 12, color: badgeColor, fontWeight: FontWeight.bold)),
-                ],
-            )
-          ],
-        ),
-    );
-  }
-  void _showWordDetail(Map<String, dynamic> item) async {
-    if (_isOpeningWordDialog) return;
-    _isOpeningWordDialog = true;
-    final wordId = item['id'] as String;
-    
-    // 逻辑处理
-    try {
-      final Word? fullWord = await _wordDao.getWordDetails(wordId);
-      final WordProgress? progress = await _wordDao.getWordProgress(wordId);
-      
-      if (fullWord == null || !mounted) {
-        _isOpeningWordDialog = false;
-        return;
-      }
-      
-      await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => Container(
-           decoration: const BoxDecoration(
-             color: Colors.white,
-             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-           ),
-           child: WordDetailSheet(
-             word: fullWord,
-             progress: progress,
-           ),
-        ),
-      );
-    } catch (e) {
-      debugPrint("Error opening detail sheet: $e");
-    } finally {
-      if (mounted) {
-        _isOpeningWordDialog = false;
-      }
-    }
-  }
 
 
 }
