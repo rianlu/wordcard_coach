@@ -25,14 +25,14 @@ class BackupService {
   BackupService._internal();
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
-  
+
   static const _keyString = 'WordCardCoachBackupKey2026Secure';
   static const _payloadPrefixV2 = 'WCC2';
 
   // ---------------------------------------------------------------------------
   // 逻辑处理
   // ---------------------------------------------------------------------------
-  
+
   String _encryptData(String plainText, {required encrypt.IV iv}) {
     final key = encrypt.Key.fromUtf8(_keyString);
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
@@ -94,21 +94,22 @@ class BackupService {
   // ---------------------------------------------------------------------------
   // 逻辑处理
   // ---------------------------------------------------------------------------
-  
+
   Future<void> exportData(BuildContext context) async {
     try {
       final db = await _dbHelper.database;
-      
+
       // 逻辑处理
       final userStatsList = await db.query('user_stats');
       final wordProgressList = await db.query('word_progress');
       final dailyRecordsList = await db.query('daily_records');
-      
+
       // 逻辑处理
       final userStatsMap = userStatsList.isNotEmpty ? userStatsList.first : {};
-      final accountId = userStatsMap['account_id'] as String? ?? const Uuid().v4();
+      final accountId =
+          userStatsMap['account_id'] as String? ?? const Uuid().v4();
       final nickname = userStatsMap['nickname'] as String? ?? 'Unknown';
-      
+
       final exportData = {
         'metadata': {
           'version': 2,
@@ -122,13 +123,13 @@ class BackupService {
           'user_stats': userStatsList,
           'word_progress': wordProgressList,
           'daily_records': dailyRecordsList,
-        }
+        },
       };
 
       // 逻辑处理
       final jsonString = jsonEncode(exportData);
       final encryptedString = _encryptDataV2(jsonString);
-      
+
       // 逻辑处理
       final tempDir = await getTemporaryDirectory();
       final dateStr = DateFormat('yyyyMMdd_HHmm').format(DateTime.now());
@@ -147,7 +148,6 @@ class BackupService {
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
         );
       }
-      
     } catch (e) {
       debugPrint('Export failed: $e');
       if (context.mounted) {
@@ -170,26 +170,25 @@ class BackupService {
       );
 
       if (result == null || result.files.single.path == null) return;
-      
+
       final filePath = result.files.single.path!;
-      
+
       // 校验文件扩展名
       if (!filePath.endsWith('.wcc') && !filePath.endsWith('.json')) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('请选择 .wcc 格式的备份文件'),
+              content: Text('请选择 .wcc 或 .json 备份文件'),
               backgroundColor: Colors.orange,
             ),
           );
         }
         return;
       }
-      
+
       final file = File(filePath);
       if (!context.mounted) return;
       await importDataFromFile(file, context);
-
     } catch (e) {
       debugPrint('Import failed: $e');
       if (context.mounted) {
@@ -203,64 +202,77 @@ class BackupService {
   Future<void> importDataFromFile(File file, BuildContext context) async {
     try {
       final content = await file.readAsString();
-      
+
       Map<String, dynamic> jsonMap;
-      
+
       // 逻辑处理
       try {
-         jsonMap = jsonDecode(content);
-         if (!jsonMap.containsKey('metadata')) {
-            // 逻辑处理
-            throw const FormatException();
-         }
+        jsonMap = jsonDecode(content);
+        if (!jsonMap.containsKey('metadata')) {
+          // 逻辑处理
+          throw const FormatException();
+        }
       } catch (_) {
-         // 逻辑处理
-         try {
-           final decrypted = _decryptDataV2(content);
-           jsonMap = jsonDecode(decrypted);
-         } catch (e) {
-           throw Exception('文件已损坏、被篡改，或格式不正确');
-         }
+        // 逻辑处理
+        try {
+          final decrypted = _decryptDataV2(content);
+          jsonMap = jsonDecode(decrypted);
+        } catch (e) {
+          throw Exception('文件已损坏、被篡改，或格式不正确');
+        }
       }
-      
+
       // 逻辑处理
       if (!jsonMap.containsKey('metadata') || !jsonMap.containsKey('data')) {
         throw Exception('无效的备份文件格式');
       }
-      
+
       final metadata = jsonMap['metadata'];
       final importedAccountId = metadata['account_id'];
       final importedNickname = metadata['nickname'];
       final importedTimestamp = _asInt(metadata['exported_at']);
-      
+
       // 逻辑处理
       final db = await _dbHelper.database;
       final currentUserList = await db.query('user_stats');
-      final currentUser = currentUserList.isNotEmpty ? currentUserList.first : {};
+      final currentUser = currentUserList.isNotEmpty
+          ? currentUserList.first
+          : {};
       final currentAccountId = currentUser['account_id'] as String?;
-      final currentRows = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM word_progress'));
-      
-      bool isIdentityMismatch = (currentAccountId != null && importedAccountId != currentAccountId);
-      bool hasSignificantData = (currentRows != null && currentRows > 10); // 逻辑处理
-      
+      final currentRows = Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM word_progress'),
+      );
+
+      bool isIdentityMismatch =
+          (currentAccountId != null && importedAccountId != currentAccountId);
+      bool hasSignificantData =
+          (currentRows != null && currentRows > 10); // 逻辑处理
+
       bool confirmed = false;
 
       // 逻辑处理
       if (context.mounted) {
-         if (isIdentityMismatch && hasSignificantData) {
-            // 逻辑处理
-            confirmed = await _showCriticalWarningDialog(context, importedNickname);
-         } else {
-            // 逻辑处理
-            confirmed = await _showNormalConfirmDialog(context, importedNickname, importedTimestamp);
-         }
+        if (isIdentityMismatch && hasSignificantData) {
+          // 逻辑处理
+          confirmed = await _showCriticalWarningDialog(
+            context,
+            importedNickname,
+          );
+        } else {
+          // 逻辑处理
+          confirmed = await _showNormalConfirmDialog(
+            context,
+            importedNickname,
+            importedTimestamp,
+          );
+        }
       }
-      
+
       if (!confirmed) return;
 
       // 逻辑处理
       await _executeRestore(Map<String, dynamic>.from(jsonMap['data'] as Map));
-      
+
       // 逻辑处理
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -271,26 +283,30 @@ class BackupService {
                 const SizedBox(width: 12),
                 Text(
                   '恢复成功！数据已更新',
-                  style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
             backgroundColor: Colors.green.shade600,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             margin: const EdgeInsets.all(24),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             elevation: 8,
-          )
+          ),
         );
         // 逻辑处理
         GlobalStatsNotifier.instance.notify();
       }
-
     } catch (e) {
       debugPrint('Import from file failed: $e');
       if (context.mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('恢复失败: $e'), backgroundColor: Colors.red),
         );
       }
@@ -305,13 +321,13 @@ class BackupService {
       await txn.delete('word_progress');
       await txn.delete('daily_records');
       await txn.delete('user_stats');
-      
+
       // 逻辑处理
       final userStatsList = _asMapList(data['user_stats']);
       for (var item in userStatsList) {
         await txn.insert('user_stats', item);
       }
-      
+
       // 逻辑处理
       final wordProgressList = _asMapList(data['word_progress']);
       final batch = txn.batch(); // 逻辑处理
@@ -319,7 +335,7 @@ class BackupService {
         batch.insert('word_progress', item);
       }
       await batch.commit(noResult: true);
-      
+
       // 逻辑处理
       final dailyRecordsList = _asMapList(data['daily_records']);
       for (var item in dailyRecordsList) {
@@ -343,203 +359,234 @@ class BackupService {
     return 0;
   }
 
-  Future<bool> _showNormalConfirmDialog(BuildContext context, String? nickname, int timestamp) async {
-    final dateStr = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.fromMillisecondsSinceEpoch(timestamp));
-    
+  Future<bool> _showNormalConfirmDialog(
+    BuildContext context,
+    String? nickname,
+    int timestamp,
+  ) async {
+    final dateStr = DateFormat(
+      'yyyy-MM-dd HH:mm',
+    ).format(DateTime.fromMillisecondsSinceEpoch(timestamp));
+
     return await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.all(24),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 380),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(28),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(28),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
-              ]
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFEFF6FF), // 配色
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.restore_rounded, color: AppColors.primary, size: 36),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  '恢复备份',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textHighEmphasis,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '即将恢复来自 "$nickname" 的备份\n时间: $dateStr\n\n注意：这将覆盖您当前的学习进度。',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14,
-                    height: 1.5,
-                    color: AppColors.textMediumEmphasis,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                          backgroundColor: AppColors.background,
-                        ),
-                        child: Text(
-                          '取消',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 15,
-                            color: AppColors.textMediumEmphasis,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: BubblyButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        color: AppColors.primary,
-                        shadowColor: AppColors.shadowBlue,
-                        borderRadius: 14,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        child: Center(
-                          child: Text(
-                            '确认恢复',
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 380),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(28),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      offset: const Offset(0, 8),
+                      blurRadius: 32,
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ) ?? false;
-  }
-
-  Future<bool> _showCriticalWarningDialog(BuildContext context, String? nickname) async {
-    return await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.all(24),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 380),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(28),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(28),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
-              ]
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFEF2F2), // 配色
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 36),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  '警告：用户不匹配',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textHighEmphasis,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '此备份属于 "$nickname"，与您当前的账号不同。\n\n⚠️ 如果继续导入，将【彻底删除】您当前设备上的所有学习记录。此操作不可撤销！',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14,
-                    height: 1.5,
-                    color: AppColors.textMediumEmphasis,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Column(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: BubblyButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        color: Colors.red,
-                        shadowColor: Colors.red.withValues(alpha: 0.4),
-                        borderRadius: 14,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        child: Center(
-                          child: Text(
-                            '我已知晓，覆盖数据',
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFEFF6FF), // 配色
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.restore_rounded,
+                        color: AppColors.primary,
+                        size: 36,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '恢复备份',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textHighEmphasis,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    Text(
+                      '即将恢复来自 "$nickname" 的本地备份\n时间: $dateStr\n\n注意：这将覆盖您当前设备上的学习进度。',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 14,
+                        height: 1.5,
+                        color: AppColors.textMediumEmphasis,
                       ),
-                      child: Text(
-                        '取消操作',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
-                          color: AppColors.textMediumEmphasis,
-                          fontWeight: FontWeight.w600,
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              backgroundColor: AppColors.background,
+                            ),
+                            child: Text(
+                              '取消',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 15,
+                                color: AppColors.textMediumEmphasis,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: BubblyButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            color: AppColors.primary,
+                            shadowColor: AppColors.shadowBlue,
+                            borderRadius: 14,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            child: Center(
+                              child: Text(
+                                '确认恢复',
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    ) ?? false;
+        ) ??
+        false;
+  }
+
+  Future<bool> _showCriticalWarningDialog(
+    BuildContext context,
+    String? nickname,
+  ) async {
+    return await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 380),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(28),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      offset: const Offset(0, 8),
+                      blurRadius: 32,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFEF2F2), // 配色
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.warning_amber_rounded,
+                        color: Colors.red,
+                        size: 36,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '警告：备份来源不同',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textHighEmphasis,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '此备份来源于 "$nickname"，与当前设备数据来源不同。\n\n⚠️ 如果继续导入，将【彻底删除】您当前设备上的所有学习记录。此操作不可撤销！',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 14,
+                        height: 1.5,
+                        color: AppColors.textMediumEmphasis,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: BubblyButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            color: Colors.red,
+                            shadowColor: Colors.red.withValues(alpha: 0.4),
+                            borderRadius: 14,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            child: Center(
+                              child: Text(
+                                '我已知晓，覆盖数据',
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: Text(
+                            '取消操作',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 15,
+                              color: AppColors.textMediumEmphasis,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ) ??
+        false;
   }
 }

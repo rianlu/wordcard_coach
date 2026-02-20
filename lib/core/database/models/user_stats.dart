@@ -1,6 +1,7 @@
 class UserStats {
   final int id;
   final String nickname;
+  final String avatarKey;
   final int currentGrade;
   final int currentSemester;
   final String currentBookId;
@@ -18,6 +19,7 @@ class UserStats {
   UserStats({
     this.id = 1,
     this.nickname = '学习者',
+    this.avatarKey = 'a01',
     this.currentGrade = 3,
     this.currentSemester = 1,
     this.currentBookId = '',
@@ -34,44 +36,47 @@ class UserStats {
   });
 
   factory UserStats.fromJson(Map<String, dynamic> json) => UserStats(
-        id: json['id'] as int,
-        nickname: json['nickname'] as String,
-        currentGrade: json['current_grade'] as int,
-        currentSemester: json['current_semester'] as int,
-        currentBookId: json['current_book_id'] as String? ?? '',
-        totalWordsLearned: json['total_words_learned'] as int,
-        totalWordsMastered: json['total_words_mastered'] as int,
-        totalReviews: json['total_reviews'] as int,
-        totalCorrect: json['total_correct'] as int,
-        totalWrong: json['total_wrong'] as int,
-        continuousDays: json['continuous_days'] as int,
-        totalStudyDays: json['total_study_days'] as int,
-        lastStudyDate: json['last_study_date'] as String,
-        totalStudyMinutes: json['total_study_minutes'] as int,
-        updatedAt: json['updated_at'] as int,
-      );
+    id: json['id'] as int,
+    nickname: json['nickname'] as String,
+    avatarKey: (json['avatar_key'] as String?) ?? 'a01',
+    currentGrade: json['current_grade'] as int,
+    currentSemester: json['current_semester'] as int,
+    currentBookId: json['current_book_id'] as String? ?? '',
+    totalWordsLearned: json['total_words_learned'] as int,
+    totalWordsMastered: json['total_words_mastered'] as int,
+    totalReviews: json['total_reviews'] as int,
+    totalCorrect: json['total_correct'] as int,
+    totalWrong: json['total_wrong'] as int,
+    continuousDays: json['continuous_days'] as int,
+    totalStudyDays: json['total_study_days'] as int,
+    lastStudyDate: json['last_study_date'] as String,
+    totalStudyMinutes: json['total_study_minutes'] as int,
+    updatedAt: json['updated_at'] as int,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'nickname': nickname,
-        'current_grade': currentGrade,
-        'current_semester': currentSemester,
-        'current_book_id': currentBookId,
-        'total_words_learned': totalWordsLearned,
-        'total_words_mastered': totalWordsMastered,
-        'total_reviews': totalReviews,
-        'total_correct': totalCorrect,
-        'total_wrong': totalWrong,
-        'continuous_days': continuousDays,
-        'total_study_days': totalStudyDays,
-        'last_study_date': lastStudyDate,
-        'total_study_minutes': totalStudyMinutes,
-        'updated_at': updatedAt,
-      };
+    'id': id,
+    'nickname': nickname,
+    'avatar_key': avatarKey,
+    'current_grade': currentGrade,
+    'current_semester': currentSemester,
+    'current_book_id': currentBookId,
+    'total_words_learned': totalWordsLearned,
+    'total_words_mastered': totalWordsMastered,
+    'total_reviews': totalReviews,
+    'total_correct': totalCorrect,
+    'total_wrong': totalWrong,
+    'continuous_days': continuousDays,
+    'total_study_days': totalStudyDays,
+    'last_study_date': lastStudyDate,
+    'total_study_minutes': totalStudyMinutes,
+    'updated_at': updatedAt,
+  };
 
   UserStats copyWith({
     int? id,
     String? nickname,
+    String? avatarKey,
     int? currentGrade,
     int? currentSemester,
     String? currentBookId,
@@ -89,6 +94,7 @@ class UserStats {
     return UserStats(
       id: id ?? this.id,
       nickname: nickname ?? this.nickname,
+      avatarKey: avatarKey ?? this.avatarKey,
       currentGrade: currentGrade ?? this.currentGrade,
       currentSemester: currentSemester ?? this.currentSemester,
       currentBookId: currentBookId ?? this.currentBookId,

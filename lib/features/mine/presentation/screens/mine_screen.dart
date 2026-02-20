@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as dart;
 import 'package:flutter_animate/flutter_animate.dart';
@@ -13,6 +14,8 @@ import '../../../../core/database/daos/word_dao.dart';
 import '../../../../core/database/models/user_stats.dart';
 import '../../../../core/services/global_stats_notifier.dart';
 import '../../../../core/database/database_helper.dart';
+import '../../../../core/widgets/book_selection_sheet.dart';
+import '../../../../core/widgets/user_avatar.dart';
 
 class MineScreen extends StatefulWidget {
   const MineScreen({super.key});
@@ -29,6 +32,7 @@ class _MineScreenState extends State<MineScreen> {
   BookProgress? _bookProgress;
   bool _isLoading = true;
   List<dynamic> _booksManifest = [];
+  String? _loadError;
 
   @override
   void initState() {
@@ -38,79 +42,87 @@ class _MineScreenState extends State<MineScreen> {
   }
 
   Future<void> _generateMockData() async {
+    final confirmed = await _confirmGenerateMockData();
+    if (!confirmed) return;
     setState(() => _isLoading = true);
-    
-    final r =  dart.Random();
+
+    final r = dart.Random();
     final now = DateTime.now();
 
     // 逻辑处理
     for (int i = 1; i <= 14; i++) {
-       final date = now.subtract(Duration(days: i));
-       
-       // 逻辑处理
-       if (r.nextDouble() > 0.2) { // 逻辑处理
-          int newWords = r.nextInt(15);
-          int reviewWords = r.nextInt(30) + 10;
-          int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4)).round(); // 复习流程
-          int wrong = reviewWords - correct;
-          int minutes = r.nextInt(30) + 10;
-          
-          await _statsDao.recordDailyActivity(
-            newWords: newWords, 
-            reviewWords: reviewWords, 
-            correct: correct, 
-            wrong: wrong, 
-            minutes: minutes,
-            date: date
-          );
-       }
+      final date = now.subtract(Duration(days: i));
+
+      // 逻辑处理
+      if (r.nextDouble() > 0.2) {
+        // 逻辑处理
+        int newWords = r.nextInt(15);
+        int reviewWords = r.nextInt(30) + 10;
+        int correct = (reviewWords * (0.6 + r.nextDouble() * 0.4))
+            .round(); // 复习流程
+        int wrong = reviewWords - correct;
+        int minutes = r.nextInt(30) + 10;
+
+        await _statsDao.recordDailyActivity(
+          newWords: newWords,
+          reviewWords: reviewWords,
+          correct: correct,
+          wrong: wrong,
+          minutes: minutes,
+          date: date,
+        );
+      }
     }
 
     // 逻辑处理
     // 逻辑处理
     final newWords = await _wordDao.getNewWords(
       20,
-      bookId: (_stats?.currentBookId.isNotEmpty ?? false) ? _stats?.currentBookId : null,
+      bookId: (_stats?.currentBookId.isNotEmpty ?? false)
+          ? _stats?.currentBookId
+          : null,
       grade: _stats?.currentGrade,
-      semester: _stats?.currentSemester
+      semester: _stats?.currentSemester,
     );
     if (newWords.isNotEmpty) {
-       // 细节处理
-       final db = await DatabaseHelper().database;
-       
-       final batch = db.batch();
-       final yesterday = now.subtract(const Duration(days: 1)).millisecondsSinceEpoch;
-       
-       for (var word in newWords) {
-          batch.insert('word_progress', {
-            'id': 'progress_${word.id}',
-            'word_id': word.id,
-            'created_at': yesterday,
-            'updated_at': yesterday,
-            'easiness_factor': 2.5,
-            'interval': 1,
-            'repetition': 1,
-            'next_review_date': yesterday, // 复习流程
-            'last_review_date': yesterday,
-            'review_count': 1,
-            'mastery_level': 1,
-            'correct_count': 1,
-            'wrong_count': 0,
-            'speak_mode_count': 0,
-            'spell_mode_count': 0,
-            'select_mode_count': 1,
-          }, conflictAlgorithm: ConflictAlgorithm.replace);
-       }
-       await batch.commit(noResult: true);
+      // 细节处理
+      final db = await DatabaseHelper().database;
+
+      final batch = db.batch();
+      final yesterday = now
+          .subtract(const Duration(days: 1))
+          .millisecondsSinceEpoch;
+
+      for (var word in newWords) {
+        batch.insert('word_progress', {
+          'id': 'progress_${word.id}',
+          'word_id': word.id,
+          'created_at': yesterday,
+          'updated_at': yesterday,
+          'easiness_factor': 2.5,
+          'interval': 1,
+          'repetition': 1,
+          'next_review_date': yesterday, // 复习流程
+          'last_review_date': yesterday,
+          'review_count': 1,
+          'mastery_level': 1,
+          'correct_count': 1,
+          'wrong_count': 0,
+          'speak_mode_count': 0,
+          'spell_mode_count': 0,
+          'select_mode_count': 1,
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+      await batch.commit(noResult: true);
     }
-    
+
     // 细节处理
     await _loadStats();
     if (mounted) {
-       setState(() => _isLoading = false);
-       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text('已生成过去数据 & ${newWords.length} 个待复习单词'))
-       );
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('已生成过去数据 & ${newWords.length} 个待复习单词')),
+      );
     }
   }
 
@@ -121,38 +133,37 @@ class _MineScreenState extends State<MineScreen> {
   }
 
   Future<void> _loadStats() async {
-    final stats = await _userStatsDao.getUserStats();
-    
-    // 细节处理
-    String bookId = stats.currentBookId;
-    if (bookId.isEmpty) {
-      bookId = 'waiyan_${stats.currentGrade}_${stats.currentSemester}';
-    }
-    
-    // 细节处理
-    final bookProg = await _statsDao.getBookProgress(bookId);
-    
-    // 细节处理
-    if (_booksManifest.isEmpty) {
-      try {
-        _booksManifest = await DatabaseHelper().loadBooksManifest();
-      } catch (e) {
-        // 细节处理
+    try {
+      final stats = await _userStatsDao.getUserStats();
+      String bookId = stats.currentBookId;
+      if (bookId.isEmpty) {
+        bookId = 'waiyan_${stats.currentGrade}_${stats.currentSemester}';
       }
-    }
-    
-    if (mounted) {
+      final bookProg = await _statsDao.getBookProgress(bookId);
+
+      if (_booksManifest.isEmpty) {
+        _booksManifest = await DatabaseHelper().loadBooksManifest();
+      }
+
+      if (!mounted) return;
       setState(() {
         _stats = stats;
         _bookProgress = bookProg;
         _isLoading = false;
+        _loadError = null;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _loadError = '页面加载失败，请重试';
       });
     }
   }
 
   Future<void> _openXhsProfile() async {
     const userId = '5efb6a420000000001005544';
-    
+
     // 按优先级尝试潜在的跳转协议
     final appUris = [
       Uri.parse('xhsuserprofile://user_id=$userId'),
@@ -160,7 +171,9 @@ class _MineScreenState extends State<MineScreen> {
       Uri.parse('xhsdiscover://user/profile/$userId'),
     ];
 
-    final webUri = Uri.parse('https://www.xiaohongshu.com/user/profile/$userId');
+    final webUri = Uri.parse(
+      'https://www.xiaohongshu.com/user/profile/$userId',
+    );
 
     bool launched = false;
 
@@ -187,7 +200,7 @@ class _MineScreenState extends State<MineScreen> {
         debugPrint('Could not launch web profile: $e');
         // 最终兜底：使用应用内浏览器（平台默认方式）
         try {
-           await launchUrl(webUri, mode: LaunchMode.platformDefault);
+          await launchUrl(webUri, mode: LaunchMode.platformDefault);
         } catch (_) {}
       }
     }
@@ -198,6 +211,56 @@ class _MineScreenState extends State<MineScreen> {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
+    if (_loadError != null) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.error_outline_rounded,
+                  color: Colors.orange,
+                  size: 40,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  _loadError!,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textHighEmphasis,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BubblyButton(
+                  onPressed: () {
+                    setState(() => _isLoading = true);
+                    _loadStats();
+                  },
+                  color: AppColors.primary,
+                  shadowColor: AppColors.shadowBlue,
+                  borderRadius: 12,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 12,
+                  ),
+                  child: Text(
+                    '重新加载',
+                    style: GoogleFonts.plusJakartaSans(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -205,115 +268,106 @@ class _MineScreenState extends State<MineScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: Column(
           children: [
-             const SizedBox(height: 20),
-             // 细节处理
-             Container(
-               width: 100,
-               height: 100,
-               decoration: BoxDecoration(
-                 shape: BoxShape.circle,
-                 border: Border.all(color: AppColors.primary, width: 3),
-                 color: AppColors.primary.withValues(alpha: 0.1),
-               ),
-               child: const Icon(Icons.person, size: 60, color: AppColors.primary),
-             )
-             .animate()
-             .scale(duration: 500.ms, curve: Curves.easeOutBack),
-             const SizedBox(height: 16),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.center,
-               children: [
-                 GestureDetector(
-                   onTap: _showEditNicknameDialog,
-                   child: Row(
-                     mainAxisSize: MainAxisSize.min,
-                     children: [
-                       Text(
-                         _stats?.nickname ?? '学习者',
-                         style: GoogleFonts.plusJakartaSans(
-                           fontSize: 24,
-                           fontWeight: FontWeight.bold,
-                           color: AppColors.textHighEmphasis,
-                         ),
-                       ),
-                       const SizedBox(width: 8),
-                       const Icon(
-                         Icons.mode_edit_outline_rounded,
-                         size: 20,
-                         color: AppColors.primary,
-                       ),
-                     ],
-                   ),
-                 ),
-               ],
-             ),
-             const SizedBox(height: 8),
-             Container(
-               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-               decoration: BoxDecoration(
-                 color: AppColors.primary.withValues(alpha: 0.1),
-                 borderRadius: BorderRadius.circular(20),
-               ),
-               child: Text(
-                 'Lv. ${_stats?.currentGrade ?? 3}',
-                 style: const TextStyle(
-                   color: AppColors.primary,
-                   fontWeight: FontWeight.bold,
-                   fontSize: 14,
-                 ),
-               ),
-             )
-             .animate()
-             .fadeIn(duration: 400.ms, delay: 200.ms)
-             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
+            const SizedBox(height: 20),
+            // 细节处理
+            GestureDetector(
+              onTap: _showAvatarSelectionDialog,
+              child: UserAvatar(
+                avatarKey: _stats?.avatarKey,
+                size: 100,
+                borderWidth: 3,
+              ),
+            ).animate().scale(duration: 500.ms, curve: Curves.easeOutBack),
+            const SizedBox(height: 8),
+            Text(
+              '点击更换头像',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 12,
+                color: AppColors.textMediumEmphasis,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: _showEditNicknameDialog,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _stats?.nickname ?? '学习者',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textHighEmphasis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Icon(
+                        Icons.mode_edit_outline_rounded,
+                        size: 20,
+                        color: AppColors.primary,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
 
-             const SizedBox(height: 40),
-
-             // 细节处理
-             _buildCurrentBookCard()
-                 .animate()
-                 .fadeIn(duration: 500.ms, delay: 300.ms)
-                 .slideX(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
-             const SizedBox(height: 16),
-             _buildMenuItem(
-               icon: Icons.rocket_launch_rounded,
-               title: '参与内测 & 获取更新',
-               onTap: _openXhsProfile,
-             )
-             .animate()
-             .fadeIn(duration: 500.ms, delay: 400.ms)
-             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
-             const SizedBox(height: 16),
-             _buildMenuItem(
-               icon: Icons.settings_rounded,
-               title: '高级设置',
-               onTap: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
-               },
-             )
-             .animate()
-             .fadeIn(duration: 500.ms, delay: 500.ms)
-             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
-             const SizedBox(height: 16),
-             _buildMenuItem(
-               icon: Icons.auto_graph_rounded,
-               title: '生成模拟数据 (测试用)',
-               onTap: _generateMockData,
-             )
-             .animate()
-             .fadeIn(duration: 500.ms, delay: 600.ms)
-             .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
-             const SizedBox(height: 40),
-             Center(
-               child: Text(
-                 'v1.0.0',
-                 style: GoogleFonts.plusJakartaSans(
-                   fontSize: 12,
-                   color: Colors.grey.shade400,
-                   fontWeight: FontWeight.bold,
-                 ),
-               ),
-             ),
+            // 细节处理
+            _buildCurrentBookCard()
+                .animate()
+                .fadeIn(duration: 500.ms, delay: 300.ms)
+                .slideX(begin: 0.1, end: 0, curve: Curves.easeOutQuad),
+            const SizedBox(height: 16),
+            _buildMenuItem(
+                  icon: Icons.rocket_launch_rounded,
+                  title: '参与内测 & 获取更新',
+                  onTap: _openXhsProfile,
+                )
+                .animate()
+                .fadeIn(duration: 500.ms, delay: 400.ms)
+                .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
+            const SizedBox(height: 16),
+            _buildMenuItem(
+                  icon: Icons.settings_rounded,
+                  title: '高级设置',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsScreen(),
+                      ),
+                    );
+                  },
+                )
+                .animate()
+                .fadeIn(duration: 500.ms, delay: 500.ms)
+                .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
+            const SizedBox(height: 16),
+            if (kDebugMode)
+              _buildMenuItem(
+                    icon: Icons.auto_graph_rounded,
+                    title: '生成模拟数据 (仅调试)',
+                    onTap: _generateMockData,
+                  )
+                  .animate()
+                  .fadeIn(duration: 500.ms, delay: 600.ms)
+                  .slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),
+            const SizedBox(height: 40),
+            Center(
+              child: Text(
+                'v1.0.0',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 12,
+                  color: Colors.grey.shade400,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -334,11 +388,11 @@ class _MineScreenState extends State<MineScreen> {
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Colors.grey.shade100),
           boxShadow: const [
-             BoxShadow(
-                color: AppColors.shadowWhite,
-                offset: Offset(0, 8),
-                blurRadius: 20,
-              )
+            BoxShadow(
+              color: AppColors.shadowWhite,
+              offset: Offset(0, 8),
+              blurRadius: 20,
+            ),
           ],
         ),
         child: Column(
@@ -352,7 +406,11 @@ class _MineScreenState extends State<MineScreen> {
                     color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.menu_book_rounded, color: AppColors.primary, size: 24),
+                  child: const Icon(
+                    Icons.menu_book_rounded,
+                    color: AppColors.primary,
+                    size: 24,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -382,7 +440,10 @@ class _MineScreenState extends State<MineScreen> {
                   ),
                 ),
                 // 细节处理
-                const Icon(Icons.chevron_right_rounded, color: AppColors.textMediumEmphasis),
+                const Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textMediumEmphasis,
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -433,7 +494,7 @@ class _MineScreenState extends State<MineScreen> {
 
   String _getCurrentBookName() {
     if (_stats == null) return '加载中...';
-    
+
     // 细节处理
     final bookId = _stats!.currentBookId;
     if (bookId.isNotEmpty && _booksManifest.isNotEmpty) {
@@ -443,11 +504,13 @@ class _MineScreenState extends State<MineScreen> {
         return (book['name'] ?? '').toString();
       }
     }
-    
+
     // 细节处理
     if (_booksManifest.isNotEmpty) {
       final idx = _booksManifest.indexWhere(
-        (b) => b['grade'] == _stats!.currentGrade && b['semester'] == _stats!.currentSemester,
+        (b) =>
+            b['grade'] == _stats!.currentGrade &&
+            b['semester'] == _stats!.currentSemester,
       );
       if (idx >= 0) {
         final book = _booksManifest[idx];
@@ -462,22 +525,83 @@ class _MineScreenState extends State<MineScreen> {
   String _getGradeLabel(int grade, int semester) {
     String gradeStr = '';
     switch (grade) {
-      case 7: gradeStr = '七年级'; break;
-      case 8: gradeStr = '八年级'; break;
-      case 9: gradeStr = '九年级'; break;
-      default: gradeStr = '$grade年级';
+      case 7:
+        gradeStr = '七年级';
+        break;
+      case 8:
+        gradeStr = '八年级';
+        break;
+      case 9:
+        gradeStr = '九年级';
+        break;
+      default:
+        gradeStr = '$grade年级';
     }
     String semesterStr = semester == 1 ? '上册' : '下册';
     return '$gradeStr$semesterStr';
   }
 
   Future<void> _showBookSelectionDialog() async {
-    // 细节处理
     final books = _booksManifest;
+    if (books.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('教材列表为空，请稍后重试'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
 
-    if (!mounted) return;
+    final selected = await BookSelectionSheet.show(
+      context: context,
+      books: books,
+      title: '选择教材',
+      selectedBookId: _stats?.currentBookId,
+      selectedGrade: _stats?.currentGrade,
+      selectedSemester: _stats?.currentSemester,
+    );
+    if (selected == null) return;
+    if (selected.id == null ||
+        selected.grade == null ||
+        selected.semester == null) {
+      return;
+    }
+    await _userStatsDao.updateCurrentBook(
+      selected.id!,
+      selected.grade!,
+      selected.semester!,
+    );
+    _loadStats();
+    GlobalStatsNotifier.instance.notify();
+  }
 
-    showModalBottomSheet(
+  Future<bool> _confirmGenerateMockData() async {
+    if (!mounted) return false;
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('生成测试数据'),
+            content: const Text('该操作会写入模拟学习记录，仅用于调试。是否继续？'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('取消'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('继续'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  Future<void> _showAvatarSelectionDialog() async {
+    if (_stats == null) return;
+    final selectedKey = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -489,9 +613,7 @@ class _MineScreenState extends State<MineScreen> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              // 细节处理
               Container(
                 margin: const EdgeInsets.only(top: 12),
                 width: 40,
@@ -501,13 +623,12 @@ class _MineScreenState extends State<MineScreen> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              // 细节处理
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
                 child: Row(
                   children: [
                     Text(
-                      '选择教材',
+                      '选择头像',
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
@@ -517,87 +638,71 @@ class _MineScreenState extends State<MineScreen> {
                   ],
                 ),
               ),
-              // 细节处理
               Divider(height: 1, color: Colors.grey.shade100),
-              // 细节处理
               Expanded(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: books.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 4),
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(20),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: UserAvatar.presets.length,
                   itemBuilder: (context, index) {
-                    final book = books[index];
-                    final id = book['id'];
-                    final name = book['name'];
-                    final grade = book['grade'];
-                    final semester = book['semester'];
-                    
-                    bool isSelected = (_stats?.currentBookId == id);
-                    if (!isSelected && (_stats?.currentBookId.isEmpty ?? true)) {
-                      if (_stats?.currentGrade == grade && _stats?.currentSemester == semester) {
-                        isSelected = true;
-                      }
-                    }
-
-                    return InkWell(
-                      onTap: () async {
-                        Navigator.pop(context);
-                        await _userStatsDao.updateCurrentBook(id, grade, semester);
-                        _loadStats();
-                        GlobalStatsNotifier.instance.notify();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                        decoration: BoxDecoration(
-                          color: isSelected ? AppColors.primary.withValues(alpha: 0.08) : Colors.transparent,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: isSelected ? AppColors.primary.withValues(alpha: 0.15) : Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Icon(
-                                isSelected ? Icons.check_circle_rounded : Icons.circle_outlined,
-                                color: isSelected ? AppColors.primary : Colors.grey.shade400,
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Text(
-                                name,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 15,
-                                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                                  color: isSelected ? AppColors.primary : AppColors.textHighEmphasis,
+                    final preset = UserAvatar.presets[index];
+                    final selected = preset.key == _stats!.avatarKey;
+                    return GestureDetector(
+                      onTap: () => Navigator.pop(context, preset.key),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          UserAvatar(
+                            avatarKey: preset.key,
+                            size: 62,
+                            borderWidth: selected ? 3 : 2,
+                          ),
+                          if (selected)
+                            Positioned(
+                              right: 2,
+                              bottom: 2,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: const EdgeInsets.all(3),
+                                child: const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 12,
                                 ),
                               ),
                             ),
-                            if (isSelected)
-                              const Icon(Icons.check_rounded, color: AppColors.primary, size: 22),
-                          ],
-                        ),
+                        ],
                       ),
                     );
                   },
                 ),
               ),
-              // 细节处理
               SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
             ],
           ),
         );
       },
     );
+    if (selectedKey == null || selectedKey == _stats!.avatarKey) return;
+    final updated = _stats!.copyWith(avatarKey: selectedKey);
+    await _userStatsDao.updateUserStats(updated);
+    if (!mounted) return;
+    setState(() => _stats = updated);
+    GlobalStatsNotifier.instance.notify();
   }
 
-  Widget _buildMenuItem({required IconData icon, required String title, required VoidCallback onTap}) {
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return BubblyButton(
       onPressed: onTap,
       color: Colors.white,
@@ -625,15 +730,21 @@ class _MineScreenState extends State<MineScreen> {
               ),
             ),
           ),
-          const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Colors.grey),
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 16,
+            color: Colors.grey,
+          ),
         ],
       ),
     );
   }
 
   Future<void> _showEditNicknameDialog() async {
-    final TextEditingController controller = TextEditingController(text: _stats?.nickname ?? '');
-    
+    final TextEditingController controller = TextEditingController(
+      text: _stats?.nickname ?? '',
+    );
+
     final newNickname = await showDialog<String>(
       context: context,
       builder: (context) => Dialog(
@@ -649,8 +760,12 @@ class _MineScreenState extends State<MineScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
-                   BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
-                ]
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    offset: const Offset(0, 8),
+                    blurRadius: 32,
+                  ),
+                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -661,7 +776,11 @@ class _MineScreenState extends State<MineScreen> {
                       color: Color(0xFFEFF6FF), // 配色
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.mode_edit_outline_rounded, color: AppColors.primary, size: 32),
+                    child: const Icon(
+                      Icons.mode_edit_outline_rounded,
+                      color: AppColors.primary,
+                      size: 32,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -679,20 +798,32 @@ class _MineScreenState extends State<MineScreen> {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textHighEmphasis
+                      color: AppColors.textHighEmphasis,
                     ),
                     decoration: InputDecoration(
                       hintText: '请输入新的昵称',
-                      hintStyle: GoogleFonts.plusJakartaSans(color: Colors.grey.shade400, fontSize: 14),
+                      hintStyle: GoogleFonts.plusJakartaSans(
+                        color: Colors.grey.shade400,
+                        fontSize: 14,
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide(color: Colors.grey.shade100, width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade100,
+                          width: 2,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 2,
+                        ),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
                       counterText: '',
                       filled: true,
                       fillColor: AppColors.background,
@@ -709,7 +840,9 @@ class _MineScreenState extends State<MineScreen> {
                           onPressed: () => Navigator.pop(context),
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
                             backgroundColor: AppColors.background,
                           ),
                           child: Text(
@@ -757,13 +890,15 @@ class _MineScreenState extends State<MineScreen> {
       ),
     );
 
-    if (newNickname != null && newNickname.trim().isNotEmpty && newNickname != _stats?.nickname) {
+    if (newNickname != null &&
+        newNickname.trim().isNotEmpty &&
+        newNickname != _stats?.nickname) {
       final updatedStats = _stats!.copyWith(nickname: newNickname.trim());
       await _userStatsDao.updateUserStats(updatedStats);
-      
+
       // 细节处理
       GlobalStatsNotifier.instance.notify();
-      
+
       if (mounted) {
         setState(() {
           _stats = updatedStats;

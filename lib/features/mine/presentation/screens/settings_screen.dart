@@ -23,14 +23,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           '高级设置',
           style: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.bold,
-            color: AppColors.textHighEmphasis
+            color: AppColors.textHighEmphasis,
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textHighEmphasis),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppColors.textHighEmphasis,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -44,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.upload_file_rounded,
               iconColor: Colors.blue,
               title: '备份学习进度 (导出)',
-              subtitle: '将进度保存为文件，推荐发送到微信文件传输助手备份',
+              subtitle: '导出本机学习数据为文件（本应用无登录，建议定期备份）',
               onTap: () async {
                 await BackupService().exportData(context);
               },
@@ -54,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.download_rounded,
               iconColor: Colors.green,
               title: '恢复学习进度 (导入)',
-              subtitle: '从备份文件恢复，请谨慎操作',
+              subtitle: '从备份文件恢复本机数据，会覆盖当前学习记录',
               onTap: () async {
                 await BackupService().importData(context);
               },
@@ -63,13 +66,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 32),
             _buildSectionHeader('词库管理'),
             const SizedBox(height: 12),
-             _buildBubblyMenuItem(
-               icon: Icons.cloud_sync_rounded,
-               iconColor: AppColors.primary,
-               title: '更新本地词库',
-               subtitle: '保留学习进度，仅更新释义和例句',
-               onTap: _handleUpdateLibrary,
-             ),
+            _buildBubblyMenuItem(
+              icon: Icons.cloud_sync_rounded,
+              iconColor: AppColors.primary,
+              title: '更新本地词库',
+              subtitle: '保留学习进度，仅更新释义和例句',
+              onTap: _handleUpdateLibrary,
+            ),
           ],
         ),
       ),
@@ -141,7 +144,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Colors.grey),
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 16,
+            color: Colors.grey,
+          ),
         ],
       ),
     );
@@ -164,8 +171,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
-              ]
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  offset: const Offset(0, 8),
+                  blurRadius: 32,
+                ),
+              ],
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -176,7 +187,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Color(0xFFEFF6FF), // 配色
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.cloud_sync_rounded, color: AppColors.primary, size: 36),
+                  child: const Icon(
+                    Icons.cloud_sync_rounded,
+                    color: AppColors.primary,
+                    size: 36,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -205,7 +220,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         onPressed: () => Navigator.pop(context, false),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           backgroundColor: AppColors.background,
                         ),
                         child: Text(
@@ -246,9 +263,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
-    
+
     if (confirm != true) return;
-    
+
     if (!mounted) return;
     showDialog(
       context: context,
@@ -265,8 +282,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.08), offset: const Offset(0, 8), blurRadius: 32)
-              ]
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  offset: const Offset(0, 8),
+                  blurRadius: 32,
+                ),
+              ],
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -283,14 +304,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     fontWeight: FontWeight.w700,
                     color: AppColors.textHighEmphasis,
                   ),
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
     );
-    
+
     bool isSuccess = true;
     String resultText = '词库已成功更新！';
     try {
@@ -298,7 +319,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await helper.updateLibraryFromAssets();
       await Future.delayed(const Duration(milliseconds: 500));
       final db = await helper.database;
-      final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM words')) ?? 0;
+      final count =
+          Sqflite.firstIntValue(
+            await db.rawQuery('SELECT COUNT(*) FROM words'),
+          ) ??
+          0;
       if (count == 0) {
         isSuccess = false;
         resultText = '更新失败：未导入任何单词，请检查数据格式或教材清单。';
@@ -307,33 +332,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
       isSuccess = false;
       resultText = '更新失败：$e';
     }
-    
+
     if (!mounted) return;
     Navigator.pop(context); // 返回上一页
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
-            Icon(isSuccess ? Icons.check_circle : Icons.error_outline, color: Colors.white),
+            Icon(
+              isSuccess ? Icons.check_circle : Icons.error_outline,
+              color: Colors.white,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 resultText,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 16),
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
         ),
-        backgroundColor: isSuccess ? Colors.green.shade600 : Colors.red.shade600,
+        backgroundColor: isSuccess
+            ? Colors.green.shade600
+            : Colors.red.shade600,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(24),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         elevation: 8,
-      )
+      ),
     );
   }
 }
