@@ -167,7 +167,7 @@ class SpeechService {
   /// [onError] 发生错误时的回调，参数为错误描述信息。
   /// [localeId] 可选，指定特定的语言 ID。如果未指定，将使用 [_resolveLocaleId] 确定的默认值。
   ///
-  /// 返回值: Future<bool> 表示是否成功启动了监听。
+  /// 返回值: `Future<bool>` 表示是否成功启动了监听。
   Future<bool> startListening({
     required Function(SpeechRecognitionChunk) onResult,
     Function(String)? onError,

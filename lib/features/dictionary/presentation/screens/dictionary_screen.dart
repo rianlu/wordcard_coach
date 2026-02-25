@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/database/daos/word_dao.dart';
@@ -9,6 +8,7 @@ import '../../../../core/services/global_stats_notifier.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../widgets/dictionary_word_tile.dart';
 import '../../../../core/widgets/book_selection_sheet.dart';
+import '../../../../core/utils/string_utils.dart';
 import 'dictionary_search_screen.dart';
 
 class DictionaryScreen extends StatefulWidget {
@@ -36,10 +36,12 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   String? _currentBookId; // 逻辑处理
   String? _currentUnit;
 
-  // 逻辑处理
+  // List states
   List<dynamic> _books = [];
   Map<int, int> _counts = {0: 0, 1: 0, 2: 0};
   List<String> _units = [];
+
+  // Navigation lock
 
   @override
   void initState() {
@@ -49,6 +51,8 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     _scrollController.addListener(_onScroll);
     GlobalStatsNotifier.instance.addListener(_fullReload);
   }
+
+  bool _isNavigatingToSearch = false;
 
   @override
   void dispose() {
@@ -101,43 +105,9 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
       return;
     }
     _units = await _wordDao.getUnitsForBook(_currentBookId!);
-    _units.sort(_naturalCompare); // 逻辑处理
+    _units.sort(StringUtils.naturalCompare); // 逻辑处理
     _currentUnit = null;
     setState(() {});
-  }
-
-  int _naturalCompare(String a, String b) {
-    final RegExp regex = RegExp(r'(\d+)|(\D+)');
-    final Iterable<Match> aMatches = regex.allMatches(a);
-    final Iterable<Match> bMatches = regex.allMatches(b);
-
-    final Iterator<Match> aIterator = aMatches.iterator;
-    final Iterator<Match> bIterator = bMatches.iterator;
-
-    while (aIterator.moveNext() && bIterator.moveNext()) {
-      final String aPart = aIterator.current.group(0)!;
-      final String bPart = bIterator.current.group(0)!;
-
-      final int? aInt = int.tryParse(aPart);
-      final int? bInt = int.tryParse(bPart);
-
-      if (aInt != null && bInt != null) {
-        final int compare = aInt.compareTo(bInt);
-        if (compare != 0) return compare;
-      } else if (aInt != null) {
-        return -1; // 逻辑处理
-      } else if (bInt != null) {
-        return 1;
-      } else {
-        final int compare = aPart.compareTo(bPart);
-        if (compare != 0) return compare;
-      }
-    }
-
-    if (aIterator.moveNext()) return 1;
-    if (bIterator.moveNext()) return -1;
-
-    return 0;
   }
 
   /// 逻辑处理
@@ -215,8 +185,13 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     if (_masteryFilter == filter) return;
     setState(() {
       _masteryFilter = filter;
+      _words = [];
+      _offset = 0;
+      _hasMore = true;
+      _isLoading = true;
     });
-    _reload();
+    // 只单纯拉取新词单，不再去查 count（count 没变） 
+    _loadMore(force: true);
   }
 
   @override
@@ -316,8 +291,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
           const SizedBox(height: 16),
           // Search Bar Button (Navigates to Search Screen)
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
+            onTap: () async {
+              if (_isNavigatingToSearch) return;
+              _isNavigatingToSearch = true;
+              await Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
                       const DictionarySearchScreen(),
@@ -327,6 +304,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                       },
                 ),
               );
+              _isNavigatingToSearch = false;
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -451,163 +429,23 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
               padding: const EdgeInsets.only(right: 8),
               child: _buildDropdownChip(
                 _currentUnit == null ? "所有单元" : _currentUnit!,
-                () {
-                  showModalBottomSheet(
+                () async {
+                  final String? selected = await showModalBottomSheet<String>(
                     context: context,
                     backgroundColor: Colors.transparent,
                     isScrollControlled: true,
-                    builder: (context) {
-                      return Container(
-                        constraints: const BoxConstraints(maxHeight: 500),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(24),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // 逻辑处理
-                            Container(
-                              margin: const EdgeInsets.only(top: 12),
-                              width: 40,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                            // 逻辑处理
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                24,
-                                20,
-                                24,
-                                16,
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '选择单元',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.textHighEmphasis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // 逻辑处理
-                            Divider(height: 1, color: Colors.grey.shade100),
-                            // 逻辑处理
-                            Flexible(
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8,
-                                ),
-                                itemCount: _units.length + 1,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 4),
-                                itemBuilder: (ctx, i) {
-                                  final isAllUnits = i == 0;
-                                  final unit = isAllUnits
-                                      ? null
-                                      : _units[i - 1];
-                                  final bool isSelected = _currentUnit == unit;
-                                  final String label = isAllUnits
-                                      ? "所有单元"
-                                      : unit!;
-
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      setState(() => _currentUnit = unit);
-                                      _reload();
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 14,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? AppColors.primary.withValues(
-                                                alpha: 0.08,
-                                              )
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(14),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: isSelected
-                                                  ? AppColors.primary
-                                                        .withValues(alpha: 0.15)
-                                                  : Colors.grey.shade100,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Icon(
-                                              isSelected
-                                                  ? Icons.check_circle_rounded
-                                                  : (isAllUnits
-                                                        ? Icons
-                                                              .all_inclusive_rounded
-                                                        : Icons
-                                                              .circle_outlined),
-                                              color: isSelected
-                                                  ? AppColors.primary
-                                                  : Colors.grey.shade400,
-                                              size: 20,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 14),
-                                          Expanded(
-                                            child: Text(
-                                              label,
-                                              style:
-                                                  GoogleFonts.plusJakartaSans(
-                                                    fontSize: 15,
-                                                    fontWeight: isSelected
-                                                        ? FontWeight.w700
-                                                        : FontWeight.w600,
-                                                    color: isSelected
-                                                        ? AppColors.primary
-                                                        : AppColors
-                                                              .textHighEmphasis,
-                                                  ),
-                                            ),
-                                          ),
-                                          if (isSelected)
-                                            const Icon(
-                                              Icons.check_rounded,
-                                              color: AppColors.primary,
-                                              size: 22,
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            // 逻辑处理
-                            SizedBox(
-                              height: MediaQuery.of(context).padding.bottom + 8,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                    builder: (context) => _UnitSelectionSheet(
+                      units: _units,
+                      currentUnit: _currentUnit,
+                    ),
                   );
+                  if (selected != null) {
+                    final newUnit = selected == "__ALL__" ? null : selected;
+                    if (newUnit != _currentUnit) {
+                      setState(() => _currentUnit = newUnit);
+                      _reload();
+                    }
+                  }
                 },
               ),
             ),
@@ -676,6 +514,119 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
             fontSize: 14,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _UnitSelectionSheet extends StatelessWidget {
+  final List<String> units;
+  final String? currentUnit;
+
+  const _UnitSelectionSheet({
+    required this.units,
+    required this.currentUnit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 500),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+            child: Row(
+              children: [
+                Text(
+                  '选择单元',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textHighEmphasis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Divider(height: 1, color: Colors.grey.shade100),
+          Flexible(
+            child: ListView.separated(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: units.length + 1,
+              separatorBuilder: (context, index) => const SizedBox(height: 4),
+              itemBuilder: (ctx, i) {
+                final isAllUnits = i == 0;
+                final unit = isAllUnits ? null : units[i - 1];
+                final bool isSelected = currentUnit == unit;
+                final String label = isAllUnits ? "所有单元" : unit!;
+
+                return InkWell(
+                  onTap: () {
+                    Navigator.pop(context, isAllUnits ? "__ALL__" : unit);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColors.primary.withValues(alpha: 0.08)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColors.primary.withValues(alpha: 0.15)
+                                : Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            isSelected
+                                ? Icons.check_circle_rounded
+                                : (isAllUnits ? Icons.all_inclusive_rounded : Icons.circle_outlined),
+                            color: isSelected ? AppColors.primary : Colors.grey.shade400,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            label,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 15,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                              color: isSelected ? AppColors.primary : AppColors.textHighEmphasis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
+        ],
       ),
     );
   }

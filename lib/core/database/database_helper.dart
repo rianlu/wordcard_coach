@@ -4,11 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wordcard_coach/core/database/models/word.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
+  static const Uuid _uuid = Uuid();
 
   factory DatabaseHelper() => _instance;
 
@@ -565,7 +567,7 @@ class DatabaseHelper {
   }
 
   String _makeWordId(String bookId, String unit, int index) {
-    return 'word_${bookId}_${_normalizeUnit(unit)}_$index';
+    return _uuid.v4();
   }
 
   Future<Map<String, String>> _loadExistingWordIdMap(
@@ -721,7 +723,7 @@ class DatabaseHelper {
           final en = (s['en'] ?? '').toString();
           final cn = (s['cn'] ?? '').toString();
           if (en.isNotEmpty) {
-            final sId = 'sentence_${id}_$sIndex';
+            final sId = _uuid.v4();
 
             // 插入例句
             batch.insert('sentences', {

@@ -44,6 +44,8 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
   int _transitionCountdown = 3;
   SessionPhase? _pendingNextPhase;
 
+  Timer? _transitionTimer;
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +54,7 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
 
   @override
   void dispose() {
+    _transitionTimer?.cancel();
     AudioService().stop();
     super.dispose();
   }
@@ -119,20 +122,24 @@ class _DailyLearningSessionScreenState extends State<DailyLearningSessionScreen>
     _runTransitionCountdown(next);
   }
 
-  void _runTransitionCountdown(SessionPhase nextPhase) async {
-     for (int i = 3; i > 0; i--) {
-       if (!mounted) return;
-       setState(() => _transitionCountdown = i);
-       await Future.delayed(const Duration(seconds: 1));
-     }
-
-     if (mounted) {
-       setState(() {
-         _isTransitioning = false;
-         _pendingNextPhase = null;
-       });
-       _advancePhase(nextPhase);
-     }
+  void _runTransitionCountdown(SessionPhase nextPhase) {
+     _transitionTimer?.cancel();
+     _transitionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+       if (!mounted) {
+         timer.cancel();
+         return;
+       }
+       if (_transitionCountdown > 1) {
+         setState(() => _transitionCountdown--);
+       } else {
+         timer.cancel();
+         setState(() {
+           _isTransitioning = false;
+           _pendingNextPhase = null;
+         });
+         _advancePhase(nextPhase);
+       }
+     });
   }
 
   void _advancePhase(SessionPhase nextPhase) {
