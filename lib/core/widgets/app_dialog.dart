@@ -17,6 +17,9 @@ class AppDialog extends StatelessWidget {
   final VoidCallback? onPrimaryPressed;
   final VoidCallback? onSecondaryPressed;
   final Color primaryButtonColor;
+  final Color primaryButtonTextColor;
+  final Color titleColor;
+  final Color subtitleColor;
   final bool isDestructive;
 
   const AppDialog({
@@ -32,6 +35,9 @@ class AppDialog extends StatelessWidget {
     this.onPrimaryPressed,
     this.onSecondaryPressed,
     this.primaryButtonColor = AppColors.primary,
+    this.primaryButtonTextColor = Colors.white,
+    this.titleColor = AppColors.textHighEmphasis,
+    this.subtitleColor = AppColors.textMediumEmphasis,
     this.isDestructive = false,
   });
 
@@ -154,7 +160,7 @@ class AppDialog extends StatelessWidget {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textHighEmphasis,
+                  color: titleColor,
                 ),
               ),
               
@@ -167,7 +173,7 @@ class AppDialog extends StatelessWidget {
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     height: 1.5,
-                    color: AppColors.textMediumEmphasis,
+                    color: subtitleColor,
                   ),
                 ),
               ],
@@ -206,7 +212,7 @@ class AppDialog extends StatelessWidget {
             child: Text(
               primaryButtonText!,
               style: GoogleFonts.plusJakartaSans(
-                color: Colors.white,
+                color: primaryButtonTextColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
               ),
@@ -250,7 +256,7 @@ class AppDialog extends StatelessWidget {
                 child: Text(
                   primaryButtonText!,
                   style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white,
+                    color: primaryButtonTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),

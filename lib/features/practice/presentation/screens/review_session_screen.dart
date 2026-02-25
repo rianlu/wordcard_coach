@@ -33,15 +33,22 @@ class ReviewSessionScreen extends StatefulWidget {
 class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
   final WordDao _wordDao = WordDao();
   final UserStatsDao _userStatsDao = UserStatsDao();
+  final Random _random = Random();
   
   // 逻辑处理
   List<Word> _reviewWords = [];
   List<Word> _distractorPool = []; 
   List<ReviewMode> _modes = []; 
+  List<Word> _replayQueue = [];
+  final Set<String> _replayedWordIds = {};
   bool _isLoading = true;
   int _currentIndex = 0;
   int _correctCount = 0;
   int _wrongCount = 0;
+  int _consecutiveWrong = 0;
+  int _firstPassCount = 0;
+  int _totalAttemptCount = 0;
+  bool _isReplayPhase = false;
   DateTime? _sessionStart;
   
   // 细节处理
@@ -60,7 +67,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     
     // 细节处理
     final words = await _wordDao.getWordsDueForReview(
-      20, 
+      15, 
       bookId: bookId, 
       grade: bookId.isEmpty ? userStats.currentGrade : null, 
       semester: bookId.isEmpty ? userStats.currentSemester : null
@@ -71,29 +78,54 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
       return;
     }
 
-    final random = Random();
-    final modes = List.generate(words.length, (index) {
-      final r = random.nextInt(3); 
-      return ReviewMode.values[r];
-    });
+    final modes = words.map((w) => _pickModeForWord(w)).toList();
 
-    final distractors = await _wordDao.getRandomWords(20);
+    final distractors = await _wordDao.getRandomWords(120);
 
     if (mounted) {
       setState(() {
         _reviewWords = words;
         _modes = modes;
         _distractorPool = distractors;
+        _firstPassCount = words.length;
+        _isReplayPhase = false;
         _isLoading = false;
         _sessionStart = DateTime.now();
       });
     }
   }
 
+  ReviewMode _pickModeForWord(Word word, {bool forceSelection = false}) {
+    if (forceSelection) return ReviewMode.selection;
+
+    double selectionW = 0.45;
+    double spellingW = 0.35;
+
+    final len = word.text.replaceAll(' ', '').length;
+    if (len > 10) {
+      spellingW -= 0.15;
+      selectionW += 0.10;
+    } else if (len <= 5) {
+      spellingW += 0.08;
+      selectionW -= 0.05;
+    }
+
+    if (word.difficulty >= 4) {
+      selectionW += 0.08;
+      spellingW -= 0.12;
+    }
+
+    final roll = _random.nextDouble();
+    if (roll < selectionW) return ReviewMode.selection;
+    if (roll < selectionW + spellingW) return ReviewMode.spelling;
+    return ReviewMode.speaking;
+  }
+
   int _mapQualityForMode(ReviewMode mode, int rawScore) {
     if (mode == ReviewMode.speaking) {
       if (rawScore >= 3) return 5;
-      if (rawScore == 2) return 3;
+      if (rawScore == 2) return 4;
+      if (rawScore == 1) return 2;
       return 0;
     }
     return rawScore;
@@ -103,12 +135,19 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     final quality = _mapQualityForMode(mode, rawScore);
     final word = _reviewWords[_currentIndex];
     await _wordDao.updateReviewStats(word.id, quality);
+    _totalAttemptCount++;
 
     if (quality >= 3) {
       _correctCount++;
+      _consecutiveWrong = 0;
       _triggerNextAnimation();
     } else {
       _wrongCount++;
+      _consecutiveWrong++;
+      if (!_isReplayPhase && !_replayedWordIds.contains(word.id)) {
+        _replayQueue.add(word);
+        _replayedWordIds.add(word.id);
+      }
       _triggerNextAnimation();
     }
   }
@@ -132,6 +171,18 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         _isCardFlyingOut = false;
         _slideOffset = Offset.zero;
       });
+    } else if (!_isReplayPhase && _replayQueue.isNotEmpty) {
+      setState(() {
+        _reviewWords = List<Word>.from(_replayQueue);
+        _modes = _reviewWords
+            .map((w) => _pickModeForWord(w, forceSelection: true))
+            .toList();
+        _replayQueue = [];
+        _isReplayPhase = true;
+        _currentIndex = 0;
+        _isCardFlyingOut = false;
+        _slideOffset = Offset.zero;
+      });
     } else {
       _finishSession();
     }
@@ -143,7 +194,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
        final minutes = ((DateTime.now().difference(start).inSeconds) / 60).ceil();
        await StatsDao().recordDailyActivity(
          newWords: 0,
-         reviewWords: _reviewWords.length,
+         reviewWords: _firstPassCount,
          correct: _correctCount, 
          wrong: _wrongCount, 
          minutes: minutes == 0 ? 1 : minutes
@@ -174,11 +225,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
               child: AppDialog(
                 icon: Icons.check_circle_rounded,
                 iconColor: const Color(0xFF664400),
-                iconBackgroundColor: AppColors.secondary.withValues(alpha: 0.22),
+                iconBackgroundColor: AppColors.secondary,
                 title: "复习完成！",
-                subtitle: "你复习了 ${_reviewWords.length} 个单词，继续保持！",
+                subtitle: "你复习了 $_firstPassCount 个单词（共完成 $_totalAttemptCount 题），继续保持！",
                 primaryButtonText: "完成",
-                primaryButtonColor: const Color(0xFFB98A00),
+                primaryButtonColor: AppColors.secondary,
+                primaryButtonTextColor: const Color(0xFF664400),
+                titleColor: const Color(0xFF664400),
+                subtitleColor: const Color(0xCC664400),
                 onPrimaryPressed: () {
                   Navigator.pop(context); // 关闭弹窗
                   Navigator.pop(context); // 返回上一页
@@ -375,8 +429,10 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     double labelScale = 0.4,
     double strokeWidth = 6,
   }) {
-    final remaining = _reviewWords.length - _currentIndex;
-    final progress = (_currentIndex) / _reviewWords.length;
+    final total = _reviewWords.isEmpty ? 1 : _reviewWords.length;
+    final remaining = (total - _currentIndex).clamp(0, total);
+    final progress = _currentIndex / total;
+    final label = _isReplayPhase ? "回流" : "剩余";
     
     return SizedBox(
       width: size,
@@ -413,7 +469,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                 ),
               ),
               Text(
-                "剩余",
+                label,
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: fontSize * labelScale,
                   fontWeight: FontWeight.bold,
@@ -492,7 +548,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
 
   Widget _buildActiveCard() {
     final currentWord = _reviewWords[_currentIndex];
-    final currentMode = _modes[_currentIndex];
+    final currentMode = _resolveMode(_modes[_currentIndex]);
     
     return Container(
       width: double.infinity,
@@ -549,15 +605,48 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     }
   }
 
+  ReviewMode _resolveMode(ReviewMode baseMode) {
+    if (_consecutiveWrong >= 2 && baseMode != ReviewMode.selection) {
+      return ReviewMode.selection;
+    }
+    return baseMode;
+  }
+
   List<Word> _generateOptions(Word correctWord) {
     if (_distractorPool.isEmpty) return [correctWord]; 
-    final random = Random();
+    final random = _random;
     final Set<Word> optionsSet = {correctWord};
-    int attempts = 0;
-    while (optionsSet.length < 4 && attempts < 50) {
+
+    final sameBookAndPos = _distractorPool
+        .where((w) =>
+            w.id != correctWord.id &&
+            w.bookId == correctWord.bookId &&
+            w.pos == correctWord.pos)
+        .toList();
+    final samePos = _distractorPool
+        .where((w) => w.id != correctWord.id && w.pos == correctWord.pos)
+        .toList();
+    final similarLength = _distractorPool
+        .where((w) =>
+            w.id != correctWord.id &&
+            (w.text.length - correctWord.text.length).abs() <= 2)
+        .toList();
+
+    void tryFillFrom(List<Word> pool) {
+      pool.shuffle(random);
+      for (final w in pool) {
+        if (optionsSet.length >= 4) break;
+        optionsSet.add(w);
+      }
+    }
+
+    tryFillFrom(sameBookAndPos);
+    tryFillFrom(samePos);
+    tryFillFrom(similarLength);
+
+    while (optionsSet.length < 4) {
       final w = _distractorPool[random.nextInt(_distractorPool.length)];
       if (w.id != correctWord.id) optionsSet.add(w);
-      attempts++;
     }
     final list = optionsSet.toList();
     list.shuffle();
