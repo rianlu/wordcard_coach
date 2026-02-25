@@ -215,7 +215,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
                 final isWide = constraints.maxWidth > 700;
                 
                 if (isWide) {
-                  return _buildTabletLayout();
+                  return _buildTabletLayout(constraints);
                 } else {
                   return _buildMobileLayout();
                 }
@@ -249,7 +249,12 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildCircularProgress(),
+              _buildCircularProgress(
+                size: 66,
+                fontSize: 16,
+                labelScale: 0.5,
+                strokeWidth: 6,
+              ),
             ],
           ),
         ),
@@ -292,33 +297,54 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     );
   }
   
-  Widget _buildTabletLayout() {
+  Widget _buildTabletLayout(BoxConstraints constraints) {
+    final sidePanelWidth = (constraints.maxWidth * 0.27).clamp(240.0, 320.0);
+    final cardMaxWidth = min(880.0, constraints.maxWidth - sidePanelWidth - 72);
+
     return Row(
       children: [
-        // 细节处理
-        Expanded(
-          flex: 4,
+        SizedBox(
+          width: sidePanelWidth,
           child: Padding(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.fromLTRB(16, 28, 16, 28),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Spacer(),
-                 Text(
-                  "每日复习",
-                  style: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w900, color: AppColors.textHighEmphasis),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 220),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "每日复习",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.textHighEmphasis,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "通过清理卡片堆来保持记忆清晰。",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 15,
+                          color: AppColors.textMediumEmphasis,
+                          height: 1.45,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      _buildCircularProgress(
+                        size: 112,
+                        fontSize: 28,
+                        labelScale: 0.56,
+                        strokeWidth: 7,
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  "通过清理卡片堆来保持记忆清晰。",
-                  style: GoogleFonts.plusJakartaSans(fontSize: 16, color: AppColors.textMediumEmphasis),
-                ),
-                const SizedBox(height: 48),
-                
-                // 逻辑处理
-                Center(child: _buildCircularProgress(size: 100, fontSize: 24)),
-                
-                const Spacer(),
               ],
             ),
           ),
@@ -326,12 +352,14 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
         
         // 细节处理
         Expanded(
-          flex: 6,
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500), // 细节处理
+              constraints: BoxConstraints(
+                maxWidth: cardMaxWidth,
+                minWidth: min(560.0, cardMaxWidth),
+              ), // 细节处理
               child: Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.fromLTRB(16, 22, 24, 22),
                 child: _buildFocusStack(),
               ),
             ),
@@ -341,7 +369,12 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
     );
   }
   
-  Widget _buildCircularProgress({double size = 60, double fontSize = 14}) {
+  Widget _buildCircularProgress({
+    double size = 60,
+    double fontSize = 14,
+    double labelScale = 0.4,
+    double strokeWidth = 6,
+  }) {
     final remaining = _reviewWords.length - _currentIndex;
     final progress = (_currentIndex) / _reviewWords.length;
     
@@ -355,7 +388,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
             width: size, height: size,
             child: CircularProgressIndicator(
               value: 1.0,
-              strokeWidth: 6,
+              strokeWidth: strokeWidth,
               color: Colors.grey.withValues(alpha: 0.1),
             ),
           ),
@@ -363,7 +396,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
             width: size, height: size,
             child: CircularProgressIndicator(
               value: 1.0 - progress, // 细节处理
-              strokeWidth: 6,
+              strokeWidth: strokeWidth,
               color: const Color(0xFFFFC107),
               strokeCap: StrokeCap.round,
             ),
@@ -381,7 +414,11 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
               ),
               Text(
                 "剩余",
-                style: GoogleFonts.plusJakartaSans(fontSize: fontSize * 0.4, fontWeight: FontWeight.bold, color: AppColors.textMediumEmphasis),
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: fontSize * labelScale,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textMediumEmphasis,
+                ),
               ),
             ],
           )
@@ -489,6 +526,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           key: ValueKey("speak_${word.id}"),
           word: word,
           isReviewMode: true,
+          forceVerticalLayout: true,
           onCompleted: (score) => _handleAnswer(mode, score), 
         );
       case ReviewMode.spelling:
@@ -496,6 +534,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           key: ValueKey("spell_${word.id}"),
           word: word,
           isReviewMode: true,
+          forceVerticalLayout: true,
           onCompleted: (score) => _handleAnswer(mode, score),
         );
       case ReviewMode.selection:
@@ -504,6 +543,7 @@ class _ReviewSessionScreenState extends State<ReviewSessionScreen> {
           word: word,
           options: _generateOptions(word),
           isReviewMode: true,
+          forceVerticalLayout: true,
           onCompleted: (score) => _handleAnswer(mode, score),
         );
     }

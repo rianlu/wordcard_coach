@@ -54,7 +54,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
               );
             },
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
+              constraints: const BoxConstraints(maxWidth: 440),
               child: Stack(
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
@@ -139,6 +139,7 @@ class PracticeSuccessOverlay extends StatelessWidget {
                                     fontWeight: FontWeight.w900,
                                     color: accentTextColor,
                                   ),
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],

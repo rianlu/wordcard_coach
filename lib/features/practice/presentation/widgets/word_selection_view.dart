@@ -12,6 +12,7 @@ class WordSelectionView extends StatefulWidget {
   final List<Word> options;
   final Function(int score) onCompleted;
   final bool isReviewMode;
+  final bool forceVerticalLayout;
 
   const WordSelectionView({
     super.key,
@@ -19,6 +20,7 @@ class WordSelectionView extends StatefulWidget {
     required this.options,
     required this.onCompleted,
     this.isReviewMode = false,
+    this.forceVerticalLayout = false,
   });
 
   @override
@@ -127,7 +129,8 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     );
 
     // 自动进入下一题
-    Future.delayed(const Duration(milliseconds: 1200), () {
+    final isLargeScreen = MediaQuery.of(context).size.shortestSide >= 700;
+    Future.delayed(Duration(milliseconds: isLargeScreen ? 1500 : 1200), () {
       if (mounted) {
         Navigator.of(context).pop(); // 关闭提示层
         widget.onCompleted(_wrongAttempts == 0 ? 5 : 3);
@@ -139,6 +142,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide =
+            !widget.forceVerticalLayout &&
             constraints.maxWidth > constraints.maxHeight &&
             constraints.maxWidth > 480;
         final isTall = constraints.maxHeight > 600;
@@ -149,20 +153,30 @@ class _WordSelectionViewState extends State<WordSelectionView> {
             isPhone && isPortrait && constraints.maxHeight >= 820;
 
         if (isWide) {
+          final wideScale = (constraints.maxWidth / 1000).clamp(1.04, 1.16);
           return Row(
             children: [
               Expanded(
                 flex: 4,
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Center(child: _buildWordCard(compactTop: false)),
+                  padding: const EdgeInsets.fromLTRB(20, 24, 12, 24),
+                  child: Center(
+                    child: _buildWordCard(
+                      compactTop: false,
+                      scale: wideScale,
+                    ),
+                  ),
                 ),
               ),
               Expanded(
-                flex: 5,
+                flex: 6,
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: _buildOptionsGrid(useSingleColumn: false),
+                  padding: const EdgeInsets.fromLTRB(12, 24, 24, 24),
+                  child: _buildOptionsGrid(
+                    useSingleColumn: false,
+                    isWideLayout: true,
+                    scale: wideScale,
+                  ),
                 ),
               ),
             ],
@@ -182,6 +196,8 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                 _buildOptionsGrid(
                   shrinkWrap: true,
                   useSingleColumn: useSingleColumn,
+                  isWideLayout: false,
+                  scale: 1.0,
                 ),
               ],
             ),
@@ -192,7 +208,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         return Column(
           children: [
             Expanded(
-              flex: useSingleColumn ? 4 : 3,
+              flex: useSingleColumn ? 4 : 4,
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
                   24,
@@ -208,7 +224,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
               ),
             ),
             Expanded(
-              flex: useSingleColumn ? 6 : 7,
+              flex: useSingleColumn ? 6 : 6,
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
                   24,
@@ -228,25 +244,55 @@ class _WordSelectionViewState extends State<WordSelectionView> {
   Widget _buildOptionsGrid({
     bool shrinkWrap = false,
     required bool useSingleColumn,
+    bool isWideLayout = false,
+    double scale = 1.0,
   }) {
-    final titleFontSize = useSingleColumn ? 16.0 : 12.0;
+    final titleFontSize = (useSingleColumn ? 16.0 : 12.0) * scale;
+    final subtitleFontSize = 13.0 * scale;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            '选择正确释义',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: titleFontSize,
-              fontWeight: FontWeight.w900,
-              color: AppColors.textMediumEmphasis,
-              letterSpacing: 0.8,
+        if (isWideLayout)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '选择正确释义',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: (18 * scale).clamp(16, 22),
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textHighEmphasis,
+                  ),
+                ),
+                SizedBox(height: 4 * scale),
+                Text(
+                  '点击与你听到的单词相匹配的中文意思',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: subtitleFontSize,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textMediumEmphasis,
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '选择正确释义',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.w900,
+                color: AppColors.textMediumEmphasis,
+                letterSpacing: 0.8,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: useSingleColumn ? 10 : 16),
+        SizedBox(height: useSingleColumn ? 10 : (isWideLayout ? 14 : 16)),
         shrinkWrap
             ? GridView.builder(
                 padding: EdgeInsets.zero,
@@ -264,13 +310,17 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                     context,
                     widget.options[index],
                     compactSingleColumn: useSingleColumn,
+                    roomyLayout: false,
+                    scale: scale,
                   );
                 },
               )
             : Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final gap = (constraints.maxWidth * 0.04).clamp(12.0, 20.0);
+                    final gap =
+                        (constraints.maxWidth * (isWideLayout ? 0.035 : 0.04))
+                            .clamp(12.0, 20.0);
                     final crossAxisCount = useSingleColumn ? 1 : 2;
                     final rows = (widget.options.length / crossAxisCount)
                         .ceil();
@@ -279,9 +329,13 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                         crossAxisCount;
                     final tileHeight =
                         (constraints.maxHeight - gap * (rows - 1)) / rows;
+                    final roomyLayout =
+                        !useSingleColumn &&
+                        tileWidth >= 210 &&
+                        tileHeight >= 120;
                     final dynamicRatio = (tileWidth / tileHeight).clamp(
                       useSingleColumn ? 3.0 : 1.1,
-                      useSingleColumn ? 5.5 : 2.2,
+                      useSingleColumn ? 5.5 : (isWideLayout ? 2.4 : 2.2),
                     );
                     return GridView.builder(
                       padding: EdgeInsets.zero,
@@ -298,6 +352,8 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                           context,
                           widget.options[index],
                           compactSingleColumn: useSingleColumn,
+                          roomyLayout: roomyLayout,
+                          scale: scale,
                         );
                       },
                     );
@@ -308,7 +364,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     );
   }
 
-  Widget _buildWordCard({bool compactTop = false}) {
+  Widget _buildWordCard({bool compactTop = false, double scale = 1.0}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isLearningMode = !widget.isReviewMode;
@@ -350,7 +406,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                     Text(
                       widget.word.text,
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: wordFontSize,
+                        fontSize: wordFontSize * scale,
                         fontWeight: FontWeight.w900,
                         color: AppColors.primary,
                         height: 1.1,
@@ -362,7 +418,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
                     Text(
                       widget.word.phonetic,
                       style: TextStyle(
-                        fontSize: phoneticFontSize,
+                        fontSize: phoneticFontSize * scale,
                         color: AppColors.textMediumEmphasis,
                         fontWeight: FontWeight.w500,
                       ),
@@ -376,7 +432,7 @@ class _WordSelectionViewState extends State<WordSelectionView> {
               AnimatedSpeakerButton(
                 onPressed: _playAudio,
                 isPlaying: _isPlaying,
-                size: compactTop ? 34 : (isLearningMode ? 34 : 32),
+                size: (compactTop ? 34 : (isLearningMode ? 34 : 32)) * scale,
                 variant: widget.isReviewMode
                     ? SpeakerButtonVariant.review
                     : SpeakerButtonVariant.learning,
@@ -392,6 +448,8 @@ class _WordSelectionViewState extends State<WordSelectionView> {
     BuildContext context,
     Word optionWord, {
     bool compactSingleColumn = false,
+    bool roomyLayout = false,
+    double scale = 1.0,
   }) {
     final isLearningMode = !widget.isReviewMode;
     final isSelected = _selectedOptionId == optionWord.id;
@@ -465,8 +523,10 @@ class _WordSelectionViewState extends State<WordSelectionView> {
         curve: Curves.easeOut,
         transform: Matrix4.translationValues(0, isPressed ? 3 : 0, 0),
         padding: EdgeInsets.symmetric(
-          horizontal: compactSingleColumn ? 14 : (isLearningMode ? 18 : 16),
-          vertical: compactSingleColumn ? 6 : (isLearningMode ? 18 : 16),
+          horizontal:
+              (compactSingleColumn ? 14 : (isLearningMode ? 18 : 16)) * scale,
+          vertical:
+              (compactSingleColumn ? 6 : (isLearningMode ? 18 : 16)) * scale,
         ),
         decoration: BoxDecoration(
           color: bgColor,
@@ -481,17 +541,30 @@ class _WordSelectionViewState extends State<WordSelectionView> {
           ],
         ),
         child: Center(
-          child: Text(
-            optionWord.meaning,
-            style: GoogleFonts.plusJakartaSans(
-              fontWeight: FontWeight.w800,
-              fontSize: compactSingleColumn ? 19 : (isLearningMode ? 17 : 16),
-              color: textColor,
-              height: compactSingleColumn ? 1.15 : 1.2,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: compactSingleColumn ? 1 : 3,
-            overflow: TextOverflow.ellipsis,
+          child: LayoutBuilder(
+            builder: (context, tileConstraints) {
+              final baseSize = compactSingleColumn
+                  ? 19.0
+                  : (isLearningMode ? 17.0 : 16.0);
+              final sizeFromTile = (tileConstraints.biggest.shortestSide * 0.2)
+                  .clamp(baseSize, roomyLayout ? 23.0 : 20.0);
+              final fontSize = roomyLayout
+                  ? (sizeFromTile + 1.0).clamp(baseSize, 24.0)
+                  : sizeFromTile;
+
+              return Text(
+                optionWord.meaning,
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.w800,
+                  fontSize: fontSize * scale,
+                  color: textColor,
+                  height: roomyLayout ? 1.25 : (compactSingleColumn ? 1.15 : 1.2),
+                ),
+                textAlign: TextAlign.center,
+                maxLines: compactSingleColumn ? 1 : (roomyLayout ? 4 : 3),
+                overflow: TextOverflow.ellipsis,
+              );
+            },
           ),
         ),
       ),
